@@ -15,7 +15,7 @@
     "publisherBytes": "19/19 exact immutable bytes passed",
     "selectedCases": "reports/targeted-package-checks.json",
     "depth": "three publisher models, all 19 retained modules; four technical dependencies not_measured on this axis",
-    "oracle": "22 identical full canonical documents; separate replay-budget refusal, remaining reference cases not_checked",
+    "oracle": "132/132 full canonical documents equal: 35 declared solver scenarios and all 97 reader questions; no refusals; default 64 MiB replay-state budget",
     "invalidExpression": "x^33: no coefficients, solved/zero NEITHER; EXPRESSION_NOT_ESTABLISHED",
     "nativeReadme": "limit, derivative, integral and inspect all passed",
     "depthRegressions": "existing CNXML unit/hash/edition regressions passed",
@@ -32,6 +32,14 @@
   },
   "releaseVerified": false,
   "corpus": "not_checked",
-  "scope": "Checks at payload freeze. Public delivery is recorded in versioned Release notes and the exact-commit GitHub Actions run.",
-  "uniquePassedScenarios": 128
+  "scope": "Report update after complete independent calculus comparison; unchanged models. Public delivery receipt records exact-commit CI and anonymous archive checks.",
+  "uniquePassedScenarios": 128,
+  "independentComparison": {
+    "status": "passed",
+    "total": 132,
+    "equal": 132,
+    "refused": 0,
+    "report": "reports/addressed-differential.json",
+    "oracleRepairCommit": "eabcaf13ca7b492aca1be85dbc3c3b1cad5ee627"
+  }
 }

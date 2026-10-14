@@ -180,10 +180,12 @@ checked separately. [Per-unit report, hashes and omitted publications](reports/f
 - **No altered golds:** historical mathematical expectations remain intact. New
   outcome-kind and diagnostic tests follow the native contracts. The new wrapper's
   dependency cycle was removed by separating construction from readiness queries.
-- **Reference check:** published native CLI execution is the consumer check.
-  A separate source reference comparison required a larger replay budget and still
-  encountered a budget refusal. Its successes and refusals are reported separately;
-  this delivery does not claim full differential or subject acceptance.
+- **Independent reference check:** all **35 declared limit-solver scenarios and
+  97 published reader questions** have identical full canonical documents in native
+  and reference execution, including statuses, proof graphs and hashes. The former
+  memory refusal is closed with lossless transcript storage at the unchanged
+  **64 MiB default**. This is addressed calculus comparison, not whole-corpus
+  acceptance or completeness of the textbook.
 
 ## Sources and licensing
 
@@ -202,7 +204,7 @@ These terms also apply to quotations embedded in IR, requests and proof outputs.
 
 ## Reproduce the delivery
 
-Download the [versioned GitHub Release](https://github.com/arxohq/arxo-openstax-calculus/releases/tag/v0.1.0)
+Download the [versioned GitHub Release](https://github.com/arxohq/arxo-openstax-calculus/releases/tag/v0.1.1)
 for the exact archive, SHA-256 and inventory. There is no npm model package.
 
 ```sh

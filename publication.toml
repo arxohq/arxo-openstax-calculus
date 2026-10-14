@@ -1,7 +1,7 @@
 format = "law.canon-publication/1"
-version = "0.1.0"
+version = "0.1.1"
 repository = "https://github.com/arxohq/arxo-openstax-calculus"
-releasedAt = "2026-10-14T18:15:40.070188Z"
+releasedAt = "2026-10-14T19:23:12.491496Z"
 packages = ["calc.expressions@0.1.0", "calc.limit_solver@0.1.0", "calc.polynomials_q@0.1.0", "calc.calculus_checker@0.1.0", "openstax.calculus_limits@0.1.1", "openstax.calculus_derivatives@0.1.1", "openstax.calculus_integrals@0.1.1"]
 files = [
   ".github/workflows/verify.yml",
@@ -725,6 +725,7 @@ files = [
   "reports/prior-native-runs/initial-limit-solver-tests.json",
   "reports/prior-native-runs/initial-limits-all-tests.json",
   "reports/prior-native-runs/integral-all-tests.json",
+  "reports/prior-reference-runs/v0.1.0-addressed-differential.json",
   "reports/publisher-byte-check.json",
   "reports/repairs.json",
   "reports/targeted-package-checks.json",
@@ -743,4 +744,4 @@ files = [
   "tools/measure_depth.py",
   "tools/solve.py"
 ]
-requiredFiles = ["README.md", "LICENSE", "NOTICE", "source-pin.json", "toolchain.lock.json", "models.json", "reports/formalization-depth.json", "reports/verification.json", "examples/index.json", "assets/cover.svg", "assets/flow.svg", "assets/boundaries.svg", "assets/unfold-integral.svg"]
+requiredFiles = ["README.md", "LICENSE", "NOTICE", "source-pin.json", "toolchain.lock.json", "models.json", "reports/formalization-depth.json", "reports/verification.json", "reports/addressed-differential.json", "reports/prior-reference-runs/v0.1.0-addressed-differential.json", "examples/index.json", "assets/cover.svg", "assets/flow.svg", "assets/boundaries.svg", "assets/unfold-integral.svg"]

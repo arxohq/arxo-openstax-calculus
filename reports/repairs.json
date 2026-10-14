@@ -23,14 +23,17 @@
       "fix": "Nonfinite kind uses declared plus_inf/dne, not guessed none. Explicit resource exhaustion diagnostic is SLOTS_EXCEED_CAP. Original historical expected mathematical answers were not changed."
     }
   ],
-  "open": [
+  "corpus": "not_checked",
+  "releaseVerified": false,
+  "open": [],
+  "closed": [
     {
       "scope": "source reference oracle",
-      "status": "budget_refusal",
+      "status": "closed",
       "record": "reports/addressed-differential.json",
-      "consumerImpact": "Published native CLI admits and executes all original 35 automatic-limit scenarios; no complete differential acceptance claimed."
+      "consumerImpact": "Published native CLI admits and executes all original 35 automatic-limit scenarios; no complete differential acceptance claimed.",
+      "repair": "Lossless framed transcript storage and bootstrap graph release; default 64 MiB unchanged; 132 full canonical documents match",
+      "oracleRepairCommit": "eabcaf13ca7b492aca1be85dbc3c3b1cad5ee627"
     }
-  ],
-  "corpus": "not_checked",
-  "releaseVerified": false
+  ]
 }

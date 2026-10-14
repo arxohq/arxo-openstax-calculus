@@ -1,177 +1,3404 @@
 {
   "format": "arxo.calculus-addressed-differential/1",
-  "oracleSnapshotTree": "022806c3e54f3e1216fa7d3da9bdbe0436970b07",
-  "oracleSourceState": "a5db043855f11aa4c0ad9d13475b6efa888fd0ae6be4f829bfab5728a22fcb7e",
-  "oracleHostBudgetBytes": 536870912,
-  "defaultOracle64MiBProbe": "IdentityReplayExhausted on rational-double-root. Larger diagnostic host budget changes no mathematical or canonical output code; not published oracle acceptance.",
-  "nativeCli": "0.2.5",
+  "checkedAt": "2026-10-14T19:23:12.055843+00:00",
+  "status": "passed",
+  "nativeCli": "@arxo/cli@0.2.5",
+  "nativeBinaryHash": "sha256:37e080cecef694a7e6ed71597d67e2d876622954927b47f402dc79509d1ccd20",
+  "semantics": "law.core/0.2.11",
+  "platform": "darwin-arm64",
+  "oracleBaselineTree": "022806c3e54f3e1216fa7d3da9bdbe0436970b07",
+  "oracleBaselineSourceState": "a5db043855f11aa4c0ad9d13475b6efa888fd0ae6be4f829bfab5728a22fcb7e",
+  "oracleSourceState": "sha256:a370bc99b5c538ae6be548a6400f246ca675a878aecca02e85153116d1df2360",
+  "oracleRepairCommit": "eabcaf13ca7b492aca1be85dbc3c3b1cad5ee627",
+  "implementationHashes": {
+    "engines/lawref/lawref/values/identity.py": "sha256:0b7211e8fac1800ee186b42788ce54075938b7513f24c86d5ce754db081c137a",
+    "engines/lawref/lawref/evaluator/core/replay.py": "sha256:70e3afa59b176e181439c55406e721155e268b37ac8c0a9576ba230ae1ef7f86",
+    "engines/lawref/tests/evaluator/test_identity_observation_journal.py": "sha256:79fe8001a0431f1b65f39f829f98320bf7b56788de779abb42c09b4ddb9fa43f"
+  },
+  "oracleHostBudgetBytes": 67108864,
+  "oracleBudgetMode": "standard unmodified ReplayBudget default; max_passes 64; no memory-limit override",
+  "comparison": "entire canonical documents, not numeric answers only; manifest, proofGraph, issues, statuses, and resultHash included",
+  "scope": [
+    {
+      "name": "all_declared_limit_solver_scenarios",
+      "total": 35,
+      "compared": 35,
+      "equal": 35,
+      "refused": 0
+    },
+    {
+      "name": "all_published_reader_questions",
+      "total": 97,
+      "compared": 97,
+      "equal": 97,
+      "refused": 0
+    }
+  ],
+  "total": 132,
+  "compared": 132,
+  "equal": 132,
+  "refused": 0,
+  "referenceHostRefusals": 0,
+  "modelBoundaries": "Unsupported forms, missing/ambiguous inputs and resource-boundary diagnostic documents remain explicit and match native; they are not reference-host refusals.",
+  "different": 0,
+  "refusals": [],
+  "remainingReferenceCases": [],
+  "formerRefusal": {
+    "index": 23,
+    "case": "round budget within boundary",
+    "status": "closed",
+    "nativeHash": "sha256:75837b95ddfff081e8606f755adcfa5e5c7d31c1bfdfeb4a69c63f6df683e497",
+    "oracleHash": "sha256:75837b95ddfff081e8606f755adcfa5e5c7d31c1bfdfeb4a69c63f6df683e497",
+    "originalDiagnosis": "uncompressed repeated identity-read snapshots exceeded 512 MiB diagnostic replay-state budget; default 64 MiB also refused",
+    "repair": "lossless length-framed zlib read transcript; exact byte snapshot equality, preserved order and multiplicity; bootstrap graph released; no digest-only comparison or replay shortcut",
+    "profile": {
+      "caseIndex": 23,
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:75837b95ddfff081e8606f755adcfa5e5c7d31c1bfdfeb4a69c63f6df683e497",
+      "oracleHash": "sha256:75837b95ddfff081e8606f755adcfa5e5c7d31c1bfdfeb4a69c63f6df683e497",
+      "defaultBudgetBytes": 67108864,
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 1617312,
+          "observationRawBytes": 962874499,
+          "observationRetainedBytes": 26572052,
+          "retainedStateBytes": 34534507
+        }
+      ],
+      "seconds": 855.32,
+      "peakRssBytes": 329482240
+    },
+    "historicalReport": "reports/prior-reference-runs/v0.1.0-addressed-differential.json"
+  },
+  "checks": {
+    "protocolRegressions": {
+      "distinctTests": 87,
+      "status": "passed",
+      "modules": [
+        "test_identity_observation_journal",
+        "test_identity_replay",
+        "test_identity_context",
+        "test_identity_request_scope",
+        "test_public_identity_replay",
+        "test_identity_consumers",
+        "test_application_read_identity"
+      ]
+    },
+    "codecTranscripts": {
+      "total": 200,
+      "status": "passed",
+      "randomSeed": 20261014,
+      "properties": "exact mixed/binary round trip; deterministic immutable snapshots; order and multiplicity"
+    },
+    "unchangedRuntimeSource": "all frozen runtime source files outside the two host-storage repairs are byte-identical",
+    "modelsAndQueries": "unchanged published model worlds and reader queries; no changed mathematical expectations"
+  },
+  "measurementNotes": "Raw framed transcript bytes and retained compressed-state bytes are distinct from process RSS and the native MemoryBudget. This closes this calculus comparison, not global OA-P0-034, whole-corpus acceptance or book/theorem completeness. Source oracle is not a newly published SDK/runtime.",
   "rows": [
     {
-      "case": "\u0441\u043e\u043a\u0440\u0430\u0449\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u0430\u043d\u0438\u043c\u043e\u0439 \u043e\u0441\u043e\u0431\u0435\u043d\u043d\u043e\u0441\u0442\u0438",
+      "id": "limit-01",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "сокращение устранимой особенности",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:1b97e5ac195c70c5ae1dba46c30e02987ffda609101bb6f137feb408a5d4682b",
+      "status": "passed",
       "equalCanonicalDocument": true,
       "nativeHash": "sha256:4be44081911e6dbc9ec62b79929356ad59c744e5a06b30533f7a14b190f2f17f",
       "oracleHash": "sha256:4be44081911e6dbc9ec62b79929356ad59c744e5a06b30533f7a14b190f2f17f",
-      "seconds": 66.279
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 193689,
+          "observationRawBytes": 101292993,
+          "observationRetainedBytes": 2849951,
+          "retainedStateBytes": 4336526
+        }
+      ],
+      "seconds": 82.172,
+      "peakRssBytes": 122044416
     },
     {
-      "case": "\u043a\u0440\u0430\u0442\u043d\u044b\u0439 \u043d\u043e\u043b\u044c \u0447\u0438\u0441\u043b\u0438\u0442\u0435\u043b\u044f",
+      "id": "limit-02",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "кратный ноль числителя",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:09f8e8b73a4b400a0dfa9ce9529974989b1a6ad119332fec6c338083470c9cd4",
+      "status": "passed",
       "equalCanonicalDocument": true,
       "nativeHash": "sha256:d2ec1053f757038226525845589f0a0710536d31f3f97d67ffec62f366a2494c",
       "oracleHash": "sha256:d2ec1053f757038226525845589f0a0710536d31f3f97d67ffec62f366a2494c",
-      "seconds": 41.621
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 182620,
+          "observationRawBytes": 97316746,
+          "observationRetainedBytes": 2704642,
+          "retainedStateBytes": 4150146
+        }
+      ],
+      "seconds": 54.704,
+      "peakRssBytes": 135790592
     },
     {
-      "case": "\u043e\u0442\u043d\u043e\u0448\u0435\u043d\u0438\u0435 \u043c\u043d\u043e\u0433\u043e\u0447\u043b\u0435\u043d\u043e\u0432 \u043d\u0430 \u043f\u043b\u044e\u0441 \u0431\u0435\u0441\u043a\u043e\u043d\u0435\u0447\u043d\u043e\u0441\u0442\u0438",
+      "id": "limit-03",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "отношение многочленов на плюс бесконечности",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:bddce6659c5a5d6385225e78d5ef8afe806d7740d7436278aea542e44a7d1092",
+      "status": "passed",
       "equalCanonicalDocument": true,
       "nativeHash": "sha256:32a081fbeef4cbefd3d06f875e74527339f331710e56a6a3a258c834a9964abc",
       "oracleHash": "sha256:32a081fbeef4cbefd3d06f875e74527339f331710e56a6a3a258c834a9964abc",
-      "seconds": 155.592
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 871790,
+          "observationRawBytes": 436039014,
+          "observationRetainedBytes": 12533203,
+          "retainedStateBytes": 16275810
+        }
+      ],
+      "seconds": 178.698,
+      "peakRssBytes": 229097472
     },
     {
-      "case": "\u043e\u0442\u043d\u043e\u0448\u0435\u043d\u0438\u0435 \u043c\u043d\u043e\u0433\u043e\u0447\u043b\u0435\u043d\u043e\u0432 \u043d\u0430 \u043c\u0438\u043d\u0443\u0441 \u0431\u0435\u0441\u043a\u043e\u043d\u0435\u0447\u043d\u043e\u0441\u0442\u0438",
+      "id": "limit-04",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "отношение многочленов на минус бесконечности",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:9a09fa9817ddf3ca66ca94c95152bcfe7b98aa65898e3073247401268b4d708c",
+      "status": "passed",
       "equalCanonicalDocument": true,
       "nativeHash": "sha256:5749f42fc9bbc0c6f9bfdf8296ae91de4f1c319f86cc75195ca7706015628b8f",
       "oracleHash": "sha256:5749f42fc9bbc0c6f9bfdf8296ae91de4f1c319f86cc75195ca7706015628b8f",
-      "seconds": 176.76
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 871919,
+          "observationRawBytes": 436121155,
+          "observationRetainedBytes": 12550159,
+          "retainedStateBytes": 16293121
+        }
+      ],
+      "seconds": 181.349,
+      "peakRssBytes": 231997440
     },
     {
-      "case": "\u043e\u0434\u043d\u043e\u0441\u0442\u043e\u0440\u043e\u043d\u043d\u044f\u044f \u0431\u0435\u0441\u043a\u043e\u043d\u0435\u0447\u043d\u043e\u0441\u0442\u044c \u0441\u043f\u0440\u0430\u0432\u0430",
+      "id": "limit-05",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "односторонняя бесконечность справа",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:992a3fd08b597284285632d54091a771095f56637c335f3514ee9881a07bd376",
+      "status": "passed",
       "equalCanonicalDocument": true,
       "nativeHash": "sha256:1cfa2c75597aebab8f84ada61fa2b31fcc30785acf10c7832e0c2ec470546e3f",
       "oracleHash": "sha256:1cfa2c75597aebab8f84ada61fa2b31fcc30785acf10c7832e0c2ec470546e3f",
-      "seconds": 14.593
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 56709,
+          "observationRawBytes": 27505027,
+          "observationRetainedBytes": 738656,
+          "retainedStateBytes": 1302520
+        }
+      ],
+      "seconds": 16.33,
+      "peakRssBytes": 114556928
     },
     {
-      "case": "\u043e\u0434\u043d\u043e\u0441\u0442\u043e\u0440\u043e\u043d\u043d\u044f\u044f \u0431\u0435\u0441\u043a\u043e\u043d\u0435\u0447\u043d\u043e\u0441\u0442\u044c \u0441\u043b\u0435\u0432\u0430",
+      "id": "limit-06",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "односторонняя бесконечность слева",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:50764b8b021ab62bfb4224b8d95229b5a088e8b9bde70d7b2e37589be0ec2abb",
+      "status": "passed",
       "equalCanonicalDocument": true,
       "nativeHash": "sha256:d9bb36c6b13f564dc348a2dde58844640ef9ff8dcc5cd5f49b8b01a40c66c3b2",
       "oracleHash": "sha256:d9bb36c6b13f564dc348a2dde58844640ef9ff8dcc5cd5f49b8b01a40c66c3b2",
-      "seconds": 15.282
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 56706,
+          "observationRawBytes": 27496863,
+          "observationRetainedBytes": 740074,
+          "retainedStateBytes": 1303868
+        }
+      ],
+      "seconds": 14.333,
+      "peakRssBytes": 105152512
     },
     {
-      "case": "\u0434\u043e\u043a\u0430\u0437\u0430\u043d\u043d\u043e\u0435 \u043d\u0435\u0441\u0443\u0449\u0435\u0441\u0442\u0432\u043e\u0432\u0430\u043d\u0438\u0435 \u0434\u0432\u0443\u0441\u0442\u043e\u0440\u043e\u043d\u043d\u0435\u0433\u043e \u043f\u0440\u0435\u0434\u0435\u043b\u0430",
+      "id": "limit-07",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "доказанное несуществование двустороннего предела",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:0122c557b32ea5c27184dc9ad47f940d9caf5c83737387b38b6074fa33044996",
+      "status": "passed",
       "equalCanonicalDocument": true,
       "nativeHash": "sha256:80cf57a98e05a651a9a13eff176bb588f90418cc368f374a2c3965843b814890",
       "oracleHash": "sha256:80cf57a98e05a651a9a13eff176bb588f90418cc368f374a2c3965843b814890",
-      "seconds": 18.286
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 57895,
+          "observationRawBytes": 29580694,
+          "observationRetainedBytes": 795293,
+          "retainedStateBytes": 1417448
+        }
+      ],
+      "seconds": 15.294,
+      "peakRssBytes": 131923968
     },
     {
-      "case": "\u043f\u0435\u0440\u0432\u044b\u0439 \u0437\u0430\u043c\u0435\u0447\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u043f\u0440\u0435\u0434\u0435\u043b",
+      "id": "limit-08",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "первый замечательный предел",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:82a3990ae9e18a399345c2da3623ee117f52516b7e77177853ffdf6aa3997a71",
+      "status": "passed",
       "equalCanonicalDocument": true,
       "nativeHash": "sha256:3fa18cfb5c238feb787ff66ceb5d2eb60fd5ab041f9f7e6f575eac583684eb68",
       "oracleHash": "sha256:3fa18cfb5c238feb787ff66ceb5d2eb60fd5ab041f9f7e6f575eac583684eb68",
-      "seconds": 23.293
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 78747,
+          "observationRawBytes": 39785209,
+          "observationRetainedBytes": 1074614,
+          "retainedStateBytes": 1825235
+        }
+      ],
+      "seconds": 20.25,
+      "peakRssBytes": 122470400
     },
     {
-      "case": "\u0432\u0442\u043e\u0440\u043e\u0439 \u0437\u0430\u043c\u0435\u0447\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u043f\u0440\u0435\u0434\u0435\u043b",
+      "id": "limit-09",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "второй замечательный предел",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:f3c399c248d6d3c85f0d423256e5420dd7bba98c94dbec3bd19b1371cc1638a5",
+      "status": "passed",
       "equalCanonicalDocument": true,
       "nativeHash": "sha256:17b6c6f6a950ea1d0457afb6a19cab6bb5f1b02aa77276f919e718fec14d5862",
       "oracleHash": "sha256:17b6c6f6a950ea1d0457afb6a19cab6bb5f1b02aa77276f919e718fec14d5862",
-      "seconds": 103.968
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 421511,
+          "observationRawBytes": 228021998,
+          "observationRetainedBytes": 6658283,
+          "retainedStateBytes": 9125500
+        }
+      ],
+      "seconds": 106.143,
+      "peakRssBytes": 165167104
     },
     {
-      "case": "\u043f\u0440\u0430\u0432\u0438\u043b\u043e \u041b\u043e\u043f\u0438\u0442\u0430\u043b\u044f \u043d\u0430\u0434 \u043f\u043e\u043a\u0430\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u043e\u0439",
+      "id": "limit-10",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "правило Лопиталя над показательной",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:80ba89aff87c6810aefc08afe9a16b948916783da7e9bbd22be1863be8ae7f98",
+      "status": "passed",
       "equalCanonicalDocument": true,
       "nativeHash": "sha256:4063078934f40f00e752fbed3d421947ad167b8843b4504da2759c8ebb98232e",
       "oracleHash": "sha256:4063078934f40f00e752fbed3d421947ad167b8843b4504da2759c8ebb98232e",
-      "seconds": 45.51
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 121213,
+          "observationRawBytes": 61505536,
+          "observationRetainedBytes": 1643519,
+          "retainedStateBytes": 2654004
+        }
+      ],
+      "seconds": 28.079,
+      "peakRssBytes": 131694592
     },
     {
-      "case": "\u043f\u0440\u0430\u0432\u0438\u043b\u043e \u041b\u043e\u043f\u0438\u0442\u0430\u043b\u044f \u043d\u0430\u0434 \u043b\u043e\u0433\u0430\u0440\u0438\u0444\u043c\u043e\u043c \u0441\u043b\u043e\u0436\u043d\u043e\u0433\u043e \u0430\u0440\u0433\u0443\u043c\u0435\u043d\u0442\u0430",
+      "id": "limit-11",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "правило Лопиталя над логарифмом сложного аргумента",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:d1ab696744d887f306e1d6c435a310c85154163495ad0bdf0eb7f61db0d88159",
+      "status": "passed",
       "equalCanonicalDocument": true,
       "nativeHash": "sha256:bae0be3defaf8f539d9493a56dbd85e430b56140dd43cfeaf3048c8fea74086c",
       "oracleHash": "sha256:bae0be3defaf8f539d9493a56dbd85e430b56140dd43cfeaf3048c8fea74086c",
-      "seconds": 42.69
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 124223,
+          "observationRawBytes": 65524404,
+          "observationRetainedBytes": 1759297,
+          "retainedStateBytes": 2833984
+        }
+      ],
+      "seconds": 48.513,
+      "peakRssBytes": 126042112
     },
     {
-      "case": "\u0434\u0432\u0443\u043a\u0440\u0430\u0442\u043d\u043e\u0435 \u043f\u0440\u0438\u043c\u0435\u043d\u0435\u043d\u0438\u0435 \u043f\u0440\u0430\u0432\u0438\u043b\u0430 \u041b\u043e\u043f\u0438\u0442\u0430\u043b\u044f",
+      "id": "limit-12",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "двукратное применение правила Лопиталя",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:9a851fe172a0151a125ddb8068fad4b869bd1afbca7ae44e38417b527d22bee2",
+      "status": "passed",
       "equalCanonicalDocument": true,
       "nativeHash": "sha256:32fbe99b2641241243824ff8d85650a848ee48604302faa291babe092d7a68dc",
       "oracleHash": "sha256:32fbe99b2641241243824ff8d85650a848ee48604302faa291babe092d7a68dc",
-      "seconds": 140.243
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 478548,
+          "observationRawBytes": 263233404,
+          "observationRetainedBytes": 7580533,
+          "retainedStateBytes": 10252958
+        }
+      ],
+      "seconds": 95.828,
+      "peakRssBytes": 174964736
     },
     {
-      "case": "\u043d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c \u221e/\u221e",
+      "id": "limit-13",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "неопределённость ∞/∞",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:1cc8d832c27bbf0f44cecd83830acff2138a9cd177d6a7f3e43fc7be9e00d110",
+      "status": "passed",
       "equalCanonicalDocument": true,
       "nativeHash": "sha256:7505ce525bc2f230e358425e6b0be5f56b57a621d781c4a0c4c9b05641d1058d",
       "oracleHash": "sha256:7505ce525bc2f230e358425e6b0be5f56b57a621d781c4a0c4c9b05641d1058d",
-      "seconds": 19.494
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 86732,
+          "observationRawBytes": 40116008,
+          "observationRetainedBytes": 1091323,
+          "retainedStateBytes": 1807578
+        }
+      ],
+      "seconds": 17.098,
+      "peakRssBytes": 126074880
     },
     {
-      "case": "\u043a\u043e\u0440\u0435\u043d\u044c: \u0443\u0441\u0442\u0440\u0430\u043d\u0438\u043c\u0430\u044f \u043e\u0441\u043e\u0431\u0435\u043d\u043d\u043e\u0441\u0442\u044c",
+      "id": "limit-14",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "корень: устранимая особенность",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:31ba8648066f3eb661f6ac1283bbe0e20c825225a519c4b2a1f21bc50730107d",
+      "status": "passed",
       "equalCanonicalDocument": true,
       "nativeHash": "sha256:f8b705de9bffd2489eb0fd7e59555e26499f7c76d88717de248751544bcc7070",
       "oracleHash": "sha256:f8b705de9bffd2489eb0fd7e59555e26499f7c76d88717de248751544bcc7070",
-      "seconds": 30.758
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 170603,
+          "observationRawBytes": 89712640,
+          "observationRetainedBytes": 2462864,
+          "retainedStateBytes": 3996890
+        }
+      ],
+      "seconds": 32.79,
+      "peakRssBytes": 144064512
     },
     {
-      "case": "\u043e\u0441\u0446\u0438\u043b\u043b\u044f\u0446\u0438\u044f: \u0447\u0435\u0441\u0442\u043d\u044b\u0439 \u043e\u0442\u043a\u0430\u0437",
+      "id": "limit-15",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "осцилляция: честный отказ",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:32be2b42e7e53b98f79cd685ab9251ed632c2694b25b2101b444c9745da04c6e",
+      "status": "passed",
       "equalCanonicalDocument": true,
       "nativeHash": "sha256:300ae4cbd9d77120badb430fd31fe712a0fdc5bd195aad4b7546965865eecf33",
       "oracleHash": "sha256:300ae4cbd9d77120badb430fd31fe712a0fdc5bd195aad4b7546965865eecf33",
-      "seconds": 9.225
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 48282,
+          "observationRawBytes": 23888150,
+          "observationRetainedBytes": 647250,
+          "retainedStateBytes": 1227537
+        }
+      ],
+      "seconds": 11.477,
+      "peakRssBytes": 129433600
     },
     {
-      "case": "\u043e\u0442\u0440\u0438\u0446\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u0430\u0440\u0433\u0443\u043c\u0435\u043d\u0442 \u043a\u043e\u0440\u043d\u044f",
+      "id": "limit-16",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "отрицательный аргумент корня",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:6da490adc1400b54ecc81b4ff1586198b379c1dcbd47619a3e8fa35395932b59",
+      "status": "passed",
       "equalCanonicalDocument": true,
       "nativeHash": "sha256:2c5a35828e269c242eb5d245facfacdf14a30efc262f74312288027c76a473e7",
       "oracleHash": "sha256:2c5a35828e269c242eb5d245facfacdf14a30efc262f74312288027c76a473e7",
-      "seconds": 9.12
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 48390,
+          "observationRawBytes": 24146816,
+          "observationRetainedBytes": 649971,
+          "retainedStateBytes": 1231088
+        }
+      ],
+      "seconds": 13.534,
+      "peakRssBytes": 129515520
     },
     {
-      "case": "\u043b\u043e\u0433\u0430\u0440\u0438\u0444\u043c \u0443 \u043d\u0443\u043b\u044f \u0441\u043f\u0440\u0430\u0432\u0430",
+      "id": "limit-17",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "логарифм у нуля справа",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:ea63dfc634266fb303f7166c975acac8ebb2eafcf46b762087882890d09a6149",
+      "status": "passed",
       "equalCanonicalDocument": true,
       "nativeHash": "sha256:b4f75dcc4fb9c2da4df88c2b0115afa4fecc43862aab59d158565185959296f3",
       "oracleHash": "sha256:b4f75dcc4fb9c2da4df88c2b0115afa4fecc43862aab59d158565185959296f3",
-      "seconds": 8.832
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 35629,
+          "observationRawBytes": 18195547,
+          "observationRetainedBytes": 487507,
+          "retainedStateBytes": 951760
+        }
+      ],
+      "seconds": 12.355,
+      "peakRssBytes": 130826240
     },
     {
-      "case": "\u043d\u0435\u0434\u043e\u043f\u0443\u0441\u0442\u0438\u043c\u044b\u0439 \u043b\u043e\u0433\u0430\u0440\u0438\u0444\u043c \u0441\u043b\u0435\u0432\u0430",
+      "id": "limit-18",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "недопустимый логарифм слева",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:f52b8c4592cf98616d4e14af2321f2551947cfe2e8b6958cad5f7e267dfcf9c2",
+      "status": "passed",
       "equalCanonicalDocument": true,
       "nativeHash": "sha256:0ef8c1a5beea812a87d7152ac0e4374c8114542a77915a44a8b2d34e656d33b9",
       "oracleHash": "sha256:0ef8c1a5beea812a87d7152ac0e4374c8114542a77915a44a8b2d34e656d33b9",
-      "seconds": 7.067
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 31805,
+          "observationRawBytes": 17171773,
+          "observationRetainedBytes": 461136,
+          "retainedStateBytes": 932707
+        }
+      ],
+      "seconds": 12.771,
+      "peakRssBytes": 124649472
     },
     {
-      "case": "\u041b\u043e\u043f\u0438\u0442\u0430\u043b\u044c \u0431\u0435\u0437 \u043d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u0438 \u043d\u0435 \u043f\u0440\u0438\u043c\u0435\u043d\u044f\u0435\u0442\u0441\u044f",
+      "id": "limit-19",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "Лопиталь без неопределённости не применяется",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:eefdd47f42210d107be5cfc34b52338bf6aee987d94dc5c38e83a72f218ce670",
+      "status": "passed",
       "equalCanonicalDocument": true,
       "nativeHash": "sha256:d02d2e598b0cdc2d12f524b06e45da3c99a572173c7ffb4ba687a857220d9b71",
       "oracleHash": "sha256:d02d2e598b0cdc2d12f524b06e45da3c99a572173c7ffb4ba687a857220d9b71",
-      "seconds": 14.181
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 55432,
+          "observationRawBytes": 28006982,
+          "observationRetainedBytes": 745887,
+          "retainedStateBytes": 1376988
+        }
+      ],
+      "seconds": 16.641,
+      "peakRssBytes": 125059072
     },
     {
-      "case": "\u043f\u0440\u0430\u0432\u0438\u043b\u043e \u041b\u043e\u043f\u0438\u0442\u0430\u043b\u044f \u043a \u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u043c\u0443 \u0447\u0430\u0441\u0442\u043d\u043e\u043c\u0443 \u043d\u0435 \u043f\u0440\u0438\u043c\u0435\u043d\u044f\u043b\u043e\u0441\u044c",
+      "id": "limit-20",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "правило Лопиталя к определённому частному не применялось",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:e2269c462a75ba16a7311393d31b0666b7810a0bca5aa655762640b483e68adf",
+      "status": "passed",
       "equalCanonicalDocument": true,
       "nativeHash": "sha256:7b8308307e96eefc68892605edbd8e2b86520a150ffff56089ca5ffb830ce31f",
       "oracleHash": "sha256:7b8308307e96eefc68892605edbd8e2b86520a150ffff56089ca5ffb830ce31f",
-      "seconds": 30.803
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 236731,
+          "observationRawBytes": 69731451,
+          "observationRetainedBytes": 2137188,
+          "retainedStateBytes": 2768581
+        }
+      ],
+      "seconds": 46.697,
+      "peakRssBytes": 114851840
     },
     {
-      "case": "\u0442\u0440\u0438 \u043f\u0440\u0438\u043c\u0435\u043d\u0435\u043d\u0438\u044f \u043f\u0440\u0430\u0432\u0438\u043b\u0430 \u041b\u043e\u043f\u0438\u0442\u0430\u043b\u044f",
+      "id": "limit-21",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "три применения правила Лопиталя",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:6f7762151aa5422f8b2dd394f5b9c98238f9f6ddfb227fe8652470b31c29eb09",
+      "status": "passed",
       "equalCanonicalDocument": true,
       "nativeHash": "sha256:e65f13e0bc4250a573af660b747fd86f910365c5c1170a400b3d7bbae1ce3277",
       "oracleHash": "sha256:e65f13e0bc4250a573af660b747fd86f910365c5c1170a400b3d7bbae1ce3277",
-      "seconds": 304.62
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 853560,
+          "observationRawBytes": 486970908,
+          "observationRetainedBytes": 14026577,
+          "retainedStateBytes": 18238138
+        }
+      ],
+      "seconds": 175.261,
+      "peakRssBytes": 240500736
     },
     {
-      "case": "\u0438\u0434\u0435\u043d\u0442\u0438\u0444\u0438\u043a\u0430\u0442\u043e\u0440 \u0432\u0445\u043e\u0434\u043d\u043e\u0433\u043e \u0443\u0437\u043b\u0430 \u0432\u043d\u0435 \u0434\u043e\u043f\u0443\u0441\u0442\u0438\u043c\u043e\u0433\u043e \u0434\u0438\u0430\u043f\u0430\u0437\u043e\u043d\u0430",
+      "id": "limit-22",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "идентификатор входного узла вне допустимого диапазона",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:7e2199c541b4a2ddc006c4f20720bd8c6de29960a87c27cdb5737fb365e353d6",
+      "status": "passed",
       "equalCanonicalDocument": true,
       "nativeHash": "sha256:2970b2e272828882f6665765b71fc5fdb3587f2b676861db3949b40baf940e97",
       "oracleHash": "sha256:2970b2e272828882f6665765b71fc5fdb3587f2b676861db3949b40baf940e97",
-      "seconds": 2.148
-    }
-  ],
-  "compared": 22,
-  "equal": 22,
-  "refusals": [
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 8035,
+          "observationRawBytes": 1565102,
+          "observationRetainedBytes": 54838,
+          "retainedStateBytes": 96031
+        }
+      ],
+      "seconds": 4.532,
+      "peakRssBytes": 114475008
+    },
     {
-      "index": 23,
-      "status": "reference_refused",
-      "errorType": "IdentityReplayExhausted",
-      "reason": "512 MiB replay-state budget exhausted in initial full targeted comparison; preserved native request. A retry was stopped without acceptance after more than five minutes."
+      "id": "limit-23",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "бюджет раундов: внутри границы",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:1974fe626be5d200823f7a9e8416098d6bfeb431d40699d02817e33cc774fa0b",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:75837b95ddfff081e8606f755adcfa5e5c7d31c1bfdfeb4a69c63f6df683e497",
+      "oracleHash": "sha256:75837b95ddfff081e8606f755adcfa5e5c7d31c1bfdfeb4a69c63f6df683e497",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 1617312,
+          "observationRawBytes": 962874499,
+          "observationRetainedBytes": 26572052,
+          "retainedStateBytes": 34534507
+        }
+      ],
+      "seconds": 855.32,
+      "peakRssBytes": 329482240
+    },
+    {
+      "id": "limit-24",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "бюджет раундов: за границей",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:e3c5a66e879de1620faeba6fd765b23674c831abbc81f6f0a642eee5eaf9df83",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:9a7b1d06596d1fde934feae4415c0226ad008b6d03946d2746c863a94575477c",
+      "oracleHash": "sha256:9a7b1d06596d1fde934feae4415c0226ad008b6d03946d2746c863a94575477c",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 1618404,
+          "observationRawBytes": 953584457,
+          "observationRetainedBytes": 26753921,
+          "retainedStateBytes": 34607137
+        }
+      ],
+      "seconds": 759.756,
+      "peakRssBytes": 368590848
+    },
+    {
+      "id": "limit-25",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "ход: порождённый узел производной числителя",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:b9750c41b66c50d9b4851ffe5e3d54055fdfa64ea623a69ed626a5135ebb5155",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:87541081b85e13e663ed2c4829995f88299eb827273c85eac6cdff547379aa59",
+      "oracleHash": "sha256:87541081b85e13e663ed2c4829995f88299eb827273c85eac6cdff547379aa59",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 121213,
+          "observationRawBytes": 61506122,
+          "observationRetainedBytes": 1643508,
+          "retainedStateBytes": 2654411
+        }
+      ],
+      "seconds": 105.932,
+      "peakRssBytes": 109740032
+    },
+    {
+      "id": "limit-26",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "ход: имя правила курса для строки",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:1bbf78a1c64f263d0a6e7497f9941c559fd38af96c248cadd37646d96acbb696",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:062bd0e6583a26524f6e9342e2595f1c198f09e977d890c019a9230edcd6ccb4",
+      "oracleHash": "sha256:062bd0e6583a26524f6e9342e2595f1c198f09e977d890c019a9230edcd6ccb4",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 121213,
+          "observationRawBytes": 61505531,
+          "observationRetainedBytes": 1643520,
+          "retainedStateBytes": 2653941
+        }
+      ],
+      "seconds": 109.57,
+      "peakRssBytes": 103972864
+    },
+    {
+      "id": "limit-27",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "ход: свидетельство применения правила Лопиталя",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:35cb8618d91fdfbd0a7f13580b3a8e9e884254d30e84551ff3322d28ff6fb282",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:c121ef5a91f7e93c7871dbc0fe32d00bcc5391a65469a3e9e6a39ba1a708b1c2",
+      "oracleHash": "sha256:c121ef5a91f7e93c7871dbc0fe32d00bcc5391a65469a3e9e6a39ba1a708b1c2",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 121213,
+          "observationRawBytes": 61505705,
+          "observationRetainedBytes": 1643516,
+          "retainedStateBytes": 2654395
+        }
+      ],
+      "seconds": 109.596,
+      "peakRssBytes": 105562112
+    },
+    {
+      "id": "limit-28",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "ход: порождённое дерево корректно по мнению владельца формы",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:fcdf52869765077072def5cf953097605d1d5b9def6c24e80eb28b3008571f8e",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:c635ad648e40ea86286b7f48e9c88934cf6c4e6550ec40f8bc33525c6e82ce31",
+      "oracleHash": "sha256:c635ad648e40ea86286b7f48e9c88934cf6c4e6550ec40f8bc33525c6e82ce31",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 121213,
+          "observationRawBytes": 61505080,
+          "observationRetainedBytes": 1643462,
+          "retainedStateBytes": 2654484
+        }
+      ],
+      "seconds": 112.287,
+      "peakRssBytes": 105119744
+    },
+    {
+      "id": "limit-29",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "условие на производную знаменателя не установлено",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:267bcadfcac1d36155d7e0792d5de5fb5e09719c6acecff5f2948976aa16e1dc",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:f51651621f9d4e1d04cace7f70bcae6872bc58be4e5eb0ea65b1250ae7856b32",
+      "oracleHash": "sha256:f51651621f9d4e1d04cace7f70bcae6872bc58be4e5eb0ea65b1250ae7856b32",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 407402,
+          "observationRawBytes": 212214421,
+          "observationRetainedBytes": 5919891,
+          "retainedStateBytes": 8117555
+        }
+      ],
+      "seconds": 281.687,
+      "peakRssBytes": 154173440
+    },
+    {
+      "id": "limit-30",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "сдвинутый полюс первого порядка: двустороннего нет",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:83c72ed9df1feff68f06f4f261dfb74456d0522571b0c5be5b6b36bb312f5fe2",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:b373d537a700ae5ca10ec96af0155e7ac25ef55a529939280b3db0800abf9c6c",
+      "oracleHash": "sha256:b373d537a700ae5ca10ec96af0155e7ac25ef55a529939280b3db0800abf9c6c",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 168502,
+          "observationRawBytes": 89511564,
+          "observationRetainedBytes": 2385993,
+          "retainedStateBytes": 3678644
+        }
+      ],
+      "seconds": 163.883,
+      "peakRssBytes": 113115136
+    },
+    {
+      "id": "limit-31",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "сдвинутый полюс первого порядка справа",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:233f94ae3f58c63611915755af5e797a3c2d8b5daef3528895072e66bc53307f",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:9ad00b29fd0461a37af77fea4dd0dd1bf0c6ebab5b6070cc5417298503abff5c",
+      "oracleHash": "sha256:9ad00b29fd0461a37af77fea4dd0dd1bf0c6ebab5b6070cc5417298503abff5c",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 164006,
+          "observationRawBytes": 79312818,
+          "observationRetainedBytes": 2134646,
+          "retainedStateBytes": 3253499
+        }
+      ],
+      "seconds": 110.434,
+      "peakRssBytes": 109969408
+    },
+    {
+      "id": "limit-32",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "сдвинутый полюс второго порядка справа",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:73c2486e236522b09e6c7d533df44d5cbde0e2bb964e2946d4c837b0365354b1",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:e3fc7955247963281ba805bc59fa9265e3c0cff80f12d15d02cf38673b198cc1",
+      "oracleHash": "sha256:e3fc7955247963281ba805bc59fa9265e3c0cff80f12d15d02cf38673b198cc1",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 1529603,
+          "observationRawBytes": 724547070,
+          "observationRetainedBytes": 19598435,
+          "retainedStateBytes": 24078336
+        }
+      ],
+      "seconds": 470.238,
+      "peakRssBytes": 274104320
+    },
+    {
+      "id": "limit-33",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "старший член многочлена на плюс бесконечности",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:c9a9a19d34beeb232ef664b21d99da779e120b6530a7a0613e7a79ecae21e778",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:22cca5606361544c8d57b517baab938fd7c5f166051329a5b2df20b652403b53",
+      "oracleHash": "sha256:22cca5606361544c8d57b517baab938fd7c5f166051329a5b2df20b652403b53",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 112247,
+          "observationRawBytes": 49728008,
+          "observationRetainedBytes": 1290484,
+          "retainedStateBytes": 2185040
+        }
+      ],
+      "seconds": 82.874,
+      "peakRssBytes": 99991552
+    },
+    {
+      "id": "limit-34",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "сдвинутый полюс первого порядка слева",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:f0e6d32f5033dd158e48cc0ac29e3ff8d11ab5ae6b6e67aaf055890b7b4dac8e",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:910b08a1bc4f3c1a24800e7173b412e6a1f102457720eb79388884014a8d86a3",
+      "oracleHash": "sha256:910b08a1bc4f3c1a24800e7173b412e6a1f102457720eb79388884014a8d86a3",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 164012,
+          "observationRawBytes": 79299853,
+          "observationRetainedBytes": 2131661,
+          "retainedStateBytes": 3250253
+        }
+      ],
+      "seconds": 99.876,
+      "peakRssBytes": 108331008
+    },
+    {
+      "id": "limit-35",
+      "group": "all_declared_limit_solver_scenarios",
+      "case": "полюс третьего порядка: честный отказ",
+      "spec": "calc.limit_solver@0.1.0",
+      "requestSha256": "sha256:525a18097c92a189bee268afc1b6b03720467fb1d28d6813e0c11fb84e7ee0c9",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:095127dd1d02f77de41312a9ec4fcbfab85e68ea5a92dc69f13b312caeb45e94",
+      "oracleHash": "sha256:095127dd1d02f77de41312a9ec4fcbfab85e68ea5a92dc69f13b312caeb45e94",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 4362620,
+          "observationRawBytes": 2021716578,
+          "observationRetainedBytes": 51713498,
+          "retainedStateBytes": 59978796
+        }
+      ],
+      "seconds": 799.043,
+      "peakRssBytes": 490504192
+    },
+    {
+      "id": "reader-limit-cancel-result",
+      "group": "all_published_reader_questions",
+      "case": "limit-cancel",
+      "spec": "openstax.calculus_limits@0.1.1",
+      "requestSha256": "sha256:6cd58721b61e9c8ee26756c91a47e75d446b9780bf29017657bce6c2c171e0ef",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:156139b2ea5789eb36e8610914f8e9a10dbfc080837dcaa3e40dfa2535e10e01",
+      "oracleHash": "sha256:156139b2ea5789eb36e8610914f8e9a10dbfc080837dcaa3e40dfa2535e10e01",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 207326,
+          "observationRawBytes": 107755319,
+          "observationRetainedBytes": 3093310,
+          "retainedStateBytes": 4605590
+        }
+      ],
+      "seconds": 47.632,
+      "peakRssBytes": 200327168
+    },
+    {
+      "id": "reader-limit-exponential-result",
+      "group": "all_published_reader_questions",
+      "case": "limit-exponential",
+      "spec": "openstax.calculus_limits@0.1.1",
+      "requestSha256": "sha256:b58c12b4fd73fc7755318dd164623d89da2e73c0c64abcdc79a6d6f3d41807dc",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:c13da90905f4d0141f3513fedcf8f33d33f669b9a01e07a72cce222795795925",
+      "oracleHash": "sha256:c13da90905f4d0141f3513fedcf8f33d33f669b9a01e07a72cce222795795925",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 131038,
+          "observationRawBytes": 64786680,
+          "observationRetainedBytes": 1772667,
+          "retainedStateBytes": 2800405
+        }
+      ],
+      "seconds": 31.992,
+      "peakRssBytes": 188219392
+    },
+    {
+      "id": "reader-limit-logarithm-result",
+      "group": "all_published_reader_questions",
+      "case": "limit-logarithm",
+      "spec": "openstax.calculus_limits@0.1.1",
+      "requestSha256": "sha256:e2bcf2121bf6656a0097dd076562aaaca7ec128c708367d711881290c93dec31",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:7b33c49b6773a8d94043571f50534765e218a907ea97b410b3b3b4ce65098a03",
+      "oracleHash": "sha256:7b33c49b6773a8d94043571f50534765e218a907ea97b410b3b3b4ce65098a03",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 133759,
+          "observationRawBytes": 68455811,
+          "observationRetainedBytes": 1879524,
+          "retainedStateBytes": 2970633
+        }
+      ],
+      "seconds": 34.855,
+      "peakRssBytes": 171458560
+    },
+    {
+      "id": "reader-limit-sine-result",
+      "group": "all_published_reader_questions",
+      "case": "limit-sine",
+      "spec": "openstax.calculus_limits@0.1.1",
+      "requestSha256": "sha256:400a05e71831ecea89aacdb2529a86a355d7ca164ec911f98f644f01328713e5",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:fb1db944214b9ad3ade4d9b2c98a1ed9f4747cfa388224dfe0f8dc9f12125f79",
+      "oracleHash": "sha256:fb1db944214b9ad3ade4d9b2c98a1ed9f4747cfa388224dfe0f8dc9f12125f79",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 87075,
+          "observationRawBytes": 41632948,
+          "observationRetainedBytes": 1168813,
+          "retainedStateBytes": 1930902
+        }
+      ],
+      "seconds": 24.808,
+      "peakRssBytes": 209190912
+    },
+    {
+      "id": "reader-limit-cosine-result",
+      "group": "all_published_reader_questions",
+      "case": "limit-cosine",
+      "spec": "openstax.calculus_limits@0.1.1",
+      "requestSha256": "sha256:4923503dad94685710571ef4fef1e36cd429a3a45cd9520c97b435f59b685a2d",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:d14401feb1957de319d2e4706c7a02385c20e8570c4577c6ae590fd5f9f2d1c6",
+      "oracleHash": "sha256:d14401feb1957de319d2e4706c7a02385c20e8570c4577c6ae590fd5f9f2d1c6",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 457068,
+          "observationRawBytes": 250137261,
+          "observationRetainedBytes": 7036642,
+          "retainedStateBytes": 9553561
+        }
+      ],
+      "seconds": 96.567,
+      "peakRssBytes": 197885952
+    },
+    {
+      "id": "reader-limit-right-pole-result",
+      "group": "all_published_reader_questions",
+      "case": "limit-right-pole",
+      "spec": "openstax.calculus_limits@0.1.1",
+      "requestSha256": "sha256:d82c4b50cc447d13923c5ab176b65112cd55be7c6e6c5ff6f048853dc0f0892a",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:f9c719cfe86abc762c83f9a2df7a1d23b89540d6fef800a2779311eef9b24cbc",
+      "oracleHash": "sha256:f9c719cfe86abc762c83f9a2df7a1d23b89540d6fef800a2779311eef9b24cbc",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 64765,
+          "observationRawBytes": 29330985,
+          "observationRetainedBytes": 824760,
+          "retainedStateBytes": 1394312
+        }
+      ],
+      "seconds": 21.359,
+      "peakRssBytes": 177766400
+    },
+    {
+      "id": "reader-limit-two-sided-pole-result",
+      "group": "all_published_reader_questions",
+      "case": "limit-two-sided-pole",
+      "spec": "openstax.calculus_limits@0.1.1",
+      "requestSha256": "sha256:18682a51b41cf4dc3a19b75e8180fc9ec842009bc5aae1e3308dca650786173c",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:96b2d20bf550cd98fa280f9f0f1b771f4859acc253da637d702ff74dec951fb5",
+      "oracleHash": "sha256:96b2d20bf550cd98fa280f9f0f1b771f4859acc253da637d702ff74dec951fb5",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 65951,
+          "observationRawBytes": 31368175,
+          "observationRetainedBytes": 880807,
+          "retainedStateBytes": 1507607
+        }
+      ],
+      "seconds": 22.751,
+      "peakRssBytes": 172834816
+    },
+    {
+      "id": "reader-limit-leading-term-result",
+      "group": "all_published_reader_questions",
+      "case": "limit-leading-term",
+      "spec": "openstax.calculus_limits@0.1.1",
+      "requestSha256": "sha256:d3f9a3fa263fc914bf5a7a3bae4ff4b6f2f412b839e0d930ba7c964fc7b75c47",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:9dacf685bce751ffae6cd393b6fe618647bd924261510631a3a3722d4e0db86e",
+      "oracleHash": "sha256:9dacf685bce751ffae6cd393b6fe618647bd924261510631a3a3722d4e0db86e",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 81440,
+          "observationRawBytes": 35171403,
+          "observationRetainedBytes": 944257,
+          "retainedStateBytes": 1636346
+        }
+      ],
+      "seconds": 20.272,
+      "peakRssBytes": 176963584
+    },
+    {
+      "id": "reader-differentiate-polynomial-coefficients",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-polynomial",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:79ccb8c677fa7e48cf2456945a365f692bac0be6bf2be6f65d163ed842a33dda",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:bfbd5e7de23a2866f8375bef2ebc67c5f1cc80a7a4c906f7097f3b7fdceabbba",
+      "oracleHash": "sha256:bfbd5e7de23a2866f8375bef2ebc67c5f1cc80a7a4c906f7097f3b7fdceabbba",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 484541,
+          "observationRawBytes": 177377839,
+          "observationRetainedBytes": 4207881,
+          "retainedStateBytes": 5363958
+        }
+      ],
+      "seconds": 60.174,
+      "peakRssBytes": 175259648
+    },
+    {
+      "id": "reader-differentiate-polynomial-solved",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-polynomial",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:115c820ce21112c49b6ccba02abac38da11a55f0c9a3fdc22a922577bf63fa1b",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:ee7aad63325c43386f075d3f5cf7b47dbdc220681ec21ebc14bbb9b3f76dc8df",
+      "oracleHash": "sha256:ee7aad63325c43386f075d3f5cf7b47dbdc220681ec21ebc14bbb9b3f76dc8df",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 484530,
+          "observationRawBytes": 177373351,
+          "observationRetainedBytes": 4207594,
+          "retainedStateBytes": 5362637
+        }
+      ],
+      "seconds": 58.124,
+      "peakRssBytes": 176177152
+    },
+    {
+      "id": "reader-differentiate-polynomial-zero",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-polynomial",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:a95b23ede8934f96f8ac3f74753e9a8f0859ba78cdf53d720e2e97c324367ca8",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:f13860d15972549a6ee844e0149bd9397911849330c52e2d51c37478458356d4",
+      "oracleHash": "sha256:f13860d15972549a6ee844e0149bd9397911849330c52e2d51c37478458356d4",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 488547,
+          "observationRawBytes": 177996999,
+          "observationRetainedBytes": 4234642,
+          "retainedStateBytes": 5389586
+        }
+      ],
+      "seconds": 59.989,
+      "peakRssBytes": 181256192
+    },
+    {
+      "id": "reader-differentiate-polynomial-problems",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-polynomial",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:6266741133842a3cfbc87e27ae90139d0a3621697aa4f4b2ce68e95af163768d",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:4bcfcd657c2503085e3391f01a4ddb5f53f82d1579a39e52db3ac46ca885cda3",
+      "oracleHash": "sha256:4bcfcd657c2503085e3391f01a4ddb5f53f82d1579a39e52db3ac46ca885cda3",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 484529,
+          "observationRawBytes": 177373003,
+          "observationRetainedBytes": 4207529,
+          "retainedStateBytes": 5362579
+        }
+      ],
+      "seconds": 59.18,
+      "peakRssBytes": 184483840
+    },
+    {
+      "id": "reader-differentiate-rational-coefficients",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-rational",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:bfae8e5e56f17bededece6aaeb3003d88605d6a446a2b0b745361c90d0e8ff65",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:27377cdb998c84cdfedcdf3b148bbf2f956bd8bf869b6388aed88b09044b5416",
+      "oracleHash": "sha256:27377cdb998c84cdfedcdf3b148bbf2f956bd8bf869b6388aed88b09044b5416",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 443098,
+          "observationRawBytes": 164091568,
+          "observationRetainedBytes": 3953661,
+          "retainedStateBytes": 4979006
+        }
+      ],
+      "seconds": 55.379,
+      "peakRssBytes": 179552256
+    },
+    {
+      "id": "reader-differentiate-rational-solved",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-rational",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:e3516cd2e3591dcf1011a60fdb376f072435c8d2ed8d2c8d63940d55b31b33eb",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:e564767ee16226ff8f602e7fe987fbe6b68c3006da07a00d0c875679940e41b2",
+      "oracleHash": "sha256:e564767ee16226ff8f602e7fe987fbe6b68c3006da07a00d0c875679940e41b2",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 443091,
+          "observationRawBytes": 164088690,
+          "observationRetainedBytes": 3953419,
+          "retainedStateBytes": 4978022
+        }
+      ],
+      "seconds": 55.361,
+      "peakRssBytes": 174899200
+    },
+    {
+      "id": "reader-differentiate-rational-zero",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-rational",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:c9f19f375d197e48bbccec152ec0e822730161b8ac136fdd8c99537354cf6ff6",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:7b124616b7969ac4ef2efe4c9b4b97f24e76379298fca418b68ea4c523c48c73",
+      "oracleHash": "sha256:7b124616b7969ac4ef2efe4c9b4b97f24e76379298fca418b68ea4c523c48c73",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 447108,
+          "observationRawBytes": 164712338,
+          "observationRetainedBytes": 3980793,
+          "retainedStateBytes": 5005297
+        }
+      ],
+      "seconds": 57.461,
+      "peakRssBytes": 171278336
+    },
+    {
+      "id": "reader-differentiate-rational-problems",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-rational",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:411c49bca8758eb2ea6d0bcee5132e6054542a90d4af2b9d3b914325709a6b5b",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:9179bfa09eefcddc2d7f4928979ed116249143f26a2e22057d537dd9b6294223",
+      "oracleHash": "sha256:9179bfa09eefcddc2d7f4928979ed116249143f26a2e22057d537dd9b6294223",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 443090,
+          "observationRawBytes": 164088342,
+          "observationRetainedBytes": 3953358,
+          "retainedStateBytes": 4977968
+        }
+      ],
+      "seconds": 57.468,
+      "peakRssBytes": 159580160
+    },
+    {
+      "id": "reader-differentiate-product-coefficients",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-product",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:95d5349e28b33c807631e24dd89a1395971f8e3e27b4dc47ed48d6fcab0436e9",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:d9feb449290639c97c02bbff1797a50021a38d1721ff7d866250d0ddb6de3441",
+      "oracleHash": "sha256:d9feb449290639c97c02bbff1797a50021a38d1721ff7d866250d0ddb6de3441",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 244818,
+          "observationRawBytes": 80550242,
+          "observationRetainedBytes": 1987453,
+          "retainedStateBytes": 2849252
+        }
+      ],
+      "seconds": 31.908,
+      "peakRssBytes": 167854080
+    },
+    {
+      "id": "reader-differentiate-product-solved",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-product",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:16750681ec5fa18a77f59aafc23c875d61903ccacf85e9a2c7f0ac53994ad96a",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:436c9313cd5325231fae652312711abb89729f1b840a7abb61129cb91aa239ab",
+      "oracleHash": "sha256:436c9313cd5325231fae652312711abb89729f1b840a7abb61129cb91aa239ab",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 244811,
+          "observationRawBytes": 80547369,
+          "observationRetainedBytes": 1987235,
+          "retainedStateBytes": 2848293
+        }
+      ],
+      "seconds": 32.466,
+      "peakRssBytes": 176537600
+    },
+    {
+      "id": "reader-differentiate-product-zero",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-product",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:66c59c15dc22246ec39f36a07e6e008077a4cee3777c6cd202640b7049ddada7",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:2595a8cad28c0cadced5ba8be2cf0ee03e5041f8f29e72c63e480832cea0ae39",
+      "oracleHash": "sha256:2595a8cad28c0cadced5ba8be2cf0ee03e5041f8f29e72c63e480832cea0ae39",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 248828,
+          "observationRawBytes": 81171017,
+          "observationRetainedBytes": 2014624,
+          "retainedStateBytes": 2875583
+        }
+      ],
+      "seconds": 30.548,
+      "peakRssBytes": 167067648
+    },
+    {
+      "id": "reader-differentiate-product-problems",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-product",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:19751925ab501d182f1e310929032cfbdebb4d1d8cdc034a0e6b261ec1cb724f",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:65541c9d00305c26b5ae11c918ef7a6abeac4e605826b51909fc9f07793a190b",
+      "oracleHash": "sha256:65541c9d00305c26b5ae11c918ef7a6abeac4e605826b51909fc9f07793a190b",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 244810,
+          "observationRawBytes": 80547021,
+          "observationRetainedBytes": 1987174,
+          "retainedStateBytes": 2848239
+        }
+      ],
+      "seconds": 31.714,
+      "peakRssBytes": 171704320
+    },
+    {
+      "id": "reader-differentiate-unary-minus-coefficients",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-unary-minus",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:a96978fb1c0d15111a8413c0f8f6b6081176e467709265cb1ac586232b27d7a5",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:1ce941be0ff754c5b2facd7111e71c381b95948fc4b28968cc0cc78ab1369b4e",
+      "oracleHash": "sha256:1ce941be0ff754c5b2facd7111e71c381b95948fc4b28968cc0cc78ab1369b4e",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 215836,
+          "observationRawBytes": 75229384,
+          "observationRetainedBytes": 1870521,
+          "retainedStateBytes": 2568688
+        }
+      ],
+      "seconds": 29.888,
+      "peakRssBytes": 172867584
+    },
+    {
+      "id": "reader-differentiate-unary-minus-solved",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-unary-minus",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:34b3a56b8235a63aebd06f4f71c5475a8eba99db3d77164b5bfe4f4a9ecb391c",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:f64edc7652035a8713872cb95842f6d9c003f611767abcd684d197ffae006648",
+      "oracleHash": "sha256:f64edc7652035a8713872cb95842f6d9c003f611767abcd684d197ffae006648",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 215829,
+          "observationRawBytes": 75226506,
+          "observationRetainedBytes": 1870307,
+          "retainedStateBytes": 2567732
+        }
+      ],
+      "seconds": 40.875,
+      "peakRssBytes": 160923648
+    },
+    {
+      "id": "reader-differentiate-unary-minus-zero",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-unary-minus",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:18e8bb121a6af6452932005e8733b241aaa0da4f0cf5c0f509bf162562b0efba",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:b7345acbafec054ad3d541b5e75e23dbdb2e454968a97132802b4fd5e7590dcd",
+      "oracleHash": "sha256:b7345acbafec054ad3d541b5e75e23dbdb2e454968a97132802b4fd5e7590dcd",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 219846,
+          "observationRawBytes": 75850154,
+          "observationRetainedBytes": 1897342,
+          "retainedStateBytes": 2594668
+        }
+      ],
+      "seconds": 41.982,
+      "peakRssBytes": 157876224
+    },
+    {
+      "id": "reader-differentiate-unary-minus-problems",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-unary-minus",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:1859a67cb8d321d85b4ad777b50394c11975e1d14904cc8c86259147da15fced",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:726f31c628d40c4537e26eff540672d3ec4bdd0460eb386af5c68ad228ad032c",
+      "oracleHash": "sha256:726f31c628d40c4537e26eff540672d3ec4bdd0460eb386af5c68ad228ad032c",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 215828,
+          "observationRawBytes": 75226158,
+          "observationRetainedBytes": 1870246,
+          "retainedStateBytes": 2567678
+        }
+      ],
+      "seconds": 42.785,
+      "peakRssBytes": 146243584
+    },
+    {
+      "id": "reader-differentiate-constant-coefficients",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-constant",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:9387a0fab5e5488a147204b3326845acd51027be4defbac6db871644622fbcb8",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:082b8c9a9e56d0b888f240c93bc8ad7ef99b7f0f906ecaf4ba2460864a6e6ca8",
+      "oracleHash": "sha256:082b8c9a9e56d0b888f240c93bc8ad7ef99b7f0f906ecaf4ba2460864a6e6ca8",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 86801,
+          "observationRawBytes": 34308926,
+          "observationRetainedBytes": 866491,
+          "retainedStateBytes": 1343845
+        }
+      ],
+      "seconds": 22.922,
+      "peakRssBytes": 151502848
+    },
+    {
+      "id": "reader-differentiate-constant-solved",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-constant",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:61f90dc03cc5c4cf7ee662a58072e6acf1b035fa89970fd7b992f64c887bb898",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:d1abececd78935e475a25d3bde68db549d65927f1f5a1cbf2a3749a6b4969099",
+      "oracleHash": "sha256:d1abececd78935e475a25d3bde68db549d65927f1f5a1cbf2a3749a6b4969099",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 86802,
+          "observationRawBytes": 34309272,
+          "observationRetainedBytes": 866533,
+          "retainedStateBytes": 1343728
+        }
+      ],
+      "seconds": 24.758,
+      "peakRssBytes": 149569536
+    },
+    {
+      "id": "reader-differentiate-constant-zero",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-constant",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:9f4ea3d73a5955e2ced9410c1eb83741132218626cf4126b80d65257262dae6d",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:71794f965a4468d3d97e0e056285b37e965c922580d243966773a24d4bc7ce30",
+      "oracleHash": "sha256:71794f965a4468d3d97e0e056285b37e965c922580d243966773a24d4bc7ce30",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 86802,
+          "observationRawBytes": 34309289,
+          "observationRetainedBytes": 866540,
+          "retainedStateBytes": 1343735
+        }
+      ],
+      "seconds": 22.966,
+      "peakRssBytes": 145833984
+    },
+    {
+      "id": "reader-differentiate-constant-problems",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-constant",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:47c76835ada831739faf703b1c32f54e649e9ac766dd84d2b7f72aca32f8435f",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:5f3156ff62833ce6caf26ac92b45c8f2c36be21028da2a8f22b8a7482c17e425",
+      "oracleHash": "sha256:5f3156ff62833ce6caf26ac92b45c8f2c36be21028da2a8f22b8a7482c17e425",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 86801,
+          "observationRawBytes": 34308924,
+          "observationRetainedBytes": 866482,
+          "retainedStateBytes": 1343684
+        }
+      ],
+      "seconds": 22.995,
+      "peakRssBytes": 148783104
+    },
+    {
+      "id": "reader-differentiate-zero-coefficients",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-zero",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:2989549006210aec143a47bb42076c3f62ab259cb8c7160a77076398b4506580",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:df9ed53ff70f2291ddb82e30b7d5bbcea4fa3646d67484c5feff9723c0ea0ed7",
+      "oracleHash": "sha256:df9ed53ff70f2291ddb82e30b7d5bbcea4fa3646d67484c5feff9723c0ea0ed7",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 86677,
+          "observationRawBytes": 34264873,
+          "observationRetainedBytes": 865529,
+          "retainedStateBytes": 1339965
+        }
+      ],
+      "seconds": 24.976,
+      "peakRssBytes": 136855552
+    },
+    {
+      "id": "reader-differentiate-zero-solved",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-zero",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:fe8a8dd8c6beb561f937df8b1254b912886f21f07452cd02f934fe83b3e65d2f",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:9086f38beba474350340f66da63d14cc2c48ac0077714dbcbe943e6a409cb8d7",
+      "oracleHash": "sha256:9086f38beba474350340f66da63d14cc2c48ac0077714dbcbe943e6a409cb8d7",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 86678,
+          "observationRawBytes": 34265219,
+          "observationRetainedBytes": 865574,
+          "retainedStateBytes": 1339851
+        }
+      ],
+      "seconds": 26.491,
+      "peakRssBytes": 143704064
+    },
+    {
+      "id": "reader-differentiate-zero-zero",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-zero",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:61825d24d03345c4d13a6c2401512048c870e1a95a4d2639854d805c2af77aae",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:27ac6da0613c336309836c11576c08211233bb27dbadb5d325c23992762857a8",
+      "oracleHash": "sha256:27ac6da0613c336309836c11576c08211233bb27dbadb5d325c23992762857a8",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 86678,
+          "observationRawBytes": 34265236,
+          "observationRetainedBytes": 865579,
+          "retainedStateBytes": 1339856
+        }
+      ],
+      "seconds": 28.988,
+      "peakRssBytes": 140148736
+    },
+    {
+      "id": "reader-differentiate-zero-problems",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-zero",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:988334b358ea1d9b4f02e00e9ce7b1e6fdb5e79f785e3bfa9af339c57bea49db",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:64c08c00df340c28fbe93a4a9c3aeaccde66b2f354ac82f1be64ad371761d0ea",
+      "oracleHash": "sha256:64c08c00df340c28fbe93a4a9c3aeaccde66b2f354ac82f1be64ad371761d0ea",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 86677,
+          "observationRawBytes": 34264871,
+          "observationRetainedBytes": 865519,
+          "retainedStateBytes": 1339803
+        }
+      ],
+      "seconds": 28.154,
+      "peakRssBytes": 137428992
+    },
+    {
+      "id": "reader-differentiate-power-boundary-coefficients",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-power-boundary",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:b89a1848b15bcc161568f8c178ce92aaa4810bee0ba00cd98df2a143576392aa",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:402b895e3643ea49745c6b1c3058acfb3d27ed66b0d86f82b38ebf867035bb72",
+      "oracleHash": "sha256:402b895e3643ea49745c6b1c3058acfb3d27ed66b0d86f82b38ebf867035bb72",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 187599,
+          "observationRawBytes": 69260781,
+          "observationRetainedBytes": 1736224,
+          "retainedStateBytes": 2758331
+        }
+      ],
+      "seconds": 41.78,
+      "peakRssBytes": 150175744
+    },
+    {
+      "id": "reader-differentiate-power-boundary-solved",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-power-boundary",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:1f400be79e9380d09716ad03a9e51a6d059519a98b48b3bb8ea4c349e895e58f",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:6fe0fbb6cdb4a9e1401577c083a82b26c7a309b1bd8a363006e532cae017b7bf",
+      "oracleHash": "sha256:6fe0fbb6cdb4a9e1401577c083a82b26c7a309b1bd8a363006e532cae017b7bf",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 187472,
+          "observationRawBytes": 69209471,
+          "observationRetainedBytes": 1734943,
+          "retainedStateBytes": 2747525
+        }
+      ],
+      "seconds": 43.24,
+      "peakRssBytes": 150454272
+    },
+    {
+      "id": "reader-differentiate-power-boundary-zero",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-power-boundary",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:673bb01554aca5a546a079bb2433ccbdaa14b5d9bd500a8c3f5992b19527739e",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:e9e1738e650dd72cc8056b8a70b2f3a7425ad738edb2fd8f23a35cbd1e180817",
+      "oracleHash": "sha256:e9e1738e650dd72cc8056b8a70b2f3a7425ad738edb2fd8f23a35cbd1e180817",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 191489,
+          "observationRawBytes": 69833119,
+          "observationRetainedBytes": 1762172,
+          "retainedStateBytes": 2774655
+        }
+      ],
+      "seconds": 46.077,
+      "peakRssBytes": 157368320
+    },
+    {
+      "id": "reader-differentiate-power-boundary-problems",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-power-boundary",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:f9d2a0fc64504d36d0b7ebfecc738bf9620dc1d2116d75d45541d759d3b5008b",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:0eb36239bca1eb187babc3ec1365778bab986747ddfc25b79759bcfbf2cf55b1",
+      "oracleHash": "sha256:0eb36239bca1eb187babc3ec1365778bab986747ddfc25b79759bcfbf2cf55b1",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 187471,
+          "observationRawBytes": 69209123,
+          "observationRetainedBytes": 1734883,
+          "retainedStateBytes": 2747472
+        }
+      ],
+      "seconds": 46.049,
+      "peakRssBytes": 154517504
+    },
+    {
+      "id": "reader-differentiate-unsupported-coefficients",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-unsupported",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:4604070121821da568a849a42cec9b3245702017a27e2489335d845bcd51d711",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:66fb4da88b48ab857577383050bc0e3c1d58785007b227ad53cc5d0fcffcf342",
+      "oracleHash": "sha256:66fb4da88b48ab857577383050bc0e3c1d58785007b227ad53cc5d0fcffcf342",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 117119,
+          "observationRawBytes": 40886129,
+          "observationRetainedBytes": 1022699,
+          "retainedStateBytes": 1510273
+        }
+      ],
+      "seconds": 32.633,
+      "peakRssBytes": 156106752
+    },
+    {
+      "id": "reader-differentiate-unsupported-solved",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-unsupported",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:1ddad95b376119377be520a75c883d2522955e33f154c0678c5129e3e755c550",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:a96bdf3ad528a1d7ba27d5ac4f63e558a7ecd99277e97866b885d7443fc7a007",
+      "oracleHash": "sha256:a96bdf3ad528a1d7ba27d5ac4f63e558a7ecd99277e97866b885d7443fc7a007",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 117540,
+          "observationRawBytes": 40972053,
+          "observationRetainedBytes": 1026378,
+          "retainedStateBytes": 1513690
+        }
+      ],
+      "seconds": 27.115,
+      "peakRssBytes": 153665536
+    },
+    {
+      "id": "reader-differentiate-unsupported-zero",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-unsupported",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:648178e1074e5c75a0f6082e4f00bc1e569e0e3d2a8c7c64b934a26e786e81b8",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:6e881d34104226617b3b2ec54932a47766bc829057143b9913e60242a7cebf7c",
+      "oracleHash": "sha256:6e881d34104226617b3b2ec54932a47766bc829057143b9913e60242a7cebf7c",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 121137,
+          "observationRawBytes": 41510123,
+          "observationRetainedBytes": 1050082,
+          "retainedStateBytes": 1537398
+        }
+      ],
+      "seconds": 25.434,
+      "peakRssBytes": 155074560
+    },
+    {
+      "id": "reader-differentiate-unsupported-problems",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-unsupported",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:86d46811e4272f00504716a9fe8ad0bf9a0fbfafda6dbd5eed0a52265b53106e",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:8356a53139ee92c0464206fb6acc13edf1059639369d720d40a542c7e3e67cbe",
+      "oracleHash": "sha256:8356a53139ee92c0464206fb6acc13edf1059639369d720d40a542c7e3e67cbe",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 117123,
+          "observationRawBytes": 40887360,
+          "observationRetainedBytes": 1022845,
+          "retainedStateBytes": 1510449
+        }
+      ],
+      "seconds": 24.59,
+      "peakRssBytes": 169902080
+    },
+    {
+      "id": "reader-differentiate-compound-power-coefficients",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-compound-power",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:2a24a73c09db374e20028e1065a2a0ba3fb9fd7269071b6fb62fe00535591f63",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:8f398a60b86d397b86a2e011822a65c048d2a308df54ca99e467e6ea8389da5a",
+      "oracleHash": "sha256:8f398a60b86d397b86a2e011822a65c048d2a308df54ca99e467e6ea8389da5a",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 257760,
+          "observationRawBytes": 88539870,
+          "observationRetainedBytes": 2161751,
+          "retainedStateBytes": 2844839
+        }
+      ],
+      "seconds": 49.893,
+      "peakRssBytes": 140099584
+    },
+    {
+      "id": "reader-differentiate-compound-power-solved",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-compound-power",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:90809ae3891c283c41788022c374f4a81a9306d0bd0956f64a3c421ced0cdca9",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:8ef4128d9c6d0883d76588b21e728eb65e92f98d036c9632e3c94c74ed7ff963",
+      "oracleHash": "sha256:8ef4128d9c6d0883d76588b21e728eb65e92f98d036c9632e3c94c74ed7ff963",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 258181,
+          "observationRawBytes": 88625794,
+          "observationRetainedBytes": 2165338,
+          "retainedStateBytes": 2848164
+        }
+      ],
+      "seconds": 50.242,
+      "peakRssBytes": 139362304
+    },
+    {
+      "id": "reader-differentiate-compound-power-zero",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-compound-power",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:467739879109e4498514bf0b061053e6c5db5a552d4c76055294942ba52f84db",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:d5b450f9c4f79785fab285b2f49846b273fdd61cf2d474237047f86122d049e1",
+      "oracleHash": "sha256:d5b450f9c4f79785fab285b2f49846b273fdd61cf2d474237047f86122d049e1",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 261778,
+          "observationRawBytes": 89163864,
+          "observationRetainedBytes": 2188888,
+          "retainedStateBytes": 2871718
+        }
+      ],
+      "seconds": 51.124,
+      "peakRssBytes": 143327232
+    },
+    {
+      "id": "reader-differentiate-compound-power-problems",
+      "group": "all_published_reader_questions",
+      "case": "differentiate-compound-power",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:01d9ef073fde3ec585776518d94e7fe97aa0b4cbf78b823d50744042e5de41eb",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:fca695a3b8a4d3b100697b325226508acb05982fb857b81c09037e8ce4e7c7ee",
+      "oracleHash": "sha256:fca695a3b8a4d3b100697b325226508acb05982fb857b81c09037e8ce4e7c7ee",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 257764,
+          "observationRawBytes": 88541130,
+          "observationRetainedBytes": 2161920,
+          "retainedStateBytes": 2845043
+        }
+      ],
+      "seconds": 50.788,
+      "peakRssBytes": 148127744
+    },
+    {
+      "id": "reader-antidifferentiate-polynomial-coefficients",
+      "group": "all_published_reader_questions",
+      "case": "antidifferentiate-polynomial",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:869d2d70e212bf31a942119e57a64c2ccff90d2b884d916e2a3b3a6f1cf54f21",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:7c359019bc11e6503cdce8e6379e19bbf567b0657aeac25c8efcb3309e97c94a",
+      "oracleHash": "sha256:7c359019bc11e6503cdce8e6379e19bbf567b0657aeac25c8efcb3309e97c94a",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 289939,
+          "observationRawBytes": 107805202,
+          "observationRetainedBytes": 2636232,
+          "retainedStateBytes": 3418411
+        }
+      ],
+      "seconds": 89.022,
+      "peakRssBytes": 141672448
+    },
+    {
+      "id": "reader-antidifferentiate-polynomial-solved",
+      "group": "all_published_reader_questions",
+      "case": "antidifferentiate-polynomial",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:4cb36a44dea5a988d679d7a1befadb9661fe65559ac6f2ddaa6d7da4a3810d20",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:bb74326a6092cc1abb4fe3595edc3f18b404f0232414798cc134c7b96483e3bf",
+      "oracleHash": "sha256:bb74326a6092cc1abb4fe3595edc3f18b404f0232414798cc134c7b96483e3bf",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 289924,
+          "observationRawBytes": 107799143,
+          "observationRetainedBytes": 2635950,
+          "retainedStateBytes": 3416802
+        }
+      ],
+      "seconds": 91.043,
+      "peakRssBytes": 139919360
+    },
+    {
+      "id": "reader-antidifferentiate-polynomial-zero",
+      "group": "all_published_reader_questions",
+      "case": "antidifferentiate-polynomial",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:ec6ae21215315cd3f8cf0d00ba13a5e0bc05ad0e60b325c946ea9d648b4a10ac",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:541985bcb950e94752ead047fe34e8caaf892f47df8f081a147b1d1670921a26",
+      "oracleHash": "sha256:541985bcb950e94752ead047fe34e8caaf892f47df8f081a147b1d1670921a26",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 293946,
+          "observationRawBytes": 108423649,
+          "observationRetainedBytes": 2663358,
+          "retainedStateBytes": 3444111
+        }
+      ],
+      "seconds": 96.42,
+      "peakRssBytes": 147308544
+    },
+    {
+      "id": "reader-antidifferentiate-polynomial-problems",
+      "group": "all_published_reader_questions",
+      "case": "antidifferentiate-polynomial",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:bea7be3a2c52b651095d91077380a3f86c5a58f892cc870b9e293b2cbe8bc934",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:2a7c7be1243b9fa0aa0c5dcb6a152d8ada45d32cf6e8f104a08f75826fc8cd3a",
+      "oracleHash": "sha256:2a7c7be1243b9fa0aa0c5dcb6a152d8ada45d32cf6e8f104a08f75826fc8cd3a",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 289923,
+          "observationRawBytes": 107798801,
+          "observationRetainedBytes": 2635891,
+          "retainedStateBytes": 3416752
+        }
+      ],
+      "seconds": 95.219,
+      "peakRssBytes": 147734528
+    },
+    {
+      "id": "reader-antidifferentiate-constant-choice-coefficients",
+      "group": "all_published_reader_questions",
+      "case": "antidifferentiate-constant-choice",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:c5912d423fe3e6ffe79f4272a6fb1fafa5401ce9911a748f305b6fa90bebf81d",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:ff42aa9008d7b28078f6197fb1b9105511aabef4d378d39b5a317ce8cfc76239",
+      "oracleHash": "sha256:ff42aa9008d7b28078f6197fb1b9105511aabef4d378d39b5a317ce8cfc76239",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 289950,
+          "observationRawBytes": 107807783,
+          "observationRetainedBytes": 2636645,
+          "retainedStateBytes": 3420150
+        }
+      ],
+      "seconds": 64.116,
+      "peakRssBytes": 147734528
+    },
+    {
+      "id": "reader-antidifferentiate-constant-choice-solved",
+      "group": "all_published_reader_questions",
+      "case": "antidifferentiate-constant-choice",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:d80ecc0b5ce27f73cca8b6391287ed14c28e2218572d226a8f6dc45c1a719b97",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:83db85f4895943ed638031952d19a0f9a93653935561247049c2f4f6beabcbac",
+      "oracleHash": "sha256:83db85f4895943ed638031952d19a0f9a93653935561247049c2f4f6beabcbac",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 289935,
+          "observationRawBytes": 107801724,
+          "observationRetainedBytes": 2636362,
+          "retainedStateBytes": 3418540
+        }
+      ],
+      "seconds": 58.642,
+      "peakRssBytes": 145506304
+    },
+    {
+      "id": "reader-antidifferentiate-constant-choice-zero",
+      "group": "all_published_reader_questions",
+      "case": "antidifferentiate-constant-choice",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:fe2f312df6d267a9b94e8987d37477924ba81d40b88fdbb9e62ceaa86c428561",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:6a098da663ac326289618adb4ca9c0dec3165a25073b72e48fa4e6e03c64d75c",
+      "oracleHash": "sha256:6a098da663ac326289618adb4ca9c0dec3165a25073b72e48fa4e6e03c64d75c",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 293957,
+          "observationRawBytes": 108426230,
+          "observationRetainedBytes": 2663777,
+          "retainedStateBytes": 3445856
+        }
+      ],
+      "seconds": 55.941,
+      "peakRssBytes": 158285824
+    },
+    {
+      "id": "reader-antidifferentiate-constant-choice-problems",
+      "group": "all_published_reader_questions",
+      "case": "antidifferentiate-constant-choice",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:64003a33e4199603e4d8299b47b2a5a04da3eb948436f4d3a44434a6fed6d923",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:ddcfef0a6e83e376d5c3ff13d5c75b864e022c0d55f44f16c2fe2f9a66385fc7",
+      "oracleHash": "sha256:ddcfef0a6e83e376d5c3ff13d5c75b864e022c0d55f44f16c2fe2f9a66385fc7",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 289934,
+          "observationRawBytes": 107801382,
+          "observationRetainedBytes": 2636302,
+          "retainedStateBytes": 3418489
+        }
+      ],
+      "seconds": 56.091,
+      "peakRssBytes": 155811840
+    },
+    {
+      "id": "reader-integrate-polynomial-coefficients",
+      "group": "all_published_reader_questions",
+      "case": "integrate-polynomial",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:c918b566b77a33a53d1ae74c290876cfe11bd08fa31e595e11e6b307cf3eb304",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:84e42b4dc90d6bb35b2c3c0019d9fa2a7c132086c9571c3198b8ab21432949b0",
+      "oracleHash": "sha256:84e42b4dc90d6bb35b2c3c0019d9fa2a7c132086c9571c3198b8ab21432949b0",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 290440,
+          "observationRawBytes": 108016921,
+          "observationRetainedBytes": 2644716,
+          "retainedStateBytes": 3459637
+        }
+      ],
+      "seconds": 81.319,
+      "peakRssBytes": 145375232
+    },
+    {
+      "id": "reader-integrate-polynomial-solved",
+      "group": "all_published_reader_questions",
+      "case": "integrate-polynomial",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:d72863681634ba6649e5292940772726e2f1571a121ec45ef815a6bb3c7bcb83",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:c7d1d5dda81687912e53cd4fce4554613b9363cf5fac00b40bcc04b888dbc8af",
+      "oracleHash": "sha256:c7d1d5dda81687912e53cd4fce4554613b9363cf5fac00b40bcc04b888dbc8af",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 290425,
+          "observationRawBytes": 108010862,
+          "observationRetainedBytes": 2644447,
+          "retainedStateBytes": 3458041
+        }
+      ],
+      "seconds": 82.528,
+      "peakRssBytes": 141017088
+    },
+    {
+      "id": "reader-integrate-polynomial-zero",
+      "group": "all_published_reader_questions",
+      "case": "integrate-polynomial",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:a8c7428fdaf7128349aa55dab190347d4cdaae59e0b8cb5357b2cf4bbd464c00",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:7219986337e2b7659a6425b3400c54c5cf4eb5c9eb4a7244d21deb3191a76ba1",
+      "oracleHash": "sha256:7219986337e2b7659a6425b3400c54c5cf4eb5c9eb4a7244d21deb3191a76ba1",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 294447,
+          "observationRawBytes": 108635368,
+          "observationRetainedBytes": 2671641,
+          "retainedStateBytes": 3485136
+        }
+      ],
+      "seconds": 87.342,
+      "peakRssBytes": 151584768
+    },
+    {
+      "id": "reader-integrate-polynomial-problems",
+      "group": "all_published_reader_questions",
+      "case": "integrate-polynomial",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:5e503b847febc68a0acae1bf216b4361a8554516c1adcfeb381307f783b5a3d8",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:0b0fb9f7142c6c7f1a9934821036dbc6dfa7da758d88a3d357123b9b3ab15205",
+      "oracleHash": "sha256:0b0fb9f7142c6c7f1a9934821036dbc6dfa7da758d88a3d357123b9b3ab15205",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 290424,
+          "observationRawBytes": 108010520,
+          "observationRetainedBytes": 2644388,
+          "retainedStateBytes": 3457991
+        }
+      ],
+      "seconds": 85.476,
+      "peakRssBytes": 144048128
+    },
+    {
+      "id": "reader-integrate-polynomial-integral",
+      "group": "all_published_reader_questions",
+      "case": "integrate-polynomial",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:884d4eaef036fa858b48742aeea15521d76ba822069a669310a0dd945ac5df59",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:9d2e7f0f9354ea810a2a7257cdcca35727ec22cbcb9e635691df76ec987573c8",
+      "oracleHash": "sha256:9d2e7f0f9354ea810a2a7257cdcca35727ec22cbcb9e635691df76ec987573c8",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 290428,
+          "observationRawBytes": 108011696,
+          "observationRetainedBytes": 2644534,
+          "retainedStateBytes": 3458312
+        }
+      ],
+      "seconds": 73.401,
+      "peakRssBytes": 150552576
+    },
+    {
+      "id": "reader-integrate-reversed-coefficients",
+      "group": "all_published_reader_questions",
+      "case": "integrate-reversed",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:a54e4c305619a0b194d1b0b1021372e70b4c277c4d31917dc047dfb85baa9f03",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:51a94aeb476e776643651b7284b92961110c29b4c76fd56739c2aac860e82802",
+      "oracleHash": "sha256:51a94aeb476e776643651b7284b92961110c29b4c76fd56739c2aac860e82802",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 290440,
+          "observationRawBytes": 108016936,
+          "observationRetainedBytes": 2644699,
+          "retainedStateBytes": 3459625
+        }
+      ],
+      "seconds": 74.603,
+      "peakRssBytes": 144277504
+    },
+    {
+      "id": "reader-integrate-reversed-solved",
+      "group": "all_published_reader_questions",
+      "case": "integrate-reversed",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:9a878140fd7987d92fb1c38fb89616a3d1c3acd814268fc04c1bd12715b62c04",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:2455312150e44d4aab6ad69f604b13f10a6c9e6d8a61bd156650f9128f6f974b",
+      "oracleHash": "sha256:2455312150e44d4aab6ad69f604b13f10a6c9e6d8a61bd156650f9128f6f974b",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 290425,
+          "observationRawBytes": 108010877,
+          "observationRetainedBytes": 2644425,
+          "retainedStateBytes": 3458024
+        }
+      ],
+      "seconds": 71.592,
+      "peakRssBytes": 149340160
+    },
+    {
+      "id": "reader-integrate-reversed-zero",
+      "group": "all_published_reader_questions",
+      "case": "integrate-reversed",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:aa148ababb92d492d8cba2893cdc6f7c54ca35bd67dca12bdc598a198c888e80",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:eb570c45afa899c3c630fd8c8146523d4a14292f1cb5f383672529efdf976103",
+      "oracleHash": "sha256:eb570c45afa899c3c630fd8c8146523d4a14292f1cb5f383672529efdf976103",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 294447,
+          "observationRawBytes": 108635383,
+          "observationRetainedBytes": 2671733,
+          "retainedStateBytes": 3485233
+        }
+      ],
+      "seconds": 71.574,
+      "peakRssBytes": 142196736
+    },
+    {
+      "id": "reader-integrate-reversed-problems",
+      "group": "all_published_reader_questions",
+      "case": "integrate-reversed",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:b49dac61d326a3b7d60614b92d28ee65c5e64f7aa98f17593e25670c07d680f4",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:8a8e0ae09f492c00f179222d68b63b0fc15b73e4907db631de00b5c452e24df6",
+      "oracleHash": "sha256:8a8e0ae09f492c00f179222d68b63b0fc15b73e4907db631de00b5c452e24df6",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 290424,
+          "observationRawBytes": 108010535,
+          "observationRetainedBytes": 2644365,
+          "retainedStateBytes": 3457973
+        }
+      ],
+      "seconds": 88.286,
+      "peakRssBytes": 140181504
+    },
+    {
+      "id": "reader-integrate-reversed-integral",
+      "group": "all_published_reader_questions",
+      "case": "integrate-reversed",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:3f9f94f69a3698b9159c775f699f369919290b96a6439e078ed50ae56f88441f",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:c1de005762724e079d2ed5e014b5f21b88326d71a75ec8780426115eec350cda",
+      "oracleHash": "sha256:c1de005762724e079d2ed5e014b5f21b88326d71a75ec8780426115eec350cda",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 290428,
+          "observationRawBytes": 108011716,
+          "observationRetainedBytes": 2644512,
+          "retainedStateBytes": 3458296
+        }
+      ],
+      "seconds": 91.663,
+      "peakRssBytes": 146898944
+    },
+    {
+      "id": "reader-integrate-zero-width-coefficients",
+      "group": "all_published_reader_questions",
+      "case": "integrate-zero-width",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:2d8e141915d2dd10f1963fbc093dcceff336f1ef2ac7dc29f6621f5279ff3e35",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:623fc372315b8c4a3a2c777dd1f931a2cf54c1bd77f9e3e762dc07e72c0b656d",
+      "oracleHash": "sha256:623fc372315b8c4a3a2c777dd1f931a2cf54c1bd77f9e3e762dc07e72c0b656d",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 290340,
+          "observationRawBytes": 107973042,
+          "observationRetainedBytes": 2644093,
+          "retainedStateBytes": 3449142
+        }
+      ],
+      "seconds": 93.896,
+      "peakRssBytes": 142262272
+    },
+    {
+      "id": "reader-integrate-zero-width-solved",
+      "group": "all_published_reader_questions",
+      "case": "integrate-zero-width",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:1cc9fe9907e120fc48b76ea87f5f7ac2dc77d617ea7673c9ec70eab72c7fb679",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:dc7756aef9850fd872e3812f96dd21e2b74de0a49fe9fa5710a415e9f2dc8f0c",
+      "oracleHash": "sha256:dc7756aef9850fd872e3812f96dd21e2b74de0a49fe9fa5710a415e9f2dc8f0c",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 290325,
+          "observationRawBytes": 107966983,
+          "observationRetainedBytes": 2643814,
+          "retainedStateBytes": 3447536
+        }
+      ],
+      "seconds": 95.26,
+      "peakRssBytes": 151404544
+    },
+    {
+      "id": "reader-integrate-zero-width-zero",
+      "group": "all_published_reader_questions",
+      "case": "integrate-zero-width",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:150f2f81ee83a8211b975272ad5b4f1558c57c05fc22770873bc73e5d591c981",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:79b090379c0de654e5ce5b32d5bce2a227eaafbdab56dd0562599b5d570f8147",
+      "oracleHash": "sha256:79b090379c0de654e5ce5b32d5bce2a227eaafbdab56dd0562599b5d570f8147",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 294347,
+          "observationRawBytes": 108591489,
+          "observationRetainedBytes": 2671119,
+          "retainedStateBytes": 3474742
+        }
+      ],
+      "seconds": 83.687,
+      "peakRssBytes": 149241856
+    },
+    {
+      "id": "reader-integrate-zero-width-problems",
+      "group": "all_published_reader_questions",
+      "case": "integrate-zero-width",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:87b8e47396b7a98638eaba1d360109386763fff22db491622dae6eef620072f1",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:ec52a797894006d78cd6f4ae9c69a44078b9648f09056c8b3882570cffc5e41a",
+      "oracleHash": "sha256:ec52a797894006d78cd6f4ae9c69a44078b9648f09056c8b3882570cffc5e41a",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 290324,
+          "observationRawBytes": 107966641,
+          "observationRetainedBytes": 2643754,
+          "retainedStateBytes": 3447485
+        }
+      ],
+      "seconds": 75.905,
+      "peakRssBytes": 146505728
+    },
+    {
+      "id": "reader-integrate-zero-width-integral",
+      "group": "all_published_reader_questions",
+      "case": "integrate-zero-width",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:8f57b57f005d5eca15d82f22f54c7e53e1a668e8aaac1cebf9382fe0aef0c70c",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:4683c836c277bfea2ad9e65d1d3018213e2e07ec9af73bd6af74ff81db3d873f",
+      "oracleHash": "sha256:4683c836c277bfea2ad9e65d1d3018213e2e07ec9af73bd6af74ff81db3d873f",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 290328,
+          "observationRawBytes": 107967817,
+          "observationRetainedBytes": 2643904,
+          "retainedStateBytes": 3447810
+        }
+      ],
+      "seconds": 70.897,
+      "peakRssBytes": 148029440
+    },
+    {
+      "id": "reader-integrate-rational-coefficients",
+      "group": "all_published_reader_questions",
+      "case": "integrate-rational",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:4669c23a194787c61a598afb0677d0309031c909871e0b62f8d3f65699658429",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:2814a4012d7b55353379e24640d8b5028252dc1c3a4885b6dad2b7cebffb95e1",
+      "oracleHash": "sha256:2814a4012d7b55353379e24640d8b5028252dc1c3a4885b6dad2b7cebffb95e1",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 404084,
+          "observationRawBytes": 152404993,
+          "observationRetainedBytes": 3603551,
+          "retainedStateBytes": 4566879
+        }
+      ],
+      "seconds": 88.324,
+      "peakRssBytes": 157384704
+    },
+    {
+      "id": "reader-integrate-rational-solved",
+      "group": "all_published_reader_questions",
+      "case": "integrate-rational",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:99cf31e0f8a05887eb036f28ecb9b5f49015cbba1520a96f3ef79801e67ffc54",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:fa31808ee0b62867728a9ec83838102f97e32238f0dfcdeb128c0cdba592ec51",
+      "oracleHash": "sha256:fa31808ee0b62867728a9ec83838102f97e32238f0dfcdeb128c0cdba592ec51",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 404069,
+          "observationRawBytes": 152398934,
+          "observationRetainedBytes": 3603256,
+          "retainedStateBytes": 4565257
+        }
+      ],
+      "seconds": 85.887,
+      "peakRssBytes": 155631616
+    },
+    {
+      "id": "reader-integrate-rational-zero",
+      "group": "all_published_reader_questions",
+      "case": "integrate-rational",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:7fdf794a94742a876f9b2c10e9b09a9dfaa8eedae389be0650dfa24721f1f750",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:5d1dc1af9646eb91cb83954fda5a86443a30cd52d2a5cf81da7cf61a55645a5d",
+      "oracleHash": "sha256:5d1dc1af9646eb91cb83954fda5a86443a30cd52d2a5cf81da7cf61a55645a5d",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 408091,
+          "observationRawBytes": 153023440,
+          "observationRetainedBytes": 3630770,
+          "retainedStateBytes": 4592672
+        }
+      ],
+      "seconds": 92.418,
+      "peakRssBytes": 150503424
+    },
+    {
+      "id": "reader-integrate-rational-problems",
+      "group": "all_published_reader_questions",
+      "case": "integrate-rational",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:cecb234c16147ff585fa93a02251e3e40ed038a6c70b8d32cb6f434b5f0b4f95",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:22bf036d0d68fa66586bfe0ea41a01783c2e1c62427e6aa15a5861565ada8598",
+      "oracleHash": "sha256:22bf036d0d68fa66586bfe0ea41a01783c2e1c62427e6aa15a5861565ada8598",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 404068,
+          "observationRawBytes": 152398592,
+          "observationRetainedBytes": 3603194,
+          "retainedStateBytes": 4565204
+        }
+      ],
+      "seconds": 92.492,
+      "peakRssBytes": 145211392
+    },
+    {
+      "id": "reader-integrate-rational-integral",
+      "group": "all_published_reader_questions",
+      "case": "integrate-rational",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:eb2edd55db82c5d6060b1f5f0c00145b82ca40f2979d27c180eb9b65c766e57d",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:196e85e3031855b172636504567cedc631efcff24d3850093812dfef5a307a35",
+      "oracleHash": "sha256:196e85e3031855b172636504567cedc631efcff24d3850093812dfef5a307a35",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 404072,
+          "observationRawBytes": 152399773,
+          "observationRetainedBytes": 3603342,
+          "retainedStateBytes": 4565528
+        }
+      ],
+      "seconds": 95.732,
+      "peakRssBytes": 152190976
+    },
+    {
+      "id": "reader-missing-polynomial-budget-coefficients",
+      "group": "all_published_reader_questions",
+      "case": "missing-polynomial-budget",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:2a05b9dce78b28ce8921959ef57538fedae9e2017b3986cbab24bf706e48ee37",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:583477c58f61206f24547e76809278dd0c2bc8fe15123856887d8fc6c85b247f",
+      "oracleHash": "sha256:583477c58f61206f24547e76809278dd0c2bc8fe15123856887d8fc6c85b247f",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 174460,
+          "observationRawBytes": 62945948,
+          "observationRetainedBytes": 1563892,
+          "retainedStateBytes": 2096992
+        }
+      ],
+      "seconds": 44.727,
+      "peakRssBytes": 141459456
+    },
+    {
+      "id": "reader-missing-polynomial-budget-solved",
+      "group": "all_published_reader_questions",
+      "case": "missing-polynomial-budget",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:26e066606fe5b9e840ff07efb54028ccb34e09c72833f59c38a60d5251443d7c",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:4a23846a0196ac8d45fbb95f59596d10a10879b1902f48390db3e20287c693fa",
+      "oracleHash": "sha256:4a23846a0196ac8d45fbb95f59596d10a10879b1902f48390db3e20287c693fa",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 174881,
+          "observationRawBytes": 63031872,
+          "observationRetainedBytes": 1567500,
+          "retainedStateBytes": 2100338
+        }
+      ],
+      "seconds": 42.623,
+      "peakRssBytes": 139427840
+    },
+    {
+      "id": "reader-missing-polynomial-budget-zero",
+      "group": "all_published_reader_questions",
+      "case": "missing-polynomial-budget",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:812f1368d107b3ab17c3da56fb711f996d16912c0351e05febc3d1aba4d60fd7",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:9bf9820707dc92dbbeb8c7eecc09d089e5184f919af61cf893748b992c08b0ef",
+      "oracleHash": "sha256:9bf9820707dc92dbbeb8c7eecc09d089e5184f919af61cf893748b992c08b0ef",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 178478,
+          "observationRawBytes": 63569942,
+          "observationRetainedBytes": 1591111,
+          "retainedStateBytes": 2123953
+        }
+      ],
+      "seconds": 46.142,
+      "peakRssBytes": 142491648
+    },
+    {
+      "id": "reader-missing-polynomial-budget-problems",
+      "group": "all_published_reader_questions",
+      "case": "missing-polynomial-budget",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:d05b77ee0ab8da9c77c0dbf7c69964e0d61179de99760c384b4556d671dd5a01",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:44d82749b457bad20a8e74afb190fc5ca2b6a7ca4b65bd5dc15fdccdbe3a2439",
+      "oracleHash": "sha256:44d82749b457bad20a8e74afb190fc5ca2b6a7ca4b65bd5dc15fdccdbe3a2439",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 174468,
+          "observationRawBytes": 62948461,
+          "observationRetainedBytes": 1564124,
+          "retainedStateBytes": 2097434
+        }
+      ],
+      "seconds": 54.986,
+      "peakRssBytes": 134742016
+    },
+    {
+      "id": "reader-ambiguous-polynomial-task-coefficients",
+      "group": "all_published_reader_questions",
+      "case": "ambiguous-polynomial-task",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:b3aef2a05d9a5fdf37cba0cd24da434193b6fd6942226980314ad91d3bab0d2d",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:f9003a6ce2c587fec88a14747ae3e09ffa0f5a33d6f28bb8bb031877bdc0a395",
+      "oracleHash": "sha256:f9003a6ce2c587fec88a14747ae3e09ffa0f5a33d6f28bb8bb031877bdc0a395",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 177903,
+          "observationRawBytes": 64367037,
+          "observationRetainedBytes": 1598735,
+          "retainedStateBytes": 2180524
+        }
+      ],
+      "seconds": 58.29,
+      "peakRssBytes": 135593984
+    },
+    {
+      "id": "reader-ambiguous-polynomial-task-solved",
+      "group": "all_published_reader_questions",
+      "case": "ambiguous-polynomial-task",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:654301d89f89b454b7c86dd0e08f0e4ceed5cdd44e2175a640f7fdd146bcc2b0",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:1662044de2f84b37a0a00ab16a250023b72994068460d1065a0f7f5ec92b992e",
+      "oracleHash": "sha256:1662044de2f84b37a0a00ab16a250023b72994068460d1065a0f7f5ec92b992e",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 178326,
+          "observationRawBytes": 64453287,
+          "observationRetainedBytes": 1602339,
+          "retainedStateBytes": 2183866
+        }
+      ],
+      "seconds": 64.507,
+      "peakRssBytes": 137609216
+    },
+    {
+      "id": "reader-ambiguous-polynomial-task-zero",
+      "group": "all_published_reader_questions",
+      "case": "ambiguous-polynomial-task",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:c2339d24d52c85f50caaf7a07edede7b9fe4faeec890c7c57b5c96b06890b988",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:bd0d54dc07c027b8f8eeafcee38f01502c32c0e9873c675a1d937c03083c3397",
+      "oracleHash": "sha256:bd0d54dc07c027b8f8eeafcee38f01502c32c0e9873c675a1d937c03083c3397",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 181923,
+          "observationRawBytes": 64991357,
+          "observationRetainedBytes": 1625837,
+          "retainedStateBytes": 2207368
+        }
+      ],
+      "seconds": 68.29,
+      "peakRssBytes": 133283840
+    },
+    {
+      "id": "reader-ambiguous-polynomial-task-problems",
+      "group": "all_published_reader_questions",
+      "case": "ambiguous-polynomial-task",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:35e3e0a90d7ef90f8351bf482b32781d50e1e6c7f41984753f49894aa03488fe",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:55309cb990499ca31220924ac6574ae1b9ca4d03b15518f25e9a3728f2c4e28c",
+      "oracleHash": "sha256:55309cb990499ca31220924ac6574ae1b9ca4d03b15518f25e9a3728f2c4e28c",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 177907,
+          "observationRawBytes": 64368350,
+          "observationRetainedBytes": 1598896,
+          "retainedStateBytes": 2180822
+        }
+      ],
+      "seconds": 71.947,
+      "peakRssBytes": 137560064
+    },
+    {
+      "id": "reader-missing-integration-constant-coefficients",
+      "group": "all_published_reader_questions",
+      "case": "missing-integration-constant",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:2627cbfdba3ae40d50c06e750b42492f473f99ab898b2bfb3ecd6417dc52f148",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:4f3cabc202f3f5f14aeb18bfd3205ff7086c34ceaca4533c98c24f7b2bdb97e4",
+      "oracleHash": "sha256:4f3cabc202f3f5f14aeb18bfd3205ff7086c34ceaca4533c98c24f7b2bdb97e4",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 175687,
+          "observationRawBytes": 63486218,
+          "observationRetainedBytes": 1588336,
+          "retainedStateBytes": 2163125
+        }
+      ],
+      "seconds": 68.607,
+      "peakRssBytes": 139591680
+    },
+    {
+      "id": "reader-missing-integration-constant-solved",
+      "group": "all_published_reader_questions",
+      "case": "missing-integration-constant",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:56a807a4b1abf073f29f8aec9b62da3ebee630761096d34221acb63e0f971dc0",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:11f5c1ecbce0d4bda4c8e3755ea8367113f594371502205d72abcec990e86352",
+      "oracleHash": "sha256:11f5c1ecbce0d4bda4c8e3755ea8367113f594371502205d72abcec990e86352",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 176109,
+          "observationRawBytes": 63572273,
+          "observationRetainedBytes": 1592016,
+          "retainedStateBytes": 2166541
+        }
+      ],
+      "seconds": 69.178,
+      "peakRssBytes": 142688256
+    },
+    {
+      "id": "reader-missing-integration-constant-zero",
+      "group": "all_published_reader_questions",
+      "case": "missing-integration-constant",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:39b0c1314c18cfcf6503168533fa72ea5d53c615054afbfa48848cfe01dccad8",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:95349c9b69c25a1927b13eb4eef8a7cb042bcd000db31429a786cf1a49a985e7",
+      "oracleHash": "sha256:95349c9b69c25a1927b13eb4eef8a7cb042bcd000db31429a786cf1a49a985e7",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 179710,
+          "observationRawBytes": 64111064,
+          "observationRetainedBytes": 1615858,
+          "retainedStateBytes": 2190387
+        }
+      ],
+      "seconds": 73.472,
+      "peakRssBytes": 136380416
+    },
+    {
+      "id": "reader-missing-integration-constant-problems",
+      "group": "all_published_reader_questions",
+      "case": "missing-integration-constant",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:c9de00ea61dbec787551829233d9397aee859a31aeeedf5e156bd937c40a6e9f",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:b5c6d247a290dbd1fe7471807fccb4019a4007e655aa7be7bdbf41613b04bb7d",
+      "oracleHash": "sha256:b5c6d247a290dbd1fe7471807fccb4019a4007e655aa7be7bdbf41613b04bb7d",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 175691,
+          "observationRawBytes": 63487433,
+          "observationRetainedBytes": 1588488,
+          "retainedStateBytes": 2163301
+        }
+      ],
+      "seconds": 88.731,
+      "peakRssBytes": 130138112
+    },
+    {
+      "id": "reader-ambiguous-integration-constant-coefficients",
+      "group": "all_published_reader_questions",
+      "case": "ambiguous-integration-constant",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:cdd289dfa2c99265fe7f431de7964e6cfea84f38a14e1c4c078338a2f6367fd9",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:70dcf9baa145165d0fbea76a1fa50600214ea37d7d5ca80353b738419da76c9d",
+      "oracleHash": "sha256:70dcf9baa145165d0fbea76a1fa50600214ea37d7d5ca80353b738419da76c9d",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 175763,
+          "observationRawBytes": 63507510,
+          "observationRetainedBytes": 1590047,
+          "retainedStateBytes": 2166559
+        }
+      ],
+      "seconds": 93.527,
+      "peakRssBytes": 136740864
+    },
+    {
+      "id": "reader-ambiguous-integration-constant-solved",
+      "group": "all_published_reader_questions",
+      "case": "ambiguous-integration-constant",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:019b663c8eebdbdef8fb11d24c607c8db0f143566d47d08922ab4a66b96816f8",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:84c33db448612271278851f29fc4d93db355549b91ba8f5c16d225cd6f2fbb34",
+      "oracleHash": "sha256:84c33db448612271278851f29fc4d93db355549b91ba8f5c16d225cd6f2fbb34",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 176185,
+          "observationRawBytes": 63593565,
+          "observationRetainedBytes": 1593718,
+          "retainedStateBytes": 2169966
+        }
+      ],
+      "seconds": 85.146,
+      "peakRssBytes": 131792896
+    },
+    {
+      "id": "reader-ambiguous-integration-constant-zero",
+      "group": "all_published_reader_questions",
+      "case": "ambiguous-integration-constant",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:6e022deb9a5c96703cfb0a5b8cc25185431633f7d02255d83e2e2e3960d258e5",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:74c51eef2176d119254e21dfd4358c53f862ff285365399175efef68212d3ab4",
+      "oracleHash": "sha256:74c51eef2176d119254e21dfd4358c53f862ff285365399175efef68212d3ab4",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 179786,
+          "observationRawBytes": 64132356,
+          "observationRetainedBytes": 1617571,
+          "retainedStateBytes": 2193823
+        }
+      ],
+      "seconds": 80.691,
+      "peakRssBytes": 141262848
+    },
+    {
+      "id": "reader-ambiguous-integration-constant-problems",
+      "group": "all_published_reader_questions",
+      "case": "ambiguous-integration-constant",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:206cdd2b88b895e16e609adc6699f8d7fea6864fca5d115bafa0f08d1968dc29",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:0016bd80bc9a6bfea37f103daf188a359ce232c35a1dd408fe087167643f50c1",
+      "oracleHash": "sha256:0016bd80bc9a6bfea37f103daf188a359ce232c35a1dd408fe087167643f50c1",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 175767,
+          "observationRawBytes": 63508737,
+          "observationRetainedBytes": 1590205,
+          "retainedStateBytes": 2166745
+        }
+      ],
+      "seconds": 55.097,
+      "peakRssBytes": 139821056
+    },
+    {
+      "id": "reader-ambiguous-integral-bounds-coefficients",
+      "group": "all_published_reader_questions",
+      "case": "ambiguous-integral-bounds",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:f25e8a0f0afb41559dad627bc331371dc5097f0607d5dbfc65a97ea889d21d93",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:ced345d8755d822c8493cbcb10ee21c1cb1b1bfddd3dfa04e1dd4122e0782c68",
+      "oracleHash": "sha256:ced345d8755d822c8493cbcb10ee21c1cb1b1bfddd3dfa04e1dd4122e0782c68",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 177340,
+          "observationRawBytes": 64190564,
+          "observationRetainedBytes": 1618394,
+          "retainedStateBytes": 2259329
+        }
+      ],
+      "seconds": 53.533,
+      "peakRssBytes": 137314304
+    },
+    {
+      "id": "reader-ambiguous-integral-bounds-solved",
+      "group": "all_published_reader_questions",
+      "case": "ambiguous-integral-bounds",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:63b442aab317fef7cc1358b6649fee8d412ee1a91356a459d93e8264c3670897",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:efd25587d350a230bba37c9a21f17bcf7ed352cdcbcd97e48924043218998da0",
+      "oracleHash": "sha256:efd25587d350a230bba37c9a21f17bcf7ed352cdcbcd97e48924043218998da0",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 177325,
+          "observationRawBytes": 64184505,
+          "observationRetainedBytes": 1618104,
+          "retainedStateBytes": 2257712
+        }
+      ],
+      "seconds": 55.389,
+      "peakRssBytes": 140066816
+    },
+    {
+      "id": "reader-ambiguous-integral-bounds-zero",
+      "group": "all_published_reader_questions",
+      "case": "ambiguous-integral-bounds",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:f309b950dc9ef1617105b843b6cdd8be7d3ec7f9ff9fd37b901180c523a0da08",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:c5752837112230fda63aed71cae30e01d9fbc3c810dd7ecb8e0be69fc3538c40",
+      "oracleHash": "sha256:c5752837112230fda63aed71cae30e01d9fbc3c810dd7ecb8e0be69fc3538c40",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 181347,
+          "observationRawBytes": 64809011,
+          "observationRetainedBytes": 1645517,
+          "retainedStateBytes": 2285026
+        }
+      ],
+      "seconds": 62.679,
+      "peakRssBytes": 137707520
+    },
+    {
+      "id": "reader-ambiguous-integral-bounds-problems",
+      "group": "all_published_reader_questions",
+      "case": "ambiguous-integral-bounds",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:a37e7d331929fce0aaa4ef09abd85bb9413da5fec98371255574bca1149251ca",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:7028524fa714073d0f6c417e346ef57e7aeaf8d413712ab01c35569076f05d7a",
+      "oracleHash": "sha256:7028524fa714073d0f6c417e346ef57e7aeaf8d413712ab01c35569076f05d7a",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 177328,
+          "observationRawBytes": 64185636,
+          "observationRetainedBytes": 1618226,
+          "retainedStateBytes": 2258332
+        }
+      ],
+      "seconds": 68.939,
+      "peakRssBytes": 137297920
+    },
+    {
+      "id": "reader-ambiguous-integral-bounds-integral",
+      "group": "all_published_reader_questions",
+      "case": "ambiguous-integral-bounds",
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "requestSha256": "sha256:e1fdfbe06bebd347064763dac0556df6b960c005e3fc4933b4edd3fa18d38647",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:75533f130f3122cf85124d06a61625b46e5435e413add3922f544999aae57479",
+      "oracleHash": "sha256:75533f130f3122cf85124d06a61625b46e5435e413add3922f544999aae57479",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 177324,
+          "observationRawBytes": 64184162,
+          "observationRetainedBytes": 1618049,
+          "retainedStateBytes": 2257665
+        }
+      ],
+      "seconds": 68.037,
+      "peakRssBytes": 138018816
+    },
+    {
+      "id": "reader-polynomial-cap-exhausted-coefficients",
+      "group": "all_published_reader_questions",
+      "case": "polynomial-cap-exhausted",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:600248caecf00845efdaab54c4f48ce7358f08f0baa91b85ebaa3eb729ceb8b2",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:86b35c55d4bfc94eb2091170e524bd0ecf037ff9a2948c061ac94c402201a930",
+      "oracleHash": "sha256:86b35c55d4bfc94eb2091170e524bd0ecf037ff9a2948c061ac94c402201a930",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 175318,
+          "observationRawBytes": 63292320,
+          "observationRetainedBytes": 1578600,
+          "retainedStateBytes": 2140344
+        }
+      ],
+      "seconds": 69.582,
+      "peakRssBytes": 142950400
+    },
+    {
+      "id": "reader-polynomial-cap-exhausted-solved",
+      "group": "all_published_reader_questions",
+      "case": "polynomial-cap-exhausted",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:a4074ebd3c050adfd162b1f06adda5d4ff4e3771ed15048a3ad414bc28babfc6",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:1b2c0f684021a93aca109cf0091b19a5e6cfde4a61f4a8fbe01f2dfb25044336",
+      "oracleHash": "sha256:1b2c0f684021a93aca109cf0091b19a5e6cfde4a61f4a8fbe01f2dfb25044336",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 175739,
+          "observationRawBytes": 63378244,
+          "observationRetainedBytes": 1582215,
+          "retainedStateBytes": 2143697
+        }
+      ],
+      "seconds": 61.233,
+      "peakRssBytes": 138805248
+    },
+    {
+      "id": "reader-polynomial-cap-exhausted-zero",
+      "group": "all_published_reader_questions",
+      "case": "polynomial-cap-exhausted",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:9b2e147d6db44ff8965765a1f5cbec0d88e5f765f4af5775494406d212d4c202",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:89c74a580cb2c6f48beafbcabb583a41e5fa25f37055d9ec0979aeb7af757fd7",
+      "oracleHash": "sha256:89c74a580cb2c6f48beafbcabb583a41e5fa25f37055d9ec0979aeb7af757fd7",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 179336,
+          "observationRawBytes": 63916314,
+          "observationRetainedBytes": 1605771,
+          "retainedStateBytes": 2167257
+        }
+      ],
+      "seconds": 51.93,
+      "peakRssBytes": 136200192
+    },
+    {
+      "id": "reader-polynomial-cap-exhausted-problems",
+      "group": "all_published_reader_questions",
+      "case": "polynomial-cap-exhausted",
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "requestSha256": "sha256:70389610b4b8870a9af5aba2911969093f4ddaeee69dec173859c71554fbfb0d",
+      "status": "passed",
+      "equalCanonicalDocument": true,
+      "nativeHash": "sha256:ddf0d42fbcd6c232db59457797440d211ef77bd436962e4d782d2e7f7dc1c78d",
+      "oracleHash": "sha256:ddf0d42fbcd6c232db59457797440d211ef77bd436962e4d782d2e7f7dc1c78d",
+      "differentFields": [],
+      "audit": [
+        {
+          "passes": 2,
+          "bootstrapPasses": 1,
+          "stableFreshPasses": 2,
+          "observationCount": 175322,
+          "observationRawBytes": 63293542,
+          "observationRetainedBytes": 1578752,
+          "retainedStateBytes": 2140517
+        }
+      ],
+      "seconds": 48.202,
+      "peakRssBytes": 147439616
     }
   ],
-  "remainingReferenceCases": "not_checked: indices 24\u201335; native declared scenarios all passed",
   "corpus": "not_checked",
   "releaseVerified": false
 }
