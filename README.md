@@ -218,5 +218,7 @@ native source-anchored unfold and runs only the listed selected suites.
 [repair record](reports/repairs.json), [reference comparison](reports/addressed-differential.json).
 Use `--all-questions` for an optional replay of every recorded query. All 97 queries
 were executed against the final world before freezing this delivery.
+The verification report records the payload freeze; Release notes record public CI
+and anonymous download checks.
 Full corpus and general release acceptance were **not run**:
 `releaseVerified: false`, corpus `not_checked`.

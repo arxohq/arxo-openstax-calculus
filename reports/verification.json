@@ -1,6 +1,6 @@
 {
   "format": "arxo.calculus-consumer-verification/1",
-  "state": "candidate_prepared",
+  "state": "locally_verified_payload",
   "published": false,
   "cli": "@arxo/cli@0.2.5",
   "node": "20+",
@@ -18,10 +18,20 @@
     "oracle": "22 identical full canonical documents; separate replay-budget refusal, remaining reference cases not_checked",
     "invalidExpression": "x^33: no coefficients, solved/zero NEITHER; EXPRESSION_NOT_ESTABLISHED",
     "nativeReadme": "limit, derivative, integral and inspect all passed",
-    "depthRegressions": "existing CNXML unit/hash/edition regressions passed"
+    "depthRegressions": "existing CNXML unit/hash/edition regressions passed",
+    "candidateConsumer": "Exact exported allowlisted candidate; every task primary plus zero and ambiguity questions replayed twice; selected native suites"
   },
-  "anonymousConsumer": "pending",
-  "linuxCI": "pending",
+  "anonymousConsumer": {
+    "status": "external_delivery_check",
+    "record": "Versioned Release notes and delivery receipt"
+  },
+  "linuxCI": {
+    "status": "external_delivery_check",
+    "workflow": "https://github.com/arxohq/arxo-openstax-calculus/actions/workflows/verify.yml",
+    "contract": "Release tag only after successful CI on its exact commit"
+  },
   "releaseVerified": false,
-  "corpus": "not_checked"
+  "corpus": "not_checked",
+  "scope": "Checks at payload freeze. Public delivery is recorded in versioned Release notes and the exact-commit GitHub Actions run.",
+  "uniquePassedScenarios": 128
 }

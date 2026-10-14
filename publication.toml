@@ -1,7 +1,7 @@
 format = "law.canon-publication/1"
 version = "0.1.0"
 repository = "https://github.com/arxohq/arxo-openstax-calculus"
-releasedAt = "2026-10-14T18:13:57.049016Z"
+releasedAt = "2026-10-14T18:15:40.070188Z"
 packages = ["calc.expressions@0.1.0", "calc.limit_solver@0.1.0", "calc.polynomials_q@0.1.0", "calc.calculus_checker@0.1.0", "openstax.calculus_limits@0.1.1", "openstax.calculus_derivatives@0.1.1", "openstax.calculus_integrals@0.1.1"]
 files = [
   ".github/workflows/verify.yml",
@@ -729,6 +729,7 @@ files = [
   "reports/repairs.json",
   "reports/targeted-package-checks.json",
   "reports/unfold-integral.json",
+  "reports/unique-scenario-inventory.json",
   "reports/verification.json",
   "source-pin.json",
   "toolchain.lock.json",

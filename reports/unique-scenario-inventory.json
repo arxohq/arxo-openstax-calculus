@@ -1,0 +1,773 @@
+{
+  "uniquePassed": 128,
+  "cases": [
+    {
+      "package": "calc.calculus_checker",
+      "suite": "tests/02-power-rule.lawtest",
+      "title": "\u0441\u0442\u0435\u043f\u0435\u043d\u043d\u043e\u0435 \u043f\u0440\u0430\u0432\u0438\u043b\u043e",
+      "status": "passed"
+    },
+    {
+      "package": "calc.calculus_checker",
+      "suite": "tests/03-power-rule-wrong-factor.lawtest",
+      "title": "\u0441\u0442\u0435\u043f\u0435\u043d\u043d\u043e\u0435 \u043f\u0440\u0430\u0432\u0438\u043b\u043e \u0441 \u043d\u0435\u0432\u0435\u0440\u043d\u044b\u043c \u043c\u043d\u043e\u0436\u0438\u0442\u0435\u043b\u0435\u043c",
+      "status": "passed"
+    },
+    {
+      "package": "calc.calculus_checker",
+      "suite": "tests/22-antiderivative-power.lawtest",
+      "title": "\u043f\u0435\u0440\u0432\u043e\u043e\u0431\u0440\u0430\u0437\u043d\u0430\u044f \u0441\u0442\u0435\u043f\u0435\u043d\u0438",
+      "status": "passed"
+    },
+    {
+      "package": "calc.calculus_checker",
+      "suite": "tests/24-by-parts.lawtest",
+      "title": "\u0438\u043d\u0442\u0435\u0433\u0440\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u0435 \u043f\u043e \u0447\u0430\u0441\u0442\u044f\u043c",
+      "status": "passed"
+    },
+    {
+      "package": "calc.calculus_checker",
+      "suite": "tests/25-by-parts-swapped.lawtest",
+      "title": "\u0438\u043d\u0442\u0435\u0433\u0440\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u0435 \u043f\u043e \u0447\u0430\u0441\u0442\u044f\u043c \u0441 \u043f\u0435\u0440\u0435\u043f\u0443\u0442\u0430\u043d\u043d\u044b\u043c\u0438 u \u0438 dv",
+      "status": "passed"
+    },
+    {
+      "package": "calc.expressions",
+      "suite": "tests/07-ambiguous-node.lawtest",
+      "title": "ambiguous-node",
+      "status": "passed"
+    },
+    {
+      "package": "calc.expressions",
+      "suite": "tests/13-missing-child.lawtest",
+      "title": "missing-child",
+      "status": "passed"
+    },
+    {
+      "package": "calc.expressions",
+      "suite": "tests/16-exponent-out-of-range.lawtest",
+      "title": "exponent-out-of-range",
+      "status": "passed"
+    },
+    {
+      "package": "calc.expressions",
+      "suite": "tests/22-budget-at-limit.lawtest",
+      "title": "budget-at-limit",
+      "status": "passed"
+    },
+    {
+      "package": "calc.expressions",
+      "suite": "tests/23-budget-exhausted.lawtest",
+      "title": "budget-exhausted",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/01-rational-cancel.lawtest",
+      "title": "\u0441\u043e\u043a\u0440\u0430\u0449\u0435\u043d\u0438\u0435 \u0443\u0441\u0442\u0440\u0430\u043d\u0438\u043c\u043e\u0439 \u043e\u0441\u043e\u0431\u0435\u043d\u043d\u043e\u0441\u0442\u0438",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/02-rational-double-root.lawtest",
+      "title": "\u043a\u0440\u0430\u0442\u043d\u044b\u0439 \u043d\u043e\u043b\u044c \u0447\u0438\u0441\u043b\u0438\u0442\u0435\u043b\u044f",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/03-infinity-plus.lawtest",
+      "title": "\u043e\u0442\u043d\u043e\u0448\u0435\u043d\u0438\u0435 \u043c\u043d\u043e\u0433\u043e\u0447\u043b\u0435\u043d\u043e\u0432 \u043d\u0430 \u043f\u043b\u044e\u0441 \u0431\u0435\u0441\u043a\u043e\u043d\u0435\u0447\u043d\u043e\u0441\u0442\u0438",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/04-infinity-minus.lawtest",
+      "title": "\u043e\u0442\u043d\u043e\u0448\u0435\u043d\u0438\u0435 \u043c\u043d\u043e\u0433\u043e\u0447\u043b\u0435\u043d\u043e\u0432 \u043d\u0430 \u043c\u0438\u043d\u0443\u0441 \u0431\u0435\u0441\u043a\u043e\u043d\u0435\u0447\u043d\u043e\u0441\u0442\u0438",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/05-one-sided-right.lawtest",
+      "title": "\u043e\u0434\u043d\u043e\u0441\u0442\u043e\u0440\u043e\u043d\u043d\u044f\u044f \u0431\u0435\u0441\u043a\u043e\u043d\u0435\u0447\u043d\u043e\u0441\u0442\u044c \u0441\u043f\u0440\u0430\u0432\u0430",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/06-one-sided-left.lawtest",
+      "title": "\u043e\u0434\u043d\u043e\u0441\u0442\u043e\u0440\u043e\u043d\u043d\u044f\u044f \u0431\u0435\u0441\u043a\u043e\u043d\u0435\u0447\u043d\u043e\u0441\u0442\u044c \u0441\u043b\u0435\u0432\u0430",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/07-two-sided-dne.lawtest",
+      "title": "\u0434\u043e\u043a\u0430\u0437\u0430\u043d\u043d\u043e\u0435 \u043d\u0435\u0441\u0443\u0449\u0435\u0441\u0442\u0432\u043e\u0432\u0430\u043d\u0438\u0435 \u0434\u0432\u0443\u0441\u0442\u043e\u0440\u043e\u043d\u043d\u0435\u0433\u043e \u043f\u0440\u0435\u0434\u0435\u043b\u0430",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/08-special-sin.lawtest",
+      "title": "\u043f\u0435\u0440\u0432\u044b\u0439 \u0437\u0430\u043c\u0435\u0447\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u043f\u0440\u0435\u0434\u0435\u043b",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/09-special-one-minus-cos.lawtest",
+      "title": "\u0432\u0442\u043e\u0440\u043e\u0439 \u0437\u0430\u043c\u0435\u0447\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u043f\u0440\u0435\u0434\u0435\u043b",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/10-lhopital-exp.lawtest",
+      "title": "\u043f\u0440\u0430\u0432\u0438\u043b\u043e \u041b\u043e\u043f\u0438\u0442\u0430\u043b\u044f \u043d\u0430\u0434 \u043f\u043e\u043a\u0430\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u043e\u0439",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/11-lhopital-ln.lawtest",
+      "title": "\u043f\u0440\u0430\u0432\u0438\u043b\u043e \u041b\u043e\u043f\u0438\u0442\u0430\u043b\u044f \u043d\u0430\u0434 \u043b\u043e\u0433\u0430\u0440\u0438\u0444\u043c\u043e\u043c \u0441\u043b\u043e\u0436\u043d\u043e\u0433\u043e \u0430\u0440\u0433\u0443\u043c\u0435\u043d\u0442\u0430",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/12-lhopital-twice.lawtest",
+      "title": "\u0434\u0432\u0443\u043a\u0440\u0430\u0442\u043d\u043e\u0435 \u043f\u0440\u0438\u043c\u0435\u043d\u0435\u043d\u0438\u0435 \u043f\u0440\u0430\u0432\u0438\u043b\u0430 \u041b\u043e\u043f\u0438\u0442\u0430\u043b\u044f",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/13-lhopital-infinity.lawtest",
+      "title": "\u043d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c \u221e/\u221e",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/14-sqrt-conjugate.lawtest",
+      "title": "\u043a\u043e\u0440\u0435\u043d\u044c: \u0443\u0441\u0442\u0440\u0430\u043d\u0438\u043c\u0430\u044f \u043e\u0441\u043e\u0431\u0435\u043d\u043d\u043e\u0441\u0442\u044c",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/15-oscillation-honest.lawtest",
+      "title": "\u043e\u0441\u0446\u0438\u043b\u043b\u044f\u0446\u0438\u044f: \u0447\u0435\u0441\u0442\u043d\u044b\u0439 \u043e\u0442\u043a\u0430\u0437",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/16-sqrt-negative-domain.lawtest",
+      "title": "\u043e\u0442\u0440\u0438\u0446\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u0430\u0440\u0433\u0443\u043c\u0435\u043d\u0442 \u043a\u043e\u0440\u043d\u044f",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/17-ln-right.lawtest",
+      "title": "\u043b\u043e\u0433\u0430\u0440\u0438\u0444\u043c \u0443 \u043d\u0443\u043b\u044f \u0441\u043f\u0440\u0430\u0432\u0430",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/18-ln-two-sided-domain.lawtest",
+      "title": "\u043d\u0435\u0434\u043e\u043f\u0443\u0441\u0442\u0438\u043c\u044b\u0439 \u043b\u043e\u0433\u0430\u0440\u0438\u0444\u043c \u0441\u043b\u0435\u0432\u0430",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/19-no-indeterminacy.lawtest",
+      "title": "\u041b\u043e\u043f\u0438\u0442\u0430\u043b\u044c \u0431\u0435\u0437 \u043d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u0438 \u043d\u0435 \u043f\u0440\u0438\u043c\u0435\u043d\u044f\u0435\u0442\u0441\u044f",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/20-lhopital-not-applied.lawtest",
+      "title": "\u043f\u0440\u0430\u0432\u0438\u043b\u043e \u041b\u043e\u043f\u0438\u0442\u0430\u043b\u044f \u043a \u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u043c\u0443 \u0447\u0430\u0441\u0442\u043d\u043e\u043c\u0443 \u043d\u0435 \u043f\u0440\u0438\u043c\u0435\u043d\u044f\u043b\u043e\u0441\u044c",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/21-lhopital-thrice.lawtest",
+      "title": "\u0442\u0440\u0438 \u043f\u0440\u0438\u043c\u0435\u043d\u0435\u043d\u0438\u044f \u043f\u0440\u0430\u0432\u0438\u043b\u0430 \u041b\u043e\u043f\u0438\u0442\u0430\u043b\u044f",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/22-invalid-node-id.lawtest",
+      "title": "\u0438\u0434\u0435\u043d\u0442\u0438\u0444\u0438\u043a\u0430\u0442\u043e\u0440 \u0432\u0445\u043e\u0434\u043d\u043e\u0433\u043e \u0443\u0437\u043b\u0430 \u0432\u043d\u0435 \u0434\u043e\u043f\u0443\u0441\u0442\u0438\u043c\u043e\u0433\u043e \u0434\u0438\u0430\u043f\u0430\u0437\u043e\u043d\u0430",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/23-budget-inside.lawtest",
+      "title": "\u0431\u044e\u0434\u0436\u0435\u0442 \u0440\u0430\u0443\u043d\u0434\u043e\u0432: \u0432\u043d\u0443\u0442\u0440\u0438 \u0433\u0440\u0430\u043d\u0438\u0446\u044b",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/24-budget-exhausted.lawtest",
+      "title": "\u0431\u044e\u0434\u0436\u0435\u0442 \u0440\u0430\u0443\u043d\u0434\u043e\u0432: \u0437\u0430 \u0433\u0440\u0430\u043d\u0438\u0446\u0435\u0439",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/25-trace-derivative-node.lawtest",
+      "title": "\u0445\u043e\u0434: \u043f\u043e\u0440\u043e\u0436\u0434\u0451\u043d\u043d\u044b\u0439 \u0443\u0437\u0435\u043b \u043f\u0440\u043e\u0438\u0437\u0432\u043e\u0434\u043d\u043e\u0439 \u0447\u0438\u0441\u043b\u0438\u0442\u0435\u043b\u044f",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/26-trace-method-name.lawtest",
+      "title": "\u0445\u043e\u0434: \u0438\u043c\u044f \u043f\u0440\u0430\u0432\u0438\u043b\u0430 \u043a\u0443\u0440\u0441\u0430 \u0434\u043b\u044f \u0441\u0442\u0440\u043e\u043a\u0438",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/27-trace-lhopital-applied.lawtest",
+      "title": "\u0445\u043e\u0434: \u0441\u0432\u0438\u0434\u0435\u0442\u0435\u043b\u044c\u0441\u0442\u0432\u043e \u043f\u0440\u0438\u043c\u0435\u043d\u0435\u043d\u0438\u044f \u043f\u0440\u0430\u0432\u0438\u043b\u0430 \u041b\u043e\u043f\u0438\u0442\u0430\u043b\u044f",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/28-trace-well-formed.lawtest",
+      "title": "\u0445\u043e\u0434: \u043f\u043e\u0440\u043e\u0436\u0434\u0451\u043d\u043d\u043e\u0435 \u0434\u0435\u0440\u0435\u0432\u043e \u043a\u043e\u0440\u0440\u0435\u043a\u0442\u043d\u043e \u043f\u043e \u043c\u043d\u0435\u043d\u0438\u044e \u0432\u043b\u0430\u0434\u0435\u043b\u044c\u0446\u0430 \u0444\u043e\u0440\u043c\u044b",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/29-condition-not-established.lawtest",
+      "title": "\u0443\u0441\u043b\u043e\u0432\u0438\u0435 \u043d\u0430 \u043f\u0440\u043e\u0438\u0437\u0432\u043e\u0434\u043d\u0443\u044e \u0437\u043d\u0430\u043c\u0435\u043d\u0430\u0442\u0435\u043b\u044f \u043d\u0435 \u0443\u0441\u0442\u0430\u043d\u043e\u0432\u043b\u0435\u043d\u043e",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/30-pole-shifted-both.lawtest",
+      "title": "\u0441\u0434\u0432\u0438\u043d\u0443\u0442\u044b\u0439 \u043f\u043e\u043b\u044e\u0441 \u043f\u0435\u0440\u0432\u043e\u0433\u043e \u043f\u043e\u0440\u044f\u0434\u043a\u0430: \u0434\u0432\u0443\u0441\u0442\u043e\u0440\u043e\u043d\u043d\u0435\u0433\u043e \u043d\u0435\u0442",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/31-pole-shifted-right.lawtest",
+      "title": "\u0441\u0434\u0432\u0438\u043d\u0443\u0442\u044b\u0439 \u043f\u043e\u043b\u044e\u0441 \u043f\u0435\u0440\u0432\u043e\u0433\u043e \u043f\u043e\u0440\u044f\u0434\u043a\u0430 \u0441\u043f\u0440\u0430\u0432\u0430",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/32-pole-double-root.lawtest",
+      "title": "\u0441\u0434\u0432\u0438\u043d\u0443\u0442\u044b\u0439 \u043f\u043e\u043b\u044e\u0441 \u0432\u0442\u043e\u0440\u043e\u0433\u043e \u043f\u043e\u0440\u044f\u0434\u043a\u0430 \u0441\u043f\u0440\u0430\u0432\u0430",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/33-leading-term-infinity.lawtest",
+      "title": "\u0441\u0442\u0430\u0440\u0448\u0438\u0439 \u0447\u043b\u0435\u043d \u043c\u043d\u043e\u0433\u043e\u0447\u043b\u0435\u043d\u0430 \u043d\u0430 \u043f\u043b\u044e\u0441 \u0431\u0435\u0441\u043a\u043e\u043d\u0435\u0447\u043d\u043e\u0441\u0442\u0438",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/34-pole-shifted-left.lawtest",
+      "title": "\u0441\u0434\u0432\u0438\u043d\u0443\u0442\u044b\u0439 \u043f\u043e\u043b\u044e\u0441 \u043f\u0435\u0440\u0432\u043e\u0433\u043e \u043f\u043e\u0440\u044f\u0434\u043a\u0430 \u0441\u043b\u0435\u0432\u0430",
+      "status": "passed"
+    },
+    {
+      "package": "calc.limit_solver",
+      "suite": "tests/35-pole-triple-root-honest.lawtest",
+      "title": "\u043f\u043e\u043b\u044e\u0441 \u0442\u0440\u0435\u0442\u044c\u0435\u0433\u043e \u043f\u043e\u0440\u044f\u0434\u043a\u0430: \u0447\u0435\u0441\u0442\u043d\u044b\u0439 \u043e\u0442\u043a\u0430\u0437",
+      "status": "passed"
+    },
+    {
+      "package": "calc.polynomials_q",
+      "suite": "tests/39-no-resource-contract.lawtest",
+      "title": "\u0434\u0435\u043b\u043e \u0431\u0435\u0437 \u0440\u0435\u0441\u0443\u0440\u0441\u043d\u043e\u0433\u043e \u043a\u043e\u043d\u0442\u0440\u0430\u043a\u0442\u0430 \u043e\u0442\u043a\u043b\u043e\u043d\u0435\u043d\u043e",
+      "status": "passed"
+    },
+    {
+      "package": "calc.polynomials_q",
+      "suite": "tests/40-slots-exceed-cap.lawtest",
+      "title": "\u043c\u043d\u043e\u0433\u043e\u0447\u043b\u0435\u043d \u0448\u0438\u0440\u0435 \u043e\u0431\u044a\u044f\u0432\u043b\u0435\u043d\u043d\u043e\u0433\u043e \u043f\u0440\u0435\u0434\u0435\u043b\u0430 \u043e\u0442\u043a\u043b\u043e\u043d\u0451\u043d",
+      "status": "passed"
+    },
+    {
+      "package": "calc.polynomials_q",
+      "suite": "tests/42-incomplete-input.lawtest",
+      "title": "\u043d\u0435\u043f\u043b\u043e\u0442\u043d\u043e\u0435 \u043f\u0440\u0435\u0434\u044a\u044f\u0432\u043b\u0435\u043d\u0438\u0435 \u043e\u0442\u043a\u043b\u043e\u043d\u0435\u043d\u043e",
+      "status": "passed"
+    },
+    {
+      "package": "calc.polynomials_q",
+      "suite": "tests/43-contradictory-term.lawtest",
+      "title": "\u0434\u0432\u0430 \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u044f \u043e\u0434\u043d\u043e\u0433\u043e \u043c\u0435\u0441\u0442\u0430 \u043e\u0442\u043a\u043b\u043e\u043d\u0435\u043d\u044b",
+      "status": "passed"
+    },
+    {
+      "package": "calc.polynomials_q",
+      "suite": "tests/50-derivative-of-constant.lawtest",
+      "title": "\u043f\u0440\u043e\u0438\u0437\u0432\u043e\u0434\u043d\u0430\u044f \u043a\u043e\u043d\u0441\u0442\u0430\u043d\u0442\u044b \u0435\u0441\u0442\u044c \u043d\u0443\u043b\u0435\u0432\u043e\u0439 \u043c\u043d\u043e\u0433\u043e\u0447\u043b\u0435\u043d",
+      "status": "passed"
+    },
+    {
+      "package": "calc.polynomials_q",
+      "suite": "tests/51-derivative-drops-degree.lawtest",
+      "title": "\u0441\u0442\u0435\u043f\u0435\u043d\u044c \u043f\u0440\u043e\u0438\u0437\u0432\u043e\u0434\u043d\u043e\u0439 \u043d\u0430 \u043e\u0434\u0438\u043d \u043c\u0435\u043d\u044c\u0448\u0435",
+      "status": "passed"
+    },
+    {
+      "package": "calc.polynomials_q",
+      "suite": "tests/52-derivative-coefficient.lawtest",
+      "title": "\u043a\u043e\u044d\u0444\u0444\u0438\u0446\u0438\u0435\u043d\u0442 \u043f\u0440\u043e\u0438\u0437\u0432\u043e\u0434\u043d\u043e\u0439",
+      "status": "passed"
+    },
+    {
+      "package": "calc.polynomials_q",
+      "suite": "tests/53-antiderivative-is-inverse.lawtest",
+      "title": "\u043f\u0435\u0440\u0432\u043e\u043e\u0431\u0440\u0430\u0437\u043d\u0430\u044f \u0438 \u043f\u0440\u043e\u0438\u0437\u0432\u043e\u0434\u043d\u0430\u044f \u043e\u0431\u0440\u0430\u0442\u043d\u044b",
+      "status": "passed"
+    },
+    {
+      "package": "calc.polynomials_q",
+      "suite": "tests/54-definite-integral-fractional-limits.lawtest",
+      "title": "\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u044b\u0439 \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u043b \u0441 \u0434\u0440\u043e\u0431\u043d\u044b\u043c\u0438 \u043f\u0440\u0435\u0434\u0435\u043b\u0430\u043c\u0438",
+      "status": "passed"
+    },
+    {
+      "package": "calc.polynomials_q",
+      "suite": "tests/55-bridge-reads-polynomial.lawtest",
+      "title": "\u0432\u044b\u0440\u0430\u0436\u0435\u043d\u0438\u0435 \u043f\u0440\u043e\u0447\u0438\u0442\u0430\u043d\u043e \u043c\u043d\u043e\u0433\u043e\u0447\u043b\u0435\u043d\u043e\u043c",
+      "status": "passed"
+    },
+    {
+      "package": "calc.polynomials_q",
+      "suite": "tests/56-bridge-refuses-sine.lawtest",
+      "title": "\u0441\u0438\u043d\u0443\u0441 \u043c\u043d\u043e\u0433\u043e\u0447\u043b\u0435\u043d\u043e\u043c \u043d\u0435 \u044f\u0432\u043b\u044f\u0435\u0442\u0441\u044f",
+      "status": "passed"
+    },
+    {
+      "package": "calc.polynomials_q",
+      "suite": "tests/58-bridge-power-leaf.lawtest",
+      "title": "\u043c\u043e\u0441\u0442 \u0447\u0438\u0442\u0430\u0435\u0442 \u0441\u0442\u0435\u043f\u0435\u043d\u044c \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_derivatives",
+      "suite": "tests/01-instruction-without-a-case.lawtest",
+      "title": "\u0438\u043d\u0441\u0442\u0440\u0443\u043a\u0446\u0438\u044f \u043f\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u0435\u0442\u0441\u044f \u0431\u0435\u0437 \u0432\u0441\u044f\u043a\u043e\u0433\u043e \u0434\u0435\u043b\u0430",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_derivatives",
+      "suite": "tests/02-step-justified-by-the-power-rule.lawtest",
+      "title": "\u0448\u0430\u0433 \u043e\u0431\u043e\u0441\u043d\u043e\u0432\u0430\u043d \u043f\u0440\u0430\u0432\u0438\u043b\u043e\u043c \u0441\u0442\u0435\u043f\u0435\u043d\u0438",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_derivatives",
+      "suite": "tests/03-constant-rule.lawtest",
+      "title": "\u0448\u0430\u0433 \u043e\u0431\u043e\u0441\u043d\u043e\u0432\u0430\u043d \u043f\u0440\u0430\u0432\u0438\u043b\u043e\u043c \u043a\u043e\u043d\u0441\u0442\u0430\u043d\u0442\u044b",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_derivatives",
+      "suite": "tests/04-sum-rule.lawtest",
+      "title": "\u0448\u0430\u0433 \u043e\u0431\u043e\u0441\u043d\u043e\u0432\u0430\u043d \u043f\u0440\u0430\u0432\u0438\u043b\u043e\u043c \u0441\u0443\u043c\u043c\u044b",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_derivatives",
+      "suite": "tests/05-constant-multiple.lawtest",
+      "title": "\u0448\u0430\u0433 \u043e\u0431\u043e\u0441\u043d\u043e\u0432\u0430\u043d \u043f\u043e\u0441\u0442\u043e\u044f\u043d\u043d\u044b\u043c \u043c\u043d\u043e\u0436\u0438\u0442\u0435\u043b\u0435\u043c",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_derivatives",
+      "suite": "tests/06-product-rule.lawtest",
+      "title": "\u0448\u0430\u0433 \u043e\u0431\u043e\u0441\u043d\u043e\u0432\u0430\u043d \u043f\u0440\u0430\u0432\u0438\u043b\u043e\u043c \u043f\u0440\u043e\u0438\u0437\u0432\u0435\u0434\u0435\u043d\u0438\u044f",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_derivatives",
+      "suite": "tests/07-quotient-rule.lawtest",
+      "title": "\u0448\u0430\u0433 \u043e\u0431\u043e\u0441\u043d\u043e\u0432\u0430\u043d \u043f\u0440\u0430\u0432\u0438\u043b\u043e\u043c \u0447\u0430\u0441\u0442\u043d\u043e\u0433\u043e",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_derivatives",
+      "suite": "tests/08-chain-rule.lawtest",
+      "title": "\u0448\u0430\u0433 \u043e\u0431\u043e\u0441\u043d\u043e\u0432\u0430\u043d \u0446\u0435\u043f\u043d\u044b\u043c \u043f\u0440\u0430\u0432\u0438\u043b\u043e\u043c",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_derivatives",
+      "suite": "tests/09-derivative-sin.lawtest",
+      "title": "\u0448\u0430\u0433 \u043e\u0431\u043e\u0441\u043d\u043e\u0432\u0430\u043d \u043f\u0440\u043e\u0438\u0437\u0432\u043e\u0434\u043d\u043e\u0439 \u0441\u0438\u043d\u0443\u0441\u0430",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_derivatives",
+      "suite": "tests/10-derivative-cos.lawtest",
+      "title": "\u0448\u0430\u0433 \u043e\u0431\u043e\u0441\u043d\u043e\u0432\u0430\u043d \u043f\u0440\u043e\u0438\u0437\u0432\u043e\u0434\u043d\u043e\u0439 \u043a\u043e\u0441\u0438\u043d\u0443\u0441\u0430",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_derivatives",
+      "suite": "tests/11-derivative-exp.lawtest",
+      "title": "\u0448\u0430\u0433 \u043e\u0431\u043e\u0441\u043d\u043e\u0432\u0430\u043d \u043f\u0440\u043e\u0438\u0437\u0432\u043e\u0434\u043d\u043e\u0439 \u043f\u043e\u043a\u0430\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u043e\u0439",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_derivatives",
+      "suite": "tests/12-derivative-ln.lawtest",
+      "title": "\u0448\u0430\u0433 \u043e\u0431\u043e\u0441\u043d\u043e\u0432\u0430\u043d \u043f\u0440\u043e\u0438\u0437\u0432\u043e\u0434\u043d\u043e\u0439 \u043b\u043e\u0433\u0430\u0440\u0438\u0444\u043c\u0430",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_derivatives",
+      "suite": "tests/solver-inputs.lawtest",
+      "title": "ambiguous-polynomial-task",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_derivatives",
+      "suite": "tests/solver-inputs.lawtest",
+      "title": "differentiate-compound-power",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_derivatives",
+      "suite": "tests/solver-inputs.lawtest",
+      "title": "differentiate-constant",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_derivatives",
+      "suite": "tests/solver-inputs.lawtest",
+      "title": "differentiate-polynomial",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_derivatives",
+      "suite": "tests/solver-inputs.lawtest",
+      "title": "differentiate-power-boundary",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_derivatives",
+      "suite": "tests/solver-inputs.lawtest",
+      "title": "differentiate-product",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_derivatives",
+      "suite": "tests/solver-inputs.lawtest",
+      "title": "differentiate-rational",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_derivatives",
+      "suite": "tests/solver-inputs.lawtest",
+      "title": "differentiate-unary-minus",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_derivatives",
+      "suite": "tests/solver-inputs.lawtest",
+      "title": "differentiate-unsupported",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_derivatives",
+      "suite": "tests/solver-inputs.lawtest",
+      "title": "differentiate-zero",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_derivatives",
+      "suite": "tests/solver-inputs.lawtest",
+      "title": "missing-polynomial-budget",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_derivatives",
+      "suite": "tests/solver-inputs.lawtest",
+      "title": "polynomial-cap-exhausted",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_integrals",
+      "suite": "tests/01-instruction-without-a-case.lawtest",
+      "title": "\u0444\u043e\u0440\u043c\u0443\u043b\u0430 \u043f\u043e \u0447\u0430\u0441\u0442\u044f\u043c \u043f\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u0435\u0442\u0441\u044f \u0431\u0435\u0437 \u0434\u0435\u043b\u0430",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_integrals",
+      "suite": "tests/02-step-justified-by-integration-by-parts.lawtest",
+      "title": "\u0448\u0430\u0433 \u043e\u0431\u043e\u0441\u043d\u043e\u0432\u0430\u043d \u0438\u043d\u0442\u0435\u0433\u0440\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u0435\u043c \u043f\u043e \u0447\u0430\u0441\u0442\u044f\u043c",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_integrals",
+      "suite": "tests/03-antiderivative-power.lawtest",
+      "title": "\u0448\u0430\u0433 \u043e\u0431\u043e\u0441\u043d\u043e\u0432\u0430\u043d \u043f\u0435\u0440\u0432\u043e\u043e\u0431\u0440\u0430\u0437\u043d\u043e\u0439 \u0441\u0442\u0435\u043f\u0435\u043d\u0438",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_integrals",
+      "suite": "tests/04-table-antiderivative.lawtest",
+      "title": "\u0448\u0430\u0433 \u043e\u0431\u043e\u0441\u043d\u043e\u0432\u0430\u043d \u0442\u0430\u0431\u043b\u0438\u0446\u0435\u0439 \u043f\u0435\u0440\u0432\u043e\u043e\u0431\u0440\u0430\u0437\u043d\u044b\u0445",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_integrals",
+      "suite": "tests/05-net-change.lawtest",
+      "title": "\u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435 \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u043b\u0430 \u043e\u0431\u043e\u0441\u043d\u043e\u0432\u0430\u043d\u043e \u0442\u0435\u043e\u0440\u0435\u043c\u043e\u0439 \u043e \u0447\u0438\u0441\u0442\u043e\u043c \u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u0438",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_integrals",
+      "suite": "tests/06-ftc-part-two-boundary.lawtest",
+      "title": "\u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043d\u044b\u0439 \u0448\u0430\u0433 \u0438\u043d\u043e\u0439 \u043c\u0435\u0442\u043e\u0434\u044b \u0433\u0440\u0430\u043d\u0438\u0446\u0435\u0439 \u043d\u0435 \u043f\u0440\u0438\u043d\u0438\u043c\u0430\u0435\u0442\u0441\u044f",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_integrals",
+      "suite": "tests/06-ftc-part-two-boundary.lawtest",
+      "title": "\u0443\u0441\u043b\u043e\u0432\u0438\u044f \u041d\u044c\u044e\u0442\u043e\u043d\u0430\u2013\u041b\u0435\u0439\u0431\u043d\u0438\u0446\u0430 \u043f\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u044e\u0442\u0441\u044f \u0438\u043d\u0441\u0442\u0440\u0443\u043a\u0446\u0438\u0435\u0439",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_integrals",
+      "suite": "tests/06-ftc-part-two-boundary.lawtest",
+      "title": "\u0448\u0430\u0433 \u043f\u043e \u043e\u0441\u043d\u043e\u0432\u043d\u043e\u0439 \u0442\u0435\u043e\u0440\u0435\u043c\u0435 \u043f\u0440\u0438\u043d\u044f\u0442 \u043d\u0430\u0437\u0432\u0430\u043d\u043d\u043e\u0439 \u0433\u0440\u0430\u043d\u0438\u0446\u0435\u0439",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_integrals",
+      "suite": "tests/07-table-antiderivative-sin.lawtest",
+      "title": "\u0448\u0430\u0433 \u043e\u0431\u043e\u0441\u043d\u043e\u0432\u0430\u043d \u0442\u0430\u0431\u043b\u0438\u0446\u0435\u0439 \u043f\u0435\u0440\u0432\u043e\u043e\u0431\u0440\u0430\u0437\u043d\u044b\u0445: \u0441\u0438\u043d\u0443\u0441",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_integrals",
+      "suite": "tests/solver-inputs.lawtest",
+      "title": "ambiguous-integral-bounds",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_integrals",
+      "suite": "tests/solver-inputs.lawtest",
+      "title": "ambiguous-integration-constant",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_integrals",
+      "suite": "tests/solver-inputs.lawtest",
+      "title": "antidifferentiate-constant-choice",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_integrals",
+      "suite": "tests/solver-inputs.lawtest",
+      "title": "antidifferentiate-polynomial",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_integrals",
+      "suite": "tests/solver-inputs.lawtest",
+      "title": "integrate-polynomial",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_integrals",
+      "suite": "tests/solver-inputs.lawtest",
+      "title": "integrate-rational",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_integrals",
+      "suite": "tests/solver-inputs.lawtest",
+      "title": "integrate-reversed",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_integrals",
+      "suite": "tests/solver-inputs.lawtest",
+      "title": "integrate-zero-width",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_integrals",
+      "suite": "tests/solver-inputs.lawtest",
+      "title": "missing-integration-constant",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_limits",
+      "suite": "tests/01-instruction.lawtest",
+      "title": "\u0438\u043d\u0441\u0442\u0440\u0443\u043a\u0446\u0438\u044f \u0434\u043e\u0441\u0442\u0443\u043f\u043d\u0430 \u0431\u0435\u0437 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d\u043d\u043e\u0433\u043e \u0445\u043e\u0434\u0430",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_limits",
+      "suite": "tests/02-limit_given-ok.lawtest",
+      "title": "\u0444\u0440\u0430\u0433\u043c\u0435\u043d\u0442 CL_LIMIT_DEFINITION: limit_given",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_limits",
+      "suite": "tests/03-limit_constant-ok.lawtest",
+      "title": "\u0444\u0440\u0430\u0433\u043c\u0435\u043d\u0442 CL_BASIC: limit_constant",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_limits",
+      "suite": "tests/04-limit_identity-ok.lawtest",
+      "title": "\u0444\u0440\u0430\u0433\u043c\u0435\u043d\u0442 CL_BASIC: limit_identity",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_limits",
+      "suite": "tests/05-limit_sum-ok.lawtest",
+      "title": "\u0444\u0440\u0430\u0433\u043c\u0435\u043d\u0442 CL_LAWS: limit_sum",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_limits",
+      "suite": "tests/06-limit_difference-ok.lawtest",
+      "title": "\u0444\u0440\u0430\u0433\u043c\u0435\u043d\u0442 CL_LAWS: limit_difference",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_limits",
+      "suite": "tests/07-limit_product-ok.lawtest",
+      "title": "\u0444\u0440\u0430\u0433\u043c\u0435\u043d\u0442 CL_LAWS: limit_product",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_limits",
+      "suite": "tests/08-limit_constant_multiple-ok.lawtest",
+      "title": "\u0444\u0440\u0430\u0433\u043c\u0435\u043d\u0442 CL_LAWS: limit_constant_multiple",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_limits",
+      "suite": "tests/09-limit_power-ok.lawtest",
+      "title": "\u0444\u0440\u0430\u0433\u043c\u0435\u043d\u0442 CL_LAWS: limit_power",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_limits",
+      "suite": "tests/10-limit_quotient-ok.lawtest",
+      "title": "\u0444\u0440\u0430\u0433\u043c\u0435\u043d\u0442 CL_LAWS: limit_quotient",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_limits",
+      "suite": "tests/11-substitution-ratio-ok.lawtest",
+      "title": "\u0444\u0440\u0430\u0433\u043c\u0435\u043d\u0442 CL_SUBSTITUTION: direct_substitution",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_limits",
+      "suite": "tests/12-factor-cancel-ok.lawtest",
+      "title": "\u0444\u0440\u0430\u0433\u043c\u0435\u043d\u0442 CL_CANCEL: factor_and_cancel",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_limits",
+      "suite": "tests/13-continuity-exp-ok.lawtest",
+      "title": "\u0444\u0440\u0430\u0433\u043c\u0435\u043d\u0442 CL_CONTINUITY: continuity",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_limits",
+      "suite": "tests/14-continuity-sin-ok.lawtest",
+      "title": "\u0444\u0440\u0430\u0433\u043c\u0435\u043d\u0442 CL_TRIG_CONTINUITY: continuity",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_limits",
+      "suite": "tests/15-special_limit_sin-ok.lawtest",
+      "title": "\u0444\u0440\u0430\u0433\u043c\u0435\u043d\u0442 CL_SPECIAL: special_limit_sin",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_limits",
+      "suite": "tests/16-special_limit_one_minus_cos-ok.lawtest",
+      "title": "\u0444\u0440\u0430\u0433\u043c\u0435\u043d\u0442 CL_SPECIAL: special_limit_one_minus_cos",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_limits",
+      "suite": "tests/17-one_sided_agree-ok.lawtest",
+      "title": "\u0444\u0440\u0430\u0433\u043c\u0435\u043d\u0442 CL_ONE_SIDED: one_sided_agree",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_limits",
+      "suite": "tests/18-one_sided_differ-ok.lawtest",
+      "title": "\u0444\u0440\u0430\u0433\u043c\u0435\u043d\u0442 CL_ONE_SIDED: one_sided_differ",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_limits",
+      "suite": "tests/19-infinity-rational-ok.lawtest",
+      "title": "\u0444\u0440\u0430\u0433\u043c\u0435\u043d\u0442 CL_INFINITY: limit_at_infinity_rational",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_limits",
+      "suite": "tests/20-lhopital-zero.lawtest",
+      "title": "\u0444\u0440\u0430\u0433\u043c\u0435\u043d\u0442 CL_LHOPITAL_ZERO: lhopital",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_limits",
+      "suite": "tests/21-lhopital-infinity.lawtest",
+      "title": "\u0444\u0440\u0430\u0433\u043c\u0435\u043d\u0442 CL_LHOPITAL_INFINITY: lhopital",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_limits",
+      "suite": "tests/solver-inputs.lawtest",
+      "title": "limit-cancel",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_limits",
+      "suite": "tests/solver-inputs.lawtest",
+      "title": "limit-cosine",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_limits",
+      "suite": "tests/solver-inputs.lawtest",
+      "title": "limit-exponential",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_limits",
+      "suite": "tests/solver-inputs.lawtest",
+      "title": "limit-leading-term",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_limits",
+      "suite": "tests/solver-inputs.lawtest",
+      "title": "limit-logarithm",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_limits",
+      "suite": "tests/solver-inputs.lawtest",
+      "title": "limit-right-pole",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_limits",
+      "suite": "tests/solver-inputs.lawtest",
+      "title": "limit-sine",
+      "status": "passed"
+    },
+    {
+      "package": "openstax.calculus_limits",
+      "suite": "tests/solver-inputs.lawtest",
+      "title": "limit-two-sided-pole",
+      "status": "passed"
+    }
+  ]
+}
