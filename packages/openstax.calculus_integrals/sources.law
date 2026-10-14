@@ -1,0 +1,290 @@
+// Source-модель: закреплённые байты 6 модулей CNXML
+// Calculus Volume 1 chapters 4–5 and Volume 2 chapter 3 — antiderivatives, the definite integral and integration by parts и 9 фрагментов по идентификаторам элементов —
+// определения и нормативные формулировки правил учебника.
+//
+// ФАЙЛ ПОРОЖДАЕТСЯ. Правится только генератором —
+// `corpus/tools/sources/sync/sync_openstax_calculus_fragments.py`; сверка без
+// записи — его же ключом `--check`. Тексты вырезаются из
+// `sources/calculus-integrals/*.cnxml`, поэтому разойтись с публикацией не могут.
+//
+// ПРОВЕНАНС. Байты — CNXML-исходники модулей на коммите main
+// 8dbc2ce19e804924b2517b89ac72ee45be949d15 репозитория
+// github.com/openstax/osbooks-calculus-bundle (2026-07-15).
+// PINNED_OFFICIAL_BYTES: это те самые байты, которые издатель публикует.
+//
+// ЛИЦЕНЗИЯ ИСТОЧНИКА — CC BY-NC-SA 4.0. OpenStax Calculus распространяется
+// под Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+// (лицензия объявлена в самом `calculus-volume-N.collection.xml`, элемент
+// `md:license`). У неё ДВА ограничения, которых нет у прочих источников
+// корпуса: некоммерческое использование и share-alike. Закрепление байтов с
+// атрибуцией лицензией допускается; ограничение названо здесь и в
+// `[metadata]` пакета — DECISION-0196 §2, прецедент физики 06.09.2026.
+//
+// ЕДИНИЦА ЦИТИРОВАНИЯ — ЭЛЕМЕНТ МОДУЛЯ. Локатор `module/<модуль>#<id>`;
+// разметка CNXML внутри фрагмента сохранена как есть (§13). Доказательства и
+// упражнения в срез не входят.
+
+language "law.core" version "0.2";
+package openstax.calculus_integrals version "0.1.1";
+namespace "urn:openstax:clir:calculus-integrals";
+
+source M53621 {
+    kind treatise;
+    jurisdiction "none";
+    number "OpenStax Calculus, ch. 4 Applications of Derivatives, module m53621";
+    label en official "Antiderivatives";
+}
+
+edition M53621_MAIN of M53621 {
+    label en official "m53621/index.cnxml at commit 8dbc2ce (main, 2026-07-15)";
+    label ru unofficial "Файл m53621/index.cnxml на коммите 8dbc2ce ветки main";
+    language en;
+    officiality official;
+    adopted @2026-07-15;
+    materialization_status PINNED_OFFICIAL_BYTES;
+}
+
+publication M53621_CNXML of M53621_MAIN {
+    media_type "application/xml; charset=utf-8";
+    uri "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53621/index.cnxml";
+    retrieved_at @2026-09-12T00:00:00Z;
+    content_hash "sha256:368612823e0e54e1f08bcdddcf0c9380d69ed13e6a3dea5075e01fef655a3eb1";
+    local_path "sources/calculus-integrals/m53621.cnxml";
+}
+
+source M53623 {
+    kind treatise;
+    jurisdiction "none";
+    number "OpenStax Calculus, ch. 5 Integration, module m53623";
+    label en official "Introduction";
+}
+
+edition M53623_MAIN of M53623 {
+    label en official "m53623/index.cnxml at commit 8dbc2ce (main, 2026-07-15)";
+    label ru unofficial "Файл m53623/index.cnxml на коммите 8dbc2ce ветки main";
+    language en;
+    officiality official;
+    adopted @2026-07-15;
+    materialization_status PINNED_OFFICIAL_BYTES;
+}
+
+publication M53623_CNXML of M53623_MAIN {
+    media_type "application/xml; charset=utf-8";
+    uri "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53623/index.cnxml";
+    retrieved_at @2026-09-12T00:00:00Z;
+    content_hash "sha256:1691e917ed545efcd23fee144189cead4dc4e5c697b2549c4e6ffa951e89757d";
+    local_path "sources/calculus-integrals/m53623.cnxml";
+}
+
+source M53631 {
+    kind treatise;
+    jurisdiction "none";
+    number "OpenStax Calculus, ch. 5 Integration, module m53631";
+    label en official "The Definite Integral";
+}
+
+edition M53631_MAIN of M53631 {
+    label en official "m53631/index.cnxml at commit 8dbc2ce (main, 2026-07-15)";
+    label ru unofficial "Файл m53631/index.cnxml на коммите 8dbc2ce ветки main";
+    language en;
+    officiality official;
+    adopted @2026-07-15;
+    materialization_status PINNED_OFFICIAL_BYTES;
+}
+
+publication M53631_CNXML of M53631_MAIN {
+    media_type "application/xml; charset=utf-8";
+    uri "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53631/index.cnxml";
+    retrieved_at @2026-09-12T00:00:00Z;
+    content_hash "sha256:12ffeaa33f9f990dedc128214239abb7fbef92d13556990bb1c79a6ec0ed223e";
+    local_path "sources/calculus-integrals/m53631.cnxml";
+}
+
+source M53632 {
+    kind treatise;
+    jurisdiction "none";
+    number "OpenStax Calculus, ch. 5 Integration, module m53632";
+    label en official "The Fundamental Theorem of Calculus";
+}
+
+edition M53632_MAIN of M53632 {
+    label en official "m53632/index.cnxml at commit 8dbc2ce (main, 2026-07-15)";
+    label ru unofficial "Файл m53632/index.cnxml на коммите 8dbc2ce ветки main";
+    language en;
+    officiality official;
+    adopted @2026-07-15;
+    materialization_status PINNED_OFFICIAL_BYTES;
+}
+
+publication M53632_CNXML of M53632_MAIN {
+    media_type "application/xml; charset=utf-8";
+    uri "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53632/index.cnxml";
+    retrieved_at @2026-09-12T00:00:00Z;
+    content_hash "sha256:730f40d14f0ae8e84dca2c53116a1b044f6521b54e4a4b21f22a500825e33c7a";
+    local_path "sources/calculus-integrals/m53632.cnxml";
+}
+
+source M53633 {
+    kind treatise;
+    jurisdiction "none";
+    number "OpenStax Calculus, ch. 5 Integration, module m53633";
+    label en official "Integration Formulas and the Net Change Theorem";
+}
+
+edition M53633_MAIN of M53633 {
+    label en official "m53633/index.cnxml at commit 8dbc2ce (main, 2026-07-15)";
+    label ru unofficial "Файл m53633/index.cnxml на коммите 8dbc2ce ветки main";
+    language en;
+    officiality official;
+    adopted @2026-07-15;
+    materialization_status PINNED_OFFICIAL_BYTES;
+}
+
+publication M53633_CNXML of M53633_MAIN {
+    media_type "application/xml; charset=utf-8";
+    uri "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53633/index.cnxml";
+    retrieved_at @2026-09-12T00:00:00Z;
+    content_hash "sha256:a94ea4a8f62d8613744d11e9506517dcaf265286f13c5581479a31d5440e6722";
+    local_path "sources/calculus-integrals/m53633.cnxml";
+}
+
+source M53656 {
+    kind treatise;
+    jurisdiction "none";
+    number "OpenStax Calculus, ch. 3 Techniques of Integration (Volume 2), module m53656";
+    label en official "Integration by Parts";
+}
+
+edition M53656_MAIN of M53656 {
+    label en official "m53656/index.cnxml at commit 8dbc2ce (main, 2026-07-15)";
+    label ru unofficial "Файл m53656/index.cnxml на коммите 8dbc2ce ветки main";
+    language en;
+    officiality official;
+    adopted @2026-07-15;
+    materialization_status PINNED_OFFICIAL_BYTES;
+}
+
+publication M53656_CNXML of M53656_MAIN {
+    media_type "application/xml; charset=utf-8";
+    uri "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53656/index.cnxml";
+    retrieved_at @2026-09-12T00:00:00Z;
+    content_hash "sha256:1a5687db35d297d966b060133293c34c7167fe8abe1246de759273832fa9bf78";
+    local_path "sources/calculus-integrals/m53656.cnxml";
+}
+
+// m53621 «Antiderivatives» — fs-id1165042478105
+fragment CI_ANTIDERIVATIVE_DEFINITION in M53621_MAIN {
+    kind defn;
+    locator "module/m53621#fs-id1165042478105";
+    text en official """<note id="fs-id1165042478105">
+<title>Definition</title>
+<para id="fs-id1165042887564">A function <m:math><m:mi>F</m:mi></m:math> is an <term id="term-00001">antiderivative</term> of the function <m:math><m:mi>f</m:mi></m:math> if</para>
+<equation id="fs-id1165042945928" class="unnumbered"><label/><m:math><m:mrow><m:msup><m:mi>F</m:mi><m:mo>′</m:mo></m:msup><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math></equation>
+<para id="fs-id1165042964886">for all <m:math><m:mi>x</m:mi></m:math> in the domain of <m:math><m:mrow><m:mi>f</m:mi><m:mo>.</m:mo></m:mrow></m:math></para>
+</note>""";
+    content_hash "sha256:d918628fc3a473b1f61f53afa3a0546c0c4d79c29deea6af9ebdaf7d042ee3e7";
+}
+
+// m53621 «Antiderivatives» — fs-id1165043376527
+fragment CI_GENERAL_FORM in M53621_MAIN {
+    kind section;
+    locator "module/m53621#fs-id1165043376527";
+    text en official """<note id="fs-id1165043376527" class="theorem">
+<title>General Form of an Antiderivative</title>
+<para id="fs-id1165042884523">Let <m:math><m:mi>F</m:mi></m:math> be an antiderivative of <m:math><m:mi>f</m:mi></m:math> over an interval <m:math><m:mrow><m:mi>I</m:mi><m:mo>.</m:mo></m:mrow></m:math> Then,</para>
+<list id="fs-id1165043009392" list-type="enumerated" number-style="lower-roman">
+<item>for each constant <m:math><m:mrow><m:mi>C</m:mi><m:mo>,</m:mo></m:mrow></m:math> the function <m:math><m:mrow><m:mi>F</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>+</m:mo><m:mi>C</m:mi></m:mrow></m:math> is also an antiderivative of <m:math><m:mi>f</m:mi></m:math> over <m:math><m:mrow><m:mi>I</m:mi><m:mo>;</m:mo></m:mrow></m:math></item>
+<item>if <m:math><m:mi>G</m:mi></m:math> is an antiderivative of <m:math><m:mi>f</m:mi></m:math> over <m:math><m:mrow><m:mi>I</m:mi><m:mo>,</m:mo></m:mrow></m:math> there is a constant <m:math><m:mi>C</m:mi></m:math> for which <m:math><m:mrow><m:mi>G</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mi>F</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>+</m:mo><m:mi>C</m:mi></m:mrow></m:math> over <m:math><m:mrow><m:mi>I</m:mi><m:mo>.</m:mo></m:mrow></m:math></item>
+</list>
+<para id="fs-id1165042987370">In other words, the most general form of the antiderivative of <m:math><m:mi>f</m:mi></m:math> over <m:math><m:mi>I</m:mi></m:math> is <m:math><m:mrow><m:mi>F</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>+</m:mo><m:mi>C</m:mi><m:mo>.</m:mo></m:mrow></m:math></para>
+</note>""";
+    content_hash "sha256:d5cd50df03712820760ebb3ee2c519cd8be6f22c1ec8c81afa78c792997faa7c";
+}
+
+// m53621 «Antiderivatives» — fs-id1165043425485
+fragment CI_INDEFINITE_PROPERTIES in M53621_MAIN {
+    kind section;
+    locator "module/m53621#fs-id1165043425485";
+    text en official """<note id="fs-id1165043425485" class="theorem">
+<title>Properties of Indefinite Integrals</title>
+<para id="fs-id1165043395041">Let <m:math><m:mi>F</m:mi></m:math> and <m:math><m:mi>G</m:mi></m:math> be antiderivatives of <m:math><m:mi>f</m:mi></m:math> and <m:math><m:mrow><m:mi>g</m:mi><m:mo>,</m:mo></m:mrow></m:math> respectively, and let <m:math><m:mi>k</m:mi></m:math> be any real number.</para>
+<para id="fs-id1165043393659">Sums and Differences</para>
+<equation id="fs-id1165043393663" class="unnumbered"><label/><m:math><m:mrow><m:mstyle displaystyle="true"><m:mrow><m:mo stretchy="false">∫</m:mo><m:mrow><m:mrow><m:mo>(</m:mo><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mtext>±</m:mtext><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow><m:mo>)</m:mo></m:mrow><m:mi>d</m:mi><m:mi>x</m:mi><m:mo>=</m:mo><m:mi>F</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mtext>±</m:mtext><m:mi>G</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>+</m:mo><m:mi>C</m:mi></m:mrow></m:mrow></m:mstyle></m:mrow></m:math></equation>
+<para id="fs-id1165042328714">Constant Multiples</para>
+<equation id="fs-id1165042328717" class="unnumbered"><label/><m:math><m:mrow><m:mstyle displaystyle="true"><m:mrow><m:mo stretchy="false">∫</m:mo><m:mrow><m:mi>k</m:mi><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mi>d</m:mi><m:mi>x</m:mi><m:mo>=</m:mo><m:mi>k</m:mi><m:mi>F</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>+</m:mo><m:mi>C</m:mi></m:mrow></m:mrow></m:mstyle></m:mrow></m:math></equation>
+</note>""";
+    content_hash "sha256:23e76aa66c151b780cb0b77b76deeb6be96779c5d871a16bcf57d1624404f0af";
+}
+
+// m53631 «The Definite Integral» — fs-id1170572548884
+fragment CI_DEFINITE_INTEGRAL_DEFINITION in M53631_MAIN {
+    kind defn;
+    locator "module/m53631#fs-id1170572548884";
+    text en official """<note id="fs-id1170572548884">
+<title>Definition</title>
+<para id="fs-id1170572449507">If <m:math><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> is a function defined on an interval <m:math><m:mrow><m:mrow><m:mo>[</m:mo><m:mrow><m:mi>a</m:mi><m:mo>,</m:mo><m:mi>b</m:mi></m:mrow><m:mo>]</m:mo></m:mrow><m:mo>,</m:mo></m:mrow></m:math> the <term id="term-00001">definite integral</term> of <emphasis effect="italics">f</emphasis> from <emphasis effect="italics">a</emphasis> to <emphasis effect="italics">b</emphasis> is given by</para>
+<equation id="fs-id1170572280427"><m:math><m:mrow><m:mstyle displaystyle="true"><m:mrow><m:msubsup><m:mo>∫</m:mo><m:mi>a</m:mi><m:mi>b</m:mi></m:msubsup><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mi>d</m:mi><m:mi>x</m:mi></m:mrow></m:mrow></m:mstyle><m:mo>=</m:mo><m:munder><m:mstyle mathsize="140%" displaystyle="true"><m:mrow><m:mtext>lim</m:mtext></m:mrow></m:mstyle><m:mrow><m:mi>n</m:mi><m:mo stretchy="false">→</m:mo><m:mi>∞</m:mi></m:mrow></m:munder><m:mstyle displaystyle="true"><m:munderover><m:mo>∑</m:mo><m:mrow><m:mi>i</m:mi><m:mo>=</m:mo><m:mn>1</m:mn></m:mrow><m:mi>n</m:mi></m:munderover><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mrow><m:msubsup><m:mi>x</m:mi><m:mi>i</m:mi><m:mo>*</m:mo></m:msubsup></m:mrow><m:mo>)</m:mo></m:mrow><m:mtext>Δ</m:mtext><m:mi>x</m:mi></m:mrow></m:mstyle><m:mo>,</m:mo></m:mrow></m:math></equation>
+<para id="fs-id1170572342258">provided the limit exists. If this limit exists, the function <m:math><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> is said to be integrable on <m:math><m:mrow><m:mrow><m:mo>[</m:mo><m:mrow><m:mi>a</m:mi><m:mo>,</m:mo><m:mi>b</m:mi></m:mrow><m:mo>]</m:mo></m:mrow><m:mo>,</m:mo></m:mrow></m:math> or is an <term id="term-00002">integrable function</term>.</para>
+</note>""";
+    content_hash "sha256:548d6f5059966b136bf5a453e75631f493e2e17d4bb0809fa5a2b9d317607d0a";
+}
+
+// m53631 «The Definite Integral» — fs-id1170572103713
+fragment CI_CONTINUOUS_INTEGRABLE in M53631_MAIN {
+    kind section;
+    locator "module/m53631#fs-id1170572103713";
+    text en official """<note id="fs-id1170572103713" class="theorem">
+<title>Continuous Functions Are Integrable</title>
+<para id="fs-id1170572207625">If <m:math><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> is continuous on <m:math><m:mrow><m:mrow><m:mo>[</m:mo><m:mrow><m:mi>a</m:mi><m:mo>,</m:mo><m:mi>b</m:mi></m:mrow><m:mo>]</m:mo></m:mrow><m:mo>,</m:mo></m:mrow></m:math> then <emphasis effect="italics">f</emphasis> is integrable on <m:math><m:mrow><m:mrow><m:mo>[</m:mo><m:mrow><m:mi>a</m:mi><m:mo>,</m:mo><m:mi>b</m:mi></m:mrow><m:mo>]</m:mo></m:mrow><m:mo>.</m:mo></m:mrow></m:math></para>
+</note>""";
+    content_hash "sha256:c2e9cc12800df53ca5145c47f0a29c6d6525800298afb1aa2ad525afb41ff2ec";
+}
+
+// m53632 «The Fundamental Theorem of Calculus» — fs-id1170571704350
+fragment CI_FTC_PART_ONE in M53632_MAIN {
+    kind section;
+    locator "module/m53632#fs-id1170571704350";
+    text en official """<note id="fs-id1170571704350" class="theorem">
+<title>Fundamental Theorem of Calculus, Part 1</title>
+<para id="fs-id1170571679188">If <m:math><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> is continuous over an interval <m:math><m:mrow><m:mrow><m:mo>[</m:mo><m:mrow><m:mi>a</m:mi><m:mo>,</m:mo><m:mi>b</m:mi></m:mrow><m:mo>]</m:mo></m:mrow><m:mo>,</m:mo></m:mrow></m:math> and the function <m:math><m:mrow><m:mi>F</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> is defined by</para>
+<equation id="fs-id1170572552076"><m:math><m:mrow><m:mi>F</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mstyle displaystyle="true"><m:mrow><m:msubsup><m:mo>∫</m:mo><m:mi>a</m:mi><m:mi>x</m:mi></m:msubsup><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mi>d</m:mi><m:mi>t</m:mi></m:mrow></m:mrow></m:mstyle><m:mo>,</m:mo></m:mrow></m:math></equation>
+<para id="fs-id1170572307182">then <m:math><m:mrow><m:msup><m:mi>F</m:mi><m:mo>′</m:mo></m:msup><m:mrow><m:mtext>(</m:mtext><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> over <m:math><m:mrow><m:mrow><m:mo>(</m:mo><m:mrow><m:mi>a</m:mi><m:mo>,</m:mo><m:mi>b</m:mi></m:mrow><m:mo>)</m:mo></m:mrow><m:mo>.</m:mo></m:mrow></m:math></para>
+</note>""";
+    content_hash "sha256:02316dab595d2b5496db2054d7a754cd69790a3c8c851ee746f86612fd6a2f82";
+}
+
+// m53632 «The Fundamental Theorem of Calculus» — fs-id1170571660076
+fragment CI_FTC_PART_TWO in M53632_MAIN {
+    kind section;
+    locator "module/m53632#fs-id1170571660076";
+    text en official """<note id="fs-id1170571660076" class="theorem">
+<title>The Fundamental Theorem of Calculus, Part 2</title>
+<para id="fs-id1170572448137">If <emphasis effect="italics">f</emphasis> is continuous over the interval <m:math><m:mrow><m:mrow><m:mo>[</m:mo><m:mrow><m:mi>a</m:mi><m:mo>,</m:mo><m:mi>b</m:mi></m:mrow><m:mo>]</m:mo></m:mrow></m:mrow></m:math> and <m:math><m:mrow><m:mi>F</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> is any antiderivative of <m:math><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>,</m:mo></m:mrow></m:math> then</para>
+<equation id="fs-id1170572230004"><m:math><m:mrow><m:mstyle displaystyle="true"><m:mrow><m:msubsup><m:mo>∫</m:mo><m:mi>a</m:mi><m:mi>b</m:mi></m:msubsup><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mi>d</m:mi><m:mi>x</m:mi></m:mrow></m:mrow></m:mstyle><m:mo>=</m:mo><m:mi>F</m:mi><m:mrow><m:mo>(</m:mo><m:mi>b</m:mi><m:mo>)</m:mo></m:mrow><m:mo>−</m:mo><m:mi>F</m:mi><m:mrow><m:mo>(</m:mo><m:mi>a</m:mi><m:mo>)</m:mo></m:mrow><m:mo>.</m:mo></m:mrow></m:math></equation>
+</note>""";
+    content_hash "sha256:6f4fd5054cfa771b335b1a3908a0ba557bd830e426b001fe342d0e589406ae8e";
+}
+
+// m53633 «Integration Formulas and the Net Change Theorem» — fs-id1170572295126
+fragment CI_NET_CHANGE in M53633_MAIN {
+    kind section;
+    locator "module/m53633#fs-id1170572295126";
+    text en official """<note id="fs-id1170572295126" class="theorem">
+<title>Net Change Theorem</title>
+<para id="fs-id1170572480924">The new value of a changing quantity equals the initial value plus the integral of the rate of change:</para>
+<equation id="fs-id1170572449540"><m:math><m:mrow><m:mtable><m:mtr/><m:mtr/><m:mtr><m:mtd columnalign="left"><m:mi>F</m:mi><m:mrow><m:mo>(</m:mo><m:mi>b</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mi>F</m:mi><m:mrow><m:mo>(</m:mo><m:mi>a</m:mi><m:mo>)</m:mo></m:mrow><m:mo>+</m:mo><m:mstyle displaystyle="true"><m:mrow><m:msubsup><m:mo>∫</m:mo><m:mi>a</m:mi><m:mi>b</m:mi></m:msubsup><m:mrow><m:mi>F</m:mi><m:mo>′</m:mo><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mi>d</m:mi><m:mi>x</m:mi></m:mrow></m:mrow></m:mstyle></m:mtd></m:mtr><m:mtr><m:mtd columnalign="center"><m:mtext>or</m:mtext></m:mtd></m:mtr><m:mtr><m:mtd columnalign="left"><m:mstyle displaystyle="true"><m:mrow><m:msubsup><m:mo>∫</m:mo><m:mi>a</m:mi><m:mi>b</m:mi></m:msubsup><m:mrow><m:mi>F</m:mi><m:mo>′</m:mo><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mi>d</m:mi><m:mi>x</m:mi><m:mo>=</m:mo><m:mi>F</m:mi><m:mrow><m:mo>(</m:mo><m:mi>b</m:mi><m:mo>)</m:mo></m:mrow><m:mo>−</m:mo><m:mi>F</m:mi><m:mrow><m:mo>(</m:mo><m:mi>a</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:mrow></m:mstyle><m:mo>.</m:mo></m:mtd></m:mtr></m:mtable></m:mrow></m:math></equation>
+</note>""";
+    content_hash "sha256:b8310d6765be27d37f5121ef8aff7347756fe94bbd3356dc4851bb957ff5eb70";
+}
+
+// m53656 «Integration by Parts» — fs-id1165042235552
+fragment CI_INTEGRATION_BY_PARTS in M53656_MAIN {
+    kind section;
+    locator "module/m53656#fs-id1165042235552";
+    text en official """<note id="fs-id1165042235552" class="theorem">
+<title>Integration by Parts</title>
+<para id="fs-id1165042089614">Let <m:math><m:mrow><m:mi>u</m:mi><m:mo>=</m:mo><m:mi>f</m:mi><m:mo stretchy="false">(</m:mo><m:mi>x</m:mi><m:mo stretchy="false">)</m:mo></m:mrow></m:math> and <m:math><m:mrow><m:mi>v</m:mi><m:mo>=</m:mo><m:mi>g</m:mi><m:mo stretchy="false">(</m:mo><m:mi>x</m:mi><m:mo stretchy="false">)</m:mo></m:mrow></m:math> be functions with continuous derivatives. Then, the integration-by-parts formula for the integral involving these two functions is:</para>
+<equation id="fs-id1165042232372" class="numbered"><label/><m:math><m:mrow><m:mstyle displaystyle="true"><m:mrow><m:mo stretchy="false">∫</m:mo><m:mrow><m:mi>u</m:mi><m:mspace width="0.2em"/><m:mi>d</m:mi><m:mi>v</m:mi><m:mo>=</m:mo><m:mi>u</m:mi><m:mi>v</m:mi><m:mo>−</m:mo><m:mstyle displaystyle="true"><m:mrow><m:mo stretchy="false">∫</m:mo><m:mrow><m:mi>v</m:mi><m:mspace width="0.2em"/><m:mi>d</m:mi><m:mi>u</m:mi></m:mrow></m:mrow></m:mstyle></m:mrow></m:mrow></m:mstyle><m:mo>.</m:mo></m:mrow></m:math></equation>
+</note>""";
+    content_hash "sha256:00003d8893669197aadfbe16511ee0685cf9504c6a08a8e44f9ba5d598d61cd6";
+}

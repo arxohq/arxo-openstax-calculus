@@ -1,0 +1,41 @@
+language "law.core" version "0.2";
+package calc.limit_solver version "0.1.0";
+namespace "urn:law:calc:limit-solver";
+
+// Проба на ложный успех: полюс третьего порядка 1/(x−1)^3 вне объявленного
+// класса (простой и кратный корень второго порядка). Решатель обязан честно
+// молчать, а не выдумывать исход: ни конечного, ни бесконечности, ни
+// недоказанного несуществования.
+// Запись задачи: lim x->1 1/(x-1)^3
+// Дело предъявляет ТОЛЬКО её: ни метода, ни ответа, ни производных.
+test "полюс третьего порядка: честный отказ" {
+ given {
+  assert "in1": task_nodes(entity_ref("urn:law:calc:limit-solver#task"), entity_ref("urn:law:calc:limit-solver#nodes")) { origin case_input; }
+  assert "in2": task_function(entity_ref("urn:law:calc:limit-solver#task"), 17) { origin case_input; }
+  assert "in3": task_variable(entity_ref("urn:law:calc:limit-solver#task"), "x") { origin case_input; }
+  assert "in4": task_approach(entity_ref("urn:law:calc:limit-solver#task"), "at") { origin case_input; }
+  assert "in5": task_point(entity_ref("urn:law:calc:limit-solver#task"), 1 / 1) { origin case_input; }
+  assert "in6": task_side(entity_ref("urn:law:calc:limit-solver#task"), "both") { origin case_input; }
+  assert "in7": input_node(entity_ref("urn:law:calc:limit-solver#task"), 1, "var", "x", 0 / 1, 0, 0) { origin case_input; }
+  assert "in8": input_node(entity_ref("urn:law:calc:limit-solver#task"), 2, "const", "", -1 / 1, 0, 0) { origin case_input; }
+  assert "in9": input_node(entity_ref("urn:law:calc:limit-solver#task"), 3, "const", "", 3 / 1, 0, 0) { origin case_input; }
+  assert "in10": input_node(entity_ref("urn:law:calc:limit-solver#task"), 4, "mul", "", 0 / 1, 3, 1) { origin case_input; }
+  assert "in11": input_node(entity_ref("urn:law:calc:limit-solver#task"), 5, "const", "", -3 / 1, 0, 0) { origin case_input; }
+  assert "in12": input_node(entity_ref("urn:law:calc:limit-solver#task"), 6, "const", "", 2 / 1, 0, 0) { origin case_input; }
+  assert "in13": input_node(entity_ref("urn:law:calc:limit-solver#task"), 7, "pow", "", 0 / 1, 1, 6) { origin case_input; }
+  assert "in14": input_node(entity_ref("urn:law:calc:limit-solver#task"), 8, "mul", "", 0 / 1, 5, 7) { origin case_input; }
+  assert "in15": input_node(entity_ref("urn:law:calc:limit-solver#task"), 9, "const", "", 1 / 1, 0, 0) { origin case_input; }
+  assert "in16": input_node(entity_ref("urn:law:calc:limit-solver#task"), 10, "const", "", 3 / 1, 0, 0) { origin case_input; }
+  assert "in17": input_node(entity_ref("urn:law:calc:limit-solver#task"), 11, "pow", "", 0 / 1, 1, 10) { origin case_input; }
+  assert "in18": input_node(entity_ref("urn:law:calc:limit-solver#task"), 12, "mul", "", 0 / 1, 9, 11) { origin case_input; }
+  assert "in19": input_node(entity_ref("urn:law:calc:limit-solver#task"), 13, "add", "", 0 / 1, 2, 4) { origin case_input; }
+  assert "in20": input_node(entity_ref("urn:law:calc:limit-solver#task"), 14, "add", "", 0 / 1, 13, 8) { origin case_input; }
+  assert "in21": input_node(entity_ref("urn:law:calc:limit-solver#task"), 15, "add", "", 0 / 1, 14, 12) { origin case_input; }
+  assert "in22": input_node(entity_ref("urn:law:calc:limit-solver#task"), 16, "const", "", 1 / 1, 0, 0) { origin case_input; }
+  assert "in23": input_node(entity_ref("urn:law:calc:limit-solver#task"), 17, "div", "", 0 / 1, 16, 15) { origin case_input; }
+  assert "in24": task_closed(entity_ref("urn:law:calc:limit-solver#task")) { origin case_input; }
+ }
+ evaluate truth(solver_result(entity_ref("urn:law:calc:limit-solver#task"), "UNSUPPORTED_FORM", "none", 0 / 1));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+}

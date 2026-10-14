@@ -1,0 +1,292 @@
+language "law.core" version "0.2";
+package calc.expressions version "0.1.0";
+namespace "urn:law:calc:expressions";
+
+use self::{
+    Expr,
+    alpha_candidate,
+    alpha_eq,
+    alpha_equal,
+    alpha_equiv,
+    alpha_error,
+    alpha_pair,
+    binary,
+    binder_declared,
+    bound_by,
+    descends,
+    exponentiation,
+    free_at,
+    free_in,
+    integral_exponent,
+    node,
+    node_uses,
+    unary,
+    unique_node,
+};
+
+// ── α-РАВЕНСТВО ВЫРАЖЕНИЙ, А НЕ ТОЛЬКО СООТВЕТСТВИЕ СВЯЗЫВАНИЙ (цель §5) ──
+//
+// 06-alpha.law доказал, что соответствие между связанными именами двух
+// поддеревьев взаимно однозначно и свободные имена не затрагивает. Этого
+// МАЛО: (λz. z + 1) и (λz. z + 2) имеют одно и то же соответствие —
+// тождественное, — и означают разное. Теперь равенство РЕШАЕТСЯ.
+//
+// КАК ИМЕННО, И ПОЧЕМУ НЕ ЧЕРЕЗ equivalent. Очевидный путь — построить
+// переименованное дерево f и сравнить его с g через `equivalent` — требует
+// новых узлов и согласования пространств номеров. Здесь вместо этого
+// вводится индуктивное отношение `alpha_eq`, которое делает ровно то же
+// сравнение, но по узлам: рекурсивные рёбра помечены monotone, как и рёбра
+// `equivalent`, и правила те же по форме. Это ДВА СПОСОБА ОДНОГО РЕШЕНИЯ, а не
+// подмена: вердикт получается тот же, а деревьев не строится.
+//
+// ПРАВИЛО НА ЛИСТ-ПЕРЕМЕННУЮ ДВА, И ОНИ ДИЗЪЮНКТИВНЫ. Одно правило ввело бы
+// ровно ту ошибку, которую 06-alpha.law уже совершил и записал: если два
+// правила выводят одно отношение, выполняется ЛЮБОЕ. Здесь они и должны быть
+// разными утверждениями, но пересекаться они не могут: переименованное
+// вхождение потребовало бы `z != z2`, и тогда оба правила на одной паре узлов
+// не срабатывают никогда. Совпадение имён — первый случай, соответствие —
+// второй.
+//
+// ПОЧЕМУ ЗДЕСЬ НЕТ well_formed, И ЭТО НЕ НЕДОСМОТРЕННОСТЬ. Правила
+// well_formed в этом пакете не знают тега "binder" — их шесть, на константу,
+// переменную, алгебраический лист, унарный, бинарный и степень. Значит выражение,
+// СОДЕРЖАЩЕЕ СВЯЗЫВАНИЕ, не имеет well_formed ни в одной своей вершине, и
+// требование well_formed сделало бы слой α пустым ровно на тех выражениях,
+// ради которых он и написан. 06-alpha.law по той же причине работает поверх
+// binder_declared и descends, и здесь сделано так же. Конечность рекурсии
+// обеспечивает не well_formed, а MONOTONE-рёбра: наименьшая неподвижная точка по
+// конечному множеству узлов вычисляется всегда, и цикл в графе её не нарушает.
+//
+// СВЯЗЫВАНИЕ УКАЗЫВАЕТСЯ ТОЧНЫМ УЗЛОМ. `bound_at` говорит «связано», но не
+// каким узлом, а для α-равенства это нужно: переименование связывающего z
+// должно соответствовать переименованию ИМЕННО ТОГО ЖЕ связывающего. Отсюда
+// `bound_by`, и оно собирается из `binder_declared` и `descends` — то есть из
+// уже имеющихся отношений.
+//
+// ОДИН ЗАПРОС НА ДОКУМЕНТ — ПРАВИЛО ДЛЯ СЦЕНАРИЕВ, А НЕ ДЛЯ ЭТОГО ФАЙЛА.
+// Проверено на этом слое: документ с одним запросом alpha_equal даёт NEITHER,
+// и тот же документ с добавленным запросом про ALPHA_SHAPE_MISMATCH даёт
+// TRUE_ONLY. Данные, индивид и порядок запросов — те же; воспроизведено на трёх
+// именах индивида и на двух файлах. Причина в grounding движка не разобрана, а
+// следствие для сценариев проверено и записано: надёжно спрашивать одно
+// утверждение на документ. Это тот же класс, что и записанный ранее потолок
+// grounding, и он же объясняет, почему часть сценариев в этом пакете разбита на
+// файлы по одному.
+//
+// ГРАНИЦА, НАЗВАНАЯ ПРЯМО. Соответствие ПРЕДЪЯВЛЯЕТСЯ и проверяется, а не
+// ищется: перебор перестановок здесь недоступен, и заявлять полноту такого
+// поиска запрещено п. 19 задания. Пара действительно α-равных выражений без
+// предъявленного соответствия не даёт НИКАКОГО вердикта, и это молчание не
+// является утверждением «не равны». Тот же приём и та же оговорка, что в
+// calc.lewis_structures/06-isomorphism.
+
+rule BoundByRule(e: Expr, bf: Integer, x: Integer, z: Text) strict {
+    label en unofficial "вхождение имени связано именно этим связывающим узлом, а не каким-то другим";
+    when binder_declared(e, bf, z) and descends(e, bf, x) and node_uses(e, x, z);
+    then bound_by(e, bf, x, z);
+}
+
+// ── Связывающие узлы: тело сравнивается, а не имя узла ──────────────────
+//
+// Тело (λz. …) есть поддерево, и α-равенство тел и есть то, что спрашивают.
+// Поэтому для связывающих узлов выводится ОТНОШЕНИЕ ТЕЛ, а не отношение узлов.
+//
+// Первую версию это делала наоборот: из двух связывающих узлов выводилось
+// alpha_eq(x, y) БЕЗ условия на тела, вердикт проходил, а тела не
+// сравнивались. То есть (λz. y) и (λw. x) объявлялись α-равными — и это
+// показал тест, а не компилятор. Сравнение узлов всё же нужно: узлы суть
+// дети бинарного узла, и без их отношения structural-слой не спустится к телам.
+// Лечение — НЕ убрать правило, а потребовать тела conjunct'ом: два связывающих
+// узла α-равны, ЕСЛИ α-равны их тела. Цикла при этом нет: тела сравниваются
+// правилами листьев, а те опираются на bound_by, собранное из binder_declared и
+// descends, а не на отношение узлов.
+
+// УДАЛЁННОЕ ПРАВИЛО, И ПРИЧИНА В ТОМ, ЧТО ОНО УТВЕРЖДАЛО. Рядом стояло
+// правило AlphaBinderBodies: «если два связывающих узла соединены соответствием,
+// то их ТЕЛА равны». Оно выводило alpha_eq(a, b) прямо из пары, не рассматривая
+// тел, — то есть утверждало равенство вместо того, чтобы его проверять. На
+// сценарии (λz. 1) и (λw. z) это давало α-равенство константы и свободной
+// переменной. Отношение тел выводится теперь ТОЛЬКО обычными правилами листьев и
+// составных узлов, а сравнение узлов требует их результата.
+
+rule AlphaBinderNodes(
+    e: Expr,
+    f: Integer,
+    g: Integer,
+    x: Integer,
+    y: Integer,
+    z: Text,
+    z2: Text,
+    a: Integer,
+    b: Integer,
+) strict {
+    label en unofficial "связывающие узлы α-равны, ЕСЛИ их объявленные имена соединены соответствием И α-равны тела";
+    when alpha_candidate(e, f, g) and descends(e, f, x) and descends(e, g, y)
+        and unique_node(e, x, "binder", z, 0 / 1, a, 0) and unique_node(e, y, "binder", z2, 0 / 1, b, 0)
+        and binder_declared(e, x, z) and binder_declared(e, y, z2)
+        and alpha_pair(e, f, g, x, y, z, z2)
+        and descends(e, x, a) and descends(e, y, b)
+        and monotone(alpha_eq(e, f, g, a, b));
+    then alpha_eq(e, f, g, x, y);
+}
+
+// ── Листья ─────────────────────────────────────────────────────────────
+
+rule AlphaVarSame(e: Expr, f: Integer, g: Integer, x: Integer, y: Integer, z: Text) strict {
+    label en unofficial "переменные с ОДНИМ именем совпадают: свободные равны по имени, связанные — тем более";
+    when alpha_candidate(e, f, g) and descends(e, f, x) and descends(e, g, y)
+        and unique_node(e, x, "var", z, 0 / 1, 0, 0) and unique_node(e, y, "var", z, 0 / 1, 0, 0);
+    then alpha_eq(e, f, g, x, y);
+}
+
+rule AlphaVarRenamed(
+    e: Expr,
+    f: Integer,
+    g: Integer,
+    x: Integer,
+    y: Integer,
+    z: Text,
+    z2: Text,
+    bf: Integer,
+    bg: Integer,
+) strict {
+    label en unofficial "переменные с РАЗНЫМИ именами совпадают, если имена связаны соответствующими узлами";
+    when alpha_candidate(e, f, g) and descends(e, f, x) and descends(e, g, y)
+        and z != z2
+        and unique_node(e, x, "var", z, 0 / 1, 0, 0) and unique_node(e, y, "var", z2, 0 / 1, 0, 0)
+        and bound_by(e, bf, x, z) and bound_by(e, bg, y, z2)
+        and alpha_pair(e, f, g, bf, bg, z, z2);
+    then alpha_eq(e, f, g, x, y);
+}
+
+rule AlphaConstSame(e: Expr, f: Integer, g: Integer, x: Integer, y: Integer, v: Rational) strict {
+    label en unofficial "константы совпадают по значению";
+    when alpha_candidate(e, f, g) and descends(e, f, x) and descends(e, g, y)
+        and unique_node(e, x, "const", "", v, 0, 0) and unique_node(e, y, "const", "", v, 0, 0);
+    then alpha_eq(e, f, g, x, y);
+}
+
+rule AlphaAlgebraicSame(e: Expr, f: Integer, g: Integer, x: Integer, y: Integer, z: Text) strict {
+    label en unofficial "алгебраические листья совпадают лишь при буквально одинаковом дескрипторе";
+    when alpha_candidate(e, f, g) and descends(e, f, x) and descends(e, g, y)
+        and unique_node(e, x, "algebraic", z, 0 / 1, 0, 0) and unique_node(e, y, "algebraic", z, 0 / 1, 0, 0);
+    then alpha_eq(e, f, g, x, y);
+}
+
+// ── Составные узлы: те же правила, что у equivalent ────────────────────
+
+rule AlphaUnarySame(
+    e: Expr,
+    f: Integer,
+    g: Integer,
+    x: Integer,
+    y: Integer,
+    tag: Text,
+    a: Integer,
+    b: Integer,
+) strict {
+    label en unofficial "унарные узлы α-равны при одном теге и α-равных детях";
+    when alpha_candidate(e, f, g) and descends(e, f, x) and descends(e, g, y)
+        and unary(e, x, tag, a) and unary(e, y, tag, b)
+        and monotone(alpha_eq(e, f, g, a, b));
+    then alpha_eq(e, f, g, x, y);
+}
+
+rule AlphaBinarySame(
+    e: Expr,
+    f: Integer,
+    g: Integer,
+    x: Integer,
+    y: Integer,
+    tag: Text,
+    a: Integer,
+    b: Integer,
+    c: Integer,
+    d: Integer,
+) strict {
+    label en unofficial "бинарные узлы α-равны при одном теге и α-равных соответствующих частях; ПОРЯДОК существен";
+    when alpha_candidate(e, f, g) and descends(e, f, x) and descends(e, g, y)
+        and binary(e, x, tag, a, b) and binary(e, y, tag, c, d)
+        and monotone(alpha_eq(e, f, g, a, c)) and monotone(alpha_eq(e, f, g, b, d));
+    then alpha_eq(e, f, g, x, y);
+}
+
+rule AlphaExponentSame(
+    e: Expr,
+    f: Integer,
+    g: Integer,
+    x: Integer,
+    y: Integer,
+    a: Integer,
+    c: Integer,
+    p: Integer,
+    q: Integer,
+    k: Integer,
+) strict {
+    label en unofficial "степени α-равны при α-равных основаниях и одном показателе";
+    when alpha_candidate(e, f, g) and descends(e, f, x) and descends(e, g, y)
+        and exponentiation(e, x, a, p) and exponentiation(e, y, c, q)
+        and integral_exponent(e, p, k) and integral_exponent(e, q, k)
+        and monotone(alpha_eq(e, f, g, a, c));
+    then alpha_eq(e, f, g, x, y);
+}
+
+// ── Вердикт ────────────────────────────────────────────────────────────
+
+rule AlphaEqualTop(e: Expr, f: Integer, g: Integer) strict {
+    label en unofficial "проверенное соответствие плюс α-равенство корней доказывают равенство поддеревьев с точностью до переименования";
+    when alpha_equiv(e, f, g) and alpha_eq(e, f, g, f, g);
+    then alpha_equal(e, f, g);
+}
+
+// ── ОПРОВЕРЖЕНИЯ: два разных утверждения ──────────────────────────────
+
+rule AlphaShapeMismatch(
+    e: Expr,
+    f: Integer,
+    g: Integer,
+    t1: Text,
+    t2: Text,
+    n1: Text,
+    n2: Text,
+    v1: Rational,
+    v2: Rational,
+    a1: Integer,
+    a2: Integer,
+    b1: Integer,
+    b2: Integer,
+) strict {
+    label en unofficial "корни поддеревьев суть узлы РАЗНЫХ видов, поэтому α-равны они быть не могут — соответствие тут ни при чём";
+    when alpha_candidate(e, f, g) and t1 != t2
+        and node(e, f, t1, n1, v1, a1, b1) and node(e, g, t2, n2, v2, a2, b2);
+    then alpha_error(e, f, g, "ALPHA_SHAPE_MISMATCH");
+}
+
+// СИММЕТРИЧНАЯ СВЕЖЕСТЬ, КОТОРОЙ НЕ БЫЛО. 06-alpha.law проверяет, что НОВОЕ
+// имя свободно в ПЕРВОМ поддереве. Обратное направление — что СТАРОЕ имя
+// свободно во ВТОРОМ — не проверялось, и это не мелочь: α-конверсия обязана быть
+// обратимой, а переименование, которое в одну сторону свободное имя не задело,
+// в другую может задесть. Случай, который это показывает, есть в tests/33.
+rule AlphaOldNameTouched(
+    e: Expr,
+    f: Integer,
+    g: Integer,
+    z: Text,
+    z2: Text,
+    bf: Integer,
+    bg: Integer,
+) strict {
+    label en unofficial "старое имя свободно во втором поддереве — обратное переименование захватило бы свободную переменную";
+    when alpha_candidate(e, f, g) and z != z2
+        and alpha_pair(e, f, g, bf, bg, z, z2) and free_in(e, g, z);
+    then alpha_error(e, f, g, "ALPHA_OLD_NAME_TOUCHED");
+}
+
+rule AlphaFreeNameMismatch(e: Expr, f: Integer, g: Integer, x: Integer, y: Integer, z: Text, z2: Text) strict {
+    label en unofficial "две свободные переменные с РАЗНЫМИ именами: переименование связанных имён свободные не трогает, а значит и не может их согласовать";
+    when alpha_candidate(e, f, g) and z != z2
+        and descends(e, f, x) and descends(e, g, y)
+        and unique_node(e, x, "var", z, 0 / 1, 0, 0) and unique_node(e, y, "var", z2, 0 / 1, 0, 0)
+        and free_at(e, x, z) and free_at(e, y, z2);
+    then alpha_error(e, f, g, "ALPHA_FREE_NAME_MISMATCH");
+}

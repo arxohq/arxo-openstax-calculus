@@ -1,0 +1,61 @@
+language "law.core" version "0.2";
+package calc.expressions version "0.1.0";
+namespace "urn:law:calc:expressions";
+
+// Поддеревья разных вида не могут быть α-равными НИ ПРИ КАКОМ соответствии:
+// переименование связанных имён меняет имена, а неConstruct. Это опровержение,
+// а не молчание, и без него читатель не отличил бы «пакет не умеет» от
+// «не равны».
+//
+// Второе: разные константы дают НИ вердикта, НИ ошибки. Это и есть граница
+// «соответствие предъявляется»: расхождение содержимого не опровергается
+// отдельно, оно просто не равно, и пакет говорит об этом молчанием, а не
+// приписывает телу причину, которой не знает.
+
+test "subtrees of different kinds cannot be equal under any renaming" {
+ given {
+  assert "n1": node(entity_ref("urn:calc:ex:e34"), 1, "binder", "z", 0 / 1, 2, 0) { origin case_input; }
+  assert "n2": node(entity_ref("urn:calc:ex:e34"), 2, "var", "z", 0 / 1, 0, 0) { origin case_input; }
+  assert "n3": node(entity_ref("urn:calc:ex:e34"), 3, "binder", "w", 0 / 1, 4, 0) { origin case_input; }
+  assert "n4": node(entity_ref("urn:calc:ex:e34"), 4, "add", "", 0 / 1, 2, 4) { origin case_input; }
+  assert "b1": binder_declared(entity_ref("urn:calc:ex:e34"), 1, "z") { origin case_input; }
+  assert "b2": binder_declared(entity_ref("urn:calc:ex:e34"), 3, "w") { origin case_input; }
+  assert "c1": alpha_candidate(entity_ref("urn:calc:ex:e34"), 1, 4) { origin case_input; }
+  assert "p1": alpha_pair(entity_ref("urn:calc:ex:e34"), 1, 4, 1, 3, "z", "w") { origin case_input; }
+ }
+ evaluate truth(alpha_error(entity_ref("urn:calc:ex:e34"), 1, 4, "ALPHA_SHAPE_MISMATCH"));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(AlphaShapeMismatch);
+ evaluate truth(alpha_equal(entity_ref("urn:calc:ex:e34"), 1, 4));
+ expect truth_status == NEITHER;
+}
+
+// ГРАНИЦА «СООТВЕТСТВИЕ ПРЕДЪЯВЛЯЕТСЯ». Тела, расходящиеся константой, не
+// равны, и пакет НИЧЕГО О НИХ НЕ УТВЕРЖДАЕТ: ни вердикта, ни названной
+// причины. Расхождение содержимого не опровергается отдельно — оно просто не
+// равно, и приписывать телу причину, которой пакет не знает, было бы враньём.
+//
+// ОДИН ЗАПРОС НА ДОКУМЕНТ, И ЭТО НЕ ОФОРМЛЕНИЕ. Первую версию этого сценария
+// писали с тремя запросами, и она ПАДАЛА, хотя каждый по отдельности был верен:
+// добавление запроса про ALPHA_SHAPE_MISMATCH меняло вердикт alpha_equal с
+// NEITHER на TRUE_ONLY. Воспроизведено на двух файлах и на трёх именах
+// индивида: без запроса — NEITHER, с ним — TRUE_ONLY. Причина в движке не
+// разобрана ( grounding зависит от запрашиваемого), а следствие для сценариев
+// проверено: в документе надёжно спрашивать ОДНО утверждение.
+
+test "bodies that differ in a constant get no verdict and no named cause" {
+ given {
+  assert "n1": node(entity_ref("urn:calc:ex:e34b"), 1, "add", "", 0 / 1, 2, 3) { origin case_input; }
+  assert "n2": node(entity_ref("urn:calc:ex:e34b"), 2, "const", "", 1 / 1, 0, 0) { origin case_input; }
+  assert "n3": node(entity_ref("urn:calc:ex:e34b"), 3, "const", "", 2 / 1, 0, 0) { origin case_input; }
+  assert "n4": node(entity_ref("urn:calc:ex:e34b"), 4, "binder", "z", 0 / 1, 5, 0) { origin case_input; }
+  assert "n5": node(entity_ref("urn:calc:ex:e34b"), 5, "const", "", 1 / 1, 0, 0) { origin case_input; }
+  assert "b1": binder_declared(entity_ref("urn:calc:ex:e34b"), 4, "z") { origin case_input; }
+  assert "c1": alpha_candidate(entity_ref("urn:calc:ex:e34b"), 1, 4) { origin case_input; }
+  assert "p1": alpha_pair(entity_ref("urn:calc:ex:e34b"), 1, 4, 4, 4, "z", "z") { origin case_input; }
+ }
+ evaluate truth(alpha_equal(entity_ref("urn:calc:ex:e34b"), 1, 4));
+ expect truth_status == NEITHER;
+ expect evaluation_status == COMPUTED;
+}

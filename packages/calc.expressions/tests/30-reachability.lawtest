@@ -1,0 +1,66 @@
+language "law.core" version "0.2";
+package calc.expressions version "0.1.0";
+namespace "urn:law:calc:expressions";
+
+// ДОСТИЖИМОСТЬ ПО ДЕРЕВУ — ПЕРВИЧНОЕ ОТСУТСТВОЕШЕЕ ОТНОШЕНИЕ (цель §5).
+//
+// Три обязательства упирались в одно отсутствие: считать «связанные переменные
+// ПОДДЕРЕВОМ» нечем было, потому что область действия связывания выражена по
+// имени, а не по вхождению. Это отношение — то, чего не хватало всем троим.
+//
+// ДЕРЕВО ЗДЕСЬ НАМЕРЕННО НЕ СИММЕТРИЧНО: у вершины 1 два потомка, и один из них
+// — вершина 2, а другой 3. Иначе проверка транзитивности была бы проверкой
+// единственного пути и ничего бы не доказывала: при одном потомке «достижим
+// через два ребра» и «достижим через одно» неразличимы.
+//
+// ТРИ УТВЕРЖДЕНИЯ, И ТРЕТЬЕ ВАЖНЕЕ ДВУХ ПЕРВЫХ. Вершина 2 достижима из 1 за два
+// ребра (1 -> 4 -> 2), и это проверка транзитивности, а не только одного шага.
+// Но НАСТОЯЩИЙ смысл появляется в третьем: 3 — корень поддерева, из 1
+// недостижима, и потому поддерево 1 и есть всё выражение, тогда как поддерево 2 —
+// нет. Именно различие «поддерево» и «выражение» и требовалось, чтобы начать
+// α-эквивалентность.
+
+test "reachability closes transitively and a subtree is smaller than the tree" {
+ given {
+  // 1 = 2 + 3, где 2 = ln(4) и 4 = c*2
+  assert "n1": node(entity_ref("urn:law:calc:expressions#r1"), 1, "sum", "", 0 / 1, 2, 3) { origin case_input; }
+  assert "n2": node(entity_ref("urn:law:calc:expressions#r1"), 2, "ln", "", 0 / 1, 4, 0) { origin case_input; }
+  assert "n3": node(entity_ref("urn:law:calc:expressions#r1"), 3, "const", "", 7 / 1, 0, 0) { origin case_input; }
+  assert "n4": node(entity_ref("urn:law:calc:expressions#r1"), 4, "const", "", 1 / 1, 0, 0) { origin case_input; }
+  assert "s1": size(entity_ref("urn:law:calc:expressions#r1"), 4) { origin case_input; }
+ }
+
+ // сам себя — и это основание замыкания
+ evaluate truth(descends(entity_ref("urn:law:calc:expressions#r1"), 1, 1));
+ expect truth_status == TRUE_ONLY;
+ expect applied(DescendsSelf);
+
+ // один шаг влево и вправо
+ evaluate truth(descends(entity_ref("urn:law:calc:expressions#r1"), 1, 2));
+ expect truth_status == TRUE_ONLY;
+ expect applied(DescendsLeft);
+ evaluate truth(descends(entity_ref("urn:law:calc:expressions#r1"), 1, 3));
+ expect truth_status == TRUE_ONLY;
+ expect applied(DescendsRight);
+
+ // ТРАНЗИТИВНОСТЬ: 2 достижима из 1, проходя через 4, то есть за ДВА ребра.
+ // Без этого утверждения замыкание не было бы замыканием.
+ evaluate truth(descends(entity_ref("urn:law:calc:expressions#r1"), 1, 4));
+ expect truth_status == TRUE_ONLY;
+ evaluate truth(reachable(entity_ref("urn:law:calc:expressions#r1"), 1, 2));
+ expect truth_status == TRUE_ONLY;
+ expect applied(SubtreeHas);
+
+ // и поддерево 2 — меньше выражения: 3 из 2 НЕ достижима
+ evaluate truth(descends(entity_ref("urn:law:calc:expressions#r1"), 2, 3));
+ expect truth_status == NEITHER;
+ evaluate truth(reachable(entity_ref("urn:law:calc:expressions#r1"), 2, 4));
+ expect truth_status == TRUE_ONLY;
+ evaluate truth(subtree_size(entity_ref("urn:law:calc:expressions#r1"), 2, 4));
+ expect truth_status == TRUE_ONLY;
+ expect applied(SubtreeCounted);
+
+ // обратное направление ложно: поддерево не шире дерева
+ evaluate truth(descends(entity_ref("urn:law:calc:expressions#r1"), 4, 1));
+ expect truth_status == NEITHER;
+}

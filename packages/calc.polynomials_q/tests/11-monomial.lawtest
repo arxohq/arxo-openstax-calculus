@@ -1,0 +1,19 @@
+language "law.core" version "0.2";
+package calc.polynomials_q version "0.1.0";
+namespace "urn:law:calc:polynomials-q";
+
+// 5x³: три нулевых места ВЫВЕДЕНЫ, а не пропущены.
+
+test "одночлен строится показателем и коэффициентом" {
+ given {
+  assert "f0": degree_cap(8) { origin case_input; }
+  assert "f1": monomial_of(entity_ref("urn:calc:pq:m"), 3, 5 / 1) { origin case_input; }
+ }
+ evaluate truth(coeff(entity_ref("urn:calc:pq:m"), 3, 5 / 1));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(RawMonomialAtDegree);
+ evaluate truth(coeff(entity_ref("urn:calc:pq:m"), 0, 0 / 1));
+ expect truth_status == TRUE_ONLY;
+ expect applied(RawMonomialBelow);
+}

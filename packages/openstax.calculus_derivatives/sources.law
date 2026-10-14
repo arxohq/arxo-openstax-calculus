@@ -1,0 +1,361 @@
+// Source-модель: закреплённые байты 7 модулей CNXML
+// Calculus Volume 1, chapter 3 — Derivatives и 11 фрагментов по идентификаторам элементов —
+// определения и нормативные формулировки правил учебника.
+//
+// ФАЙЛ ПОРОЖДАЕТСЯ. Правится только генератором —
+// `corpus/tools/sources/sync/sync_openstax_calculus_fragments.py`; сверка без
+// записи — его же ключом `--check`. Тексты вырезаются из
+// `sources/calculus-derivatives/*.cnxml`, поэтому разойтись с публикацией не могут.
+//
+// ПРОВЕНАНС. Байты — CNXML-исходники модулей на коммите main
+// 8dbc2ce19e804924b2517b89ac72ee45be949d15 репозитория
+// github.com/openstax/osbooks-calculus-bundle (2026-07-15).
+// PINNED_OFFICIAL_BYTES: это те самые байты, которые издатель публикует.
+//
+// ЛИЦЕНЗИЯ ИСТОЧНИКА — CC BY-NC-SA 4.0. OpenStax Calculus распространяется
+// под Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+// (лицензия объявлена в самом `calculus-volume-N.collection.xml`, элемент
+// `md:license`). У неё ДВА ограничения, которых нет у прочих источников
+// корпуса: некоммерческое использование и share-alike. Закрепление байтов с
+// атрибуцией лицензией допускается; ограничение названо здесь и в
+// `[metadata]` пакета — DECISION-0196 §2, прецедент физики 06.09.2026.
+//
+// ЕДИНИЦА ЦИТИРОВАНИЯ — ЭЛЕМЕНТ МОДУЛЯ. Локатор `module/<модуль>#<id>`;
+// разметка CNXML внутри фрагмента сохранена как есть (§13). Доказательства и
+// упражнения в срез не входят.
+
+language "law.core" version "0.2";
+package openstax.calculus_derivatives version "0.1.1";
+namespace "urn:openstax:clir:calculus-derivatives";
+
+source M53494 {
+    kind treatise;
+    jurisdiction "none";
+    number "OpenStax Calculus, ch. 3 Derivatives, module m53494";
+    label en official "Introduction";
+}
+
+edition M53494_MAIN of M53494 {
+    label en official "m53494/index.cnxml at commit 8dbc2ce (main, 2026-07-15)";
+    label ru unofficial "Файл m53494/index.cnxml на коммите 8dbc2ce ветки main";
+    language en;
+    officiality official;
+    adopted @2026-07-15;
+    materialization_status PINNED_OFFICIAL_BYTES;
+}
+
+publication M53494_CNXML of M53494_MAIN {
+    media_type "application/xml; charset=utf-8";
+    uri "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53494/index.cnxml";
+    retrieved_at @2026-09-12T00:00:00Z;
+    content_hash "sha256:bf52253dc77f810ec3d7b5af0c5b7efc811d7868887d42c0029ac4c9312faf36";
+    local_path "sources/calculus-derivatives/m53494.cnxml";
+}
+
+source M53495 {
+    kind treatise;
+    jurisdiction "none";
+    number "OpenStax Calculus, ch. 3 Derivatives, module m53495";
+    label en official "Defining the Derivative";
+}
+
+edition M53495_MAIN of M53495 {
+    label en official "m53495/index.cnxml at commit 8dbc2ce (main, 2026-07-15)";
+    label ru unofficial "Файл m53495/index.cnxml на коммите 8dbc2ce ветки main";
+    language en;
+    officiality official;
+    adopted @2026-07-15;
+    materialization_status PINNED_OFFICIAL_BYTES;
+}
+
+publication M53495_CNXML of M53495_MAIN {
+    media_type "application/xml; charset=utf-8";
+    uri "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53495/index.cnxml";
+    retrieved_at @2026-09-12T00:00:00Z;
+    content_hash "sha256:d0668acbea9b24dfe647e4383e48b1b21c630f21b503883ef1e94eaa7406a4bf";
+    local_path "sources/calculus-derivatives/m53495.cnxml";
+}
+
+source M53573 {
+    kind treatise;
+    jurisdiction "none";
+    number "OpenStax Calculus, ch. 3 Derivatives, module m53573";
+    label en official "The Derivative as a Function";
+}
+
+edition M53573_MAIN of M53573 {
+    label en official "m53573/index.cnxml at commit 8dbc2ce (main, 2026-07-15)";
+    label ru unofficial "Файл m53573/index.cnxml на коммите 8dbc2ce ветки main";
+    language en;
+    officiality official;
+    adopted @2026-07-15;
+    materialization_status PINNED_OFFICIAL_BYTES;
+}
+
+publication M53573_CNXML of M53573_MAIN {
+    media_type "application/xml; charset=utf-8";
+    uri "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53573/index.cnxml";
+    retrieved_at @2026-09-12T00:00:00Z;
+    content_hash "sha256:d2247c767bd52283744dbb2641a7713d07d8af4a1e7455dcaf8cfb8ff0201bb0";
+    local_path "sources/calculus-derivatives/m53573.cnxml";
+}
+
+source M53575 {
+    kind treatise;
+    jurisdiction "none";
+    number "OpenStax Calculus, ch. 3 Derivatives, module m53575";
+    label en official "Differentiation Rules";
+}
+
+edition M53575_MAIN of M53575 {
+    label en official "m53575/index.cnxml at commit 8dbc2ce (main, 2026-07-15)";
+    label ru unofficial "Файл m53575/index.cnxml на коммите 8dbc2ce ветки main";
+    language en;
+    officiality official;
+    adopted @2026-07-15;
+    materialization_status PINNED_OFFICIAL_BYTES;
+}
+
+publication M53575_CNXML of M53575_MAIN {
+    media_type "application/xml; charset=utf-8";
+    uri "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53575/index.cnxml";
+    retrieved_at @2026-09-12T00:00:00Z;
+    content_hash "sha256:3c3beba11831d0ffe0994cd1eeca05bb5d72519c3f9ff1f420ac0cadd80a931b";
+    local_path "sources/calculus-derivatives/m53575.cnxml";
+}
+
+source M53578 {
+    kind treatise;
+    jurisdiction "none";
+    number "OpenStax Calculus, ch. 3 Derivatives, module m53578";
+    label en official "Derivatives of Trigonometric Functions";
+}
+
+edition M53578_MAIN of M53578 {
+    label en official "m53578/index.cnxml at commit 8dbc2ce (main, 2026-07-15)";
+    label ru unofficial "Файл m53578/index.cnxml на коммите 8dbc2ce ветки main";
+    language en;
+    officiality official;
+    adopted @2026-07-15;
+    materialization_status PINNED_OFFICIAL_BYTES;
+}
+
+publication M53578_CNXML of M53578_MAIN {
+    media_type "application/xml; charset=utf-8";
+    uri "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53578/index.cnxml";
+    retrieved_at @2026-09-12T00:00:00Z;
+    content_hash "sha256:68d65321d8a387027ec0f236860f653000ea77100a7a59b057d0297a9a9c9c9f";
+    local_path "sources/calculus-derivatives/m53578.cnxml";
+}
+
+source M53581 {
+    kind treatise;
+    jurisdiction "none";
+    number "OpenStax Calculus, ch. 3 Derivatives, module m53581";
+    label en official "The Chain Rule";
+}
+
+edition M53581_MAIN of M53581 {
+    label en official "m53581/index.cnxml at commit 8dbc2ce (main, 2026-07-15)";
+    label ru unofficial "Файл m53581/index.cnxml на коммите 8dbc2ce ветки main";
+    language en;
+    officiality official;
+    adopted @2026-07-15;
+    materialization_status PINNED_OFFICIAL_BYTES;
+}
+
+publication M53581_CNXML of M53581_MAIN {
+    media_type "application/xml; charset=utf-8";
+    uri "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53581/index.cnxml";
+    retrieved_at @2026-09-12T00:00:00Z;
+    content_hash "sha256:f848070e09084722cee9c21879d33b1873118bc7ec600d4c7f2bcd1e07693219";
+    local_path "sources/calculus-derivatives/m53581.cnxml";
+}
+
+source M53586 {
+    kind treatise;
+    jurisdiction "none";
+    number "OpenStax Calculus, ch. 3 Derivatives, module m53586";
+    label en official "Derivatives of Exponential and Logarithmic Functions";
+}
+
+edition M53586_MAIN of M53586 {
+    label en official "m53586/index.cnxml at commit 8dbc2ce (main, 2026-07-15)";
+    label ru unofficial "Файл m53586/index.cnxml на коммите 8dbc2ce ветки main";
+    language en;
+    officiality official;
+    adopted @2026-07-15;
+    materialization_status PINNED_OFFICIAL_BYTES;
+}
+
+publication M53586_CNXML of M53586_MAIN {
+    media_type "application/xml; charset=utf-8";
+    uri "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53586/index.cnxml";
+    retrieved_at @2026-09-12T00:00:00Z;
+    content_hash "sha256:6ac66df1d00f39513463ac330c27d2cfc16fe1a504c00191c20bad32c92cfbd5";
+    local_path "sources/calculus-derivatives/m53586.cnxml";
+}
+
+// m53495 «Defining the Derivative» — fs-id1169739095772
+fragment CD_DERIVATIVE_DEFINITION in M53495_MAIN {
+    kind defn;
+    locator "module/m53495#fs-id1169739095772";
+    text en official """<note id="fs-id1169739095772">
+<title>Definition</title>
+<para id="fs-id1169738924962">Let <m:math><m:mi>f</m:mi></m:math> be a function defined on an interval <m:math><m:mi>I</m:mi></m:math> containing <m:math><m:mi>a</m:mi><m:mo>.</m:mo></m:math> If <m:math><m:mrow><m:mi>x</m:mi><m:mo>≠</m:mo><m:mi>a</m:mi></m:mrow></m:math> is in <m:math><m:mi>I</m:mi><m:mo>,</m:mo></m:math> then</para>
+<equation id="fs-id1169738850293"><m:math><m:mrow><m:mi>Q</m:mi><m:mo>=</m:mo><m:mfrac><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>−</m:mo><m:mi>f</m:mi><m:mo stretchy="false">(</m:mo><m:mi>a</m:mi><m:mo stretchy="false">)</m:mo></m:mrow><m:mrow><m:mi>x</m:mi><m:mo>−</m:mo><m:mi>a</m:mi></m:mrow></m:mfrac></m:mrow></m:math></equation>
+<para id="fs-id1169738879993">is a <term id="term-00003">difference quotient</term>.</para>
+<para id="fs-id1169739195558">Also, if <m:math><m:mrow><m:mi>h</m:mi><m:mo>≠</m:mo><m:mn>0</m:mn></m:mrow></m:math> is chosen so that <m:math><m:mrow><m:mi>a</m:mi><m:mo>+</m:mo><m:mi>h</m:mi></m:mrow></m:math> is in <m:math><m:mrow><m:mi>I</m:mi><m:mo>,</m:mo></m:mrow></m:math> then</para>
+<equation id="fs-id1169739097936"><m:math><m:mrow><m:mi>Q</m:mi><m:mo>=</m:mo><m:mfrac><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mrow><m:mi>a</m:mi><m:mo>+</m:mo><m:mi>h</m:mi></m:mrow><m:mo>)</m:mo></m:mrow><m:mo>−</m:mo><m:mi>f</m:mi><m:mo stretchy="false">(</m:mo><m:mi>a</m:mi><m:mo stretchy="false">)</m:mo></m:mrow><m:mi>h</m:mi></m:mfrac></m:mrow></m:math></equation>
+<para id="fs-id1169738913121">is a difference quotient with increment <m:math><m:mi>h</m:mi><m:mo>.</m:mo></m:math></para>
+</note>""";
+    content_hash "sha256:4f9fa84e30bebdb099e77c49ef63f0c57168f36e082e3297e956386135f3e63a";
+}
+
+// m53575 «Differentiation Rules» — fs-id1169738955425
+fragment CD_CONSTANT_RULE in M53575_MAIN {
+    kind section;
+    locator "module/m53575#fs-id1169738955425";
+    text en official """<note id="fs-id1169738955425" class="theorem">
+<title>The Constant Rule</title>
+<para id="fs-id1169738878658">Let <m:math><m:mi>c</m:mi></m:math> be a constant.</para>
+<para id="fs-id1169738853363">If <m:math><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mi>c</m:mi><m:mo>,</m:mo></m:mrow></m:math> then <m:math><m:mrow><m:msup><m:mi>f</m:mi><m:mo>′</m:mo></m:msup><m:mo stretchy="false">(</m:mo><m:mi>x</m:mi><m:mo stretchy="false">)</m:mo><m:mo>=</m:mo><m:mn>0</m:mn><m:mo>.</m:mo></m:mrow></m:math></para>
+<para id="fs-id1169739024163">Alternatively, we may express this rule as</para>
+<equation id="fs-id1169738861250" class="unnumbered"><label/><m:math><m:mrow><m:mfrac><m:mi>d</m:mi><m:mrow><m:mi>d</m:mi><m:mi>x</m:mi></m:mrow></m:mfrac><m:mrow><m:mo>(</m:mo><m:mi>c</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mn>0.</m:mn></m:mrow></m:math></equation>
+</note>""";
+    content_hash "sha256:e82969a494127ad63376efb3e5058b9824ec957889dae571b9dc7a895ff6a5d7";
+}
+
+// m53575 «Differentiation Rules» — fs-id1169736615212
+fragment CD_POWER_RULE in M53575_MAIN {
+    kind section;
+    locator "module/m53575#fs-id1169736615212";
+    text en official """<note id="fs-id1169736615212" class="theorem">
+<title>The Power Rule</title>
+<para id="fs-id1169738850005">Let <m:math><m:mi>n</m:mi></m:math> be a positive integer. If <m:math><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:msup><m:mi>x</m:mi><m:mi>n</m:mi></m:msup><m:mo>,</m:mo></m:mrow></m:math> then</para>
+<equation id="fs-id1169739269835" class="unnumbered"><label/><m:math><m:mrow><m:msup><m:mi>f</m:mi><m:mo>′</m:mo></m:msup><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mi>n</m:mi><m:msup><m:mi>x</m:mi><m:mrow><m:mi>n</m:mi><m:mo>−</m:mo><m:mn>1</m:mn></m:mrow></m:msup><m:mo>.</m:mo></m:mrow></m:math></equation>
+<para id="fs-id1169739031758">Alternatively, we may express this rule as</para>
+<equation id="fs-id1169739225629" class="unnumbered"><label/><m:math><m:mrow><m:mfrac><m:mi>d</m:mi><m:mrow><m:mi>d</m:mi><m:mi>x</m:mi></m:mrow></m:mfrac><m:msup><m:mi>x</m:mi><m:mi>n</m:mi></m:msup><m:mo>=</m:mo><m:mi>n</m:mi><m:msup><m:mi>x</m:mi><m:mrow><m:mi>n</m:mi><m:mo>−</m:mo><m:mn>1</m:mn></m:mrow></m:msup><m:mo>.</m:mo></m:mrow></m:math></equation>
+</note>""";
+    content_hash "sha256:de2820c5e3445b86f35c3e6687e558af0b1fbfe27ae30deebb4b6e8d61c1801f";
+}
+
+// m53575 «Differentiation Rules» — fs-id1169736617597
+fragment CD_EXTENDED_POWER_RULE in M53575_MAIN {
+    kind section;
+    locator "module/m53575#fs-id1169736617597";
+    text en official """<note id="fs-id1169736617597" class="theorem">
+<title>Extended Power Rule</title>
+<para id="fs-id1169736617603">If <m:math><m:mi>k</m:mi></m:math> is a negative integer, then</para>
+<equation id="fs-id1169736617610" class="unnumbered"><label/><m:math><m:mrow><m:mfrac><m:mi>d</m:mi><m:mrow><m:mi>d</m:mi><m:mi>x</m:mi></m:mrow></m:mfrac><m:mrow><m:mo>(</m:mo><m:mrow><m:msup><m:mi>x</m:mi><m:mi>k</m:mi></m:msup></m:mrow><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mi>k</m:mi><m:msup><m:mi>x</m:mi><m:mrow><m:mi>k</m:mi><m:mo>−</m:mo><m:mn>1</m:mn></m:mrow></m:msup><m:mo>.</m:mo></m:mrow></m:math></equation>
+</note>""";
+    content_hash "sha256:a7e47afb7b76ae6deb278e2131a4af085d2ba195d76b98019ade36b5fb0bcf50";
+}
+
+// m53575 «Differentiation Rules» — fs-id1169739305071
+fragment CD_SUM_DIFFERENCE_MULTIPLE in M53575_MAIN {
+    kind section;
+    locator "module/m53575#fs-id1169739305071";
+    text en official """<note id="fs-id1169739305071" class="theorem">
+<title>Sum, Difference, and Constant Multiple Rules</title>
+<para id="fs-id1169736611426">Let <m:math><m:mrow><m:mi>f</m:mi><m:mo stretchy="false">(</m:mo><m:mi>x</m:mi><m:mo stretchy="false">)</m:mo></m:mrow></m:math> and <m:math><m:mrow><m:mi>g</m:mi><m:mo stretchy="false">(</m:mo><m:mi>x</m:mi><m:mo stretchy="false">)</m:mo></m:mrow></m:math> be differentiable functions and <m:math><m:mi>k</m:mi></m:math> be a constant. Then each of the following equations holds.</para>
+<para id="fs-id1169739039653"><term id="term-00003">Sum Rule</term>. The derivative of the sum of a function <m:math><m:mi>f</m:mi></m:math> and a function <m:math><m:mi>g</m:mi></m:math> is the same as the sum of the derivative of <m:math><m:mi>f</m:mi></m:math> and the derivative of <m:math><m:mrow><m:mi>g</m:mi><m:mo>.</m:mo></m:mrow></m:math></para>
+<equation id="fs-id1169739179597" class="unnumbered"><label/><m:math><m:mrow><m:mfrac><m:mi>d</m:mi><m:mrow><m:mi>d</m:mi><m:mi>x</m:mi></m:mrow></m:mfrac><m:mrow><m:mo>(</m:mo><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>+</m:mo><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mfrac><m:mi>d</m:mi><m:mrow><m:mi>d</m:mi><m:mi>x</m:mi></m:mrow></m:mfrac><m:mrow><m:mo>(</m:mo><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow><m:mo>)</m:mo></m:mrow><m:mo>+</m:mo><m:mfrac><m:mi>d</m:mi><m:mrow><m:mi>d</m:mi><m:mi>x</m:mi></m:mrow></m:mfrac><m:mrow><m:mo>(</m:mo><m:mrow><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow><m:mo>)</m:mo></m:mrow><m:mo>;</m:mo></m:mrow></m:math></equation>
+<para id="fs-id1169739351562">that is,</para>
+<equation id="fs-id1169739008128" class="unnumbered"><label/><m:math><m:mrow><m:mtext>for</m:mtext><m:mspace width="0.2em"/><m:mi>j</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>+</m:mo><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>,</m:mo><m:msup><m:mi>j</m:mi><m:mo>′</m:mo></m:msup><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:msup><m:mi>f</m:mi><m:mo>′</m:mo></m:msup><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>+</m:mo><m:msup><m:mi>g</m:mi><m:mo>′</m:mo></m:msup><m:mo stretchy="false">(</m:mo><m:mi>x</m:mi><m:mo stretchy="false">)</m:mo><m:mo>.</m:mo></m:mrow></m:math></equation>
+<para id="fs-id1169739000178"><term id="term-00004">Difference Rule</term>. The derivative of the difference of a function <emphasis effect="italics">f</emphasis> and a function <emphasis effect="italics">g</emphasis> is the same as the difference of the derivative of <emphasis effect="italics">f</emphasis> and the derivative of <m:math><m:mrow><m:mi>g</m:mi><m:mtext>:</m:mtext></m:mrow></m:math></para>
+<equation id="fs-id1169736611311" class="unnumbered"><label/><m:math><m:mrow><m:mfrac><m:mi>d</m:mi><m:mrow><m:mi>d</m:mi><m:mi>x</m:mi></m:mrow></m:mfrac><m:mrow><m:mo>(</m:mo><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>−</m:mo><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mfrac><m:mi>d</m:mi><m:mrow><m:mi>d</m:mi><m:mi>x</m:mi></m:mrow></m:mfrac><m:mrow><m:mo>(</m:mo><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow><m:mo>)</m:mo></m:mrow><m:mo>−</m:mo><m:mfrac><m:mi>d</m:mi><m:mrow><m:mi>d</m:mi><m:mi>x</m:mi></m:mrow></m:mfrac><m:mrow><m:mo>(</m:mo><m:mrow><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow><m:mo>)</m:mo></m:mrow><m:mo>;</m:mo></m:mrow></m:math></equation>
+<para id="fs-id1169739005930">that is,</para>
+<equation id="fs-id1169739208882" class="unnumbered"><label/><m:math><m:mrow><m:mtext>for</m:mtext><m:mspace width="0.2em"/><m:mi>j</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>−</m:mo><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>,</m:mo><m:msup><m:mi>j</m:mi><m:mo>′</m:mo></m:msup><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:msup><m:mi>f</m:mi><m:mo>′</m:mo></m:msup><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>−</m:mo><m:msup><m:mi>g</m:mi><m:mo>′</m:mo></m:msup><m:mo stretchy="false">(</m:mo><m:mi>x</m:mi><m:mo stretchy="false">)</m:mo><m:mo>.</m:mo></m:mrow></m:math></equation>
+<para id="fs-id1169739195371"><term id="term-00005">Constant Multiple Rule</term>. The derivative of a constant <emphasis effect="italics">k</emphasis> multiplied by a function <emphasis effect="italics">f</emphasis> is the same as the constant multiplied by the derivative: <m:math/></para><equation id="fs-id1169739340266" class="unnumbered"><label/><m:math><m:mrow><m:mfrac><m:mi>d</m:mi><m:mrow><m:mi>d</m:mi><m:mi>x</m:mi></m:mrow></m:mfrac><m:mrow><m:mo>(</m:mo><m:mrow><m:mi>k</m:mi><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mi>k</m:mi><m:mfrac><m:mi>d</m:mi><m:mrow><m:mi>d</m:mi><m:mi>x</m:mi></m:mrow></m:mfrac><m:mrow><m:mo>(</m:mo><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow><m:mo>)</m:mo></m:mrow><m:mo>;</m:mo></m:mrow></m:math></equation>
+<para id="fs-id1169739179540">that is,</para>
+<equation id="fs-id1169739179543" class="unnumbered"><label/><m:math><m:mrow><m:mtext>for</m:mtext><m:mspace width="0.2em"/><m:mi>j</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mi>k</m:mi><m:mi>f</m:mi><m:mo stretchy="false">(</m:mo><m:mi>x</m:mi><m:mo stretchy="false">)</m:mo><m:mo>,</m:mo><m:msup><m:mi>j</m:mi><m:mo>′</m:mo></m:msup><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mi>k</m:mi><m:msup><m:mi>f</m:mi><m:mo>′</m:mo></m:msup><m:mo stretchy="false">(</m:mo><m:mi>x</m:mi><m:mo stretchy="false">)</m:mo><m:mo>.</m:mo></m:mrow></m:math></equation>
+</note>""";
+    content_hash "sha256:e36e4d2fafe633d730278a75c7137c7cad0e9cde393b5d8d19156ca39ab4314b";
+}
+
+// m53575 «Differentiation Rules» — fs-id1169739298175
+fragment CD_PRODUCT_RULE in M53575_MAIN {
+    kind section;
+    locator "module/m53575#fs-id1169739298175";
+    text en official """<note id="fs-id1169739298175" class="theorem">
+<title>Product Rule</title>
+<para id="fs-id1169739298182">Let <m:math><m:mrow><m:mi>f</m:mi><m:mo stretchy="false">(</m:mo><m:mi>x</m:mi><m:mo stretchy="false">)</m:mo></m:mrow></m:math> and <m:math><m:mrow><m:mi>g</m:mi><m:mo stretchy="false">(</m:mo><m:mi>x</m:mi><m:mo stretchy="false">)</m:mo></m:mrow></m:math> be differentiable functions. Then</para>
+<equation id="fs-id1169739326645" class="unnumbered"><label/><m:math><m:mrow><m:mfrac><m:mi>d</m:mi><m:mrow><m:mi>d</m:mi><m:mi>x</m:mi></m:mrow></m:mfrac><m:mrow><m:mo>(</m:mo><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mfrac><m:mi>d</m:mi><m:mrow><m:mi>d</m:mi><m:mi>x</m:mi></m:mrow></m:mfrac><m:mrow><m:mo>(</m:mo><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow><m:mo>)</m:mo></m:mrow><m:mo>·</m:mo><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>+</m:mo><m:mfrac><m:mi>d</m:mi><m:mrow><m:mi>d</m:mi><m:mi>x</m:mi></m:mrow></m:mfrac><m:mrow><m:mo>(</m:mo><m:mrow><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow><m:mo>)</m:mo></m:mrow><m:mo>·</m:mo><m:mi>f</m:mi><m:mo stretchy="false">(</m:mo><m:mi>x</m:mi><m:mo stretchy="false">)</m:mo><m:mo>.</m:mo></m:mrow></m:math></equation>
+<para id="fs-id1169739187834">That is,</para>
+<equation id="fs-id1169739187837" class="unnumbered"><label/><m:math><m:mrow><m:mtext>if</m:mtext><m:mspace width="0.2em"/><m:mi>j</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mi>g</m:mi><m:mo stretchy="false">(</m:mo><m:mi>x</m:mi><m:mo stretchy="false">)</m:mo><m:mo>,</m:mo><m:mtext>then</m:mtext><m:mspace width="0.2em"/><m:msup><m:mi>j</m:mi><m:mo>′</m:mo></m:msup><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:msup><m:mi>f</m:mi><m:mo>′</m:mo></m:msup><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>+</m:mo><m:msup><m:mi>g</m:mi><m:mo>′</m:mo></m:msup><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mi>f</m:mi><m:mo stretchy="false">(</m:mo><m:mi>x</m:mi><m:mo stretchy="false">)</m:mo><m:mo>.</m:mo></m:mrow></m:math></equation>
+<para id="fs-id1169739269717">This means that the derivative of a product of two functions is the derivative of the first function times the second function plus the derivative of the second function times the first function.</para>
+</note>""";
+    content_hash "sha256:d7630c041ef4b9a5b0c13bf607683d97cae3aac36242377476d47c02328160bd";
+}
+
+// m53575 «Differentiation Rules» — fs-id1169736662915
+fragment CD_QUOTIENT_RULE in M53575_MAIN {
+    kind section;
+    locator "module/m53575#fs-id1169736662915";
+    text en official """<note id="fs-id1169736662915" class="theorem">
+<title>The Quotient Rule</title>
+<para id="fs-id1169736662921">Let <m:math><m:mrow><m:mi>f</m:mi><m:mo stretchy="false">(</m:mo><m:mi>x</m:mi><m:mo stretchy="false">)</m:mo></m:mrow></m:math> and <m:math><m:mrow><m:mi>g</m:mi><m:mo stretchy="false">(</m:mo><m:mi>x</m:mi><m:mo stretchy="false">)</m:mo></m:mrow></m:math> be differentiable functions. Then</para>
+<equation id="fs-id1169739336009" class="unnumbered"><label/><m:math><m:mrow><m:mfrac><m:mi>d</m:mi><m:mrow><m:mi>d</m:mi><m:mi>x</m:mi></m:mrow></m:mfrac><m:mrow><m:mo>(</m:mo><m:mrow><m:mfrac><m:mrow><m:mi>f</m:mi><m:mo stretchy="false">(</m:mo><m:mi>x</m:mi><m:mo stretchy="false">)</m:mo></m:mrow><m:mrow><m:mi>g</m:mi><m:mo stretchy="false">(</m:mo><m:mi>x</m:mi><m:mo stretchy="false">)</m:mo></m:mrow></m:mfrac></m:mrow><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mfrac><m:mrow><m:mfrac><m:mi>d</m:mi><m:mrow><m:mi>d</m:mi><m:mi>x</m:mi></m:mrow></m:mfrac><m:mo stretchy="false">(</m:mo><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo stretchy="false">)</m:mo><m:mo>·</m:mo><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>−</m:mo><m:mfrac><m:mi>d</m:mi><m:mrow><m:mi>d</m:mi><m:mi>x</m:mi></m:mrow></m:mfrac><m:mo stretchy="false">(</m:mo><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo stretchy="false">)</m:mo><m:mo>·</m:mo><m:mi>f</m:mi><m:mo stretchy="false">(</m:mo><m:mi>x</m:mi><m:mo stretchy="false">)</m:mo></m:mrow><m:mrow><m:msup><m:mrow><m:mo stretchy="false">(</m:mo><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo stretchy="false">)</m:mo></m:mrow><m:mn>2</m:mn></m:msup></m:mrow></m:mfrac><m:mo>.</m:mo></m:mrow></m:math></equation>
+<para id="fs-id1169739190663">That is,</para>
+<equation id="fs-id1169739190666" class="unnumbered"><label/><m:math><m:mrow><m:mtext>if</m:mtext><m:mspace width="0.2em"/><m:mi>j</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mfrac><m:mrow><m:mi>f</m:mi><m:mo stretchy="false">(</m:mo><m:mi>x</m:mi><m:mo stretchy="false">)</m:mo></m:mrow><m:mrow><m:mi>g</m:mi><m:mo stretchy="false">(</m:mo><m:mi>x</m:mi><m:mo stretchy="false">)</m:mo></m:mrow></m:mfrac><m:mo>,</m:mo><m:mtext>then</m:mtext><m:mspace width="0.2em"/><m:msup><m:mi>j</m:mi><m:mo>′</m:mo></m:msup><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mfrac><m:mrow><m:msup><m:mi>f</m:mi><m:mo>′</m:mo></m:msup><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>−</m:mo><m:msup><m:mi>g</m:mi><m:mo>′</m:mo></m:msup><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mi>f</m:mi><m:mo stretchy="false">(</m:mo><m:mi>x</m:mi><m:mo stretchy="false">)</m:mo></m:mrow><m:mrow><m:msup><m:mrow><m:mo stretchy="false">(</m:mo><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo stretchy="false">)</m:mo></m:mrow><m:mn>2</m:mn></m:msup></m:mrow></m:mfrac><m:mo>.</m:mo></m:mrow></m:math></equation>
+</note>""";
+    content_hash "sha256:e8fdb62b8726b7423701414935da809acaa7966d57c503c55e20f3893a308a4c";
+}
+
+// m53578 «Derivatives of Trigonometric Functions» — fs-id1169739098813
+fragment CD_SIN_COS in M53578_MAIN {
+    kind section;
+    locator "module/m53578#fs-id1169739098813";
+    text en official """<note id="fs-id1169739098813" class="theorem">
+<title>The Derivatives of sin <emphasis effect="italics">x</emphasis> and cos <emphasis effect="italics">x</emphasis></title>
+<para id="fs-id1169738998734">The derivative of the sine function is the cosine and the derivative of the cosine function is the negative sine.</para>
+<equation id="fs-id1169738884040"><m:math><m:mrow><m:mfrac><m:mi>d</m:mi><m:mrow><m:mi>d</m:mi><m:mi>x</m:mi></m:mrow></m:mfrac><m:mrow><m:mo>(</m:mo><m:mrow><m:mtext>sin</m:mtext><m:mspace width="0.1em"/><m:mi>x</m:mi></m:mrow><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mtext>cos</m:mtext><m:mspace width="0.1em"/><m:mi>x</m:mi></m:mrow></m:math></equation>
+<equation id="fs-id1169739096692"><m:math><m:mrow><m:mfrac><m:mi>d</m:mi><m:mrow><m:mi>d</m:mi><m:mi>x</m:mi></m:mrow></m:mfrac><m:mrow><m:mo>(</m:mo><m:mrow><m:mtext>cos</m:mtext><m:mspace width="0.1em"/><m:mi>x</m:mi></m:mrow><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mtext>−</m:mtext><m:mtext>sin</m:mtext><m:mspace width="0.1em"/><m:mi>x</m:mi></m:mrow></m:math></equation>
+</note>""";
+    content_hash "sha256:356216338116ba0327ab7f84cf12756a619a9ae7cb328ba2c52b3a419fd34291";
+}
+
+// m53581 «The Chain Rule» — fs-id1169739194586
+fragment CD_CHAIN_RULE in M53581_MAIN {
+    kind section;
+    locator "module/m53581#fs-id1169739194586";
+    text en official """<note id="fs-id1169739194586">
+<title>Rule: The Chain Rule</title>
+<para id="fs-id1169736612521">Let <m:math><m:mi>f</m:mi></m:math> and <m:math><m:mi>g</m:mi></m:math> be functions. For all <emphasis effect="italics">x</emphasis> in the domain of <m:math><m:mi>g</m:mi></m:math> for which <m:math><m:mi>g</m:mi></m:math> is differentiable at <emphasis effect="italics">x</emphasis> and <m:math><m:mi>f</m:mi></m:math> is differentiable at <m:math><m:mrow><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>,</m:mo></m:mrow></m:math> the derivative of the composite function</para>
+<equation id="fs-id1169739233799" class="unnumbered"><label/><m:math><m:mrow><m:mi>h</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mrow><m:mo>(</m:mo><m:mrow><m:mi>f</m:mi><m:mo>∘</m:mo><m:mi>g</m:mi></m:mrow><m:mo>)</m:mo></m:mrow><m:mo stretchy="false">(</m:mo><m:mi>x</m:mi><m:mo stretchy="false">)</m:mo><m:mo>=</m:mo><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mrow><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow><m:mo>)</m:mo></m:mrow></m:mrow></m:math></equation>
+<para id="fs-id1169738949353">is given by</para>
+<equation id="fs-id1169738948938"><m:math><m:mrow><m:msup><m:mi>h</m:mi><m:mo>′</m:mo></m:msup><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:msup><m:mi>f</m:mi><m:mo>′</m:mo></m:msup><m:mrow><m:mo>(</m:mo><m:mrow><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow><m:mo>)</m:mo></m:mrow><m:msup><m:mi>g</m:mi><m:mo>′</m:mo></m:msup><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>.</m:mo></m:mrow></m:math></equation>
+<para id="fs-id1169739199751">Alternatively, if <m:math><m:mi>y</m:mi></m:math> is a function of <m:math><m:mrow><m:mi>u</m:mi><m:mo>,</m:mo></m:mrow></m:math> and <m:math><m:mi>u</m:mi></m:math> is a function of <m:math><m:mrow><m:mi>x</m:mi><m:mo>,</m:mo></m:mrow></m:math> then</para>
+<equation id="fs-id1169739187558" class="unnumbered"><label/><m:math><m:mrow><m:mfrac><m:mrow><m:mi>d</m:mi><m:mi>y</m:mi></m:mrow><m:mrow><m:mi>d</m:mi><m:mi>x</m:mi></m:mrow></m:mfrac><m:mo>=</m:mo><m:mfrac><m:mrow><m:mi>d</m:mi><m:mi>y</m:mi></m:mrow><m:mrow><m:mi>d</m:mi><m:mi>u</m:mi></m:mrow></m:mfrac><m:mo>·</m:mo><m:mfrac><m:mrow><m:mi>d</m:mi><m:mi>u</m:mi></m:mrow><m:mrow><m:mi>d</m:mi><m:mi>x</m:mi></m:mrow></m:mfrac><m:mo>.</m:mo></m:mrow></m:math></equation>
+</note>""";
+    content_hash "sha256:cb428baef820847d90888ef3c2a814356c3c957cfa1a6758911973df198afb2d";
+}
+
+// m53586 «Derivatives of Exponential and Logarithmic Functions» — fs-id1169738226753
+fragment CD_NATURAL_EXPONENTIAL in M53586_MAIN {
+    kind section;
+    locator "module/m53586#fs-id1169738226753";
+    text en official """<note id="fs-id1169738226753" class="theorem">
+<title>Derivative of the Natural Exponential Function</title>
+<para id="fs-id1169738220224">Let <m:math><m:mrow><m:mi>E</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:msup><m:mi>e</m:mi><m:mi>x</m:mi></m:msup></m:mrow></m:math> be the natural exponential function. Then</para>
+<equation id="fs-id1169737928243" class="unnumbered"><label/><m:math><m:mrow><m:msup><m:mi>E</m:mi><m:mo>′</m:mo></m:msup><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:msup><m:mi>e</m:mi><m:mi>x</m:mi></m:msup><m:mo>.</m:mo></m:mrow></m:math></equation>
+<para id="fs-id1169737142141">In general,</para>
+<equation id="fs-id1169738124964" class="unnumbered"><label/><m:math><m:mrow><m:mfrac><m:mi>d</m:mi><m:mrow><m:mi>d</m:mi><m:mi>x</m:mi></m:mrow></m:mfrac><m:mrow><m:mo>(</m:mo><m:mrow><m:msup><m:mi>e</m:mi><m:mrow><m:mi>g</m:mi><m:mo stretchy="false">(</m:mo><m:mi>x</m:mi><m:mo stretchy="false">)</m:mo></m:mrow></m:msup></m:mrow><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:msup><m:mi>e</m:mi><m:mrow><m:mi>g</m:mi><m:mo stretchy="false">(</m:mo><m:mi>x</m:mi><m:mo stretchy="false">)</m:mo></m:mrow></m:msup><m:msup><m:mi>g</m:mi><m:mo>′</m:mo></m:msup><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>.</m:mo></m:mrow></m:math></equation>
+</note>""";
+    content_hash "sha256:cc4855776059fd9a1a3635e5356553fd15655d3f0cedf8e8fc8d0a9f56d8e3f5";
+}
+
+// m53586 «Derivatives of Exponential and Logarithmic Functions» — fs-id1169737927590
+fragment CD_NATURAL_LOGARITHM in M53586_MAIN {
+    kind section;
+    locator "module/m53586#fs-id1169737927590";
+    text en official """<note id="fs-id1169737927590" class="theorem">
+<title>The Derivative of the Natural Logarithmic Function</title>
+<para id="fs-id1169737911417">If <m:math><m:mrow><m:mi>x</m:mi><m:mo>></m:mo><m:mn>0</m:mn></m:mrow></m:math> and <m:math><m:mrow><m:mi>y</m:mi><m:mo>=</m:mo><m:mtext>ln</m:mtext><m:mspace width="0.1em"/><m:mi>x</m:mi><m:mo>,</m:mo></m:mrow></m:math> then</para>
+<equation id="fs-id1169738223534"><m:math><m:mrow><m:mfrac><m:mrow><m:mi>d</m:mi><m:mi>y</m:mi></m:mrow><m:mrow><m:mi>d</m:mi><m:mi>x</m:mi></m:mrow></m:mfrac><m:mo>=</m:mo><m:mfrac><m:mn>1</m:mn><m:mi>x</m:mi></m:mfrac><m:mo>.</m:mo></m:mrow></m:math></equation>
+<para id="fs-id1169737765282">More generally, let <m:math><m:mrow><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> be a differentiable function. For all values of <m:math><m:mi>x</m:mi></m:math> for which <m:math><m:mrow><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>></m:mo><m:mn>0</m:mn><m:mo>,</m:mo></m:mrow></m:math> the derivative of <m:math><m:mrow><m:mi>h</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mtext>ln</m:mtext><m:mspace width="0.1em"/><m:mrow><m:mo>(</m:mo><m:mrow><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow><m:mo>)</m:mo></m:mrow></m:mrow></m:math> is given by</para>
+<equation id="fs-id1169737919348"><m:math><m:mrow><m:msup><m:mi>h</m:mi><m:mo>′</m:mo></m:msup><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mfrac><m:mn>1</m:mn><m:mrow><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:mfrac><m:msup><m:mi>g</m:mi><m:mo>′</m:mo></m:msup><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>.</m:mo></m:mrow></m:math></equation>
+</note>""";
+    content_hash "sha256:845d0cb5cffc5397bd70da03574db5da0700c726ae5e8a7cbfdfe0b6cd42a77c";
+}

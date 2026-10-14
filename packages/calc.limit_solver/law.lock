@@ -1,0 +1,37 @@
+{
+  "dependencyEdges": [
+    {
+      "features": [],
+      "from": "calc.limit_solver",
+      "requested": "0.1.0",
+      "resolved": "0.1.0",
+      "to": "calc.expressions"
+    }
+  ],
+  "languageSemantics": "law.core/0.2.11",
+  "lockVersion": "0.4",
+  "packages": [
+    {
+      "artifactHash": "sha256:67a032a96c983e724e0af4781fc287617140741319ebe2e55ac54ca35467a265",
+      "features": [
+        "core-executable"
+      ],
+      "name": "calc.expressions",
+      "namespace": "urn:law:calc:expressions",
+      "registryId": "law-dsl-dev",
+      "resolverUri": "registry://law-dsl-dev/calc.expressions/0.1.0",
+      "sourceHash": "sha256:74c1509e127265dada5267e722fe5ffd05aea45c9f1c2552ee2c94ae5a5e3720",
+      "version": "0.1.0"
+    }
+  ],
+  "resolutionHash": "sha256:6e9ccef770c18717a7404f4f7eb6fae106b6349d28c82216ab8fc88029fe0224",
+  "resources": [],
+  "root": {
+    "artifactHash": "sha256:fccff8c3ddc6ad47df65058381698306871e3e395f79ea7877b3eeeab10e4790",
+    "name": "calc.limit_solver",
+    "namespace": "urn:law:calc:limit-solver",
+    "sourceHash": "sha256:d8b58e470e9c60539b49af0e3cbcdf121e48d888b2d9545c4d0a47645035ecf7",
+    "version": "0.1.0"
+  },
+  "semanticLayer": "L3"
+}

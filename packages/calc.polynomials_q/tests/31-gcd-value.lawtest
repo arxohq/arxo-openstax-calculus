@@ -1,0 +1,68 @@
+language "law.core" version "0.2";
+package calc.polynomials_q version "0.1.0";
+namespace "urn:law:calc:polynomials-q";
+
+// НОД(x³ − 1, x² − 1) = x − 1, и приведённость ПРОВЕРЕНА старшим коэффициентом, а не заявлена.
+
+test "НОД приведён к моническому виду" {
+ given {
+ context { decision_time @2026-09-07T12:00:00Z; knowledge_time @2026-09-07T12:00:00Z; legal_time @2026-09-07; timezone "UTC"; }
+  assert "f0": degree_cap(16) { origin case_input; }
+  assert "f1": poly(entity_ref("urn:calc:pq:f"), 3) { origin case_input; }
+  assert "f2": term(entity_ref("urn:calc:pq:f"), 0, -1 / 1) { origin case_input; }
+  assert "f3": term(entity_ref("urn:calc:pq:f"), 1, 0 / 1) { origin case_input; }
+  assert "f4": term(entity_ref("urn:calc:pq:f"), 2, 0 / 1) { origin case_input; }
+  assert "f5": term(entity_ref("urn:calc:pq:f"), 3, 1 / 1) { origin case_input; }
+  assert "f6": poly(entity_ref("urn:calc:pq:g"), 2) { origin case_input; }
+  assert "f7": term(entity_ref("urn:calc:pq:g"), 0, -1 / 1) { origin case_input; }
+  assert "f8": term(entity_ref("urn:calc:pq:g"), 1, 0 / 1) { origin case_input; }
+  assert "f9": term(entity_ref("urn:calc:pq:g"), 2, 1 / 1) { origin case_input; }
+  assert "f10": produced(entity_ref("urn:calc:pq:r2"), 3) { origin case_input; }
+  assert "f11": produced(entity_ref("urn:calc:pq:r3"), 2) { origin case_input; }
+  assert "f12": produced(entity_ref("urn:calc:pq:q1"), 1) { origin case_input; }
+  assert "f13": produced(entity_ref("urn:calc:pq:q2"), 1) { origin case_input; }
+  assert "f14": produced(entity_ref("urn:calc:pq:u0"), 0) { origin case_input; }
+  assert "f15": produced(entity_ref("urn:calc:pq:u1"), 0) { origin case_input; }
+  assert "f16": produced(entity_ref("urn:calc:pq:v0"), 0) { origin case_input; }
+  assert "f17": produced(entity_ref("urn:calc:pq:v1"), 0) { origin case_input; }
+  assert "f18": produced(entity_ref("urn:calc:pq:gcd"), 3) { origin case_input; }
+  assert "f19": produced(entity_ref("urn:calc:pq:bu"), 1) { origin case_input; }
+  assert "f20": produced(entity_ref("urn:calc:pq:bv"), 1) { origin case_input; }
+  assert "f21": euclid(entity_ref("urn:calc:pq:ec"), entity_ref("urn:calc:pq:f"), entity_ref("urn:calc:pq:g")) { origin case_input; }
+  assert "f22": euclid_length(entity_ref("urn:calc:pq:ec"), 2) { origin case_input; }
+  assert "f23": euclid_remainder(entity_ref("urn:calc:pq:ec"), 0, entity_ref("urn:calc:pq:f")) { origin case_input; }
+  assert "f24": euclid_remainder(entity_ref("urn:calc:pq:ec"), 1, entity_ref("urn:calc:pq:g")) { origin case_input; }
+  assert "f25": euclid_remainder(entity_ref("urn:calc:pq:ec"), 2, entity_ref("urn:calc:pq:r2")) { origin case_input; }
+  assert "f26": euclid_remainder(entity_ref("urn:calc:pq:ec"), 3, entity_ref("urn:calc:pq:r3")) { origin case_input; }
+  assert "f27": euclid_division(entity_ref("urn:calc:pq:ec"), 1, entity_ref("urn:calc:pq:dv1")) { origin case_input; }
+  assert "f28": division_binding(entity_ref("urn:calc:pq:dv1"), "QUOTIENT", entity_ref("urn:calc:pq:q1")) { origin case_input; }
+  assert "f29": euclid_division(entity_ref("urn:calc:pq:ec"), 2, entity_ref("urn:calc:pq:dv2")) { origin case_input; }
+  assert "f30": division_binding(entity_ref("urn:calc:pq:dv2"), "QUOTIENT", entity_ref("urn:calc:pq:q2")) { origin case_input; }
+  assert "f31": euclid_u(entity_ref("urn:calc:pq:ec"), 0, entity_ref("urn:calc:pq:u0")) { origin case_input; }
+  assert "f32": euclid_v(entity_ref("urn:calc:pq:ec"), 0, entity_ref("urn:calc:pq:v0")) { origin case_input; }
+  assert "f33": euclid_u(entity_ref("urn:calc:pq:ec"), 1, entity_ref("urn:calc:pq:u1")) { origin case_input; }
+  assert "f34": euclid_v(entity_ref("urn:calc:pq:ec"), 1, entity_ref("urn:calc:pq:v1")) { origin case_input; }
+  assert "f35": euclid_u(entity_ref("urn:calc:pq:ec"), 2, entity_ref("urn:calc:pq:u2")) { origin case_input; }
+  assert "f36": euclid_v(entity_ref("urn:calc:pq:ec"), 2, entity_ref("urn:calc:pq:v2")) { origin case_input; }
+  assert "f37": euclid_u(entity_ref("urn:calc:pq:ec"), 3, entity_ref("urn:calc:pq:u3")) { origin case_input; }
+  assert "f38": euclid_v(entity_ref("urn:calc:pq:ec"), 3, entity_ref("urn:calc:pq:v3")) { origin case_input; }
+  assert "f39": euclid_qu(entity_ref("urn:calc:pq:ec"), 1, entity_ref("urn:calc:pq:qu1")) { origin case_input; }
+  assert "f40": euclid_qv(entity_ref("urn:calc:pq:ec"), 1, entity_ref("urn:calc:pq:qv1")) { origin case_input; }
+  assert "f41": euclid_qu(entity_ref("urn:calc:pq:ec"), 2, entity_ref("urn:calc:pq:qu2")) { origin case_input; }
+  assert "f42": euclid_qv(entity_ref("urn:calc:pq:ec"), 2, entity_ref("urn:calc:pq:qv2")) { origin case_input; }
+  assert "f43": euclid_gcd(entity_ref("urn:calc:pq:ec"), entity_ref("urn:calc:pq:gcd")) { origin case_input; }
+  assert "f44": euclid_bezout(entity_ref("urn:calc:pq:ec"), "U", entity_ref("urn:calc:pq:bu")) { origin case_input; }
+  assert "f45": euclid_bezout(entity_ref("urn:calc:pq:ec"), "V", entity_ref("urn:calc:pq:bv")) { origin case_input; }
+ }
+ evaluate truth(coeff(entity_ref("urn:calc:pq:gcd"), 0, -1 / 1));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(GcdCoefficients);
+ evaluate truth(coeff(entity_ref("urn:calc:pq:gcd"), 1, 1 / 1));
+ expect truth_status == TRUE_ONLY;
+ evaluate truth(degree(entity_ref("urn:calc:pq:gcd"), 1));
+ expect truth_status == TRUE_ONLY;
+ evaluate truth(gcd_verified_monic(entity_ref("urn:calc:pq:ec")));
+ expect truth_status == TRUE_ONLY;
+ expect applied(GcdMonic);
+}

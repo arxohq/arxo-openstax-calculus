@@ -1,0 +1,25 @@
+language "law.core" version "0.2";
+package calc.polynomials_q version "0.1.0";
+namespace "urn:law:calc:polynomials-q";
+
+// Ожидания: школьная арифметика над ℚ, DECISION-0197 §4.
+test "сокращение: bad-denominator" {
+ given {
+  assert "f0": degree_cap(12) { origin case_input; }
+  assert "f1": poly(entity_ref("urn:calc:limit:n"), 1) { origin case_input; }
+  assert "f2": term(entity_ref("urn:calc:limit:n"), 0, -1 / 1) { origin case_input; }
+  assert "f3": term(entity_ref("urn:calc:limit:n"), 1, 1 / 1) { origin case_input; }
+  assert "f4": poly(entity_ref("urn:calc:limit:d"), 1) { origin case_input; }
+  assert "f5": term(entity_ref("urn:calc:limit:d"), 0, 1 / 1) { origin case_input; }
+  assert "f6": term(entity_ref("urn:calc:limit:d"), 1, 1 / 1) { origin case_input; }
+  assert "f7": produced(entity_ref("urn:calc:limit:qn"), 3) { origin case_input; }
+  assert "f8": produced(entity_ref("urn:calc:limit:rn"), 3) { origin case_input; }
+  assert "f9": produced(entity_ref("urn:calc:limit:qd"), 3) { origin case_input; }
+  assert "f10": produced(entity_ref("urn:calc:limit:rd"), 3) { origin case_input; }
+  assert "f11": cancellation_request(entity_ref("urn:calc:limit:c"), entity_ref("urn:calc:limit:n"), entity_ref("urn:calc:limit:d"), 1 / 1) { origin case_input; }
+  assert "f12": cancellation_workspace(entity_ref("urn:calc:limit:c"), entity_ref("urn:calc:limit:factor"), entity_ref("urn:calc:limit:dn"), entity_ref("urn:calc:limit:dd"), entity_ref("urn:calc:limit:qn"), entity_ref("urn:calc:limit:rn"), entity_ref("urn:calc:limit:qd"), entity_ref("urn:calc:limit:rd")) { origin case_input; }
+ }
+ evaluate truth(cancellation_error(entity_ref("urn:calc:limit:c"), "NONZERO_REMAINDER"));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+}

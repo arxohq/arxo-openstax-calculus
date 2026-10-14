@@ -1,0 +1,252 @@
+language "law.core" version "0.2";
+package calc.limit_solver version "0.1.0";
+namespace "urn:law:calc:limit-solver";
+
+import calc.expressions version "0.1.0";
+
+// АВТОМАТИЧЕСКИЙ РЕШАТЕЛЬ ПРЕДЕЛА (DECISION-0198).
+//
+// Пользователь предъявляет ТОЛЬКО задачу: выражение, переменную, точку и
+// сторону. Метод, промежуточные выражения, производные и ответ он НЕ задаёт.
+// Ход строят правила этого пакета; проверяет его calc.calculus_checker.
+//
+// ГРАНИЦА С УПРАВЛЯЮЩИМ КОДОМ. Инструмент tools/solve.py разбирает запись
+// вида `lim_{x->0+} (x^2-1)/(x-1)`, печатает узлы дерева и параметры и
+// зовёт обычное исполнение. Ни одного кандидата, ни одной производной, ни
+// одного упрощения он не строит: всё это принадлежит правилам ниже.
+//
+// ТОЧНОГО СЧЁТА НАД МНОГОЧЛЕНАМИ ЗДЕСЬ НЕТ, и зависимости от
+// `calc.polynomials_q` пакет не объявляет. Устранимая особенность снимается
+// правилом Лопиталя, а не сокращением дроби, поэтому носители `Poly`,
+// `Division` и `Cancellation` не понадобились ни разу. Если сокращение
+// многочленов когда-нибудь появится отдельным методом, оно придёт вместе с
+// зависимостью и пулом носителей: сущность правилами не порождается (§9),
+// и пул обязан быть ОДИН И ТОТ ЖЕ для любого запроса.
+//
+// АДРЕСА ПОРОЖДЁННЫХ УЗЛОВ. Узел, которого во входе не было, получает
+// идентификатор `f * 64 + 256 + k`, где f — узел-источник, k ∈ 0 … 63 —
+// смещение в блоке операции. Отображение инъективно: по значению
+// y ≥ 320 однозначно восстанавливаются f = (y − 256) div 64 и
+// k = (y − 256) mod 64. Входные узлы обязаны лежать в 1 … 255, поэтому
+// порождённые с ними не сталкиваются, а поколения не пересекаются между
+// собой: блок, порождённый из f ≥ 320, начинается выше любого блока,
+// порождённого из f ≤ 255. Блоки смещений:
+//   0 … 15   производная
+//   16 … 31  значение и подстановка
+//   32 … 47  переписывание (сокращение, сопряжённое)
+//   48 … 63  вспомогательные узлы (Тейлор)
+//
+// БЮДЖЕТЫ — ЯВНЫЕ КОНСТАНТЫ ИСХОДНИКА версии 0.1.0, как 256 узлов у
+// calc.expressions и 64 строки у calc.calculus_checker:
+//   CAP_INPUT_NODE   255   наибольший допустимый идентификатор входного узла
+//   CAP_STATE         24   число состояний поиска
+//   CAP_DEPTH          8   глубина цепочки преобразований
+//   CAP_LHOPITAL       4   повторных применений правила Лопиталя
+//   CAP_CANCEL         8   повторных сокращений на (x − a)
+//   CAP_TAYLOR         6   порядок конечного разложения
+// Уменьшение любого из них — изменение версии пакета, а не умолчание дела.
+
+pub entity Task {
+    label ru unofficial "предъявленная задача о пределе";
+}
+
+// ── Вход ───────────────────────────────────────────────────────────────────
+
+pub relation task_nodes(
+        t: Task { label ru unofficial "задача"; },
+        e: calc.expressions::Expr { label ru unofficial "набор узлов"; }
+) kind empirical {
+    label ru unofficial "набор узлов, в котором разрешаются идентификаторы задачи";
+}
+
+pub relation task_function(
+        t: Task { label ru unofficial "задача"; },
+        f: Integer { label ru unofficial "узел"; }
+) kind empirical {
+    label ru unofficial "корень предъявленного выражения под знаком предела";
+}
+
+pub relation task_variable(
+        t: Task { label ru unofficial "задача"; },
+        x: Text { label ru unofficial "переменная"; }
+) kind empirical {
+    label ru unofficial "переменная, по которой берётся предел";
+}
+
+pub relation task_approach(
+        t: Task { label ru unofficial "задача"; },
+        ap: Text { label ru unofficial "вид точки"; }
+) kind empirical {
+    label ru unofficial "at, plus_inf либо minus_inf";
+}
+
+pub relation task_point(
+        t: Task { label ru unofficial "задача"; },
+        a: Rational { label ru unofficial "точка"; }
+) kind empirical {
+    label ru unofficial "точка приближения; при бесконечности 0/1";
+}
+
+pub relation task_side(
+        t: Task { label ru unofficial "задача"; },
+        s: Text { label ru unofficial "сторона"; }
+) kind empirical {
+    label ru unofficial "both, left либо right; при бесконечности both";
+}
+
+pub relation task_closed(
+        t: Task { label ru unofficial "задача"; }
+) kind empirical {
+    label ru unofficial "ввод задачи завершён: неполнота после этого — дефект, а не ожидание данных";
+}
+
+// ── Узлы задачи предъявляются решателю, а не владельцу формы ──────────────
+//
+// Дело называет узлы СВОИМ отношением, и первое, что делает решатель, —
+// переносит их в calc.expressions. Так «входной узел» отличим от
+// порождённого: у входного идентификатор лежит в 1 … 255 и предъявлен
+// делом, у порождённого — вычислен правилом и не меньше 320. Без этого
+// различения нельзя ни проверить диапазон, ни назвать дефект.
+
+pub relation input_node(
+        t: Task { label ru unofficial "задача"; },
+        f: Integer { label ru unofficial "узел"; },
+        tag: Text { label ru unofficial "вид узла"; },
+        name: Text { label ru unofficial "имя переменной"; },
+        value: Rational { label ru unofficial "значение константы"; },
+        left: Integer { label ru unofficial "левый дочерний"; },
+        right: Integer { label ru unofficial "правый дочерний"; }
+) kind empirical {
+    label ru unofficial "предъявленный делом узел выражения задачи";
+}
+
+rule CopyInputNode(t: Task, e: calc.expressions::Expr, f: Integer, tag: Text, name: Text, v: Rational, l: Integer, r: Integer) strict {
+    label ru unofficial "узел задачи становится узлом calc.expressions без изменения владельца формы (§2 DECISION-0198)";
+    when task_nodes(t, e) and input_node(t, f, tag, name, v, l, r) and f >= 1 and f <= 255;
+    then calc.expressions::node(e, f, tag, name, v, l, r);
+}
+
+rule InputNodeBelowRange(t: Task, e: calc.expressions::Expr, f: Integer, tag: Text, name: Text, v: Rational, l: Integer, r: Integer) strict {
+    label ru unofficial "ОТКАЗ NODE_ID_OUT_OF_RANGE: идентификатор меньше единицы (§2 DECISION-0198)";
+    when task_nodes(t, e) and input_node(t, f, tag, name, v, l, r) and f < 1;
+    then input_error(t, "NODE_ID_OUT_OF_RANGE");
+}
+
+rule InputNodeAboveRange(t: Task, e: calc.expressions::Expr, f: Integer, tag: Text, name: Text, v: Rational, l: Integer, r: Integer) strict {
+    label ru unofficial "ОТКАЗ NODE_ID_OUT_OF_RANGE: идентификатор вторгается в адреса порождённых узлов (§2 DECISION-0198)";
+    when task_nodes(t, e) and input_node(t, f, tag, name, v, l, r) and f > 255;
+    then input_error(t, "NODE_ID_OUT_OF_RANGE");
+}
+
+relation input_node_present(t: Task) kind institutional {
+    label ru unofficial "хотя бы один узел предъявлен";
+}
+
+rule InputNodePresent(t: Task, f: Integer, tag: Text, name: Text, v: Rational, l: Integer, r: Integer) strict {
+    label ru unofficial "узлы предъявлены (§2 DECISION-0198)";
+    when input_node(t, f, tag, name, v, l, r);
+    then input_node_present(t);
+}
+
+relation input_node_out_of_range(t: Task, tag: Text) kind institutional {
+    label ru unofficial "признак узла вне диапазона в форме, пригодной для отрицания";
+}
+
+rule InputNodeOutOfRangeFlagLow(t: Task, f: Integer, tag: Text, name: Text, v: Rational, l: Integer, r: Integer) strict {
+    label ru unofficial "признак узла вне диапазона (§2 DECISION-0198)";
+    when input_node(t, f, tag, name, v, l, r) and f < 1;
+    then input_node_out_of_range(t, "bad");
+}
+
+rule InputNodeOutOfRangeFlagHigh(t: Task, f: Integer, tag: Text, name: Text, v: Rational, l: Integer, r: Integer) strict {
+    label ru unofficial "признак узла вне диапазона (§2 DECISION-0198)";
+    when input_node(t, f, tag, name, v, l, r) and f > 255;
+    then input_node_out_of_range(t, "bad");
+}
+
+rule CloseNodeSet(t: Task, e: calc.expressions::Expr) strict {
+    label ru unofficial "ввод узлов завершён вместе с вводом задачи (§2 DECISION-0198)";
+    when task_nodes(t, e) and task_closed(t) and input_node_present(t);
+    then calc.expressions::closed(e);
+}
+
+// ── Разбор входа ───────────────────────────────────────────────────────────
+
+relation input_shape(t: Task) kind institutional {
+    label ru unofficial "поля задачи предъявлены и однозначны";
+}
+
+relation input_position(t: Task) kind institutional {
+    label ru unofficial "вид точки и сторона согласованы";
+}
+
+pub relation accepted(
+        t: Task { label ru unofficial "задача"; },
+        e: calc.expressions::Expr { label ru unofficial "набор узлов"; },
+        f: Integer { label ru unofficial "узел"; },
+        x: Text { label ru unofficial "переменная"; },
+        ap: Text { label ru unofficial "вид точки"; },
+        a: Rational { label ru unofficial "точка"; },
+        s: Text { label ru unofficial "сторона"; }
+) kind institutional {
+    label ru unofficial "принятая задача: разобранный и согласованный вход";
+}
+
+pub relation input_error(
+        t: Task { label ru unofficial "задача"; },
+        reason: Text { label ru unofficial "причина"; }
+) kind institutional {
+    label ru unofficial "названный дефект ввода: AMBIGUOUS_TASK, MISSING_FIELD, INVALID_APPROACH, INVALID_SIDE, NODE_ID_OUT_OF_RANGE, FUNCTION_NOT_WELL_FORMED";
+}
+
+rule InputShape(t: Task, e: calc.expressions::Expr, f: Integer, x: Text, ap: Text, a: Rational, s: Text) strict {
+    label ru unofficial "каждое поле задачи предъявлено ровно один раз (§2 DECISION-0198)";
+    when task_nodes(t, e) and task_function(t, f) and task_variable(t, x)
+        and task_approach(t, ap) and task_point(t, a) and task_side(t, s) and task_closed(t)
+        and (count distinct g: calc.expressions::Expr where task_nodes(t, g)) == 1
+        and (count distinct g: Integer where task_function(t, g)) == 1
+        and (count distinct y: Text where task_variable(t, y)) == 1
+        and (count distinct y: Text where task_approach(t, y)) == 1
+        and (count distinct q: Rational where task_point(t, q)) == 1
+        and (count distinct y: Text where task_side(t, y)) == 1;
+    then input_shape(t);
+}
+
+rule InputPositionAtBoth(t: Task) strict {
+    label ru unofficial "конечная точка, двусторонний предел (§2 DECISION-0198)";
+    when input_shape(t) and task_approach(t, "at") and task_side(t, "both");
+    then input_position(t);
+}
+
+rule InputPositionAtLeft(t: Task) strict {
+    label ru unofficial "конечная точка, предел слева (§2 DECISION-0198)";
+    when input_shape(t) and task_approach(t, "at") and task_side(t, "left");
+    then input_position(t);
+}
+
+rule InputPositionAtRight(t: Task) strict {
+    label ru unofficial "конечная точка, предел справа (§2 DECISION-0198)";
+    when input_shape(t) and task_approach(t, "at") and task_side(t, "right");
+    then input_position(t);
+}
+
+rule InputPositionPlusInf(t: Task) strict {
+    label ru unofficial "плюс бесконечность: точка ноль, сторона обе (§2 DECISION-0198)";
+    when input_shape(t) and task_approach(t, "plus_inf") and task_side(t, "both") and task_point(t, 0 / 1);
+    then input_position(t);
+}
+
+rule InputPositionMinusInf(t: Task) strict {
+    label ru unofficial "минус бесконечность: точка ноль, сторона обе (§2 DECISION-0198)";
+    when input_shape(t) and task_approach(t, "minus_inf") and task_side(t, "both") and task_point(t, 0 / 1);
+    then input_position(t);
+}
+
+rule Accepted(t: Task, e: calc.expressions::Expr, f: Integer, x: Text, ap: Text, a: Rational, s: Text) strict {
+    label ru unofficial "задача принята к решению (§2 DECISION-0198)";
+    when input_shape(t) and input_position(t) and input_node_present(t)
+        and task_nodes(t, e) and task_function(t, f) and task_variable(t, x)
+        and task_approach(t, ap) and task_point(t, a) and task_side(t, s)
+       ;
+    then accepted(t, e, f, x, ap, a, s);
+}

@@ -1,0 +1,41 @@
+language "law.core" version "0.2";
+package calc.polynomials_q version "0.1.0";
+namespace "urn:law:calc:polynomials-q";
+
+// У каждого свои дескрипторы, и остаток одного не попадает в другое.
+
+test "два деления в одном деле не смешиваются" {
+ given {
+  assert "f0": degree_cap(10) { origin case_input; }
+  assert "f1": poly(entity_ref("urn:calc:pq:f"), 3) { origin case_input; }
+  assert "f2": term(entity_ref("urn:calc:pq:f"), 0, 3 / 1) { origin case_input; }
+  assert "f3": term(entity_ref("urn:calc:pq:f"), 1, 0 / 1) { origin case_input; }
+  assert "f4": term(entity_ref("urn:calc:pq:f"), 2, -2 / 1) { origin case_input; }
+  assert "f5": term(entity_ref("urn:calc:pq:f"), 3, 1 / 1) { origin case_input; }
+  assert "f6": poly(entity_ref("urn:calc:pq:g"), 1) { origin case_input; }
+  assert "f7": term(entity_ref("urn:calc:pq:g"), 0, -1 / 1) { origin case_input; }
+  assert "f8": term(entity_ref("urn:calc:pq:g"), 1, 1 / 1) { origin case_input; }
+  assert "f9": poly(entity_ref("urn:calc:pq:h"), 3) { origin case_input; }
+  assert "f10": term(entity_ref("urn:calc:pq:h"), 0, -1 / 1) { origin case_input; }
+  assert "f11": term(entity_ref("urn:calc:pq:h"), 1, 0 / 1) { origin case_input; }
+  assert "f12": term(entity_ref("urn:calc:pq:h"), 2, 0 / 1) { origin case_input; }
+  assert "f13": term(entity_ref("urn:calc:pq:h"), 3, 1 / 1) { origin case_input; }
+  assert "f14": produced(entity_ref("urn:calc:pq:q1"), 2) { origin case_input; }
+  assert "f15": produced(entity_ref("urn:calc:pq:r1"), 3) { origin case_input; }
+  assert "f16": produced(entity_ref("urn:calc:pq:q2"), 2) { origin case_input; }
+  assert "f17": produced(entity_ref("urn:calc:pq:r2"), 3) { origin case_input; }
+  assert "f18": division(entity_ref("urn:calc:pq:dva"), entity_ref("urn:calc:pq:f"), entity_ref("urn:calc:pq:g")) { origin case_input; }
+  assert "f19": division_binding(entity_ref("urn:calc:pq:dva"), "QUOTIENT", entity_ref("urn:calc:pq:q1")) { origin case_input; }
+  assert "f20": division_binding(entity_ref("urn:calc:pq:dva"), "REMAINDER", entity_ref("urn:calc:pq:r1")) { origin case_input; }
+  assert "f21": division(entity_ref("urn:calc:pq:dvb"), entity_ref("urn:calc:pq:h"), entity_ref("urn:calc:pq:g")) { origin case_input; }
+  assert "f22": division_binding(entity_ref("urn:calc:pq:dvb"), "QUOTIENT", entity_ref("urn:calc:pq:q2")) { origin case_input; }
+  assert "f23": division_binding(entity_ref("urn:calc:pq:dvb"), "REMAINDER", entity_ref("urn:calc:pq:r2")) { origin case_input; }
+ }
+ evaluate truth(coeff(entity_ref("urn:calc:pq:r1"), 0, 2 / 1));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ evaluate truth(zero_polynomial(entity_ref("urn:calc:pq:r2")));
+ expect truth_status == TRUE_ONLY;
+ evaluate truth(coeff(entity_ref("urn:calc:pq:q2"), 0, 1 / 1));
+ expect truth_status == TRUE_ONLY;
+}

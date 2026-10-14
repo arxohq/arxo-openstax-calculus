@@ -1,0 +1,132 @@
+language "law.core" version "0.2";
+package calc.expressions version "0.1.0";
+namespace "urn:law:calc:expressions";
+
+use self::{
+    Expr,
+    alpha_candidate,
+    alpha_equiv,
+    alpha_error,
+    alpha_pair,
+    binder_declared,
+    binder_in,
+    descends,
+    free_at,
+    free_in,
+};
+
+
+
+
+// ALPHA-EQUIVALENCE: СООТВЕТСТВИЕ СВЯЗЫВАНИЙ ПОД ПЕРЕИМЕНОВАНИЕМ (цель §5).
+//
+// `equivalent` решает структурное равенство и по делу НЕ отвечает на вопрос про
+// α: (λz. body) и (λz'. body[z:=z']) устроены одинаково и означают одно и то же,
+// но имена различны.
+//
+// ЧТО РЕШАЕТСЯ. Существует ли взаимно однозначное соответствие между
+// связанными переменными ПОДДЕРЕВА f и связанными переменными ПОДДЕРЕВА g, при
+// котором свободные имена не затрагиваются. Решается целиком на предъявленных
+// binder_declared и alpha_pair, через достижимость из 05-reach.law.
+//
+// ГРАНИЦА, НАЗВАНАЯ ПРЯМО. Это НЕ полное α-равенство выражений: оно не строит
+// переименованное выражение и не сравнивает его с g через equivalent. Полное
+// равенство — отдельная работа, которой здесь нет. Утверждать больше значило бы
+// назвать проверку подменой, а поручение подмены запрещает.
+//
+// ОБЛАСТЬ ДЕЙСТВИЯ ТЕПЕРЬ ПО ВХОЖДЕНИЮ, А НЕ ПО ИМЕНИ. binder_in и free_in
+// scope-ятся через descends — то самое, ради чего 05-reach и написан. До него
+// «связанные переменные поддерева» были вопросом, на который нечем было ответить.
+//
+// ОДИН ВЕРДИКТ, ОДНО ПРАВИЛО, ЧЕТЫРЕ УСЛОВИЯ. Это правило сначала было написано
+// четырьмя правилами, выводящими alpha_equiv каждое само по себе, — и они вышли
+// ДИЗЪЮНКТИВНЫМИ, то есть выполнялось любое одно. Такая ошибка случилась в этом
+// пакете уже дважды (Quantity, вычисление свежести имени). Условия здесь
+// конъюнктивны по природе, значит и правило одно.
+
+rule BinderUnder(e: Expr, f: Integer, bf: Integer, z: Text) strict {
+    label en unofficial "связанное имя принадлежит ПОДДЕРЕВУ, а не просто выражению";
+    when binder_declared(e, bf, z) and descends(e, f, bf);
+    then binder_in(e, f, bf, z);
+}
+
+rule FreeUnder(e: Expr, f: Integer, x: Integer, z: Text) strict {
+    label en unofficial "имя свободно в поддереве, а не во всём выражении";
+    when free_at(e, x, z) and descends(e, f, x);
+    then free_in(e, f, z);
+}
+
+// ПРЕДЪЯВЛЕННОЕ СООТВЕТСТВИЕ. Случай предлагает, пакет проверяет — как и вся
+// остальная работа этого пакета (binder_declared, node_uses, substitution_into
+// объявлены empirical, и переименование в calc.expression_substitution/03-alpha
+// поступило так же).
+
+rule PairWellStated(e: Expr, f: Integer, g: Integer, bf: Integer, bg: Integer, z: Text, z2: Text) strict {
+    label en unofficial "предъявленная пара соответствует связанным именам обоих поддеревьев";
+    when binder_in(e, f, bf, z) and binder_in(e, g, bg, z2);
+    then alpha_pair(e, f, g, bf, bg, z, z2);
+}
+
+// ЧЕТЫРЕ УСЛОВИЯ СРАЗУ.
+//
+//   1. ПАР СТОЛЬКО ЖЕ, СКОЛЬКО СВЯЗАННЫХ ИМЁН В f. Иначе часть имён не
+//      переименована, а это другие выражения.
+//   2. ИНЪЕКТИВНОСТЬ: два разных связанных имени не сходятся в одно. Иначе
+//      соответствие не обратимо и α-конверсия теряет смысл.
+//   3. ПАР СТОЛЬКО ЖЕ, СКОЛЬКО СВЯЗАННЫХ ИМЁН И В g. Вместе с первым условием
+//      и инъективностью это даёт сюръективность: пар столько же, сколько имён с
+//      обеих сторон, и две разные пары не сходятся в одно — значит ни одно имя g
+//      не осталось без пары. Отдельно сюръективность НЕ проверяется вложенным
+//      счётом: переменная внешнего счёта не связана внутри внутреннего, и такая
+//      запись нарушает §190 ВО ВРЕМЕНИ, хотя компилятор её пропускает.
+//   4. СВОБОДНЫЕ ИМЕНА НЕ ЗАТРОНУТЫ: новое имя не свободно в поддереве f, иначе
+//      переименование связывания ЗАХВАТИТ свободную переменную. Это то же
+//      условие свежести, что проверяется в calc.expression_substitution/03-alpha,
+//      только с другой стороны: там сверялись имена внутри одного случая, здесь —
+//      два поддерева.
+
+rule AlphaEquiv(e: Expr, f: Integer, g: Integer) strict {
+    label en unofficial "поддеревья соответствуют друг другу взаимно однозначным переименованием связанных имён, и свободные имена не затрагиваются";
+    when alpha_candidate(e, f, g)
+        and (count all bf: Integer for bg: Integer, z: Text, z2: Text
+            where alpha_pair(e, f, g, bf, bg, z, z2))
+        == (count all bf: Integer for z: Text where binder_in(e, f, bf, z))
+        and (count all bf: Integer for bg: Integer, z: Text, z2: Text, bf2: Integer, bg2: Integer, z3: Text, z4: Text
+            where alpha_pair(e, f, g, bf, bg, z, z2) and alpha_pair(e, f, g, bf2, bg2, z3, z4)
+                and bg == bg2 and bf != bf2) == 0
+        and (count all bf: Integer for bg: Integer, z: Text, z2: Text
+            where alpha_pair(e, f, g, bf, bg, z, z2))
+        == (count all bg: Integer for z2: Text where binder_in(e, g, bg, z2))
+        and (count all bf: Integer for bg: Integer, z: Text, z2: Text
+            where alpha_pair(e, f, g, bf, bg, z, z2) and free_in(e, f, z2)) == 0;
+    then alpha_equiv(e, f, g);
+}
+
+// ОТКАЗЫ — ЭТО ОТДЕЛЬНЫЕ УТВЕРЖДЕНИЯ, А НЕ ЧАСТЬ ВЕРДИКТА. Каждый выводится из
+// своего счёта, и здесь дизъюнктивность не вредит: утверждения действительно
+// разные, и «сработало любое одно» означало бы ровно то, что нужно.
+
+rule ArityMismatch(e: Expr, f: Integer, g: Integer) strict {
+    label en unofficial "связанных имён в поддеревьях НЕ поровну — соответствие не может быть взаимно однозначным";
+    when alpha_candidate(e, f, g)
+        and (count all bf: Integer for z: Text where binder_in(e, f, bf, z))
+        != (count all bg: Integer for z2: Text where binder_in(e, g, bg, z2));
+    then alpha_error(e, f, g, "ALPHA_COUNT_MISMATCH");
+}
+
+rule NotInjective(e: Expr, f: Integer, g: Integer) strict {
+    label en unofficial "два разных связанных имени сошлись в одно — соответствие не обратимо";
+    when alpha_candidate(e, f, g)
+        and (count all bf: Integer for bg: Integer, z: Text, z2: Text, bf2: Integer, bg2: Integer, z3: Text, z4: Text
+        where alpha_pair(e, f, g, bf, bg, z, z2) and alpha_pair(e, f, g, bf2, bg2, z3, z4)
+            and bg == bg2 and bf != bf2) > 0;
+    then alpha_error(e, f, g, "ALPHA_NOT_INJECTIVE");
+}
+
+rule FreeTouched(e: Expr, f: Integer, g: Integer) strict {
+    label en unofficial "новое имя свободно в первом поддереве — переименование связывания захватит свободную переменную";
+    when alpha_candidate(e, f, g)
+        and (count all bf: Integer for bg: Integer, z: Text, z2: Text
+        where alpha_pair(e, f, g, bf, bg, z, z2) and free_in(e, f, z2)) > 0;
+    then alpha_error(e, f, g, "ALPHA_FREE_TOUCHED");
+}

@@ -1,0 +1,18 @@
+language "law.core" version "0.2";
+package calc.polynomials_q version "0.1.0";
+namespace "urn:law:calc:polynomials-q";
+
+test "дискриминант квадратика строится и проверяется по каноническим коэффициентам" {
+ given {
+  assert "f1": degree_cap(2) { origin case_input; }
+  assert "f2": poly(entity_ref("urn:calc:pq:test:disc"), 2) { origin case_input; }
+  assert "f3": term(entity_ref("urn:calc:pq:test:disc"), 0, -2 / 1) { origin case_input; }
+  assert "f4": term(entity_ref("urn:calc:pq:test:disc"), 1, 1 / 1) { origin case_input; }
+  assert "f5": term(entity_ref("urn:calc:pq:test:disc"), 2, 1 / 1) { origin case_input; }
+ }
+ evaluate truth(discriminant_value(entity_ref("urn:calc:pq:test:disc"), 9 / 1));
+ expect truth_status == TRUE_ONLY;
+ evaluate truth(invariant_verified("QUADRATIC_DISCRIMINANT", entity_ref("urn:calc:pq:test:disc"), entity_ref("urn:calc:pq:test:disc")));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+}

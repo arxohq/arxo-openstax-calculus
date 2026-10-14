@@ -1,0 +1,194 @@
+language "law.core" version "0.2";
+package calc.polynomials_q version "0.1.0";
+namespace "urn:law:calc:polynomials-q";
+
+use self::{
+    Poly,
+    coeff,
+    degree,
+    ready,
+    slot,
+    zero_polynomial,
+};
+
+// ПОДСТАНОВКА ЧИСЛА И РАВЕНСТВО МНОГОЧЛЕНОВ.
+//
+// Значение считается СХЕМОЙ ГОРНЕРА — курсором сверху вниз по каноническим
+// коэффициентам: `acc ← acc · x + c_k`. Возведения в степень при этом не
+// возникает вовсе, и предел показателя §58 к подстановке отношения не имеет.
+//
+// Равенство сравнивает КАНОН, а не места: `0·x² + 2x + 1` и `2x + 1` равны,
+// хотя мест у них разное число. Сравнение не запускается само — дело называет
+// пару явно, иначе вышло бы декартово произведение всех многочленов дела.
+//
+// Различие названо в трёх статусах: равенство установлено, различие
+// установлено с НАЗВАННЫМ местом расхождения, и отсутствие обоих —
+// незавершённый расчёт, который различием НЕ является.
+
+pub relation evaluation_request(p: Poly, x: Rational) kind empirical {
+    label ru unofficial "дело просит вычислить значение многочлена в точке x";
+}
+
+relation horner(p: Poly, x: Rational, k: Integer, acc: Rational) kind institutional {
+    label ru unofficial "курсор схемы Горнера: значение усечённого многочлена от места k и выше";
+}
+
+pub relation poly_value(p: Poly, x: Rational, v: Rational) kind institutional {
+    label ru unofficial "значение многочлена в точке x";
+}
+
+pub relation root(p: Poly, x: Rational) kind institutional {
+    label ru unofficial "предъявленная точка оказалась корнем";
+}
+
+pub relation compare_request(a: Poly, b: Poly) kind empirical {
+    label ru unofficial "дело просит сличить два многочлена";
+}
+
+pub relation claimed_identity(name: Text, a: Poly, b: Poly) kind empirical {
+    label ru unofficial "предъявленное тождество: обе стороны построены делом как вычисляемые многочлены";
+}
+
+pub relation coeff_mismatch(a: Poly, b: Poly, k: Integer) kind institutional {
+    label ru unofficial "место расхождения канонических коэффициентов";
+}
+
+pub relation degree_mismatch(a: Poly, b: Poly) kind institutional {
+    label ru unofficial "степени различны";
+}
+
+pub relation polys_equal(a: Poly, b: Poly) kind institutional {
+    label ru unofficial "многочлены равны: один канон";
+}
+
+pub relation polys_differ(a: Poly, b: Poly) kind institutional {
+    label ru unofficial "многочлены различны: степень либо хотя бы одно место";
+}
+
+pub relation identity_holds(name: Text) kind institutional {
+    label ru unofficial "предъявленное тождество выполнено";
+}
+
+pub relation identity_fails(name: Text) kind institutional {
+    label ru unofficial "предъявленное тождество опровергнуто";
+}
+
+// ── Схема Горнера ──────────────────────────────────────────────────────────
+
+rule HornerStart(p: Poly, x: Rational, v: Rational, d: Integer) strict {
+    label ru unofficial "свёртка начинается со старшего коэффициента";
+    when evaluation_request(p, x) and degree(p, d) and coeff(p, d, v);
+    then horner(p, x, d, v);
+}
+
+rule HornerStep(p: Poly, x: Rational, acc: Rational, c: Rational, k: Integer, k2: Integer) strict {
+    label ru unofficial "умножить накопленное на x и прибавить следующий коэффициент — степеней не возникает";
+    when monotone(horner(p, x, k, acc)) and slot(p, k2) and k2 == k - 1 and coeff(p, k2, c);
+    then horner(p, x, k2, acc * x + c);
+}
+
+rule PolyValue(p: Poly, x: Rational, v: Rational) strict {
+    label ru unofficial "значение получено, когда свёртка дошла до свободного члена";
+    when horner(p, x, 0, v);
+    then poly_value(p, x, v);
+}
+
+rule PolyValueZero(p: Poly, x: Rational) strict {
+    label ru unofficial "нулевой многочлен принимает ноль в любой точке — отдельным правилом, потому что степени у него нет";
+    when evaluation_request(p, x) and zero_polynomial(p);
+    then poly_value(p, x, 0 / 1);
+}
+
+rule Root(p: Poly, x: Rational, v: Rational) strict {
+    label ru unofficial "точка оказалась корнем";
+    when poly_value(p, x, v) and v == 0 / 1;
+    then root(p, x);
+}
+
+// ── Равенство ──────────────────────────────────────────────────────────────
+
+rule IdentityRequestsComparison(name: Text, a: Poly, b: Poly) strict {
+    label ru unofficial "предъявленное тождество заводит сличение своих сторон";
+    when claimed_identity(name, a, b);
+    then compare_request(a, b);
+}
+
+rule DegreeMismatch(a: Poly, b: Poly, da: Integer, db: Integer) strict {
+    label ru unofficial "степени различны";
+    when compare_request(a, b) and degree(a, da) and degree(b, db) and da != db;
+    then degree_mismatch(a, b);
+}
+
+rule DegreeMismatchZeroLeft(a: Poly, b: Poly, db: Integer) strict {
+    label ru unofficial "нулевой многочлен и ненулевой различны";
+    when compare_request(a, b) and zero_polynomial(a) and degree(b, db);
+    then degree_mismatch(a, b);
+}
+
+rule DegreeMismatchZeroRight(a: Poly, b: Poly, da: Integer) strict {
+    label ru unofficial "то же с другой стороны";
+    when compare_request(a, b) and degree(a, da) and zero_polynomial(b);
+    then degree_mismatch(a, b);
+}
+
+rule CoeffMismatch(
+    a: Poly,
+    b: Poly,
+    na: Integer,
+    nb: Integer,
+    k: Integer,
+    d: Integer,
+    x: Rational,
+    y: Rational,
+) strict {
+    label ru unofficial "место, где канонические коэффициенты различны";
+    when compare_request(a, b) and ready(a, na) and ready(b, nb)
+        and degree(a, d) and degree(b, d)
+        and coeff(a, k, x) and coeff(b, k, y) and x != y;
+    then coeff_mismatch(a, b, k);
+}
+
+rule PolysEqual(a: Poly, b: Poly, na: Integer, nb: Integer, d: Integer) strict {
+    label ru unofficial "равенство: одна степень, оба вычислены, расхождений нет";
+    when compare_request(a, b) and ready(a, na) and ready(b, nb)
+        and degree(a, d) and degree(b, d)
+        and (count distinct k: Integer where coeff_mismatch(a, b, k)) == 0;
+    then polys_equal(a, b);
+}
+
+rule PolysEqualBothZero(a: Poly, b: Poly, na: Integer, nb: Integer) strict {
+    label ru unofficial "два нулевых многочлена равны — отдельным правилом, потому что степени у них нет";
+    when compare_request(a, b) and ready(a, na) and ready(b, nb)
+        and zero_polynomial(a) and zero_polynomial(b);
+    then polys_equal(a, b);
+}
+
+rule PolysDifferByDegree(a: Poly, b: Poly) strict {
+    label ru unofficial "различие по степени";
+    when compare_request(a, b) and degree_mismatch(a, b);
+    then polys_differ(a, b);
+}
+
+rule PolysDifferByCoeff(a: Poly, b: Poly, k: Integer) strict {
+    label ru unofficial "различие по коэффициенту в названном месте";
+    when compare_request(a, b) and coeff_mismatch(a, b, k);
+    then polys_differ(a, b);
+}
+
+rule IdentityHolds(name: Text, a: Poly, b: Poly) strict {
+    label ru unofficial "тождество выполнено";
+    when claimed_identity(name, a, b) and polys_equal(a, b);
+    then identity_holds(name);
+}
+
+rule IdentityFails(name: Text, a: Poly, b: Poly) strict {
+    label ru unofficial "тождество опровергнуто";
+    when claimed_identity(name, a, b) and polys_differ(a, b);
+    then identity_fails(name);
+}
+
+rule IdentityNotBoth(name: Text) strict {
+    label ru unofficial "опровергнутое тождество не считается выполненным";
+    when identity_fails(name);
+    then not identity_holds(name);
+}

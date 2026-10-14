@@ -1,0 +1,105 @@
+# Манифест §10 — маркер корня пакета (DECISION-0033).
+#
+# ВЫЧИСЛИТЕЛЬНЫЙ пакет (DECISION-0123): нормативного источника, юрисдикции и
+# правового статуса у него нет; каталожная секция `[metadata]` DECISION-0051
+# описывает АКТ и здесь намеренно отсутствует.
+[package]
+name = "calc.polynomials_q"
+version = "0.1.0"
+language = "0.2"
+namespace = "urn:law:calc:polynomials-q"
+
+[features]
+semanticLayer = "L0"
+
+[dependencies]
+"calc.expressions" = "0.1.0"
+
+[[tests]]
+family = "calc.polynomials_q#authored"
+regression = false
+world = ["calc.polynomials_q", "calc.expressions"]
+suites = [
+    "tests/59-rational-value.lawtest",
+    "tests/60-rational-zero-denominator.lawtest",
+    "tests/61-cancel-exact.lawtest",
+    "tests/62-cancel-fractional.lawtest",
+    "tests/63-cancel-zero.lawtest",
+    "tests/64-cancel-bad-numerator.lawtest",
+    "tests/65-cancel-bad-denominator.lawtest",
+    "tests/66-infinity-0.lawtest",
+    "tests/67-infinity-1.lawtest",
+    "tests/68-infinity-2.lawtest",
+    "tests/69-infinity-3.lawtest",
+    "tests/70-infinity-4.lawtest",
+    "tests/71-infinity-5.lawtest",
+    "tests/72-infinity-6.lawtest",
+    "tests/73-infinity-7.lawtest",
+    "tests/74-infinity-8.lawtest",
+    "tests/75-infinity-9.lawtest",
+    "tests/76-infinity-zero-denominator.lawtest",
+    "tests/77-infinity-bad-approach.lawtest",
+    "tests/01-product.lawtest",
+    "tests/02-canonical-trims-leading-zero.lawtest",
+    "tests/03-zero-polynomial-has-no-degree.lawtest",
+    "tests/04-constant-has-degree-zero.lawtest",
+    "tests/05-degree-of-product.lawtest",
+    "tests/06-cancellation-lowers-degree.lawtest",
+    "tests/07-sum-different-widths.lawtest",
+    "tests/08-difference.lawtest",
+    "tests/09-scaled-fraction.lawtest",
+    "tests/10-fractional-product.lawtest",
+    "tests/11-monomial.lawtest",
+    "tests/12-identity-commutes.lawtest",
+    "tests/13-identity-refuted.lawtest",
+    "tests/14-identity-differs-by-degree.lawtest",
+    "tests/15-two-zero-polynomials-are-equal.lawtest",
+    "tests/16-horner-value.lawtest",
+    "tests/17-horner-fraction.lawtest",
+    "tests/18-root.lawtest",
+    "tests/19-zero-polynomial-value.lawtest",
+    "tests/20-division-quotient.lawtest",
+    "tests/21-division-remainder.lawtest",
+    "tests/22-division-identity.lawtest",
+    "tests/23-division-exact.lawtest",
+    "tests/24-division-fractional.lawtest",
+    "tests/25-division-trivial-smaller.lawtest",
+    "tests/26-division-zero-dividend.lawtest",
+    "tests/27-division-by-zero-polynomial.lawtest",
+    "tests/28-quotient-descriptor-too-narrow.lawtest",
+    "tests/29-unknown-division-part.lawtest",
+    "tests/30-gcd-index.lawtest",
+    "tests/31-gcd-value.lawtest",
+    "tests/32-bezout-coefficients.lawtest",
+    "tests/33-bezout-identity.lawtest",
+    "tests/34-gcd-longer-chain.lawtest",
+    "tests/35-bezout-longer-chain.lawtest",
+    "tests/36-coprime-gcd-is-one.lawtest",
+    "tests/37-coprime-bezout.lawtest",
+    "tests/38-chain-unfinished.lawtest",
+    "tests/39-no-resource-contract.lawtest",
+    "tests/40-slots-exceed-cap.lawtest",
+    "tests/41-product-exceeds-cap.lawtest",
+    "tests/42-incomplete-input.lawtest",
+    "tests/43-contradictory-term.lawtest",
+    "tests/44-index-out-of-range.lawtest",
+    "tests/45-ambiguous-definition.lawtest",
+    "tests/46-undefined-operand.lawtest",
+    "tests/47-isolation.lawtest",
+    "tests/48-taint-propagates.lawtest",
+    "tests/49-two-independent-divisions.lawtest",
+    "tests/50-derivative-of-constant.lawtest",
+    "tests/51-derivative-drops-degree.lawtest",
+    "tests/52-derivative-coefficient.lawtest",
+    "tests/53-antiderivative-is-inverse.lawtest",
+    "tests/54-definite-integral-fractional-limits.lawtest",
+    "tests/55-bridge-reads-polynomial.lawtest",
+    "tests/56-bridge-refuses-sine.lawtest",
+    "tests/57-bridge-constant-leaf.lawtest",
+    "tests/58-bridge-power-leaf.lawtest",
+    "tests/78-linear-resultant.lawtest",
+    "tests/79-quadratic-discriminant.lawtest",
+]
+
+[authoring]
+local_imports = "explicit"

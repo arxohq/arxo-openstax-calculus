@@ -1,0 +1,18 @@
+language "law.core" version "0.2";
+package calc.expressions version "0.1.0";
+namespace "urn:law:calc:expressions";
+
+// Имя предъявлено составному узлу.
+
+test "name-on-compound" {
+ given {
+  assert "n1": node(entity_ref("urn:calc:ex:e1"), 1, "var", "x", 0 / 1, 0, 0) { origin case_input; }
+  assert "n2": node(entity_ref("urn:calc:ex:e1"), 2, "const", "", 1 / 1, 0, 0) { origin case_input; }
+  assert "n3": node(entity_ref("urn:calc:ex:e1"), 3, "add", "q", 0 / 1, 1, 2) { origin case_input; }
+  assert "cl": closed(entity_ref("urn:calc:ex:e1")) { origin case_input; }
+ }
+ evaluate truth(formula_error(entity_ref("urn:calc:ex:e1"), 3, "NAME_ON_COMPOUND"));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(NameOnCompound);
+}

@@ -1,0 +1,420 @@
+language "law.core" version "0.2";
+package calc.polynomials_q version "0.1.0";
+namespace "urn:law:calc:polynomials-q";
+
+// МНОГОЧЛЕНЫ ОДНОЙ ПЕРЕМЕННОЙ НАД ℚ (DECISION-0123: алгоритм, а не акт).
+//
+// Пакет — единственный владелец сущности `Poly`, её коэффициентов, степени,
+// арифметики, деления с остатком и расширенного алгоритма Евклида.
+//
+// КАНОНИЧЕСКОЕ ПРЕДСТАВЛЕНИЕ отделено от предъявленного. Дело предъявляет
+// коэффициенты ПЛОТНО по объявленным местам 0 … slots (`term`), а канон —
+// это `coeff`: те же значения, обрезанные по НАСТОЯЩЕЙ степени. Разница видна
+// сразу: у многочлена, предъявленного как `0·x² + 2x + 1`, места три, степень
+// одна, а канонических коэффициентов два. Нулевой многочлен — отдельный
+// случай (`zero_polynomial`): степени у него нет, и приписывать ему нулевую
+// или «минус бесконечность» пакет не станет.
+//
+// Три различения, те же, что у `calc.matrix`:
+//   1. ПРЕДЪЯВЛЕННЫЙ многочлен (`poly` + `term`) против ВЫЧИСЛЯЕМОГО (одно
+//      определяющее построение) и ПОРОЖДЁННОГО другим модулем (`produced` —
+//      выходной дескриптор деления и Евклида).
+//   2. `term` (предъявлено) против `raw` (действующее содержимое по местам)
+//      против `coeff` (канон, обрезанный по степени).
+//   3. ВХОДНОЙ дефект закрывает вывод содержимого; ИТОГОВЫЙ считается после
+//      него и закрывает только полноту.
+//
+// Место `slots` — верхняя граница индексов, а не степень: у произведения она
+// равна сумме границ сомножителей независимо от того, сократятся ли старшие
+// коэффициенты. Степень выводится из содержимого.
+
+pub entity Poly { label ru unofficial "многочлен одной переменной над ℚ"; }
+
+// ── Ресурсный контракт дела ────────────────────────────────────────────────
+
+pub relation degree_cap(cap: Integer) kind empirical {
+    label ru unofficial "ресурсный контракт дела: наибольшее допустимое число мест у многочлена. Умолчания нет (§2 DECISION-0123)";
+}
+
+// ── Предъявленный многочлен ────────────────────────────────────────────────
+
+pub relation poly(p: Poly, slots: Integer) kind empirical {
+    label ru unofficial "предъявленный многочлен с местами 0 … slots (ПЛОТНО: нулевые коэффициенты предъявляются явно)";
+}
+
+pub relation term(p: Poly, k: Integer, v: Rational) kind empirical {
+    label ru unofficial "предъявленный коэффициент при x^k; значение — терм p / q (§58, E-0020)";
+}
+
+pub relation produced(p: Poly, slots: Integer) kind empirical {
+    label ru unofficial "выходной дескриптор: многочлен строится другим модулем этого пакета (частное, остаток, НОД, коэффициенты Безу), форму объявляет дело";
+}
+
+// ── Построения ─────────────────────────────────────────────────────────────
+
+pub relation sum_of(s: Poly, a: Poly, b: Poly) kind empirical {
+    label ru unofficial "многочлен s определён как a + b";
+}
+
+pub relation difference_of(d: Poly, a: Poly, b: Poly) kind empirical {
+    label ru unofficial "многочлен d определён как a − b";
+}
+
+pub relation scaled_of(t: Poly, a: Poly, c: Rational) kind empirical {
+    label ru unofficial "многочлен t определён как c · a";
+}
+
+pub relation product_of(p: Poly, a: Poly, b: Poly) kind empirical {
+    label ru unofficial "многочлен p определён как a · b";
+}
+
+pub relation monomial_of(m: Poly, e: Integer, c: Rational) kind empirical {
+    label ru unofficial "многочлен m определён как одночлен c · x^e";
+}
+
+// ── Однозначность построения ───────────────────────────────────────────────
+
+relation construction(p: Poly, kind: Text) kind institutional {
+    label ru unofficial "род построения: PRESENTED, PRODUCED, SUM, DIFFERENCE, SCALED, PRODUCT, MONOMIAL";
+}
+
+relation operand(p: Poly, a: Poly) kind institutional {
+    label ru unofficial "многочлен a участвует в построении многочлена p";
+}
+
+pub relation defect(p: Poly, reason: Text) kind institutional {
+    label ru unofficial "входной дефект: NO_RESOURCE_CONTRACT, AMBIGUOUS_RESOURCE_CONTRACT, NEGATIVE_CAP, SLOTS_EXCEED_CAP, NEGATIVE_SLOTS, AMBIGUOUS_DEFINITION, INDEX_OUT_OF_RANGE, CONTRADICTORY_TERM, INCOMPLETE_INPUT, TERM_WITHOUT_SHAPE, UNDEFINED_OPERAND";
+}
+
+relation taint(p: Poly, reason: Text) kind institutional {
+    label ru unofficial "унаследованный входной дефект: у самого многочлена либо у операнда";
+}
+
+pub relation tainted(p: Poly) kind institutional {
+    label ru unofficial "многочлен заражён входным дефектом";
+}
+
+pub relation slots(p: Poly, n: Integer) kind institutional {
+    label ru unofficial "число мест минус одно: индексы коэффициентов 0 … n";
+}
+
+pub relation usable(p: Poly, n: Integer) kind institutional {
+    label ru unofficial "многочлен годен к вычислению: места однозначны, в пределах ресурсного контракта, входных дефектов нет";
+}
+
+pub relation slot(p: Poly, k: Integer) kind institutional {
+    label ru unofficial "допустимый индекс коэффициента ЭТОГО многочлена: 0 … slots";
+}
+
+// ── Роды построения ────────────────────────────────────────────────────────
+
+rule KindPresented(p: Poly, n: Integer) strict {
+    label ru unofficial "многочлен предъявлен местами и коэффициентами";
+    when poly(p, n);
+    then construction(p, "PRESENTED");
+}
+
+rule KindProduced(p: Poly, n: Integer) strict {
+    label ru unofficial "многочлен объявлен выходным дескриптором";
+    when produced(p, n);
+    then construction(p, "PRODUCED");
+}
+
+rule KindSum(s: Poly, a: Poly, b: Poly) strict {
+    label ru unofficial "многочлен определён суммой";
+    when sum_of(s, a, b);
+    then construction(s, "SUM");
+}
+
+rule KindDifference(d: Poly, a: Poly, b: Poly) strict {
+    label ru unofficial "многочлен определён разностью";
+    when difference_of(d, a, b);
+    then construction(d, "DIFFERENCE");
+}
+
+rule KindScaled(t: Poly, a: Poly, c: Rational) strict {
+    label ru unofficial "многочлен определён умножением на скаляр";
+    when scaled_of(t, a, c);
+    then construction(t, "SCALED");
+}
+
+rule KindProduct(p: Poly, a: Poly, b: Poly) strict {
+    label ru unofficial "многочлен определён произведением";
+    when product_of(p, a, b);
+    then construction(p, "PRODUCT");
+}
+
+rule KindMonomial(m: Poly, e: Integer, c: Rational) strict {
+    label ru unofficial "многочлен определён одночленом";
+    when monomial_of(m, e, c);
+    then construction(m, "MONOMIAL");
+}
+
+// ── Операнды ───────────────────────────────────────────────────────────────
+
+rule OperandSumLeft(s: Poly, a: Poly, b: Poly) strict {
+    label ru unofficial "левое слагаемое — операнд";
+    when sum_of(s, a, b);
+    then operand(s, a);
+}
+
+rule OperandSumRight(s: Poly, a: Poly, b: Poly) strict {
+    label ru unofficial "правое слагаемое — операнд";
+    when sum_of(s, a, b);
+    then operand(s, b);
+}
+
+rule OperandDifferenceLeft(d: Poly, a: Poly, b: Poly) strict {
+    label ru unofficial "уменьшаемое — операнд";
+    when difference_of(d, a, b);
+    then operand(d, a);
+}
+
+rule OperandDifferenceRight(d: Poly, a: Poly, b: Poly) strict {
+    label ru unofficial "вычитаемое — операнд";
+    when difference_of(d, a, b);
+    then operand(d, b);
+}
+
+rule OperandScaled(t: Poly, a: Poly, c: Rational) strict {
+    label ru unofficial "масштабируемый многочлен — операнд";
+    when scaled_of(t, a, c);
+    then operand(t, a);
+}
+
+rule OperandProductLeft(p: Poly, a: Poly, b: Poly) strict {
+    label ru unofficial "левый сомножитель — операнд";
+    when product_of(p, a, b);
+    then operand(p, a);
+}
+
+rule OperandProductRight(p: Poly, a: Poly, b: Poly) strict {
+    label ru unofficial "правый сомножитель — операнд";
+    when product_of(p, a, b);
+    then operand(p, b);
+}
+
+// ── Входные дефекты ────────────────────────────────────────────────────────
+
+rule NoResourceContract(p: Poly, kind: Text) strict {
+    label ru unofficial "дефект NO_RESOURCE_CONTRACT: дело не объявило предел числа мест";
+    when construction(p, kind) and (count distinct cap: Integer where degree_cap(cap)) == 0;
+    then defect(p, "NO_RESOURCE_CONTRACT");
+}
+
+rule AmbiguousResourceContract(p: Poly, kind: Text) strict {
+    label ru unofficial "дефект AMBIGUOUS_RESOURCE_CONTRACT: два разных предела в одном деле";
+    when construction(p, kind) and (count distinct cap: Integer where degree_cap(cap)) > 1;
+    then defect(p, "AMBIGUOUS_RESOURCE_CONTRACT");
+}
+
+rule NegativeCap(p: Poly, kind: Text, cap: Integer) strict {
+    label ru unofficial "дефект NEGATIVE_CAP: предел числа мест отрицателен";
+    when construction(p, kind) and degree_cap(cap) and cap < 0;
+    then defect(p, "NEGATIVE_CAP");
+}
+
+rule NegativeSlotsPresented(p: Poly, n: Integer) strict {
+    label ru unofficial "дефект NEGATIVE_SLOTS: у предъявленного многочлена отрицательный верхний индекс";
+    when poly(p, n) and n < 0;
+    then defect(p, "NEGATIVE_SLOTS");
+}
+
+rule NegativeSlotsProduced(p: Poly, n: Integer) strict {
+    label ru unofficial "дефект NEGATIVE_SLOTS: у выходного дескриптора отрицательный верхний индекс";
+    when produced(p, n) and n < 0;
+    then defect(p, "NEGATIVE_SLOTS");
+}
+
+rule NegativeMonomialDegree(m: Poly, e: Integer, c: Rational) strict {
+    label ru unofficial "дефект NEGATIVE_SLOTS: показатель одночлена отрицателен";
+    when monomial_of(m, e, c) and e < 0;
+    then defect(m, "NEGATIVE_SLOTS");
+}
+
+rule SlotsExceedCap(p: Poly, n: Integer, cap: Integer) strict {
+    label ru unofficial "дефект SLOTS_EXCEED_CAP: мест больше, чем разрешил ресурсный контракт дела";
+    when monotone(slots(p, n)) and degree_cap(cap) and cap >= 0 and n > cap;
+    then defect(p, "SLOTS_EXCEED_CAP");
+}
+
+rule AmbiguousKind(p: Poly, k1: Text, k2: Text) strict {
+    label ru unofficial "дефект AMBIGUOUS_DEFINITION: два построения разных родов";
+    when construction(p, k1) and construction(p, k2) and k1 != k2;
+    then defect(p, "AMBIGUOUS_DEFINITION");
+}
+
+rule AmbiguousPoly(p: Poly, n: Integer) strict {
+    label ru unofficial "дефект AMBIGUOUS_DEFINITION: два объявления мест";
+    when poly(p, n) and (count distinct m: Integer where poly(p, m)) > 1;
+    then defect(p, "AMBIGUOUS_DEFINITION");
+}
+
+rule AmbiguousProduced(p: Poly, n: Integer) strict {
+    label ru unofficial "дефект AMBIGUOUS_DEFINITION: два объявления выходного дескриптора";
+    when produced(p, n) and (count distinct m: Integer where produced(p, m)) > 1;
+    then defect(p, "AMBIGUOUS_DEFINITION");
+}
+
+rule AmbiguousSum(s: Poly, a: Poly, b: Poly) strict {
+    label ru unofficial "дефект AMBIGUOUS_DEFINITION: две суммы для одного многочлена";
+    when sum_of(s, a, b) and (count all x: Poly for y: Poly where sum_of(s, x, y)) > 1;
+    then defect(s, "AMBIGUOUS_DEFINITION");
+}
+
+rule AmbiguousDifference(d: Poly, a: Poly, b: Poly) strict {
+    label ru unofficial "дефект AMBIGUOUS_DEFINITION: две разности";
+    when difference_of(d, a, b) and (count all x: Poly for y: Poly where difference_of(d, x, y)) > 1;
+    then defect(d, "AMBIGUOUS_DEFINITION");
+}
+
+rule AmbiguousScaled(t: Poly, a: Poly, c: Rational) strict {
+    label ru unofficial "дефект AMBIGUOUS_DEFINITION: два масштабирования";
+    when scaled_of(t, a, c) and (count all x: Poly for q: Rational where scaled_of(t, x, q)) > 1;
+    then defect(t, "AMBIGUOUS_DEFINITION");
+}
+
+rule AmbiguousProduct(p: Poly, a: Poly, b: Poly) strict {
+    label ru unofficial "дефект AMBIGUOUS_DEFINITION: два произведения";
+    when product_of(p, a, b) and (count all x: Poly for y: Poly where product_of(p, x, y)) > 1;
+    then defect(p, "AMBIGUOUS_DEFINITION");
+}
+
+rule AmbiguousMonomial(m: Poly, e: Integer, c: Rational) strict {
+    label ru unofficial "дефект AMBIGUOUS_DEFINITION: два одночлена";
+    when monomial_of(m, e, c) and (count all x: Integer for q: Rational where monomial_of(m, x, q)) > 1;
+    then defect(m, "AMBIGUOUS_DEFINITION");
+}
+
+rule TermIndexBelow(p: Poly, n: Integer, k: Integer, v: Rational) strict {
+    label ru unofficial "дефект INDEX_OUT_OF_RANGE: индекс коэффициента отрицателен";
+    when poly(p, n) and term(p, k, v) and k < 0;
+    then defect(p, "INDEX_OUT_OF_RANGE");
+}
+
+rule TermIndexAbove(p: Poly, n: Integer, k: Integer, v: Rational) strict {
+    label ru unofficial "дефект INDEX_OUT_OF_RANGE: индекс коэффициента больше объявленного верхнего";
+    when poly(p, n) and term(p, k, v) and k > n;
+    then defect(p, "INDEX_OUT_OF_RANGE");
+}
+
+rule ContradictoryTerm(p: Poly, k: Integer, v: Rational, w: Rational) strict {
+    label ru unofficial "дефект CONTRADICTORY_TERM: у одного места два разных значения";
+    when term(p, k, v) and term(p, k, w) and v != w;
+    then defect(p, "CONTRADICTORY_TERM");
+}
+
+rule IncompleteTerms(p: Poly, n: Integer) strict {
+    label ru unofficial "дефект INCOMPLETE_INPUT: коэффициентов меньше, чем мест — предъявление ПЛОТНОЕ";
+    when poly(p, n) and n >= 0
+        and (count all k: Integer for v: Rational where term(p, k, v)) < n + 1;
+    then defect(p, "INCOMPLETE_INPUT");
+}
+
+rule TermWithoutShape(p: Poly, k: Integer, v: Rational) strict {
+    label ru unofficial "дефект TERM_WITHOUT_SHAPE: коэффициент предъявлен многочлену без объявленных мест";
+    when term(p, k, v) and (count distinct n: Integer where poly(p, n)) == 0;
+    then defect(p, "TERM_WITHOUT_SHAPE");
+}
+
+rule UndefinedOperand(p: Poly, a: Poly) strict {
+    label ru unofficial "дефект UNDEFINED_OPERAND: операнд не имеет ни одного построения";
+    when operand(p, a) and (count distinct kind: Text where construction(a, kind)) == 0;
+    then defect(p, "UNDEFINED_OPERAND");
+}
+
+rule TaintBySelf(p: Poly, reason: Text) strict {
+    label ru unofficial "свой входной дефект заражает многочлен";
+    when defect(p, reason);
+    then taint(p, reason);
+}
+
+rule TaintByOperand(p: Poly, a: Poly, reason: Text) strict {
+    label ru unofficial "дефект операнда наследуется результатом";
+    when operand(p, a) and monotone(taint(a, reason));
+    then taint(p, reason);
+}
+
+rule Tainted(p: Poly, reason: Text) strict {
+    label ru unofficial "многочлен заражён";
+    when taint(p, reason);
+    then tainted(p);
+}
+
+// ── Места ──────────────────────────────────────────────────────────────────
+
+rule SlotsPresented(p: Poly, n: Integer) strict {
+    label ru unofficial "у предъявленного многочлена места объявлены";
+    when poly(p, n) and n >= 0;
+    then slots(p, n);
+}
+
+rule SlotsProduced(p: Poly, n: Integer) strict {
+    label ru unofficial "у выходного дескриптора места объявлены делом";
+    when produced(p, n) and n >= 0;
+    then slots(p, n);
+}
+
+rule SlotsMonomial(m: Poly, e: Integer, c: Rational) strict {
+    label ru unofficial "у одночлена мест ровно столько, каков его показатель";
+    when monomial_of(m, e, c) and e >= 0;
+    then slots(m, e);
+}
+
+rule SlotsScaled(t: Poly, a: Poly, c: Rational, n: Integer) strict {
+    label ru unofficial "умножение на скаляр мест не меняет";
+    when scaled_of(t, a, c) and monotone(slots(a, n));
+    then slots(t, n);
+}
+
+rule SlotsSumLeftWider(s: Poly, a: Poly, b: Poly, na: Integer, nb: Integer) strict {
+    label ru unofficial "у суммы мест столько, сколько у более широкого слагаемого";
+    when sum_of(s, a, b) and monotone(slots(a, na)) and monotone(slots(b, nb)) and na >= nb;
+    then slots(s, na);
+}
+
+rule SlotsSumRightWider(s: Poly, a: Poly, b: Poly, na: Integer, nb: Integer) strict {
+    label ru unofficial "то же, когда шире правое слагаемое";
+    when sum_of(s, a, b) and monotone(slots(a, na)) and monotone(slots(b, nb)) and nb > na;
+    then slots(s, nb);
+}
+
+rule SlotsDifferenceLeftWider(d: Poly, a: Poly, b: Poly, na: Integer, nb: Integer) strict {
+    label ru unofficial "у разности мест столько, сколько у более широкого";
+    when difference_of(d, a, b) and monotone(slots(a, na)) and monotone(slots(b, nb)) and na >= nb;
+    then slots(d, na);
+}
+
+rule SlotsDifferenceRightWider(d: Poly, a: Poly, b: Poly, na: Integer, nb: Integer) strict {
+    label ru unofficial "то же, когда шире вычитаемое";
+    when difference_of(d, a, b) and monotone(slots(a, na)) and monotone(slots(b, nb)) and nb > na;
+    then slots(d, nb);
+}
+
+rule SlotsProduct(p: Poly, a: Poly, b: Poly, na: Integer, nb: Integer) strict {
+    label ru unofficial "у произведения мест столько, сколько сумма мест сомножителей: сокращение старших коэффициентов место не отнимает, его отнимает СТЕПЕНЬ";
+    when product_of(p, a, b) and monotone(slots(a, na)) and monotone(slots(b, nb));
+    then slots(p, na + nb);
+}
+
+// ── Годность и домен индексов ──────────────────────────────────────────────
+
+rule Usable(p: Poly, n: Integer, cap: Integer) strict {
+    label ru unofficial "многочлен годен: места однозначны, в пределах контракта, заражения нет";
+    when slots(p, n) and degree_cap(cap) and cap >= 0 and n <= cap
+        and (count distinct m: Integer where slots(p, m)) == 1
+        and (count distinct reason: Text where taint(p, reason)) == 0;
+    then usable(p, n);
+}
+
+rule SlotStart(p: Poly, n: Integer) strict {
+    label ru unofficial "у годного многочлена есть свободный член";
+    when usable(p, n);
+    then slot(p, 0);
+}
+
+rule SlotStep(p: Poly, k: Integer, n: Integer) strict {
+    label ru unofficial "следующее место, пока не достигнут объявленный верхний индекс (ограниченная монотонная рекурсия §65/§103)";
+    when monotone(slot(p, k)) and usable(p, n) and k < n;
+    then slot(p, k + 1);
+}

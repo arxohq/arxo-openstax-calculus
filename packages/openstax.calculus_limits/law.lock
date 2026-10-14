@@ -1,0 +1,122 @@
+{
+  "dependencyEdges": [
+    {
+      "features": [],
+      "from": "calc.calculus_checker",
+      "requested": "0.1.0",
+      "resolved": "0.1.0",
+      "to": "calc.expressions"
+    },
+    {
+      "features": [],
+      "from": "calc.calculus_checker",
+      "requested": "0.1.0",
+      "resolved": "0.1.0",
+      "to": "calc.polynomials_q"
+    },
+    {
+      "features": [],
+      "from": "calc.limit_solver",
+      "requested": "0.1.0",
+      "resolved": "0.1.0",
+      "to": "calc.expressions"
+    },
+    {
+      "features": [],
+      "from": "calc.polynomials_q",
+      "requested": "0.1.0",
+      "resolved": "0.1.0",
+      "to": "calc.expressions"
+    },
+    {
+      "features": [],
+      "from": "openstax.calculus_limits",
+      "requested": "0.1.0",
+      "resolved": "0.1.0",
+      "to": "calc.calculus_checker"
+    },
+    {
+      "features": [],
+      "from": "openstax.calculus_limits",
+      "requested": "0.1.0",
+      "resolved": "0.1.0",
+      "to": "calc.expressions"
+    },
+    {
+      "features": [],
+      "from": "openstax.calculus_limits",
+      "requested": "0.1.0",
+      "resolved": "0.1.0",
+      "to": "calc.limit_solver"
+    },
+    {
+      "features": [],
+      "from": "openstax.calculus_limits",
+      "requested": "0.1.0",
+      "resolved": "0.1.0",
+      "to": "calc.polynomials_q"
+    }
+  ],
+  "languageSemantics": "law.core/0.2.11",
+  "lockVersion": "0.4",
+  "packages": [
+    {
+      "artifactHash": "sha256:b75365247b72ff3fe18032690ea518992e2927d3057939ddfe6b169b26d74d16",
+      "features": [
+        "core-executable"
+      ],
+      "name": "calc.calculus_checker",
+      "namespace": "urn:law:calc:calculus-checker",
+      "registryId": "law-dsl-dev",
+      "resolverUri": "registry://law-dsl-dev/calc.calculus_checker/0.1.0",
+      "sourceHash": "sha256:b992a66941d1a4bb1cee638b46ccdfc986dfbb4b35f27c2632cf7feec7bff851",
+      "version": "0.1.0"
+    },
+    {
+      "artifactHash": "sha256:67a032a96c983e724e0af4781fc287617140741319ebe2e55ac54ca35467a265",
+      "features": [
+        "core-executable"
+      ],
+      "name": "calc.expressions",
+      "namespace": "urn:law:calc:expressions",
+      "registryId": "law-dsl-dev",
+      "resolverUri": "registry://law-dsl-dev/calc.expressions/0.1.0",
+      "sourceHash": "sha256:74c1509e127265dada5267e722fe5ffd05aea45c9f1c2552ee2c94ae5a5e3720",
+      "version": "0.1.0"
+    },
+    {
+      "artifactHash": "sha256:fccff8c3ddc6ad47df65058381698306871e3e395f79ea7877b3eeeab10e4790",
+      "features": [
+        "core-executable"
+      ],
+      "name": "calc.limit_solver",
+      "namespace": "urn:law:calc:limit-solver",
+      "registryId": "law-dsl-dev",
+      "resolverUri": "registry://law-dsl-dev/calc.limit_solver/0.1.0",
+      "sourceHash": "sha256:d8b58e470e9c60539b49af0e3cbcdf121e48d888b2d9545c4d0a47645035ecf7",
+      "version": "0.1.0"
+    },
+    {
+      "artifactHash": "sha256:0445837b7789d2e5cfbf981b8906abaab92e9bd4c48cdd1d6919f71852a3e943",
+      "features": [
+        "core-executable"
+      ],
+      "name": "calc.polynomials_q",
+      "namespace": "urn:law:calc:polynomials-q",
+      "registryId": "law-dsl-dev",
+      "resolverUri": "registry://law-dsl-dev/calc.polynomials_q/0.1.0",
+      "sourceHash": "sha256:68afec602db9985a3c5f70dd64cf0568fc11f769714cd7af35ca3f8b3fbe649c",
+      "version": "0.1.0"
+    }
+  ],
+  "resolutionHash": "sha256:ea2080478471a17da63dd59c0b932ab8f047bbdb387680e26680f908d00c5f2a",
+  "resources": [],
+  "root": {
+    "artifactHash": "sha256:1e4e9da74639d625261337c15b4355c43c749337acab9df49d2591bdafe975b1",
+    "name": "openstax.calculus_limits",
+    "namespace": "urn:openstax:clir:calculus-limits",
+    "sourceHash": "sha256:b24cf9b952648ab0dd8649ed7594d8bb13452a9c82c5aa5cd82cd68398ac1809",
+    "version": "0.1.1"
+  },
+  "semanticLayer": "L3"
+}

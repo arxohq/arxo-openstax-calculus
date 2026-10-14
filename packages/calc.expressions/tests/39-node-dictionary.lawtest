@@ -1,0 +1,49 @@
+language "law.core" version "0.2";
+package calc.expressions version "0.1.0";
+namespace "urn:law:calc:expressions";
+
+// СЛОВАРЬ ВИДОВ УЗЛА: положительный факт, а не только отказ.
+//
+// 08-operators.law сделал integral и derivative видами первого класса, но словарь
+// в UnknownTag остался прежним, и потому узел-интеграл был ОДНОВРЕМЕННО
+// well_formed и UNKNOWN_TAG. Оба утверждения истинны, а они взаимоисключающи: это
+// не неоднозначность формулировки, а два несовместимых ответа на один вопрос.
+// Найдено чтением правила при написании 09-types.law, а не сценарием.
+//
+// Словарь вынесен в ПОЛОЖИТЕЛЬНЫЙ факт `known_tag`, и UNKNOWN_TAG выводится из
+// его отсутствия. Так словарь назван в одном месте, и он проверяем: до этой
+// правки виды из 08-operators.law жили отдельно от UNKNOWN_TAG, и согласие между
+// ними никем не поддерживалось — словарь можно было расширить в одном месте и не
+// расширить в другом, что и случилось.
+//
+// Три вида, которые в форму узла НЕ помещаются (matrix, complex, piecewise), в
+// словарь не входят и у них свой, более точный отказ: UNKNOWN_TAG означал бы
+// «словарь не знает» вместо «представления нет».
+
+test "an integral is a known kind of node" {
+ given {
+  assert "n1": node(entity_ref("urn:calc:ex:e39"), 1, "integral", "x", 0 / 1, 2, 0) { origin case_input; }
+  assert "n2": node(entity_ref("urn:calc:ex:e39"), 2, "var", "x", 0 / 1, 0, 0) { origin case_input; }
+  assert "cd": closed(entity_ref("urn:calc:ex:e39")) { origin case_input; }
+ }
+ evaluate truth(known_tag(entity_ref("urn:calc:ex:e39"), 1, "integral"));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ // applied(KnownTag) здесь не пишется: дизъюнкция в гарде разбивает правило
+ // на узлы /alt/N, и имя правила для applied() не находится. Свидетельством
+ // остаётся сам факт — пишет его ровно одно правило.
+}
+
+test "a derivative is a known kind of node as well" {
+ given {
+  assert "n1": node(entity_ref("urn:calc:ex:e39b"), 1, "derivative", "x", 0 / 1, 2, 0) { origin case_input; }
+  assert "n2": node(entity_ref("urn:calc:ex:e39b"), 2, "var", "x", 0 / 1, 0, 0) { origin case_input; }
+  assert "cd": closed(entity_ref("urn:calc:ex:e39b")) { origin case_input; }
+ }
+ evaluate truth(known_tag(entity_ref("urn:calc:ex:e39b"), 1, "derivative"));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ // applied(KnownTag) здесь не пишется: дизъюнкция в гарде разбивает правило
+ // на узлы /alt/N, и имя правила для applied() не находится. Свидетельством
+ // остаётся сам факт — пишет его ровно одно правило.
+}

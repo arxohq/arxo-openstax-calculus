@@ -1,0 +1,35 @@
+language "law.core" version "0.2";
+package calc.limit_solver version "0.1.0";
+namespace "urn:law:calc:limit-solver";
+
+// Находка Н1: полюс второго порядка c/(x − a)^2 при a ≠ 0. Первая производная
+// знаменателя в точке гаснет, знак обеих сторон даёт вторая производная.
+// Знаменатель предъявлен раскрытым квадратом (x+1)^2 = x^2+2x+1.
+// Запись задачи: lim x->-1+ 2/(x+1)^2
+// Дело предъявляет ТОЛЬКО её: ни метода, ни ответа, ни производных.
+test "сдвинутый полюс второго порядка справа" {
+ given {
+  assert "in1": task_nodes(entity_ref("urn:law:calc:limit-solver#task"), entity_ref("urn:law:calc:limit-solver#nodes")) { origin case_input; }
+  assert "in2": task_function(entity_ref("urn:law:calc:limit-solver#task"), 12) { origin case_input; }
+  assert "in3": task_variable(entity_ref("urn:law:calc:limit-solver#task"), "x") { origin case_input; }
+  assert "in4": task_approach(entity_ref("urn:law:calc:limit-solver#task"), "at") { origin case_input; }
+  assert "in5": task_point(entity_ref("urn:law:calc:limit-solver#task"), -1 / 1) { origin case_input; }
+  assert "in6": task_side(entity_ref("urn:law:calc:limit-solver#task"), "right") { origin case_input; }
+  assert "in7": input_node(entity_ref("urn:law:calc:limit-solver#task"), 1, "var", "x", 0 / 1, 0, 0) { origin case_input; }
+  assert "in8": input_node(entity_ref("urn:law:calc:limit-solver#task"), 2, "const", "", 2 / 1, 0, 0) { origin case_input; }
+  assert "in9": input_node(entity_ref("urn:law:calc:limit-solver#task"), 3, "const", "", 1 / 1, 0, 0) { origin case_input; }
+  assert "in10": input_node(entity_ref("urn:law:calc:limit-solver#task"), 4, "const", "", 2 / 1, 0, 0) { origin case_input; }
+  assert "in11": input_node(entity_ref("urn:law:calc:limit-solver#task"), 5, "mul", "", 0 / 1, 4, 1) { origin case_input; }
+  assert "in12": input_node(entity_ref("urn:law:calc:limit-solver#task"), 6, "const", "", 1 / 1, 0, 0) { origin case_input; }
+  assert "in13": input_node(entity_ref("urn:law:calc:limit-solver#task"), 7, "const", "", 2 / 1, 0, 0) { origin case_input; }
+  assert "in14": input_node(entity_ref("urn:law:calc:limit-solver#task"), 8, "pow", "", 0 / 1, 1, 7) { origin case_input; }
+  assert "in15": input_node(entity_ref("urn:law:calc:limit-solver#task"), 9, "mul", "", 0 / 1, 6, 8) { origin case_input; }
+  assert "in16": input_node(entity_ref("urn:law:calc:limit-solver#task"), 10, "add", "", 0 / 1, 3, 5) { origin case_input; }
+  assert "in17": input_node(entity_ref("urn:law:calc:limit-solver#task"), 11, "add", "", 0 / 1, 10, 9) { origin case_input; }
+  assert "in18": input_node(entity_ref("urn:law:calc:limit-solver#task"), 12, "div", "", 0 / 1, 2, 11) { origin case_input; }
+  assert "in19": task_closed(entity_ref("urn:law:calc:limit-solver#task")) { origin case_input; }
+ }
+ evaluate truth(solver_result(entity_ref("urn:law:calc:limit-solver#task"), "PLUS_INFINITY", "plus_inf", 0 / 1));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+}

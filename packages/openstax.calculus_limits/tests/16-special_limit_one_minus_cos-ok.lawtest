@@ -1,0 +1,26 @@
+language "law.core" version "0.2";
+package openstax.calculus_limits version "0.1.1";
+namespace "urn:openstax:clir:calculus-limits";
+
+// CL_SPECIAL: живой ход, без подстановки step_valid фактом дела.
+test "фрагмент CL_SPECIAL: special_limit_one_minus_cos" {
+ given {
+  assert "f0": calc.calculus_checker::document(entity_ref("urn:calc:limits:p"), 1, 6, "calculus/2") { origin case_input; }
+  assert "f1": calc.calculus_checker::nodes_of(entity_ref("urn:calc:limits:p"), entity_ref("urn:calc:limits:e")) { origin case_input; }
+  assert "f2": calc.calculus_checker::variable(entity_ref("urn:calc:limits:p"), "x") { origin case_input; }
+  assert "f3": calc.calculus_checker::closed(entity_ref("urn:calc:limits:p")) { origin case_input; }
+  assert "f4": calc.expressions::closed(entity_ref("urn:calc:limits:e")) { origin case_input; }
+  assert "f5": calc.expressions::node(entity_ref("urn:calc:limits:e"), 1, "var", "x", 0 / 1, 0, 0) { origin case_input; }
+  assert "f6": calc.expressions::node(entity_ref("urn:calc:limits:e"), 2, "const", "", 1 / 1, 0, 0) { origin case_input; }
+  assert "f7": calc.expressions::node(entity_ref("urn:calc:limits:e"), 3, "const", "", 0 / 1, 0, 0) { origin case_input; }
+  assert "f8": calc.expressions::node(entity_ref("urn:calc:limits:e"), 4, "cos", "", 0 / 1, 1, 0) { origin case_input; }
+  assert "f9": calc.expressions::node(entity_ref("urn:calc:limits:e"), 5, "sub", "", 0 / 1, 2, 4) { origin case_input; }
+  assert "f10": calc.expressions::node(entity_ref("urn:calc:limits:e"), 6, "div", "", 0 / 1, 5, 1) { origin case_input; }
+  assert "f11": calc.calculus_checker::limit_line(entity_ref("urn:calc:limits:p"), 1, 6, "special_limit_one_minus_cos", 0, 0, 0, "at", 0 / 1, "both", "expr", 3) { origin case_input; }
+  assert "f12": rule_method(entity_ref("urn:openstax:limits:rule"), "special_limit_one_minus_cos") { origin case_input; }
+ }
+ evaluate truth(step_justified_by(entity_ref("urn:calc:limits:p"), 1, entity_ref("urn:openstax:limits:rule")));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(JustifySpecialLimitOneMinusCos14);
+}

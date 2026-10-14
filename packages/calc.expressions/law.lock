@@ -1,0 +1,16 @@
+{
+  "dependencyEdges": [],
+  "languageSemantics": "law.core/0.2.11",
+  "lockVersion": "0.4",
+  "packages": [],
+  "resolutionHash": "sha256:9ea68e5cf459c057cda4bbe7bad4b58d93bc190c36c6062d58eb5df2c5e5e3ad",
+  "resources": [],
+  "root": {
+    "artifactHash": "sha256:67a032a96c983e724e0af4781fc287617140741319ebe2e55ac54ca35467a265",
+    "name": "calc.expressions",
+    "namespace": "urn:law:calc:expressions",
+    "sourceHash": "sha256:74c1509e127265dada5267e722fe5ffd05aea45c9f1c2552ee2c94ae5a5e3720",
+    "version": "0.1.0"
+  },
+  "semanticLayer": "L0"
+}

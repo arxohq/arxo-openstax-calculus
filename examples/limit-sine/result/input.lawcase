@@ -1,0 +1,17 @@
+language "law.core" version "0.2";
+package examples.calculus_input version "0.1.0";
+namespace "urn:example:calculus:input";
+case Problem {
+ context { legal_time @2026-10-14; knowledge_time @2026-10-14T12:00:00Z; decision_time @2026-10-14T12:00:00Z; timezone "UTC"; }
+ assert "input-1": openstax.calculus_limits::automatic_limit_task(entity_ref("urn:example:calculus:task")) { origin case_input; }
+ assert "input-2": calc.limit_solver::task_nodes(entity_ref("urn:example:calculus:task"),entity_ref("urn:example:calculus:nodes")) { origin case_input; }
+ assert "input-3": calc.limit_solver::task_function(entity_ref("urn:example:calculus:task"),3) { origin case_input; }
+ assert "input-4": calc.limit_solver::task_variable(entity_ref("urn:example:calculus:task"),"x") { origin case_input; }
+ assert "input-5": calc.limit_solver::task_approach(entity_ref("urn:example:calculus:task"),"at") { origin case_input; }
+ assert "input-6": calc.limit_solver::task_point(entity_ref("urn:example:calculus:task"),0 / 1) { origin case_input; }
+ assert "input-7": calc.limit_solver::task_side(entity_ref("urn:example:calculus:task"),"both") { origin case_input; }
+ assert "input-8": calc.limit_solver::input_node(entity_ref("urn:example:calculus:task"),1,"var","x",0 / 1,0,0) { origin case_input; }
+ assert "input-9": calc.limit_solver::input_node(entity_ref("urn:example:calculus:task"),2,"sin","",0 / 1,1,0) { origin case_input; }
+ assert "input-10": calc.limit_solver::input_node(entity_ref("urn:example:calculus:task"),3,"div","",0 / 1,2,1) { origin case_input; }
+ assert "input-11": calc.limit_solver::task_closed(entity_ref("urn:example:calculus:task")) { origin case_input; }
+}

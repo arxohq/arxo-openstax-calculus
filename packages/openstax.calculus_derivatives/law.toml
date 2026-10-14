@@ -1,0 +1,49 @@
+[package]
+name = "openstax.calculus_derivatives"
+version = "0.1.1"
+language = "0.2"
+namespace = "urn:openstax:clir:calculus-derivatives"
+
+[dependencies]
+"calc.expressions" = "0.1.0"
+"calc.polynomials_q" = "0.1.0"
+"calc.calculus_checker" = "0.1.0"
+
+[features]
+semanticLayer = "L3"
+
+# Каталожная метадата (DECISION-0051; docs/PACKAGE-METADATA.ru.md).
+[metadata]
+act = "openstax-calculus-derivatives"
+title = "OpenStax Calculus, том 1, глава 3: правила дифференцирования — определение производной, правила константы, степени, суммы и постоянного множителя, произведения, частного, цепное правило, производные sin, cos, e^x и ln x"
+primarySource = "M53575"
+jurisdiction = "none"
+instrument = "treatise"
+sourceFidelity = "pinned_official_bytes"
+issuer = "OpenStax, Rice University — Calculus Volumes 1–2 (osbooks-calculus-bundle, commit 8dbc2ce)"
+legalStatus = "doctrine"
+verifiedAgainstSource = false
+# Лицензия CC BY-NC-SA 4.0 — см. шапку sources.law.
+
+# Сценарии пакета (DECISION-0127): мир — потребитель, затем зависимости.
+[[tests]]
+family = "openstax_calculus_derivatives"
+suites = [
+  "tests/solver-inputs.lawtest",
+  "tests/01-instruction-without-a-case.lawtest",
+  "tests/02-step-justified-by-the-power-rule.lawtest",
+  "tests/03-constant-rule.lawtest",
+  "tests/04-sum-rule.lawtest",
+  "tests/05-constant-multiple.lawtest",
+  "tests/06-product-rule.lawtest",
+  "tests/07-quotient-rule.lawtest",
+  "tests/08-chain-rule.lawtest",
+  "tests/09-derivative-sin.lawtest",
+  "tests/10-derivative-cos.lawtest",
+  "tests/11-derivative-exp.lawtest",
+  "tests/12-derivative-ln.lawtest",
+]
+world = ["openstax.calculus_derivatives", "calc.calculus_checker", "calc.polynomials_q", "calc.expressions"]
+
+[authoring]
+local_imports = "explicit"

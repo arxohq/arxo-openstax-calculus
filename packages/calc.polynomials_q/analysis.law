@@ -1,0 +1,493 @@
+language "law.core" version "0.2";
+package calc.polynomials_q version "0.1.0";
+namespace "urn:law:calc:polynomials-q";
+
+// ПРОИЗВОДНАЯ, ПЕРВООБРАЗНАЯ И ОПРЕДЕЛЁННЫЙ ИНТЕГРАЛ МНОГОЧЛЕНА (DECISION-0196).
+//
+// ЗДЕСЬ ARXO СЧИТАЕТ САМ. Класс замкнут и канон тотален: производная
+// многочлена над ℚ есть многочлен над ℚ, и сравнение двух ответов —
+// сравнение канонов, а не поиск общей формы. Ровно поэтому вычислитель
+// ограничен этим классом: для выражений с `exp`, `sin` и `ln` тотального
+// канона не существует (теорема Ричардсона), и там Arxo ПРОВЕРЯЕТ
+// предъявленный ход, а не ищет его (`calc.calculus_checker`).
+//
+//   (Σ a_k x^k)' = Σ (k+1)·a_{k+1} x^k        мест на одно меньше
+//   ∫ Σ a_k x^k  = C + Σ a_k/(k+1) x^{k+1}    мест на одно больше
+//   ∫_lo^hi f    = F(hi) − F(lo)              по схеме Горнера пакета
+//
+// МЕСТ, А НЕ СТЕПЕНЕЙ. Как и всюду в пакете, построение объявляет МЕСТА, а
+// степень выводится из содержимого: у производной многочлена `0·x² + 2x + 1`
+// мест одно, и старший коэффициент может оказаться нулевым — это законно.
+//
+// КОНСТАНТА ИНТЕГРИРОВАНИЯ НЕ ПОДРАЗУМЕВАЕТСЯ. `antiderivative_of` берёт её
+// нулём ЯВНО, `antiderivative_with_constant` — предъявленной делом. Умолчания
+// нет по §2 DECISION-0123: «ноль» здесь такой же выбор, как любой другой.
+//
+// МОСТ «ВЫРАЖЕНИЕ → МНОГОЧЛЕН» ЖИВЁТ ЗДЕСЬ, а не в `calc.expressions`: тот
+// владеет деревом и не смеет зависеть от своего потребителя. Носитель
+// результата (`Poly`) называет ДЕЛО фактом `node_polynomial`: сущности
+// язык не выдумывает, а форму и содержимое считает пакет.
+
+import calc.expressions version "0.1.0";
+
+use self::{
+    Poly,
+    construction,
+    difference_of,
+    evaluation_request,
+    monomial_of,
+    operand,
+    poly_value,
+    product_of,
+    raw,
+    scaled_of,
+    slot,
+    slots,
+    sum_of,
+    usable,
+};
+
+// ── Производная ────────────────────────────────────────────────────────────
+
+pub relation derivative_of(d: Poly, a: Poly) kind empirical {
+    label ru unofficial "многочлен d определён как производная многочлена a";
+}
+
+pub relation antiderivative_of(t: Poly, a: Poly) kind empirical {
+    label ru unofficial "многочлен t определён как первообразная a с НУЛЕВОЙ константой — ноль выбран явно, а не подразумевается";
+}
+
+pub relation antiderivative_with_constant(t: Poly, a: Poly, c: Rational) kind empirical {
+    label ru unofficial "первообразная a с предъявленной делом константой интегрирования";
+}
+
+relation antiderivative_base(t: Poly, a: Poly, c: Rational) kind institutional {
+    label ru unofficial "общее основание обеих форм первообразной: операнд и константа";
+}
+
+pub relation definite_integral_request(p: Poly, f: Poly, lo: Rational, hi: Rational) kind empirical {
+    label ru unofficial "дело просит определённый интеграл p от lo до hi через названную первообразную f";
+}
+
+pub relation definite_integral(p: Poly, lo: Rational, hi: Rational, v: Rational) kind institutional {
+    label ru unofficial "значение определённого интеграла: F(hi) − F(lo)";
+}
+
+rule KindDerivative(d: Poly, a: Poly) strict {
+    label ru unofficial "многочлен определён производной";
+    when derivative_of(d, a);
+    then construction(d, "DERIVATIVE");
+}
+
+rule OperandDerivative(d: Poly, a: Poly) strict {
+    label ru unofficial "дифференцируемый многочлен — операнд";
+    when derivative_of(d, a);
+    then operand(d, a);
+}
+
+rule AntiderivativeBaseZero(t: Poly, a: Poly) strict {
+    label ru unofficial "первообразная с нулевой константой";
+    when antiderivative_of(t, a);
+    then antiderivative_base(t, a, 0 / 1);
+}
+
+rule AntiderivativeBaseGiven(t: Poly, a: Poly, c: Rational) strict {
+    label ru unofficial "первообразная с предъявленной константой";
+    when antiderivative_with_constant(t, a, c);
+    then antiderivative_base(t, a, c);
+}
+
+rule KindAntiderivative(t: Poly, a: Poly, c: Rational) strict {
+    label ru unofficial "многочлен определён первообразной";
+    when antiderivative_base(t, a, c);
+    then construction(t, "ANTIDERIVATIVE");
+}
+
+rule OperandAntiderivative(t: Poly, a: Poly, c: Rational) strict {
+    label ru unofficial "интегрируемый многочлен — операнд";
+    when antiderivative_base(t, a, c);
+    then operand(t, a);
+}
+
+// ── Места ──────────────────────────────────────────────────────────────────
+
+rule SlotsDerivativeDrop(d: Poly, a: Poly, n: Integer) strict {
+    label ru unofficial "у производной мест на одно меньше";
+    when derivative_of(d, a) and monotone(slots(a, n)) and n >= 1;
+    then slots(d, n - 1);
+}
+
+rule SlotsDerivativeOfConstant(d: Poly, a: Poly, n: Integer) strict {
+    label ru unofficial "у производной константы одно место: производная есть нулевой многочлен, и место под ноль ему нужно";
+    when derivative_of(d, a) and monotone(slots(a, n)) and n == 0;
+    then slots(d, 0);
+}
+
+rule SlotsAntiderivative(t: Poly, a: Poly, c: Rational, n: Integer) strict {
+    label ru unofficial "у первообразной мест на одно больше";
+    when antiderivative_base(t, a, c) and monotone(slots(a, n));
+    then slots(t, n + 1);
+}
+
+// ── Содержимое ─────────────────────────────────────────────────────────────
+
+rule RawDerivative(d: Poly, a: Poly, n: Integer, k: Integer, k2: Integer, x: Rational) strict {
+    label ru unofficial "коэффициент производной: (k+1)·a_{k+1} на месте k. Место операнда СВЯЗЫВАЕТСЯ своим генератором и сверяется сравнением: арифметический терм на месте аргумента конъюнкта движок решать не обязан (§190) — вычисляемое место законно только в ГОЛОВЕ";
+    when derivative_of(d, a) and usable(d, n) and slot(d, k)
+        and monotone(slot(a, k2)) and k2 == k + 1 and monotone(raw(a, k2, x));
+    then raw(d, k, ((k + 1) / 1) * x);
+}
+
+rule RawDerivativeOfConstant(d: Poly, a: Poly, x: Rational) strict {
+    label ru unofficial "производная константы — ноль; выведено правилом, а не получено отсутствием факта";
+    when derivative_of(d, a) and usable(d, 0) and monotone(slots(a, 0)) and monotone(raw(a, 0, x));
+    then raw(d, 0, 0 / 1);
+}
+
+rule RawAntiderivativeConstantTerm(t: Poly, a: Poly, c: Rational, n: Integer) strict {
+    label ru unofficial "свободный член первообразной — константа интегрирования";
+    when antiderivative_base(t, a, c) and usable(t, n);
+    then raw(t, 0, c);
+}
+
+rule RawAntiderivativeShift(
+    t: Poly,
+    a: Poly,
+    c: Rational,
+    n: Integer,
+    k: Integer,
+    x: Rational,
+) strict {
+    label ru unofficial "коэффициент первообразной: a_k/(k+1) на месте k+1. Обратная величина строится как Integer/Integer — единственная форма, порождающая Rational (§9)";
+    when antiderivative_base(t, a, c) and usable(t, n) and slot(t, k) and monotone(raw(a, k, x));
+    then raw(t, k + 1, x * (1 / (k + 1)));
+}
+
+// ── Определённый интеграл ──────────────────────────────────────────────────
+
+rule DefiniteIntegralAsksLow(p: Poly, f: Poly, lo: Rational, hi: Rational) strict {
+    label ru unofficial "нижний предел подставляется в первообразную схемой Горнера пакета";
+    when definite_integral_request(p, f, lo, hi);
+    then evaluation_request(f, lo);
+}
+
+rule DefiniteIntegralAsksHigh(p: Poly, f: Poly, lo: Rational, hi: Rational) strict {
+    label ru unofficial "верхний предел подставляется в первообразную";
+    when definite_integral_request(p, f, lo, hi);
+    then evaluation_request(f, hi);
+}
+
+rule DefiniteIntegralValue(
+    p: Poly,
+    f: Poly,
+    lo: Rational,
+    hi: Rational,
+    c: Rational,
+    vlo: Rational,
+    vhi: Rational,
+) strict {
+    label ru unofficial "основная формула: F(hi) − F(lo); константа интегрирования сокращается и потому на ответ не влияет";
+    when definite_integral_request(p, f, lo, hi) and antiderivative_base(f, p, c)
+        and poly_value(f, hi, vhi) and poly_value(f, lo, vlo);
+    then definite_integral(p, lo, hi, vhi - vlo);
+}
+
+// ── Мост «выражение → многочлен» ───────────────────────────────────────────
+
+pub relation polynomial_variable(e: calc.expressions::Expr, x: Text) kind empirical {
+    label ru unofficial "переменная, по которой выражение читается как многочлен";
+}
+
+pub relation node_polynomial(e: calc.expressions::Expr, f: Integer, p: Poly) kind empirical {
+    label ru unofficial "носитель результата для узла: имя сущности называет ДЕЛО, форму и содержимое считает пакет";
+}
+
+pub relation polynomial_of(e: calc.expressions::Expr, f: Integer, x: Text, p: Poly) kind institutional {
+    label ru unofficial "поддерево узла f прочитано как многочлен p по переменной x";
+}
+
+pub relation not_polynomial(e: calc.expressions::Expr, f: Integer) kind institutional {
+    label ru unofficial "поддерево многочленом по названной переменной НЕ является; выводится ПОЛОЖИТЕЛЬНО, а не отсутствием головы";
+}
+
+relation bridge_exponent(e: calc.expressions::Expr, k: Integer) kind institutional {
+    label ru unofficial "допустимый целый показатель 0 … 32 для чтения степени (ограниченная монотонная рекурсия §65/§103)";
+}
+
+rule BridgeExponentStart(e: calc.expressions::Expr, x: Text) strict {
+    label ru unofficial "нулевой показатель допустим";
+    when polynomial_variable(e, x);
+    then bridge_exponent(e, 0);
+}
+
+rule BridgeExponentStep(e: calc.expressions::Expr, k: Integer) strict {
+    label ru unofficial "следующий допустимый показатель до объявленной границы 32";
+    when monotone(bridge_exponent(e, k)) and k < 32;
+    then bridge_exponent(e, k + 1);
+}
+
+rule BridgeConstant(e: calc.expressions::Expr, f: Integer, x: Text, p: Poly, v: Rational) strict {
+    label ru unofficial "константа читается одночленом нулевой степени";
+    when polynomial_variable(e, x) and node_polynomial(e, f, p)
+        and calc.expressions::node(e, f, "const", "", v, 0, 0)
+        and calc.expressions::well_formed(e, f);
+    then monomial_of(p, 0, v);
+}
+
+rule BridgeConstantRead(e: calc.expressions::Expr, f: Integer, x: Text, p: Poly, v: Rational) strict {
+    label ru unofficial "константа прочитана";
+    when polynomial_variable(e, x) and node_polynomial(e, f, p)
+        and calc.expressions::node(e, f, "const", "", v, 0, 0)
+        and calc.expressions::well_formed(e, f);
+    then polynomial_of(e, f, x, p);
+}
+
+rule BridgeVariable(e: calc.expressions::Expr, f: Integer, x: Text, p: Poly) strict {
+    label ru unofficial "искомая переменная читается одночленом первой степени";
+    when polynomial_variable(e, x) and node_polynomial(e, f, p)
+        and calc.expressions::node(e, f, "var", x, 0 / 1, 0, 0)
+        and calc.expressions::well_formed(e, f);
+    then monomial_of(p, 1, 1 / 1);
+}
+
+rule BridgeVariableRead(e: calc.expressions::Expr, f: Integer, x: Text, p: Poly) strict {
+    label ru unofficial "искомая переменная прочитана";
+    when polynomial_variable(e, x) and node_polynomial(e, f, p)
+        and calc.expressions::node(e, f, "var", x, 0 / 1, 0, 0)
+        and calc.expressions::well_formed(e, f);
+    then polynomial_of(e, f, x, p);
+}
+
+rule BridgeOtherVariable(e: calc.expressions::Expr, f: Integer, x: Text, y: Text) strict {
+    label ru unofficial "ДРУГАЯ переменная: по названной переменной это не многочлен одной переменной";
+    when polynomial_variable(e, x) and calc.expressions::node(e, f, "var", y, 0 / 1, 0, 0) and y != x;
+    then not_polynomial(e, f);
+}
+
+rule BridgeSum(
+    e: calc.expressions::Expr,
+    f: Integer,
+    x: Text,
+    p: Poly,
+    a: Integer,
+    b: Integer,
+    pa: Poly,
+    pb: Poly,
+) strict {
+    label ru unofficial "сумма узлов читается суммой многочленов";
+    when node_polynomial(e, f, p) and calc.expressions::node(e, f, "add", "", 0 / 1, a, b)
+        and monotone(polynomial_of(e, a, x, pa)) and monotone(polynomial_of(e, b, x, pb));
+    then sum_of(p, pa, pb);
+}
+
+rule BridgeSumRead(
+    e: calc.expressions::Expr,
+    f: Integer,
+    x: Text,
+    p: Poly,
+    a: Integer,
+    b: Integer,
+    pa: Poly,
+    pb: Poly,
+) strict {
+    label ru unofficial "сумма прочитана";
+    when node_polynomial(e, f, p) and calc.expressions::node(e, f, "add", "", 0 / 1, a, b)
+        and monotone(polynomial_of(e, a, x, pa)) and monotone(polynomial_of(e, b, x, pb));
+    then polynomial_of(e, f, x, p);
+}
+
+rule BridgeDifference(
+    e: calc.expressions::Expr,
+    f: Integer,
+    x: Text,
+    p: Poly,
+    a: Integer,
+    b: Integer,
+    pa: Poly,
+    pb: Poly,
+) strict {
+    label ru unofficial "разность узлов читается разностью многочленов";
+    when node_polynomial(e, f, p) and calc.expressions::node(e, f, "sub", "", 0 / 1, a, b)
+        and monotone(polynomial_of(e, a, x, pa)) and monotone(polynomial_of(e, b, x, pb));
+    then difference_of(p, pa, pb);
+}
+
+rule BridgeDifferenceRead(
+    e: calc.expressions::Expr,
+    f: Integer,
+    x: Text,
+    p: Poly,
+    a: Integer,
+    b: Integer,
+    pa: Poly,
+    pb: Poly,
+) strict {
+    label ru unofficial "разность прочитана";
+    when node_polynomial(e, f, p) and calc.expressions::node(e, f, "sub", "", 0 / 1, a, b)
+        and monotone(polynomial_of(e, a, x, pa)) and monotone(polynomial_of(e, b, x, pb));
+    then polynomial_of(e, f, x, p);
+}
+
+rule BridgeProduct(
+    e: calc.expressions::Expr,
+    f: Integer,
+    x: Text,
+    p: Poly,
+    a: Integer,
+    b: Integer,
+    pa: Poly,
+    pb: Poly,
+) strict {
+    label ru unofficial "произведение узлов читается произведением многочленов";
+    when node_polynomial(e, f, p) and calc.expressions::node(e, f, "mul", "", 0 / 1, a, b)
+        and monotone(polynomial_of(e, a, x, pa)) and monotone(polynomial_of(e, b, x, pb));
+    then product_of(p, pa, pb);
+}
+
+rule BridgeProductRead(
+    e: calc.expressions::Expr,
+    f: Integer,
+    x: Text,
+    p: Poly,
+    a: Integer,
+    b: Integer,
+    pa: Poly,
+    pb: Poly,
+) strict {
+    label ru unofficial "произведение прочитано";
+    when node_polynomial(e, f, p) and calc.expressions::node(e, f, "mul", "", 0 / 1, a, b)
+        and monotone(polynomial_of(e, a, x, pa)) and monotone(polynomial_of(e, b, x, pb));
+    then polynomial_of(e, f, x, p);
+}
+
+rule BridgeNegation(
+    e: calc.expressions::Expr,
+    f: Integer,
+    x: Text,
+    p: Poly,
+    a: Integer,
+    pa: Poly,
+) strict {
+    label ru unofficial "смена знака читается умножением на минус единицу";
+    when node_polynomial(e, f, p) and calc.expressions::node(e, f, "neg", "", 0 / 1, a, 0)
+        and monotone(polynomial_of(e, a, x, pa));
+    then scaled_of(p, pa, -1 / 1);
+}
+
+rule BridgeNegationRead(
+    e: calc.expressions::Expr,
+    f: Integer,
+    x: Text,
+    p: Poly,
+    a: Integer,
+    pa: Poly,
+) strict {
+    label ru unofficial "смена знака прочитана";
+    when node_polynomial(e, f, p) and calc.expressions::node(e, f, "neg", "", 0 / 1, a, 0)
+        and monotone(polynomial_of(e, a, x, pa));
+    then polynomial_of(e, f, x, p);
+}
+
+rule BridgePowerOfVariable(
+    e: calc.expressions::Expr,
+    f: Integer,
+    x: Text,
+    p: Poly,
+    a: Integer,
+    g: Integer,
+    k: Integer,
+    v: Rational,
+) strict {
+    label ru unofficial "степень ИСКОМОЙ переменной читается одночленом: x^k. Основание сложнее переменной в первой версии не раскрывается";
+    when node_polynomial(e, f, p) and calc.expressions::node(e, f, "pow", "", 0 / 1, a, g)
+        and calc.expressions::node(e, a, "var", x, 0 / 1, 0, 0)
+        and calc.expressions::node(e, g, "const", "", v, 0, 0)
+        and bridge_exponent(e, k) and v == k / 1
+        and calc.expressions::well_formed(e, f);
+    then monomial_of(p, k, 1 / 1);
+}
+
+rule BridgePowerOfVariableRead(
+    e: calc.expressions::Expr,
+    f: Integer,
+    x: Text,
+    p: Poly,
+    a: Integer,
+    g: Integer,
+    k: Integer,
+    v: Rational,
+) strict {
+    label ru unofficial "степень переменной прочитана";
+    when node_polynomial(e, f, p) and calc.expressions::node(e, f, "pow", "", 0 / 1, a, g)
+        and calc.expressions::node(e, a, "var", x, 0 / 1, 0, 0)
+        and calc.expressions::node(e, g, "const", "", v, 0, 0)
+        and bridge_exponent(e, k) and v == k / 1
+        and calc.expressions::well_formed(e, f);
+    then polynomial_of(e, f, x, p);
+}
+
+// ── Что многочленом НЕ является: выводится положительно ────────────────────
+
+rule BridgeQuotientIsNotPolynomial(e: calc.expressions::Expr, f: Integer, x: Text, a: Integer, b: Integer) strict {
+    label ru unofficial "частное: рациональные функции вне первой версии";
+    when polynomial_variable(e, x) and calc.expressions::node(e, f, "div", "", 0 / 1, a, b);
+    then not_polynomial(e, f);
+}
+
+rule BridgeSinIsNotPolynomial(e: calc.expressions::Expr, f: Integer, x: Text, a: Integer) strict {
+    label ru unofficial "синус многочленом не является";
+    when polynomial_variable(e, x) and calc.expressions::node(e, f, "sin", "", 0 / 1, a, 0);
+    then not_polynomial(e, f);
+}
+
+rule BridgeCosIsNotPolynomial(e: calc.expressions::Expr, f: Integer, x: Text, a: Integer) strict {
+    label ru unofficial "косинус многочленом не является";
+    when polynomial_variable(e, x) and calc.expressions::node(e, f, "cos", "", 0 / 1, a, 0);
+    then not_polynomial(e, f);
+}
+
+rule BridgeExpIsNotPolynomial(e: calc.expressions::Expr, f: Integer, x: Text, a: Integer) strict {
+    label ru unofficial "показательная функция многочленом не является";
+    when polynomial_variable(e, x) and calc.expressions::node(e, f, "exp", "", 0 / 1, a, 0);
+    then not_polynomial(e, f);
+}
+
+rule BridgeSqrtIsNotPolynomial(e: calc.expressions::Expr, f: Integer, x: Text, a: Integer) strict {
+    label ru unofficial "квадратный корень многочленом не является (DECISION-0198 §2: новый вид узла)";
+    when polynomial_variable(e, x) and calc.expressions::node(e, f, "sqrt", "", 0 / 1, a, 0);
+    then not_polynomial(e, f);
+}
+
+rule BridgeLnIsNotPolynomial(e: calc.expressions::Expr, f: Integer, x: Text, a: Integer) strict {
+    label ru unofficial "логарифм многочленом не является";
+    when polynomial_variable(e, x) and calc.expressions::node(e, f, "ln", "", 0 / 1, a, 0);
+    then not_polynomial(e, f);
+}
+
+rule NotPolynomialClimbsLeft(
+    e: calc.expressions::Expr,
+    f: Integer,
+    tag: Text,
+    name: Text,
+    v: Rational,
+    a: Integer,
+    b: Integer,
+) strict {
+    label ru unofficial "то, что содержит не-многочлен слева, само многочленом не является";
+    when calc.expressions::node(e, f, tag, name, v, a, b) and monotone(not_polynomial(e, a));
+    then not_polynomial(e, f);
+}
+
+rule NotPolynomialClimbsRight(
+    e: calc.expressions::Expr,
+    f: Integer,
+    tag: Text,
+    name: Text,
+    v: Rational,
+    a: Integer,
+    b: Integer,
+) strict {
+    label ru unofficial "то же справа";
+    when calc.expressions::node(e, f, tag, name, v, a, b) and monotone(not_polynomial(e, b));
+    then not_polynomial(e, f);
+}

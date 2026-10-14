@@ -1,0 +1,284 @@
+language "law.core" version "0.2";
+package openstax.calculus_limits version "0.1.1";
+namespace "urn:openstax:clir:calculus-limits";
+
+// DECISION-0197 §1: словарь обосновывает, вычислитель подтверждает.
+// Показ инструкции не выполняет ход (§86/§103; граница logic.core).
+
+import calc.expressions version "0.1.0";
+import calc.polynomials_q version "0.1.0";
+import calc.calculus_checker version "0.1.0";
+
+use self::{
+    CL_BASIC,
+    CL_CANCEL,
+    CL_CONTINUITY,
+    CL_EPSILON_DELTA,
+    CL_INFINITY,
+    CL_LAWS,
+    CL_LHOPITAL_INFINITY,
+    CL_LHOPITAL_ZERO,
+    CL_LIMIT_DEFINITION,
+    CL_ONE_SIDED,
+    CL_SPECIAL,
+    CL_SUBSTITUTION,
+    CL_TRIG_CONTINUITY,
+};
+
+@source(CL_LIMIT_DEFINITION)
+pub entity LimitRule { label ru unofficial "правило пределов из учебника OpenStax"; }
+
+@source(CL_LIMIT_DEFINITION)
+pub relation rule_method(r: LimitRule { label ru unofficial "r"; }, method: Text { label ru unofficial "method"; }) kind empirical { label ru unofficial "метод проверяющего, которому соответствует правило"; }
+
+@source(CL_LIMIT_DEFINITION)
+pub relation rule_premise(r: LimitRule { label ru unofficial "r"; }, position: Integer { label ru unofficial "position"; }, text: Text { label ru unofficial "text"; }) kind empirical { label ru unofficial "условие применимости для показа инструкции"; }
+
+@source(CL_LIMIT_DEFINITION)
+pub relation rule_conclusion(r: LimitRule { label ru unofficial "r"; }, text: Text { label ru unofficial "text"; }) kind empirical { label ru unofficial "заключение правила для показа инструкции"; }
+
+@source(CL_LIMIT_DEFINITION)
+pub relation instruction_available(r: LimitRule { label ru unofficial "r"; }) kind derived { label ru unofficial "инструкция доступна без предъявления хода"; }
+
+@source(CL_LIMIT_DEFINITION)
+pub relation step_justified_by(p: calc.calculus_checker::Derivation { label ru unofficial "p"; }, i: Integer { label ru unofficial "i"; }, r: LimitRule { label ru unofficial "r"; }) kind derived { label ru unofficial "проверенный шаг обоснован фрагментом OpenStax"; }
+
+@source(CL_LIMIT_DEFINITION)
+rule InstructionAvailable(r: LimitRule, position: Integer, premise: Text, conclusion: Text) strict {
+    label ru unofficial "показ инструкции по посылкам и заключению не даёт вывода о ходе (§4 DECISION-0197)";
+    when rule_premise(r, position, premise) and rule_conclusion(r, conclusion);
+    then instruction_available(r);
+}
+
+// §145: necessary не порождает достаточного правила. Проверки ε-δ здесь нет.
+@source(CL_EPSILON_DELTA)
+pub relation epsilon_delta_certificate(p: calc.calculus_checker::Derivation) kind empirical {
+    label ru unofficial "предъявленное обязательство ε-δ; в v1 не исполняется";
+}
+@source(CL_EPSILON_DELTA)
+definition epsilon_delta(p: calc.calculus_checker::Derivation) necessary {
+    label ru unofficial "§2.5 точное определение предела; обязательства остаются в источнике, исполнение — кандидат для calc.proof_checker";
+    when epsilon_delta_certificate(p);
+}
+
+@source(CL_LIMIT_DEFINITION)
+rule JustifyLimitGiven0(p: calc.calculus_checker::Derivation, i: Integer, r: LimitRule,
+    f: Integer, j: Integer, k: Integer, l: Integer, approach: Text,
+    point: Rational, side: Text, value_kind: Text, value: Integer) defeasible {
+    label ru unofficial "проверенный шаг limit_given обоснован формулировкой учебника (§4 DECISION-0197)";
+    when calc.calculus_checker::step_valid(p, i)
+        and calc.calculus_checker::limit_line(p, i, f, "limit_given", j, k, l, approach, point, side, value_kind, value)
+        and rule_method(r, "limit_given");
+    then step_justified_by(p, i, r);
+}
+
+@source(CL_BASIC)
+rule JustifyLimitConstant1(p: calc.calculus_checker::Derivation, i: Integer, r: LimitRule,
+    f: Integer, j: Integer, k: Integer, l: Integer, approach: Text,
+    point: Rational, side: Text, value_kind: Text, value: Integer) defeasible {
+    label ru unofficial "проверенный шаг limit_constant обоснован формулировкой учебника (§4 DECISION-0197)";
+    when calc.calculus_checker::step_valid(p, i)
+        and calc.calculus_checker::limit_line(p, i, f, "limit_constant", j, k, l, approach, point, side, value_kind, value)
+        and rule_method(r, "limit_constant");
+    then step_justified_by(p, i, r);
+}
+
+@source(CL_BASIC)
+rule JustifyLimitIdentity2(p: calc.calculus_checker::Derivation, i: Integer, r: LimitRule,
+    f: Integer, j: Integer, k: Integer, l: Integer, approach: Text,
+    point: Rational, side: Text, value_kind: Text, value: Integer) defeasible {
+    label ru unofficial "проверенный шаг limit_identity обоснован формулировкой учебника (§4 DECISION-0197)";
+    when calc.calculus_checker::step_valid(p, i)
+        and calc.calculus_checker::limit_line(p, i, f, "limit_identity", j, k, l, approach, point, side, value_kind, value)
+        and rule_method(r, "limit_identity");
+    then step_justified_by(p, i, r);
+}
+
+@source(CL_LAWS)
+rule JustifyLimitSum3(p: calc.calculus_checker::Derivation, i: Integer, r: LimitRule,
+    f: Integer, j: Integer, k: Integer, l: Integer, approach: Text,
+    point: Rational, side: Text, value_kind: Text, value: Integer) defeasible {
+    label ru unofficial "проверенный шаг limit_sum обоснован формулировкой учебника (§4 DECISION-0197)";
+    when calc.calculus_checker::step_valid(p, i)
+        and calc.calculus_checker::limit_line(p, i, f, "limit_sum", j, k, l, approach, point, side, value_kind, value)
+        and rule_method(r, "limit_sum");
+    then step_justified_by(p, i, r);
+}
+
+@source(CL_LAWS)
+rule JustifyLimitDifference4(p: calc.calculus_checker::Derivation, i: Integer, r: LimitRule,
+    f: Integer, j: Integer, k: Integer, l: Integer, approach: Text,
+    point: Rational, side: Text, value_kind: Text, value: Integer) defeasible {
+    label ru unofficial "проверенный шаг limit_difference обоснован формулировкой учебника (§4 DECISION-0197)";
+    when calc.calculus_checker::step_valid(p, i)
+        and calc.calculus_checker::limit_line(p, i, f, "limit_difference", j, k, l, approach, point, side, value_kind, value)
+        and rule_method(r, "limit_difference");
+    then step_justified_by(p, i, r);
+}
+
+@source(CL_LAWS)
+rule JustifyLimitProduct5(p: calc.calculus_checker::Derivation, i: Integer, r: LimitRule,
+    f: Integer, j: Integer, k: Integer, l: Integer, approach: Text,
+    point: Rational, side: Text, value_kind: Text, value: Integer) defeasible {
+    label ru unofficial "проверенный шаг limit_product обоснован формулировкой учебника (§4 DECISION-0197)";
+    when calc.calculus_checker::step_valid(p, i)
+        and calc.calculus_checker::limit_line(p, i, f, "limit_product", j, k, l, approach, point, side, value_kind, value)
+        and rule_method(r, "limit_product");
+    then step_justified_by(p, i, r);
+}
+
+@source(CL_LAWS)
+rule JustifyLimitConstantMultiple6(p: calc.calculus_checker::Derivation, i: Integer, r: LimitRule,
+    f: Integer, j: Integer, k: Integer, l: Integer, approach: Text,
+    point: Rational, side: Text, value_kind: Text, value: Integer) defeasible {
+    label ru unofficial "проверенный шаг limit_constant_multiple обоснован формулировкой учебника (§4 DECISION-0197)";
+    when calc.calculus_checker::step_valid(p, i)
+        and calc.calculus_checker::limit_line(p, i, f, "limit_constant_multiple", j, k, l, approach, point, side, value_kind, value)
+        and rule_method(r, "limit_constant_multiple");
+    then step_justified_by(p, i, r);
+}
+
+@source(CL_LAWS)
+rule JustifyLimitPower7(p: calc.calculus_checker::Derivation, i: Integer, r: LimitRule,
+    f: Integer, j: Integer, k: Integer, l: Integer, approach: Text,
+    point: Rational, side: Text, value_kind: Text, value: Integer) defeasible {
+    label ru unofficial "проверенный шаг limit_power обоснован формулировкой учебника (§4 DECISION-0197)";
+    when calc.calculus_checker::step_valid(p, i)
+        and calc.calculus_checker::limit_line(p, i, f, "limit_power", j, k, l, approach, point, side, value_kind, value)
+        and rule_method(r, "limit_power");
+    then step_justified_by(p, i, r);
+}
+
+@source(CL_LAWS)
+rule JustifyLimitQuotient8(p: calc.calculus_checker::Derivation, i: Integer, r: LimitRule,
+    f: Integer, j: Integer, k: Integer, l: Integer, approach: Text,
+    point: Rational, side: Text, value_kind: Text, value: Integer) defeasible {
+    label ru unofficial "проверенный шаг limit_quotient обоснован формулировкой учебника (§4 DECISION-0197)";
+    when calc.calculus_checker::step_valid(p, i)
+        and calc.calculus_checker::limit_line(p, i, f, "limit_quotient", j, k, l, approach, point, side, value_kind, value)
+        and rule_method(r, "limit_quotient");
+    then step_justified_by(p, i, r);
+}
+
+@source(CL_SUBSTITUTION)
+rule JustifyDirectSubstitution9(p: calc.calculus_checker::Derivation, i: Integer, r: LimitRule,
+    f: Integer, j: Integer, k: Integer, l: Integer, approach: Text,
+    point: Rational, side: Text, value_kind: Text, value: Integer) defeasible {
+    label ru unofficial "проверенный шаг direct_substitution обоснован формулировкой учебника (§4 DECISION-0197)";
+    when calc.calculus_checker::step_valid(p, i)
+        and calc.calculus_checker::limit_line(p, i, f, "direct_substitution", j, k, l, approach, point, side, value_kind, value)
+        and rule_method(r, "direct_substitution");
+    then step_justified_by(p, i, r);
+}
+
+@source(CL_CANCEL)
+rule JustifyFactorAndCancel10(p: calc.calculus_checker::Derivation, i: Integer, r: LimitRule,
+    f: Integer, j: Integer, k: Integer, l: Integer, approach: Text,
+    point: Rational, side: Text, value_kind: Text, value: Integer) defeasible {
+    label ru unofficial "проверенный шаг factor_and_cancel обоснован формулировкой учебника (§4 DECISION-0197)";
+    when calc.calculus_checker::step_valid(p, i)
+        and calc.calculus_checker::limit_line(p, i, f, "factor_and_cancel", j, k, l, approach, point, side, value_kind, value)
+        and rule_method(r, "factor_and_cancel");
+    then step_justified_by(p, i, r);
+}
+
+@source(CL_CONTINUITY)
+rule JustifyContinuity11(p: calc.calculus_checker::Derivation, i: Integer, r: LimitRule,
+    f: Integer, j: Integer, k: Integer, l: Integer, approach: Text,
+    point: Rational, side: Text, value_kind: Text, value: Integer) defeasible {
+    label ru unofficial "проверенный шаг continuity обоснован формулировкой учебника (§4 DECISION-0197)";
+    when calc.calculus_checker::step_valid(p, i)
+        and calc.calculus_checker::limit_line(p, i, f, "continuity", j, k, l, approach, point, side, value_kind, value)
+        and rule_method(r, "continuity");
+    then step_justified_by(p, i, r);
+}
+
+@source(CL_TRIG_CONTINUITY)
+rule JustifyContinuity12(p: calc.calculus_checker::Derivation, i: Integer, r: LimitRule,
+    f: Integer, j: Integer, k: Integer, l: Integer, approach: Text,
+    point: Rational, side: Text, value_kind: Text, value: Integer) defeasible {
+    label ru unofficial "проверенный шаг continuity обоснован формулировкой учебника (§4 DECISION-0197)";
+    when calc.calculus_checker::step_valid(p, i)
+        and calc.calculus_checker::limit_line(p, i, f, "continuity", j, k, l, approach, point, side, value_kind, value)
+        and rule_method(r, "continuity");
+    then step_justified_by(p, i, r);
+}
+
+@source(CL_SPECIAL)
+rule JustifySpecialLimitSin13(p: calc.calculus_checker::Derivation, i: Integer, r: LimitRule,
+    f: Integer, j: Integer, k: Integer, l: Integer, approach: Text,
+    point: Rational, side: Text, value_kind: Text, value: Integer) defeasible {
+    label ru unofficial "проверенный шаг special_limit_sin обоснован формулировкой учебника (§4 DECISION-0197)";
+    when calc.calculus_checker::step_valid(p, i)
+        and calc.calculus_checker::limit_line(p, i, f, "special_limit_sin", j, k, l, approach, point, side, value_kind, value)
+        and rule_method(r, "special_limit_sin");
+    then step_justified_by(p, i, r);
+}
+
+@source(CL_SPECIAL)
+rule JustifySpecialLimitOneMinusCos14(p: calc.calculus_checker::Derivation, i: Integer, r: LimitRule,
+    f: Integer, j: Integer, k: Integer, l: Integer, approach: Text,
+    point: Rational, side: Text, value_kind: Text, value: Integer) defeasible {
+    label ru unofficial "проверенный шаг special_limit_one_minus_cos обоснован формулировкой учебника (§4 DECISION-0197)";
+    when calc.calculus_checker::step_valid(p, i)
+        and calc.calculus_checker::limit_line(p, i, f, "special_limit_one_minus_cos", j, k, l, approach, point, side, value_kind, value)
+        and rule_method(r, "special_limit_one_minus_cos");
+    then step_justified_by(p, i, r);
+}
+
+@source(CL_ONE_SIDED)
+rule JustifyOneSidedAgree15(p: calc.calculus_checker::Derivation, i: Integer, r: LimitRule,
+    f: Integer, j: Integer, k: Integer, l: Integer, approach: Text,
+    point: Rational, side: Text, value_kind: Text, value: Integer) defeasible {
+    label ru unofficial "проверенный шаг one_sided_agree обоснован формулировкой учебника (§4 DECISION-0197)";
+    when calc.calculus_checker::step_valid(p, i)
+        and calc.calculus_checker::limit_line(p, i, f, "one_sided_agree", j, k, l, approach, point, side, value_kind, value)
+        and rule_method(r, "one_sided_agree");
+    then step_justified_by(p, i, r);
+}
+
+@source(CL_ONE_SIDED)
+rule JustifyOneSidedDiffer16(p: calc.calculus_checker::Derivation, i: Integer, r: LimitRule,
+    f: Integer, j: Integer, k: Integer, l: Integer, approach: Text,
+    point: Rational, side: Text, value_kind: Text, value: Integer) defeasible {
+    label ru unofficial "проверенный шаг one_sided_differ обоснован формулировкой учебника (§4 DECISION-0197)";
+    when calc.calculus_checker::step_valid(p, i)
+        and calc.calculus_checker::limit_line(p, i, f, "one_sided_differ", j, k, l, approach, point, side, value_kind, value)
+        and rule_method(r, "one_sided_differ");
+    then step_justified_by(p, i, r);
+}
+
+@source(CL_INFINITY)
+rule JustifyLimitAtInfinityRational17(p: calc.calculus_checker::Derivation, i: Integer, r: LimitRule,
+    f: Integer, j: Integer, k: Integer, l: Integer, approach: Text,
+    point: Rational, side: Text, value_kind: Text, value: Integer) defeasible {
+    label ru unofficial "проверенный шаг limit_at_infinity_rational обоснован формулировкой учебника (§4 DECISION-0197)";
+    when calc.calculus_checker::step_valid(p, i)
+        and calc.calculus_checker::limit_line(p, i, f, "limit_at_infinity_rational", j, k, l, approach, point, side, value_kind, value)
+        and rule_method(r, "limit_at_infinity_rational");
+    then step_justified_by(p, i, r);
+}
+
+@source(CL_LHOPITAL_ZERO)
+rule JustifyLhopital18(p: calc.calculus_checker::Derivation, i: Integer, r: LimitRule,
+    f: Integer, j: Integer, k: Integer, l: Integer, approach: Text,
+    point: Rational, side: Text, value_kind: Text, value: Integer, num: Integer, num_kind: Text, num_value: Integer) defeasible {
+    label ru unofficial "проверенный шаг lhopital обоснован формулировкой учебника (§4 DECISION-0197)";
+    when calc.calculus_checker::step_valid(p, i)
+        and calc.calculus_checker::limit_line(p, i, f, "lhopital", j, k, l, approach, point, side, value_kind, value)
+        and rule_method(r, "lhopital")
+        and calc.calculus_checker::limit_result(p, j, num, approach, point, side, num_kind, num_value) and num_kind == "expr";
+    then step_justified_by(p, i, r);
+}
+
+@source(CL_LHOPITAL_INFINITY)
+rule JustifyLhopital19(p: calc.calculus_checker::Derivation, i: Integer, r: LimitRule,
+    f: Integer, j: Integer, k: Integer, l: Integer, approach: Text,
+    point: Rational, side: Text, value_kind: Text, value: Integer, num: Integer, num_kind: Text, num_value: Integer) defeasible {
+    label ru unofficial "проверенный шаг lhopital обоснован формулировкой учебника (§4 DECISION-0197)";
+    when calc.calculus_checker::step_valid(p, i)
+        and calc.calculus_checker::limit_line(p, i, f, "lhopital", j, k, l, approach, point, side, value_kind, value)
+        and rule_method(r, "lhopital")
+        and calc.calculus_checker::limit_result(p, j, num, approach, point, side, num_kind, num_value) and num_kind != "expr";
+    then step_justified_by(p, i, r);
+}

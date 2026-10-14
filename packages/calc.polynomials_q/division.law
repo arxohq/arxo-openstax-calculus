@@ -1,0 +1,478 @@
+language "law.core" version "0.2";
+package calc.polynomials_q version "0.1.0";
+namespace "urn:law:calc:polynomials-q";
+
+use self::{
+    Poly,
+    degree,
+    leading,
+    raw,
+    ready,
+    slot,
+    usable,
+    zero_polynomial,
+};
+
+// ДЕЛЕНИЕ С ОСТАТКОМ: f = q · g + r, deg r < deg g.
+//
+// Снимок s — неизменяемое множество коэффициентов текущего остатка. Снимок
+// s + 1 порождается ровно одним шагом длинного деления: из остатка вычитается
+// `q_e · x^e · g`, где `e = deg f − deg g − s`, а `q_e` — старший коэффициент
+// остатка на месте `e + deg g`, делённый на старший коэффициент делителя.
+//
+// ЧИСЛО ШАГОВ ИЗВЕСТНО ЗАРАНЕЕ и равно `deg f − deg g + 1`: показатель `e` идёт
+// вниз от `deg f − deg g` до нуля. Поэтому степень текущего остатка внутри
+// цикла ВЫЧИСЛЯТЬ НЕ НУЖНО — а если бы понадобилась, её пришлось бы брать
+// агрегатом внутри рекурсивной компоненты, чего §110/§111 не позволяют.
+//
+// Вклад делителя в каждое место выведен ТРЕМЯ ПОЛОЖИТЕЛЬНЫМИ сравнениями
+// (`k < e`, `e ≤ k ≤ e + deg g`, `k > e + deg g`), а не отсутствием факта:
+// «ниже сдвига делитель не достаёт» — такое же утверждение, как и остальные,
+// и оно доказывается, а не подразумевается.
+//
+// ТРИ ВХОДА РАЗЛИЧЕНЫ ИМЕНАМИ: обычное деление (`PROPER`), случай
+// «делимое меньше делителя либо нулевое» (`TRIVIAL`: частное ноль, остаток —
+// само делимое) и деление на нулевой многочлен (дефект, а не нулевое частное).
+
+pub entity Division { label ru unofficial "одно деление с остатком"; }
+
+pub relation division(dv: Division, f: Poly, g: Poly) kind empirical {
+    label ru unofficial "предъявлено деление f на g с остатком";
+}
+
+pub relation division_binding(dv: Division, part: Text, p: Poly) kind empirical {
+    label ru unofficial "выходной дескриптор: QUOTIENT либо REMAINDER";
+}
+
+pub relation division_defect(dv: Division, reason: Text) kind institutional {
+    label ru unofficial "деление отклонено: DIVISION_BY_ZERO_POLYNOMIAL, DIVIDEND_NOT_READY, DIVISOR_NOT_READY, AMBIGUOUS_DIVISION, UNKNOWN_PART, AMBIGUOUS_BINDING, QUOTIENT_TOO_NARROW, REMAINDER_TOO_NARROW";
+}
+
+pub relation division_kind(dv: Division, kind: Text) kind institutional {
+    label ru unofficial "род деления: PROPER — обычный длинный ход, TRIVIAL — делимое меньше делителя либо нулевое";
+}
+
+pub relation division_sizes(dv: Division, df: Integer, dg: Integer, steps: Integer) kind institutional {
+    label ru unofficial "степени делимого и делителя и число шагов длинного деления: deg f − deg g + 1";
+}
+
+relation dsnap(dv: Division, s: Integer) kind institutional {
+    label ru unofficial "допустимый номер снимка остатка: 0 … steps";
+}
+
+pub relation rem_at(dv: Division, s: Integer, k: Integer, v: Rational) kind institutional {
+    label ru unofficial "коэффициент текущего остатка по месту k в снимке s";
+}
+
+pub relation quotient_coefficient(dv: Division, e: Integer, v: Rational) kind institutional {
+    label ru unofficial "коэффициент частного при x^e — старший коэффициент остатка, делённый на старший коэффициент делителя";
+}
+
+relation gcontrib(dv: Division, s: Integer, k: Integer, v: Rational) kind institutional {
+    label ru unofficial "вклад делителя в место k на шаге s: q_e · g_(k−e) там, где делитель достаёт, и ноль там, где нет";
+}
+
+pub relation division_done(dv: Division, s: Integer) kind institutional {
+    label ru unofficial "длинный ход завершён на снимке s";
+}
+
+pub relation remainder_smaller(dv: Division) kind institutional {
+    label ru unofficial "степень остатка строго меньше степени делителя — вторая половина утверждения о делении с остатком";
+}
+
+// ── Проверки входа ─────────────────────────────────────────────────────────
+
+relation known_part(part: Text) kind empirical {
+    label ru unofficial "закрытый перечень выходных дескрипторов деления";
+}
+
+assert "part-quotient": known_part("QUOTIENT") { origin source_asserted; }
+assert "part-remainder": known_part("REMAINDER") { origin source_asserted; }
+
+rule DivisionByZeroPolynomial(dv: Division, f: Poly, g: Poly) strict {
+    label ru unofficial "дефект DIVISION_BY_ZERO_POLYNOMIAL: делитель нулевой. Это НЕ нулевое частное";
+    when division(dv, f, g) and zero_polynomial(g);
+    then division_defect(dv, "DIVISION_BY_ZERO_POLYNOMIAL");
+}
+
+rule DividendNotReady(dv: Division, f: Poly, g: Poly) strict {
+    label ru unofficial "дефект DIVIDEND_NOT_READY: делимое не вычислено целиком";
+    when division(dv, f, g) and (count distinct n: Integer where ready(f, n)) == 0;
+    then division_defect(dv, "DIVIDEND_NOT_READY");
+}
+
+rule DivisorNotReady(dv: Division, f: Poly, g: Poly) strict {
+    label ru unofficial "дефект DIVISOR_NOT_READY: делитель не вычислен целиком";
+    when division(dv, f, g) and (count distinct n: Integer where ready(g, n)) == 0;
+    then division_defect(dv, "DIVISOR_NOT_READY");
+}
+
+rule AmbiguousDivision(dv: Division, f: Poly, g: Poly) strict {
+    label ru unofficial "дефект AMBIGUOUS_DIVISION: у одного деления два входа";
+    when division(dv, f, g) and (count all x: Poly for y: Poly where division(dv, x, y)) > 1;
+    then division_defect(dv, "AMBIGUOUS_DIVISION");
+}
+
+rule UnknownPart(dv: Division, part: Text, p: Poly) strict {
+    label ru unofficial "дефект UNKNOWN_PART: дескриптор вне закрытого перечня";
+    when division_binding(dv, part, p) and (count distinct x: Text where known_part(x) and x == part) == 0;
+    then division_defect(dv, "UNKNOWN_PART");
+}
+
+rule AmbiguousBinding(dv: Division, part: Text, p: Poly) strict {
+    label ru unofficial "дефект AMBIGUOUS_BINDING: у одной части два дескриптора";
+    when division_binding(dv, part, p)
+        and (count distinct x: Poly where division_binding(dv, part, x)) > 1;
+    then division_defect(dv, "AMBIGUOUS_BINDING");
+}
+
+rule QuotientTooNarrow(
+    dv: Division,
+    f: Poly,
+    g: Poly,
+    q: Poly,
+    df: Integer,
+    dg: Integer,
+    nq: Integer,
+) strict {
+    label ru unofficial "дефект QUOTIENT_TOO_NARROW: у дескриптора частного мест меньше, чем deg f − deg g";
+    when division(dv, f, g) and division_binding(dv, "QUOTIENT", q)
+        and degree(f, df) and degree(g, dg) and df >= dg
+        and usable(q, nq) and nq < df - dg;
+    then division_defect(dv, "QUOTIENT_TOO_NARROW");
+}
+
+rule RemainderTooNarrow(
+    dv: Division,
+    f: Poly,
+    g: Poly,
+    r: Poly,
+    df: Integer,
+    dg: Integer,
+    nr: Integer,
+) strict {
+    label ru unofficial "дефект REMAINDER_TOO_NARROW: у дескриптора остатка мест меньше, чем deg f";
+    when division(dv, f, g) and division_binding(dv, "REMAINDER", r)
+        and degree(f, df) and degree(g, dg) and usable(r, nr) and nr < df;
+    then division_defect(dv, "REMAINDER_TOO_NARROW");
+}
+
+// ── Род деления ────────────────────────────────────────────────────────────
+//
+// Условие ЗАПУСКА не читает ни `ready`, ни `zero_polynomial` через агрегат:
+// оба стоят над агрегатами по `raw`, а деление само `raw` своих выходов и
+// пишет — круг `content_defect → raw → … → division_kind → content_defect`
+// замкнулся бы статусным ребром. Полнота входов проверяется МОНОТОННЫМ гардом
+// §111 (errata E-0116) прямо здесь, а дефекты входа стоят ВЫШЕ компоненты и
+// закрывают только ОТЧЁТ: деление на нулевой многочлен просто не запускается —
+// у нулевого многочлена нет степени, и ни одно правило рода не срабатывает.
+
+relation division_input_ready(dv: Division, f: Poly, g: Poly) kind institutional {
+    label ru unofficial "оба входа годны и получены целиком — монотонный гард §111 вместо чтения `ready`";
+}
+
+rule DivisionInputReady(dv: Division, f: Poly, g: Poly, nf: Integer, ng: Integer) strict {
+    label ru unofficial "делимое и делитель годны, и коэффициентов у каждого столько, сколько мест";
+    when division(dv, f, g) and monotone(usable(f, nf)) and monotone(usable(g, ng))
+        and (count all k: Integer for v: Rational where monotone(raw(f, k, v))) >= nf + 1
+        and (count all k: Integer for v: Rational where monotone(raw(g, k, v))) >= ng + 1;
+    then division_input_ready(dv, f, g);
+}
+
+rule DivisionProper(dv: Division, f: Poly, g: Poly, df: Integer, dg: Integer) strict {
+    label ru unofficial "обычное деление: оба многочлена ненулевые и степень делимого не меньше";
+    when monotone(division_input_ready(dv, f, g))
+        and monotone(degree(f, df)) and monotone(degree(g, dg)) and df >= dg;
+    then division_kind(dv, "PROPER");
+}
+
+rule DivisionTrivialSmaller(dv: Division, f: Poly, g: Poly, df: Integer, dg: Integer) strict {
+    label ru unofficial "делимое меньше делителя: частное ноль, остаток — само делимое";
+    when monotone(division_input_ready(dv, f, g))
+        and monotone(degree(f, df)) and monotone(degree(g, dg)) and df < dg;
+    then division_kind(dv, "TRIVIAL");
+}
+
+rule DivisionTrivialZero(dv: Division, f: Poly, g: Poly, dg: Integer) strict {
+    label ru unofficial "нулевое делимое: частное и остаток нулевые";
+    when monotone(division_input_ready(dv, f, g))
+        and monotone(zero_polynomial(f)) and monotone(degree(g, dg));
+    then division_kind(dv, "TRIVIAL");
+}
+
+rule DivisionSizes(dv: Division, f: Poly, g: Poly, df: Integer, dg: Integer) strict {
+    label ru unofficial "число шагов длинного деления известно заранее: deg f − deg g + 1";
+    when division(dv, f, g) and monotone(division_kind(dv, "PROPER"))
+        and monotone(degree(f, df)) and monotone(degree(g, dg));
+    then division_sizes(dv, df, dg, df - dg + 1);
+}
+
+// ── Снимки остатка ─────────────────────────────────────────────────────────
+
+rule DsnapStart(dv: Division, df: Integer, dg: Integer, steps: Integer) strict {
+    label ru unofficial "снимок ноль есть у всякого обычного деления";
+    when monotone(division_sizes(dv, df, dg, steps));
+    then dsnap(dv, 0);
+}
+
+rule DsnapStep(dv: Division, s: Integer, df: Integer, dg: Integer, steps: Integer) strict {
+    label ru unofficial "следующий снимок, пока не пройдены все шаги";
+    when monotone(dsnap(dv, s)) and monotone(division_sizes(dv, df, dg, steps)) and s < steps;
+    then dsnap(dv, s + 1);
+}
+
+rule RemInitial(
+    dv: Division,
+    f: Poly,
+    g: Poly,
+    df: Integer,
+    dg: Integer,
+    steps: Integer,
+    k: Integer,
+    v: Rational,
+) strict {
+    label ru unofficial "снимок ноль — сам делимый многочлен по местам от нуля до его степени";
+    when division(dv, f, g) and monotone(division_sizes(dv, df, dg, steps))
+        and monotone(raw(f, k, v)) and k <= df;
+    then rem_at(dv, 0, k, v);
+}
+
+rule QuotientCoefficient(
+    dv: Division,
+    f: Poly,
+    g: Poly,
+    df: Integer,
+    dg: Integer,
+    steps: Integer,
+    s: Integer,
+    kk: Integer,
+    c: Rational,
+    lead_g: Rational,
+) strict {
+    label ru unofficial "коэффициент частного: старший коэффициент текущего остатка, делённый на старший коэффициент делителя";
+    when division(dv, f, g) and monotone(division_sizes(dv, df, dg, steps)) and monotone(dsnap(dv, s))
+        and s < steps and kk == df - s and monotone(rem_at(dv, s, kk, c)) and monotone(leading(g, lead_g));
+    then quotient_coefficient(dv, df - dg - s, c / lead_g);
+}
+
+rule GcontribBelowShift(
+    dv: Division,
+    f: Poly,
+    g: Poly,
+    df: Integer,
+    dg: Integer,
+    steps: Integer,
+    s: Integer,
+    k: Integer,
+    e: Integer,
+    v: Rational,
+    q: Rational,
+) strict {
+    label ru unofficial "ниже сдвига делитель не достаёт: вклад нулевой, и это ВЫВЕДЕНО сравнением, а не получено отсутствием факта";
+    when division(dv, f, g) and monotone(division_sizes(dv, df, dg, steps)) and monotone(dsnap(dv, s))
+        and s < steps and monotone(rem_at(dv, s, k, v))
+        and monotone(quotient_coefficient(dv, e, q)) and e == df - dg - s and k < e;
+    then gcontrib(dv, s, k, 0 / 1);
+}
+
+rule GcontribWithin(
+    dv: Division,
+    f: Poly,
+    g: Poly,
+    df: Integer,
+    dg: Integer,
+    steps: Integer,
+    s: Integer,
+    k: Integer,
+    e: Integer,
+    j: Integer,
+    v: Rational,
+    q: Rational,
+    gv: Rational,
+) strict {
+    label ru unofficial "внутри сдвига вклад равен q_e · g_(k−e)";
+    when division(dv, f, g) and monotone(division_sizes(dv, df, dg, steps)) and monotone(dsnap(dv, s))
+        and s < steps and monotone(rem_at(dv, s, k, v))
+        and monotone(quotient_coefficient(dv, e, q)) and e == df - dg - s
+        and monotone(slot(g, j)) and j <= dg and k == e + j and monotone(raw(g, j, gv));
+    then gcontrib(dv, s, k, q * gv);
+}
+
+rule GcontribAboveShift(
+    dv: Division,
+    f: Poly,
+    g: Poly,
+    df: Integer,
+    dg: Integer,
+    steps: Integer,
+    s: Integer,
+    k: Integer,
+    e: Integer,
+    v: Rational,
+    q: Rational,
+) strict {
+    label ru unofficial "выше сдвига делитель тоже не достаёт";
+    when division(dv, f, g) and monotone(division_sizes(dv, df, dg, steps)) and monotone(dsnap(dv, s))
+        and s < steps and monotone(rem_at(dv, s, k, v))
+        and monotone(quotient_coefficient(dv, e, q)) and e == df - dg - s and k > e + dg;
+    then gcontrib(dv, s, k, 0 / 1);
+}
+
+rule RemStep(
+    dv: Division,
+    f: Poly,
+    g: Poly,
+    df: Integer,
+    dg: Integer,
+    steps: Integer,
+    s: Integer,
+    k: Integer,
+    v: Rational,
+    c: Rational,
+) strict {
+    label ru unofficial "новый остаток: из старого вычитается вклад делителя по каждому месту";
+    when division(dv, f, g) and monotone(division_sizes(dv, df, dg, steps)) and monotone(dsnap(dv, s))
+        and s < steps and monotone(rem_at(dv, s, k, v)) and monotone(gcontrib(dv, s, k, c));
+    then rem_at(dv, s + 1, k, v - c);
+}
+
+rule DivisionDone(dv: Division, df: Integer, dg: Integer, steps: Integer) strict {
+    label ru unofficial "длинный ход завершён: пройдены все шаги";
+    when monotone(division_sizes(dv, df, dg, steps)) and monotone(dsnap(dv, steps));
+    then division_done(dv, steps);
+}
+
+// ── Выходные дескрипторы: обычное деление ──────────────────────────────────
+
+rule QuotientFromCoefficients(
+    dv: Division,
+    f: Poly,
+    g: Poly,
+    q: Poly,
+    df: Integer,
+    dg: Integer,
+    steps: Integer,
+    e: Integer,
+    nq: Integer,
+    v: Rational,
+) strict {
+    label ru unofficial "коэффициенты частного попадают в объявленный делом дескриптор";
+    when division(dv, f, g) and division_binding(dv, "QUOTIENT", q) and monotone(division_sizes(dv, df, dg, steps))
+        and monotone(usable(q, nq)) and monotone(quotient_coefficient(dv, e, v));
+    then raw(q, e, v);
+}
+
+rule QuotientPadding(
+    dv: Division,
+    f: Poly,
+    g: Poly,
+    q: Poly,
+    df: Integer,
+    dg: Integer,
+    steps: Integer,
+    k: Integer,
+    nq: Integer,
+) strict {
+    label ru unofficial "места частного выше deg f − deg g нулевые";
+    when division(dv, f, g) and division_binding(dv, "QUOTIENT", q) and monotone(division_sizes(dv, df, dg, steps))
+        and monotone(usable(q, nq)) and monotone(slot(q, k)) and k > df - dg;
+    then raw(q, k, 0 / 1);
+}
+
+rule RemainderFromSnapshot(
+    dv: Division,
+    f: Poly,
+    g: Poly,
+    r: Poly,
+    steps: Integer,
+    k: Integer,
+    nr: Integer,
+    v: Rational,
+) strict {
+    label ru unofficial "остаток — итоговый снимок длинного хода";
+    when division(dv, f, g) and division_binding(dv, "REMAINDER", r)
+        and monotone(division_done(dv, steps)) and monotone(rem_at(dv, steps, k, v))
+        and monotone(usable(r, nr)) and k <= nr;
+    then raw(r, k, v);
+}
+
+rule RemainderPadding(
+    dv: Division,
+    f: Poly,
+    g: Poly,
+    r: Poly,
+    df: Integer,
+    dg: Integer,
+    steps: Integer,
+    k: Integer,
+    nr: Integer,
+) strict {
+    label ru unofficial "места остатка выше степени делимого нулевые";
+    when division(dv, f, g) and division_binding(dv, "REMAINDER", r) and monotone(division_sizes(dv, df, dg, steps))
+        and monotone(usable(r, nr)) and monotone(slot(r, k)) and k > df;
+    then raw(r, k, 0 / 1);
+}
+
+// ── Выходные дескрипторы: вырожденный случай ───────────────────────────────
+
+rule TrivialQuotient(dv: Division, f: Poly, g: Poly, q: Poly, k: Integer, nq: Integer) strict {
+    label ru unofficial "у вырожденного деления частное нулевое по всем местам";
+    when division(dv, f, g) and monotone(division_kind(dv, "TRIVIAL")) and division_binding(dv, "QUOTIENT", q)
+        and monotone(usable(q, nq)) and monotone(slot(q, k));
+    then raw(q, k, 0 / 1);
+}
+
+rule TrivialRemainderWithin(
+    dv: Division,
+    f: Poly,
+    g: Poly,
+    r: Poly,
+    k: Integer,
+    nr: Integer,
+    nf: Integer,
+    v: Rational,
+) strict {
+    label ru unofficial "у вырожденного деления остаток равен делимому";
+    when division(dv, f, g) and monotone(division_kind(dv, "TRIVIAL")) and division_binding(dv, "REMAINDER", r)
+        and monotone(usable(r, nr)) and monotone(slot(r, k)) and monotone(usable(f, nf)) and k <= nf
+        and monotone(raw(f, k, v));
+    then raw(r, k, v);
+}
+
+rule TrivialRemainderBeyond(
+    dv: Division,
+    f: Poly,
+    g: Poly,
+    r: Poly,
+    k: Integer,
+    nr: Integer,
+    nf: Integer,
+) strict {
+    label ru unofficial "места остатка шире делимого нулевые";
+    when division(dv, f, g) and monotone(division_kind(dv, "TRIVIAL")) and division_binding(dv, "REMAINDER", r)
+        and monotone(usable(r, nr)) and monotone(slot(r, k)) and monotone(usable(f, nf)) and k > nf;
+    then raw(r, k, 0 / 1);
+}
+
+// ── Вторая половина утверждения: deg r < deg g ─────────────────────────────
+
+rule RemainderSmallerByDegree(
+    dv: Division,
+    f: Poly,
+    g: Poly,
+    r: Poly,
+    dr: Integer,
+    dg: Integer,
+) strict {
+    label ru unofficial "степень остатка строго меньше степени делителя";
+    when division(dv, f, g) and division_binding(dv, "REMAINDER", r)
+        and degree(r, dr) and degree(g, dg) and dr < dg;
+    then remainder_smaller(dv);
+}
+
+rule RemainderSmallerByZero(dv: Division, f: Poly, g: Poly, r: Poly, dg: Integer) strict {
+    label ru unofficial "нулевой остаток меньше любого делителя — отдельным правилом, потому что степени у него нет";
+    when division(dv, f, g) and division_binding(dv, "REMAINDER", r)
+        and zero_polynomial(r) and degree(g, dg);
+    then remainder_smaller(dv);
+}

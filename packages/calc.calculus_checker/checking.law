@@ -1,0 +1,463 @@
+language "law.core" version "0.2";
+package calc.calculus_checker version "0.1.0";
+namespace "urn:law:calc:calculus-checker";
+
+use self::{
+    Derivation,
+    active,
+    checked,
+    closed,
+    context_of,
+    derivation_valid,
+    document,
+    limit_line,
+    line,
+    line_present,
+    local_match,
+    nodes_of,
+    problem,
+    required,
+    step_problem,
+    step_valid,
+    unique_line,
+    variable,
+    verified_prefix,
+};
+
+// ФОРМА ПЕРЕХОДА. Каждое правило словаря проверяется СТРУКТУРНО: читаются узлы
+// оснований и узлы результата, и сверяется их форма. Свободного поиска нет
+// нигде; §65/§103 — рекурсивные зависимости только через monotone.
+
+rule ActiveDocument(p: Derivation, n: Integer, goal: Integer, system: Text) strict {
+    label ru unofficial "заголовок единственен, строк от одной до 64, словарь calculus/1";
+    when document(p, n, goal, system) and n > 0 and n <= 64 and goal > 0 and (system == "calculus/1" or system == "calculus/2")
+        and (count all a: Integer for b: Integer, c: Text where document(p, a, b, c)) == 1;
+    then active(p, n, goal);
+}
+
+rule ContextOf(p: Derivation, e: calc.expressions::Expr, x: Text) strict {
+    label ru unofficial "набор узлов и переменная хода однозначны";
+    when nodes_of(p, e) and variable(p, x)
+        and (count distinct f: calc.expressions::Expr where nodes_of(p, f)) == 1
+        and (count distinct y: Text where variable(p, y)) == 1;
+    then context_of(p, e, x);
+}
+
+rule LinePresent(p: Derivation, i: Integer, expr: Integer, m: Text, j: Integer, k: Integer, u: Integer, dv: Integer) strict {
+    label ru unofficial "зарегистрировать номер строки независимо от её корректности";
+    when line(p, i, expr, m, j, k, u, dv);
+    then line_present(p, i);
+}
+
+rule UniqueLine(
+    p: Derivation, i: Integer, expr: Integer, m: Text,
+    j: Integer, k: Integer, u: Integer, dv: Integer, n: Integer, goal: Integer,
+) strict {
+    label ru unofficial "внутри объявленного диапазона номер обозначает одну строку";
+    when active(p, n, goal) and line(p, i, expr, m, j, k, u, dv) and i > 0 and i <= n
+        and (count all g: Integer for mm: Text, a: Integer, b: Integer, c: Integer, d: Integer
+             where line(p, i, g, mm, a, b, c, d)) == 1
+        and (count all g: Integer for mm: Text, a: Integer, b: Integer, c: Integer, ap: Text, pt: Rational, side: Text, vk: Text, v: Integer where limit_line(p, i, g, mm, a, b, c, ap, pt, side, vk, v)) == 0;
+    then unique_line(p, i, expr, m, j, k, u, dv);
+}
+
+rule RequiredFirst(p: Derivation, i: Integer, expr: Integer, m: Text, j: Integer, k: Integer, u: Integer, dv: Integer) strict {
+    label ru unofficial "первое основание строки";
+    when unique_line(p, i, expr, m, j, k, u, dv) and j > 0;
+    then required(p, i, j);
+}
+
+rule RequiredSecond(p: Derivation, i: Integer, expr: Integer, m: Text, j: Integer, k: Integer, u: Integer, dv: Integer) strict {
+    label ru unofficial "второе основание строки";
+    when unique_line(p, i, expr, m, j, k, u, dv) and k > 0;
+    then required(p, i, k);
+}
+
+// ── given: студент предъявляет функцию ─────────────────────────────────────
+
+rule GivenMatches(p: Derivation, i: Integer, expr: Integer, e: calc.expressions::Expr, x: Text) strict {
+    label ru unofficial "given: предъявленное выражение корректно; оснований у него нет";
+    when unique_line(p, i, expr, "given", 0, 0, 0, 0) and context_of(p, e, x)
+        and calc.expressions::well_formed(e, expr);
+    then local_match(p, i, expr);
+}
+
+// ── Производная константы ──────────────────────────────────────────────────
+
+rule ConstantRuleMatches(
+    p: Derivation, i: Integer, expr: Integer, j: Integer, gexpr: Integer,
+    e: calc.expressions::Expr, x: Text, c: Rational,
+    m: Text, a: Integer, b: Integer, u: Integer, dv: Integer,
+) strict {
+    label ru unofficial "правило константы: производная константы есть ноль";
+    when unique_line(p, i, expr, "constant_rule", j, 0, 0, 0) and context_of(p, e, x)
+        and unique_line(p, j, gexpr, m, a, b, u, dv) and j > 0 and j < i
+        and calc.expressions::node(e, gexpr, "const", "", c, 0, 0)
+        and calc.expressions::node(e, expr, "const", "", 0 / 1, 0, 0);
+    then local_match(p, i, expr);
+}
+
+// ── Степенное правило ──────────────────────────────────────────────────────
+
+rule PowerRuleMatches(
+    p: Derivation, i: Integer, expr: Integer, j: Integer, gexpr: Integer,
+    e: calc.expressions::Expr, x: Text,
+    base: Integer, en: Integer, nv: Rational,
+    cn: Integer, pw: Integer, base2: Integer, em: Integer, mv: Rational,
+    m: Text, a: Integer, b: Integer, u: Integer, dv: Integer,
+) strict {
+    label ru unofficial "степенное правило: (x^n)' = n·x^(n−1); показатель падает на единицу, множитель равен прежнему показателю";
+    when unique_line(p, i, expr, "power_rule", j, 0, 0, 0) and context_of(p, e, x)
+        and unique_line(p, j, gexpr, m, a, b, u, dv) and j > 0 and j < i
+        and calc.expressions::node(e, gexpr, "pow", "", 0 / 1, base, en)
+        and calc.expressions::node(e, base, "var", x, 0 / 1, 0, 0)
+        and calc.expressions::node(e, en, "const", "", nv, 0, 0)
+        and calc.expressions::node(e, expr, "mul", "", 0 / 1, cn, pw)
+        and calc.expressions::node(e, cn, "const", "", nv, 0, 0)
+        and calc.expressions::node(e, pw, "pow", "", 0 / 1, base2, em)
+        and calc.expressions::node(e, base2, "var", x, 0 / 1, 0, 0)
+        and calc.expressions::node(e, em, "const", "", mv, 0, 0)
+        and mv + 1 / 1 == nv;
+    then local_match(p, i, expr);
+}
+
+// ── Сумма и постоянный множитель ───────────────────────────────────────────
+
+rule SumRuleMatches(
+    p: Derivation, i: Integer, expr: Integer, j: Integer, k: Integer,
+    gj: Integer, gk: Integer, e: calc.expressions::Expr, x: Text,
+    la: Integer, lb: Integer,
+    mj: Text, aj: Integer, bj: Integer, uj: Integer, dj: Integer,
+    mk: Text, ak: Integer, bk: Integer, uk: Integer, dk: Integer,
+) strict {
+    label ru unofficial "правило суммы: производная суммы есть сумма производных слагаемых";
+    when unique_line(p, i, expr, "sum_rule", j, k, 0, 0) and context_of(p, e, x)
+        and unique_line(p, j, gj, mj, aj, bj, uj, dj) and j > 0 and j < i
+        and unique_line(p, k, gk, mk, ak, bk, uk, dk) and k > 0 and k < i
+        and calc.expressions::node(e, expr, "add", "", 0 / 1, la, lb)
+        and calc.expressions::equivalent(e, la, gj)
+        and calc.expressions::equivalent(e, lb, gk);
+    then local_match(p, i, expr);
+}
+
+rule ConstantMultipleMatches(
+    p: Derivation, i: Integer, expr: Integer, j: Integer, gj: Integer,
+    e: calc.expressions::Expr, x: Text, cn: Integer, body: Integer, cv: Rational,
+    mj: Text, aj: Integer, bj: Integer, uj: Integer, dj: Integer,
+) strict {
+    label ru unofficial "постоянный множитель выносится: (c·f)' = c·f'";
+    when unique_line(p, i, expr, "constant_multiple", j, 0, 0, 0) and context_of(p, e, x)
+        and unique_line(p, j, gj, mj, aj, bj, uj, dj) and j > 0 and j < i
+        and calc.expressions::node(e, expr, "mul", "", 0 / 1, cn, body)
+        and calc.expressions::node(e, cn, "const", "", cv, 0, 0)
+        and calc.expressions::equivalent(e, body, gj);
+    then local_match(p, i, expr);
+}
+
+// ── Произведение и частное: множители называет СТУДЕНТ ─────────────────────
+
+rule ProductRuleMatches(
+    p: Derivation, i: Integer, expr: Integer, j: Integer, k: Integer,
+    uu: Integer, vv: Integer, gj: Integer, gk: Integer,
+    e: calc.expressions::Expr, x: Text,
+    l: Integer, r: Integer, la: Integer, lb: Integer, ra: Integer, rb: Integer,
+    mj: Text, aj: Integer, bj: Integer, uj: Integer, dj: Integer,
+    mk: Text, ak: Integer, bk: Integer, uk: Integer, dk: Integer,
+) strict {
+    label ru unofficial "правило произведения: (f·g)' = f'·g + f·g'. Сами f и g называет студент полями aux — пакет их проверяет, но не предлагает";
+    when unique_line(p, i, expr, "product_rule", j, k, uu, vv) and context_of(p, e, x)
+        and unique_line(p, j, gj, mj, aj, bj, uj, dj) and j > 0 and j < i
+        and unique_line(p, k, gk, mk, ak, bk, uk, dk) and k > 0 and k < i
+        and calc.expressions::node(e, expr, "add", "", 0 / 1, l, r)
+        and calc.expressions::node(e, l, "mul", "", 0 / 1, la, lb)
+        and calc.expressions::node(e, r, "mul", "", 0 / 1, ra, rb)
+        and calc.expressions::equivalent(e, la, gj)
+        and calc.expressions::equivalent(e, lb, vv)
+        and calc.expressions::equivalent(e, ra, uu)
+        and calc.expressions::equivalent(e, rb, gk);
+    then local_match(p, i, expr);
+}
+
+rule QuotientRuleMatches(
+    p: Derivation, i: Integer, expr: Integer, j: Integer, k: Integer,
+    uu: Integer, vv: Integer, gj: Integer, gk: Integer,
+    e: calc.expressions::Expr, x: Text,
+    num: Integer, den: Integer, l: Integer, r: Integer,
+    la: Integer, lb: Integer, ra: Integer, rb: Integer, db: Integer, tw: Integer,
+    mj: Text, aj: Integer, bj: Integer, uj: Integer, dj: Integer,
+    mk: Text, ak: Integer, bk: Integer, uk: Integer, dk: Integer,
+) strict {
+    label ru unofficial "правило частного: (f/g)' = (f'·g − f·g')/g²";
+    when unique_line(p, i, expr, "quotient_rule", j, k, uu, vv) and context_of(p, e, x)
+        and unique_line(p, j, gj, mj, aj, bj, uj, dj) and j > 0 and j < i
+        and unique_line(p, k, gk, mk, ak, bk, uk, dk) and k > 0 and k < i
+        and calc.expressions::node(e, expr, "div", "", 0 / 1, num, den)
+        and calc.expressions::node(e, num, "sub", "", 0 / 1, l, r)
+        and calc.expressions::node(e, l, "mul", "", 0 / 1, la, lb)
+        and calc.expressions::node(e, r, "mul", "", 0 / 1, ra, rb)
+        and calc.expressions::equivalent(e, la, gj)
+        and calc.expressions::equivalent(e, lb, vv)
+        and calc.expressions::equivalent(e, ra, uu)
+        and calc.expressions::equivalent(e, rb, gk)
+        and calc.expressions::node(e, den, "pow", "", 0 / 1, db, tw)
+        and calc.expressions::equivalent(e, db, vv)
+        and calc.expressions::node(e, tw, "const", "", 2 / 1, 0, 0);
+    then local_match(p, i, expr);
+}
+
+rule ChainRuleMatches(
+    p: Derivation, i: Integer, expr: Integer, j: Integer, k: Integer,
+    gj: Integer, gk: Integer, e: calc.expressions::Expr, x: Text,
+    l: Integer, r: Integer,
+    mj: Text, aj: Integer, bj: Integer, uj: Integer, dj: Integer,
+    mk: Text, ak: Integer, bk: Integer, uk: Integer, dk: Integer,
+) strict {
+    label ru unofficial "цепное правило: результат есть произведение внешней производной в точке внутренней на производную внутренней";
+    when unique_line(p, i, expr, "chain_rule", j, k, 0, 0) and context_of(p, e, x)
+        and unique_line(p, j, gj, mj, aj, bj, uj, dj) and j > 0 and j < i
+        and unique_line(p, k, gk, mk, ak, bk, uk, dk) and k > 0 and k < i
+        and calc.expressions::node(e, expr, "mul", "", 0 / 1, l, r)
+        and calc.expressions::equivalent(e, l, gj)
+        and calc.expressions::equivalent(e, r, gk);
+    then local_match(p, i, expr);
+}
+
+// ── Производные элементарных функций ───────────────────────────────────────
+
+rule DerivativeSinMatches(
+    p: Derivation, i: Integer, expr: Integer, j: Integer, gj: Integer,
+    e: calc.expressions::Expr, x: Text, arg: Integer, arg2: Integer,
+    mj: Text, aj: Integer, bj: Integer, uj: Integer, dj: Integer,
+) strict {
+    label ru unofficial "(sin x)' = cos x";
+    when unique_line(p, i, expr, "derivative_sin", j, 0, 0, 0) and context_of(p, e, x)
+        and unique_line(p, j, gj, mj, aj, bj, uj, dj) and j > 0 and j < i
+        and calc.expressions::node(e, gj, "sin", "", 0 / 1, arg, 0)
+        and calc.expressions::node(e, arg, "var", x, 0 / 1, 0, 0)
+        and calc.expressions::node(e, expr, "cos", "", 0 / 1, arg2, 0)
+        and calc.expressions::node(e, arg2, "var", x, 0 / 1, 0, 0);
+    then local_match(p, i, expr);
+}
+
+rule DerivativeCosMatches(
+    p: Derivation, i: Integer, expr: Integer, j: Integer, gj: Integer,
+    e: calc.expressions::Expr, x: Text, arg: Integer, inner: Integer, arg2: Integer,
+    mj: Text, aj: Integer, bj: Integer, uj: Integer, dj: Integer,
+) strict {
+    label ru unofficial "(cos x)' = −sin x";
+    when unique_line(p, i, expr, "derivative_cos", j, 0, 0, 0) and context_of(p, e, x)
+        and unique_line(p, j, gj, mj, aj, bj, uj, dj) and j > 0 and j < i
+        and calc.expressions::node(e, gj, "cos", "", 0 / 1, arg, 0)
+        and calc.expressions::node(e, arg, "var", x, 0 / 1, 0, 0)
+        and calc.expressions::node(e, expr, "neg", "", 0 / 1, inner, 0)
+        and calc.expressions::node(e, inner, "sin", "", 0 / 1, arg2, 0)
+        and calc.expressions::node(e, arg2, "var", x, 0 / 1, 0, 0);
+    then local_match(p, i, expr);
+}
+
+rule DerivativeExpMatches(
+    p: Derivation, i: Integer, expr: Integer, j: Integer, gj: Integer,
+    e: calc.expressions::Expr, x: Text, arg: Integer, arg2: Integer,
+    mj: Text, aj: Integer, bj: Integer, uj: Integer, dj: Integer,
+) strict {
+    label ru unofficial "(e^x)' = e^x";
+    when unique_line(p, i, expr, "derivative_exp", j, 0, 0, 0) and context_of(p, e, x)
+        and unique_line(p, j, gj, mj, aj, bj, uj, dj) and j > 0 and j < i
+        and calc.expressions::node(e, gj, "exp", "", 0 / 1, arg, 0)
+        and calc.expressions::node(e, arg, "var", x, 0 / 1, 0, 0)
+        and calc.expressions::node(e, expr, "exp", "", 0 / 1, arg2, 0)
+        and calc.expressions::node(e, arg2, "var", x, 0 / 1, 0, 0);
+    then local_match(p, i, expr);
+}
+
+rule DerivativeLnMatches(
+    p: Derivation, i: Integer, expr: Integer, j: Integer, gj: Integer,
+    e: calc.expressions::Expr, x: Text, arg: Integer, one: Integer, den: Integer,
+    mj: Text, aj: Integer, bj: Integer, uj: Integer, dj: Integer,
+) strict {
+    label ru unofficial "(ln x)' = 1/x";
+    when unique_line(p, i, expr, "derivative_ln", j, 0, 0, 0) and context_of(p, e, x)
+        and unique_line(p, j, gj, mj, aj, bj, uj, dj) and j > 0 and j < i
+        and calc.expressions::node(e, gj, "ln", "", 0 / 1, arg, 0)
+        and calc.expressions::node(e, arg, "var", x, 0 / 1, 0, 0)
+        and calc.expressions::node(e, expr, "div", "", 0 / 1, one, den)
+        and calc.expressions::node(e, one, "const", "", 1 / 1, 0, 0)
+        and calc.expressions::node(e, den, "var", x, 0 / 1, 0, 0);
+    then local_match(p, i, expr);
+}
+
+// ── Первообразные ──────────────────────────────────────────────────────────
+
+rule AntiderivativePowerMatches(
+    p: Derivation, i: Integer, expr: Integer, j: Integer, gj: Integer,
+    e: calc.expressions::Expr, x: Text,
+    base: Integer, en: Integer, nv: Rational,
+    cc: Integer, cv: Rational, pw: Integer, base2: Integer, em: Integer, mv: Rational,
+    mj: Text, aj: Integer, bj: Integer, uj: Integer, dj: Integer,
+) strict {
+    label ru unofficial "первообразная степени: ∫x^n dx = x^(n+1)/(n+1); показатель растёт на единицу, множитель обратен новому показателю";
+    when unique_line(p, i, expr, "antiderivative_power", j, 0, 0, 0) and context_of(p, e, x)
+        and unique_line(p, j, gj, mj, aj, bj, uj, dj) and j > 0 and j < i
+        and calc.expressions::node(e, gj, "pow", "", 0 / 1, base, en)
+        and calc.expressions::node(e, base, "var", x, 0 / 1, 0, 0)
+        and calc.expressions::node(e, en, "const", "", nv, 0, 0)
+        and calc.expressions::node(e, expr, "mul", "", 0 / 1, cc, pw)
+        and calc.expressions::node(e, cc, "const", "", cv, 0, 0)
+        and calc.expressions::node(e, pw, "pow", "", 0 / 1, base2, em)
+        and calc.expressions::node(e, base2, "var", x, 0 / 1, 0, 0)
+        and calc.expressions::node(e, em, "const", "", mv, 0, 0)
+        and mv == nv + 1 / 1 and cv * mv == 1 / 1;
+    then local_match(p, i, expr);
+}
+
+rule TableAntiderivativeCosMatches(
+    p: Derivation, i: Integer, expr: Integer, j: Integer, gj: Integer,
+    e: calc.expressions::Expr, x: Text, arg: Integer, arg2: Integer,
+    mj: Text, aj: Integer, bj: Integer, uj: Integer, dj: Integer,
+) strict {
+    label ru unofficial "таблица первообразных: ∫cos x dx = sin x";
+    when unique_line(p, i, expr, "table_antiderivative", j, 0, 0, 0) and context_of(p, e, x)
+        and unique_line(p, j, gj, mj, aj, bj, uj, dj) and j > 0 and j < i
+        and calc.expressions::node(e, gj, "cos", "", 0 / 1, arg, 0)
+        and calc.expressions::node(e, arg, "var", x, 0 / 1, 0, 0)
+        and calc.expressions::node(e, expr, "sin", "", 0 / 1, arg2, 0)
+        and calc.expressions::node(e, arg2, "var", x, 0 / 1, 0, 0);
+    then local_match(p, i, expr);
+}
+
+rule TableAntiderivativeSinMatches(
+    p: Derivation, i: Integer, expr: Integer, j: Integer, gj: Integer,
+    e: calc.expressions::Expr, x: Text, arg: Integer, inner: Integer, arg2: Integer,
+    mj: Text, aj: Integer, bj: Integer, uj: Integer, dj: Integer,
+) strict {
+    label ru unofficial "таблица первообразных: ∫sin x dx = −cos x";
+    when unique_line(p, i, expr, "table_antiderivative", j, 0, 0, 0) and context_of(p, e, x)
+        and unique_line(p, j, gj, mj, aj, bj, uj, dj) and j > 0 and j < i
+        and calc.expressions::node(e, gj, "sin", "", 0 / 1, arg, 0)
+        and calc.expressions::node(e, arg, "var", x, 0 / 1, 0, 0)
+        and calc.expressions::node(e, expr, "neg", "", 0 / 1, inner, 0)
+        and calc.expressions::node(e, inner, "cos", "", 0 / 1, arg2, 0)
+        and calc.expressions::node(e, arg2, "var", x, 0 / 1, 0, 0);
+    then local_match(p, i, expr);
+}
+
+rule TableAntiderivativeExpMatches(
+    p: Derivation, i: Integer, expr: Integer, j: Integer, gj: Integer,
+    e: calc.expressions::Expr, x: Text, arg: Integer, arg2: Integer,
+    mj: Text, aj: Integer, bj: Integer, uj: Integer, dj: Integer,
+) strict {
+    label ru unofficial "таблица первообразных: ∫e^x dx = e^x";
+    when unique_line(p, i, expr, "table_antiderivative", j, 0, 0, 0) and context_of(p, e, x)
+        and unique_line(p, j, gj, mj, aj, bj, uj, dj) and j > 0 and j < i
+        and calc.expressions::node(e, gj, "exp", "", 0 / 1, arg, 0)
+        and calc.expressions::node(e, arg, "var", x, 0 / 1, 0, 0)
+        and calc.expressions::node(e, expr, "exp", "", 0 / 1, arg2, 0)
+        and calc.expressions::node(e, arg2, "var", x, 0 / 1, 0, 0);
+    then local_match(p, i, expr);
+}
+
+// ── Интегрирование по частям: u и dv называет СТУДЕНТ ──────────────────────
+
+rule ByPartsMatches(
+    p: Derivation, i: Integer, expr: Integer, j: Integer, k: Integer,
+    uu: Integer, vv: Integer, gj: Integer, gk: Integer,
+    e: calc.expressions::Expr, x: Text, l: Integer, r: Integer, la: Integer, lb: Integer,
+    mj: Text, aj: Integer, bj: Integer, uj: Integer, dj: Integer,
+    mk: Text, ak: Integer, bk: Integer, uk: Integer, dk: Integer,
+) strict {
+    label ru unofficial "интегрирование по частям: ∫u dv = u·v − ∫v du. Выбор u и dv делает СТУДЕНТ и предъявляет полями aux; Arxo его не делает никогда";
+    when unique_line(p, i, expr, "by_parts", j, k, uu, vv) and context_of(p, e, x)
+        and unique_line(p, j, gj, mj, aj, bj, uj, dj) and j > 0 and j < i
+        and unique_line(p, k, gk, mk, ak, bk, uk, dk) and k > 0 and k < i
+        and uu > 0 and vv > 0
+        and calc.expressions::node(e, expr, "sub", "", 0 / 1, l, r)
+        and calc.expressions::node(e, l, "mul", "", 0 / 1, la, lb)
+        and calc.expressions::equivalent(e, la, uu)
+        and calc.expressions::equivalent(e, lb, gk)
+        and calc.expressions::equivalent(e, r, gj);
+    then local_match(p, i, expr);
+}
+
+// ── Равенство в классе ℚ и ссылка на тождество ─────────────────────────────
+
+rule AlgebraMatches(
+    p: Derivation, i: Integer, expr: Integer, j: Integer, gj: Integer,
+    e: calc.expressions::Expr, x: Text, pi2: calc.polynomials_q::Poly, pj: calc.polynomials_q::Poly,
+    mj: Text, aj: Integer, bj: Integer, uj: Integer, dj: Integer,
+) strict {
+    label ru unofficial "algebra: обе стороны прочитаны как многочлены над ℚ и их КАНОНЫ равны. Здесь равенство разрешимо, и потому шаг проверяется счётом, а не структурой";
+    when unique_line(p, i, expr, "algebra", j, 0, 0, 0) and context_of(p, e, x)
+        and unique_line(p, j, gj, mj, aj, bj, uj, dj) and j > 0 and j < i
+        and calc.polynomials_q::polynomial_of(e, expr, x, pi2)
+        and calc.polynomials_q::polynomial_of(e, gj, x, pj)
+        and calc.polynomials_q::polys_equal(pi2, pj);
+    then local_match(p, i, expr);
+}
+
+rule IdentityMatches(
+    p: Derivation, i: Integer, expr: Integer, j: Integer, gj: Integer,
+    e: calc.expressions::Expr, x: Text,
+    mj: Text, aj: Integer, bj: Integer, uj: Integer, dj: Integer,
+) strict {
+    label ru unofficial "identity: ссылка на тождество словаря проверяется СТРУКТУРНО после подстановки; в первой версии принимается только структурное совпадение сторон";
+    when unique_line(p, i, expr, "identity", j, 0, 0, 0) and context_of(p, e, x)
+        and unique_line(p, j, gj, mj, aj, bj, uj, dj) and j > 0 and j < i
+        and calc.expressions::equivalent(e, expr, gj);
+    then local_match(p, i, expr);
+}
+
+// ── Подтверждение через проверенные основания ──────────────────────────────
+
+rule GivenChecked(p: Derivation, i: Integer, expr: Integer) strict {
+    label ru unofficial "предъявленная функция служит началом хода";
+    when monotone(local_match(p, i, expr)) and unique_line(p, i, expr, "given", 0, 0, 0, 0);
+    then checked(p, i, expr);
+}
+
+rule SingleGroundChecked(
+    p: Derivation, i: Integer, expr: Integer, m: Text,
+    j: Integer, u: Integer, dv: Integer, g: Integer,
+) strict {
+    label ru unofficial "переход с одним основанием подтверждается только проверенным основанием";
+    when monotone(local_match(p, i, expr)) and unique_line(p, i, expr, m, j, 0, u, dv)
+        and m != "given" and monotone(checked(p, j, g));
+    then checked(p, i, expr);
+}
+
+rule TwoGroundsChecked(
+    p: Derivation, i: Integer, expr: Integer, m: Text,
+    j: Integer, k: Integer, u: Integer, dv: Integer, g: Integer, h: Integer,
+) strict {
+    label ru unofficial "переход с двумя основаниями подтверждается только проверенными основаниями";
+    when monotone(local_match(p, i, expr)) and unique_line(p, i, expr, m, j, k, u, dv) and k > 0
+        and monotone(checked(p, j, g)) and monotone(checked(p, k, h));
+    then checked(p, i, expr);
+}
+
+rule PrefixStart(p: Derivation, n: Integer, goal: Integer) strict {
+    label ru unofficial "перед первой строкой проверенный префикс пуст";
+    when active(p, n, goal);
+    then verified_prefix(p, 0);
+}
+
+rule PrefixAdvance(p: Derivation, i: Integer, prev: Integer, expr: Integer) strict {
+    label ru unofficial "префикс расширяется только следующей проверенной строкой";
+    when monotone(verified_prefix(p, prev)) and monotone(checked(p, i, expr)) and i == prev + 1;
+    then verified_prefix(p, i);
+}
+
+rule StepVerified(p: Derivation, i: Integer, expr: Integer) defeasible {
+    label ru unofficial "проверенный переход не содержит первичных дефектов";
+    when monotone(checked(p, i, expr)) and not_known(step_problem(p, i));
+    then step_valid(p, i);
+}
+
+rule DerivationVerified(
+    p: Derivation, n: Integer, goal: Integer, last: Integer, e: calc.expressions::Expr, x: Text,
+) defeasible {
+    label ru unofficial "весь завершённый ход проверен, последняя строка совпала с заявленным итогом";
+    when active(p, n, goal) and closed(p) and context_of(p, e, x)
+        and verified_prefix(p, n) and monotone(checked(p, n, last))
+        and calc.expressions::equivalent(e, last, goal) and not_known(problem(p));
+    then derivation_valid(p);
+}

@@ -1,0 +1,626 @@
+language "law.core" version "0.2";
+package calc.limit_solver version "0.1.0";
+namespace "urn:law:calc:limit-solver";
+
+use self::{
+    Task,
+    task_variable,
+};
+
+
+// ПОРОЖДЕНИЕ ПРОИЗВОДНОЙ (§3 DECISION-0198).
+//
+// Производная строится ПРАВИЛАМИ: узлов, которые она вводит, во входе нет.
+// Спрос идёт сверху вниз (`need_derivative`), построение — снизу вверх
+// (`derived`); обе рекурсии монотонны (§65/§103) и обрываются на листьях.
+// Ничего не строится без спроса: решатель дифференцирует ровно те поддеревья,
+// которые потребовал выбранный метод.
+//
+// КОРЕНЬ ПРОИЗВОДНОЙ УЗЛА f ВСЕГДА РАВЕН `f * 64 + 256`. Отдельного поля с
+// адресом нет: адрес — функция источника, и это ровно то, что делает ход
+// воспроизводимым. Прочие узлы блока занимают смещения 1 … 6.
+//
+// ФОРМА ВЫБИРАЕТСЯ ТАК, ЧТОБЫ ХОД ПРИНЯЛ ПРОВЕРЯЮЩИЙ. Там, где аргумент —
+// сама переменная дифференцирования, порождается КОРОТКАЯ форма словаря
+// (cos x, −sin x, eˣ, 1/x, n·xⁿ⁻¹), которую calc.calculus_checker сверяет
+// правилами derivative_sin, derivative_cos, derivative_exp, derivative_ln и
+// power_rule. Там, где аргумент сложный, порождается цепная форма с явным
+// множителем u′. Разделение положительное: `bare_variable` и
+// `compound_argument` выводятся правилами, а не отсутствием друг друга.
+
+pub relation need_derivative(
+        t: Task { label ru unofficial "задача"; },
+        e: calc.expressions::Expr { label ru unofficial "набор узлов"; },
+        f: Integer { label ru unofficial "узел"; }
+) kind institutional {
+    label ru unofficial "производная поддерева требуется выбранным методом";
+}
+
+pub relation derived(
+        t: Task { label ru unofficial "задача"; },
+        e: calc.expressions::Expr { label ru unofficial "набор узлов"; },
+        f: Integer { label ru unofficial "узел"; }
+) kind institutional {
+    label ru unofficial "производная поддерева построена; её корень — узел f * 64 + 256";
+}
+
+pub relation derivative_method(
+        t: Task { label ru unofficial "задача"; },
+        e: calc.expressions::Expr { label ru unofficial "набор узлов"; },
+        f: Integer { label ru unofficial "узел"; },
+        method: Text { label ru unofficial "правило словаря"; }
+) kind institutional {
+    label ru unofficial "правило курса, которым построена производная узла: имя для строки хода";
+}
+
+// ── Спрос сверху вниз ──────────────────────────────────────────────────────
+
+rule NeedUnaryChild(t: Task, e: calc.expressions::Expr, f: Integer, tag: Text, a: Integer) strict {
+    label ru unofficial "производная унарного узла требует производной аргумента (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, tag, "", 0 / 1, a, 0))
+        and (tag == "neg" or tag == "sin" or tag == "cos" or tag == "exp" or tag == "ln");
+    then need_derivative(t, e, a);
+}
+
+rule NeedBinaryLeft(t: Task, e: calc.expressions::Expr, f: Integer, tag: Text, a: Integer, b: Integer) strict {
+    label ru unofficial "производная бинарного узла требует производной левой части (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, tag, "", 0 / 1, a, b))
+        and (tag == "add" or tag == "sub" or tag == "mul" or tag == "div");
+    then need_derivative(t, e, a);
+}
+
+rule NeedBinaryRight(t: Task, e: calc.expressions::Expr, f: Integer, tag: Text, a: Integer, b: Integer) strict {
+    label ru unofficial "производная бинарного узла требует производной правой части (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, tag, "", 0 / 1, a, b))
+        and (tag == "add" or tag == "sub" or tag == "mul" or tag == "div");
+    then need_derivative(t, e, b);
+}
+
+rule NeedPowerBase(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "производная степени требует производной основания; показатель не дифференцируется (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "pow", "", 0 / 1, a, b));
+    then need_derivative(t, e, a);
+}
+
+// ── Листья ─────────────────────────────────────────────────────────────────
+
+rule DeriveConstNode(t: Task, e: calc.expressions::Expr, f: Integer, v: Rational) strict {
+    label ru unofficial "производная константы есть ноль (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "const", "", v, 0, 0));
+    then calc.expressions::node(e, f * 64 + 256, "const", "", 0 / 1, 0, 0);
+}
+
+rule DeriveConstDone(t: Task, e: calc.expressions::Expr, f: Integer, v: Rational) strict {
+    label ru unofficial "производная константы построена (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "const", "", v, 0, 0));
+    then derived(t, e, f);
+}
+
+rule DeriveConstMethod(t: Task, e: calc.expressions::Expr, f: Integer, v: Rational) strict {
+    label ru unofficial "правило курса для строки хода (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "const", "", v, 0, 0));
+    then derivative_method(t, e, f, "constant_rule");
+}
+
+rule DeriveVariableNode(t: Task, e: calc.expressions::Expr, f: Integer, x: Text) strict {
+    label ru unofficial "производная переменной дифференцирования есть единица (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and task_variable(t, x) and monotone(calc.expressions::node(e, f, "var", x, 0 / 1, 0, 0));
+    then calc.expressions::node(e, f * 64 + 256, "const", "", 1 / 1, 0, 0);
+}
+
+rule DeriveVariableDone(t: Task, e: calc.expressions::Expr, f: Integer, x: Text) strict {
+    label ru unofficial "производная переменной построена (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and task_variable(t, x) and monotone(calc.expressions::node(e, f, "var", x, 0 / 1, 0, 0));
+    then derived(t, e, f);
+}
+
+rule DeriveVariableMethod(t: Task, e: calc.expressions::Expr, f: Integer, x: Text) strict {
+    label ru unofficial "правило курса для строки хода (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and task_variable(t, x) and monotone(calc.expressions::node(e, f, "var", x, 0 / 1, 0, 0));
+    then derivative_method(t, e, f, "derivative_variable");
+}
+
+rule DeriveOtherVariableNode(t: Task, e: calc.expressions::Expr, f: Integer, y: Text, x: Text) strict {
+    label ru unofficial "производная посторонней переменной есть ноль (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and task_variable(t, x) and monotone(calc.expressions::node(e, f, "var", y, 0 / 1, 0, 0)) and y != x;
+    then calc.expressions::node(e, f * 64 + 256, "const", "", 0 / 1, 0, 0);
+}
+
+rule DeriveOtherVariableDone(t: Task, e: calc.expressions::Expr, f: Integer, y: Text, x: Text) strict {
+    label ru unofficial "производная посторонней переменной построена (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and task_variable(t, x) and monotone(calc.expressions::node(e, f, "var", y, 0 / 1, 0, 0)) and y != x;
+    then derived(t, e, f);
+}
+
+rule DeriveOtherVariableMethod(t: Task, e: calc.expressions::Expr, f: Integer, y: Text, x: Text) strict {
+    label ru unofficial "правило курса для строки хода (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and task_variable(t, x) and monotone(calc.expressions::node(e, f, "var", y, 0 / 1, 0, 0)) and y != x;
+    then derivative_method(t, e, f, "constant_rule");
+}
+
+// ── Знак и сумма ───────────────────────────────────────────────────────────
+
+rule DeriveNegNode(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer) strict {
+    label ru unofficial "производная смены знака (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "neg", "", 0 / 1, a, 0)) and monotone(derived(t, e, a));
+    then calc.expressions::node(e, f * 64 + 256, "neg", "", 0 / 1, a * 64 + 256, 0);
+}
+
+rule DeriveNegDone(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer) strict {
+    label ru unofficial "производная смены знака построена (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "neg", "", 0 / 1, a, 0)) and monotone(derived(t, e, a));
+    then derived(t, e, f);
+}
+
+rule DeriveNegMethod(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer) strict {
+    label ru unofficial "правило курса для строки хода (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "neg", "", 0 / 1, a, 0)) and monotone(derived(t, e, a));
+    then derivative_method(t, e, f, "negation_rule");
+}
+
+rule DeriveAddNode(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "производная суммы есть сумма производных (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "add", "", 0 / 1, a, b)) and monotone(derived(t, e, a)) and monotone(derived(t, e, b));
+    then calc.expressions::node(e, f * 64 + 256, "add", "", 0 / 1, a * 64 + 256, b * 64 + 256);
+}
+
+rule DeriveAddDone(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "производная суммы построена (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "add", "", 0 / 1, a, b)) and monotone(derived(t, e, a)) and monotone(derived(t, e, b));
+    then derived(t, e, f);
+}
+
+rule DeriveAddMethod(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "правило курса для строки хода (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "add", "", 0 / 1, a, b)) and monotone(derived(t, e, a)) and monotone(derived(t, e, b));
+    then derivative_method(t, e, f, "sum_rule");
+}
+
+rule DeriveSubNode(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "производная разности есть разность производных (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "sub", "", 0 / 1, a, b)) and monotone(derived(t, e, a)) and monotone(derived(t, e, b));
+    then calc.expressions::node(e, f * 64 + 256, "sub", "", 0 / 1, a * 64 + 256, b * 64 + 256);
+}
+
+rule DeriveSubDone(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "производная разности построена (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "sub", "", 0 / 1, a, b)) and monotone(derived(t, e, a)) and monotone(derived(t, e, b));
+    then derived(t, e, f);
+}
+
+rule DeriveSubMethod(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "правило курса для строки хода (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "sub", "", 0 / 1, a, b)) and monotone(derived(t, e, a)) and monotone(derived(t, e, b));
+    then derivative_method(t, e, f, "difference_rule");
+}
+
+// ── Произведение и частное ─────────────────────────────────────────────────
+
+rule DeriveMulLeftTerm(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "правило произведения: слагаемое u′·v (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "mul", "", 0 / 1, a, b)) and monotone(derived(t, e, a)) and monotone(derived(t, e, b));
+    then calc.expressions::node(e, f * 64 + 257, "mul", "", 0 / 1, a * 64 + 256, b);
+}
+
+rule DeriveMulRightTerm(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "правило произведения: слагаемое u·v′ (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "mul", "", 0 / 1, a, b)) and monotone(derived(t, e, a)) and monotone(derived(t, e, b));
+    then calc.expressions::node(e, f * 64 + 258, "mul", "", 0 / 1, a, b * 64 + 256);
+}
+
+rule DeriveMulNode(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "правило произведения: сумма слагаемых (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "mul", "", 0 / 1, a, b)) and monotone(derived(t, e, a)) and monotone(derived(t, e, b));
+    then calc.expressions::node(e, f * 64 + 256, "add", "", 0 / 1, f * 64 + 257, f * 64 + 258);
+}
+
+rule DeriveMulDone(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "производная произведения построена (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "mul", "", 0 / 1, a, b)) and monotone(derived(t, e, a)) and monotone(derived(t, e, b));
+    then derived(t, e, f);
+}
+
+rule DeriveMulMethod(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "правило курса для строки хода (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "mul", "", 0 / 1, a, b)) and monotone(derived(t, e, a)) and monotone(derived(t, e, b));
+    then derivative_method(t, e, f, "product_rule");
+}
+
+rule DeriveDivLeftTerm(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "правило частного: слагаемое u′·v (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "div", "", 0 / 1, a, b)) and monotone(derived(t, e, a)) and monotone(derived(t, e, b));
+    then calc.expressions::node(e, f * 64 + 258, "mul", "", 0 / 1, a * 64 + 256, b);
+}
+
+rule DeriveDivRightTerm(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "правило частного: слагаемое u·v′ (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "div", "", 0 / 1, a, b)) and monotone(derived(t, e, a)) and monotone(derived(t, e, b));
+    then calc.expressions::node(e, f * 64 + 259, "mul", "", 0 / 1, a, b * 64 + 256);
+}
+
+rule DeriveDivNumerator(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "правило частного: числитель u′·v − u·v′ (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "div", "", 0 / 1, a, b)) and monotone(derived(t, e, a)) and monotone(derived(t, e, b));
+    then calc.expressions::node(e, f * 64 + 257, "sub", "", 0 / 1, f * 64 + 258, f * 64 + 259);
+}
+
+rule DeriveDivExponent(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "правило частного: показатель знаменателя (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "div", "", 0 / 1, a, b)) and monotone(derived(t, e, a)) and monotone(derived(t, e, b));
+    then calc.expressions::node(e, f * 64 + 261, "const", "", 2 / 1, 0, 0);
+}
+
+rule DeriveDivDenominator(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "правило частного: знаменатель v² (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "div", "", 0 / 1, a, b)) and monotone(derived(t, e, a)) and monotone(derived(t, e, b));
+    then calc.expressions::node(e, f * 64 + 260, "pow", "", 0 / 1, b, f * 64 + 261);
+}
+
+rule DeriveDivNode(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "правило частного: (u/v)′ = (u′v − uv′)/v² (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "div", "", 0 / 1, a, b)) and monotone(derived(t, e, a)) and monotone(derived(t, e, b));
+    then calc.expressions::node(e, f * 64 + 256, "div", "", 0 / 1, f * 64 + 257, f * 64 + 260);
+}
+
+rule DeriveDivDone(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "производная частного построена (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "div", "", 0 / 1, a, b)) and monotone(derived(t, e, a)) and monotone(derived(t, e, b));
+    then derived(t, e, f);
+}
+
+rule DeriveDivMethod(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "правило курса для строки хода (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "div", "", 0 / 1, a, b)) and monotone(derived(t, e, a)) and monotone(derived(t, e, b));
+    then derivative_method(t, e, f, "quotient_rule");
+}
+
+// ── Степень ────────────────────────────────────────────────────────────────
+//
+// Показатель приходит отдельным узлом `const` (так устроен `pow` у
+// calc.expressions), и его целость уже удостоверена `well_formed`. Новый
+// показатель получает значение nv − 1: ровно то сравнение `mv + 1 = nv`,
+// которым проверяющий сверяет степенное правило.
+
+rule DerivePowZeroNode(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, g: Integer) strict {
+    label ru unofficial "нулевой показатель: производная постоянной степени есть ноль (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "pow", "", 0 / 1, a, g))
+        and monotone(calc.expressions::node(e, g, "const", "", 0 / 1, 0, 0)) and monotone(derived(t, e, a));
+    then calc.expressions::node(e, f * 64 + 256, "const", "", 0 / 1, 0, 0);
+}
+
+rule DerivePowZeroDone(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, g: Integer) strict {
+    label ru unofficial "производная нулевой степени построена (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "pow", "", 0 / 1, a, g))
+        and monotone(calc.expressions::node(e, g, "const", "", 0 / 1, 0, 0)) and monotone(derived(t, e, a));
+    then derived(t, e, f);
+}
+
+rule DerivePowZeroMethod(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, g: Integer) strict {
+    label ru unofficial "правило курса для строки хода (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "pow", "", 0 / 1, a, g))
+        and monotone(calc.expressions::node(e, g, "const", "", 0 / 1, 0, 0)) and monotone(derived(t, e, a));
+    then derivative_method(t, e, f, "constant_rule");
+}
+
+rule DerivePowBareFactor(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, g: Integer, nv: Rational, x: Text) strict {
+    label ru unofficial "степенное правило над переменной: множитель n (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "pow", "", 0 / 1, a, g))
+        and task_variable(t, x) and monotone(calc.expressions::node(e, a, "var", x, 0 / 1, 0, 0)) and monotone(calc.expressions::node(e, g, "const", "", nv, 0, 0)) and nv >= 1 / 1;
+    then calc.expressions::node(e, f * 64 + 257, "const", "", nv, 0, 0);
+}
+
+rule DerivePowBareExponent(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, g: Integer, nv: Rational, x: Text) strict {
+    label ru unofficial "степенное правило над переменной: показатель n − 1 (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "pow", "", 0 / 1, a, g))
+        and task_variable(t, x) and monotone(calc.expressions::node(e, a, "var", x, 0 / 1, 0, 0)) and monotone(calc.expressions::node(e, g, "const", "", nv, 0, 0)) and nv >= 1 / 1;
+    then calc.expressions::node(e, f * 64 + 259, "const", "", nv - (1 / 1), 0, 0);
+}
+
+rule DerivePowBarePower(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, g: Integer, nv: Rational, x: Text) strict {
+    label ru unofficial "степенное правило над переменной: множитель xⁿ⁻¹ (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "pow", "", 0 / 1, a, g))
+        and task_variable(t, x) and monotone(calc.expressions::node(e, a, "var", x, 0 / 1, 0, 0)) and monotone(calc.expressions::node(e, g, "const", "", nv, 0, 0)) and nv >= 1 / 1;
+    then calc.expressions::node(e, f * 64 + 258, "pow", "", 0 / 1, a, f * 64 + 259);
+}
+
+rule DerivePowBareNode(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, g: Integer, nv: Rational, x: Text) strict {
+    label ru unofficial "степенное правило над переменной: n·xⁿ⁻¹ — короткая форма словаря (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "pow", "", 0 / 1, a, g))
+        and task_variable(t, x) and monotone(calc.expressions::node(e, a, "var", x, 0 / 1, 0, 0)) and monotone(calc.expressions::node(e, g, "const", "", nv, 0, 0)) and nv >= 1 / 1;
+    then calc.expressions::node(e, f * 64 + 256, "mul", "", 0 / 1, f * 64 + 257, f * 64 + 258);
+}
+
+rule DerivePowBareDone(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, g: Integer, nv: Rational, x: Text) strict {
+    label ru unofficial "производная степени над переменной построена (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "pow", "", 0 / 1, a, g))
+        and task_variable(t, x) and monotone(calc.expressions::node(e, a, "var", x, 0 / 1, 0, 0)) and monotone(calc.expressions::node(e, g, "const", "", nv, 0, 0)) and nv >= 1 / 1;
+    then derived(t, e, f);
+}
+
+rule DerivePowBareMethod(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, g: Integer, nv: Rational, x: Text) strict {
+    label ru unofficial "правило курса для строки хода (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "pow", "", 0 / 1, a, g))
+        and task_variable(t, x) and monotone(calc.expressions::node(e, a, "var", x, 0 / 1, 0, 0)) and monotone(calc.expressions::node(e, g, "const", "", nv, 0, 0)) and nv >= 1 / 1;
+    then derivative_method(t, e, f, "power_rule");
+}
+
+rule DerivePowChainFactor(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, g: Integer, nv: Rational, x: Text, atag: Text, aname: Text, av: Rational, al: Integer, ar: Integer) strict {
+    label ru unofficial "степень сложного аргумента: множитель n (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "pow", "", 0 / 1, a, g))
+        and task_variable(t, x) and monotone(calc.expressions::node(e, a, atag, aname, av, al, ar)) and (atag != "var" or aname != x) and monotone(calc.expressions::node(e, g, "const", "", nv, 0, 0)) and nv >= 1 / 1
+        and monotone(derived(t, e, a));
+    then calc.expressions::node(e, f * 64 + 258, "const", "", nv, 0, 0);
+}
+
+rule DerivePowChainExponent(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, g: Integer, nv: Rational, x: Text, atag: Text, aname: Text, av: Rational, al: Integer, ar: Integer) strict {
+    label ru unofficial "степень сложного аргумента: показатель n − 1 (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "pow", "", 0 / 1, a, g))
+        and task_variable(t, x) and monotone(calc.expressions::node(e, a, atag, aname, av, al, ar)) and (atag != "var" or aname != x) and monotone(calc.expressions::node(e, g, "const", "", nv, 0, 0)) and nv >= 1 / 1
+        and monotone(derived(t, e, a));
+    then calc.expressions::node(e, f * 64 + 260, "const", "", nv - (1 / 1), 0, 0);
+}
+
+rule DerivePowChainPower(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, g: Integer, nv: Rational, x: Text, atag: Text, aname: Text, av: Rational, al: Integer, ar: Integer) strict {
+    label ru unofficial "степень сложного аргумента: uⁿ⁻¹ (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "pow", "", 0 / 1, a, g))
+        and task_variable(t, x) and monotone(calc.expressions::node(e, a, atag, aname, av, al, ar)) and (atag != "var" or aname != x) and monotone(calc.expressions::node(e, g, "const", "", nv, 0, 0)) and nv >= 1 / 1
+        and monotone(derived(t, e, a));
+    then calc.expressions::node(e, f * 64 + 259, "pow", "", 0 / 1, a, f * 64 + 260);
+}
+
+rule DerivePowChainOuter(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, g: Integer, nv: Rational, x: Text, atag: Text, aname: Text, av: Rational, al: Integer, ar: Integer) strict {
+    label ru unofficial "степень сложного аргумента: внешняя производная n·uⁿ⁻¹ (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "pow", "", 0 / 1, a, g))
+        and task_variable(t, x) and monotone(calc.expressions::node(e, a, atag, aname, av, al, ar)) and (atag != "var" or aname != x) and monotone(calc.expressions::node(e, g, "const", "", nv, 0, 0)) and nv >= 1 / 1
+        and monotone(derived(t, e, a));
+    then calc.expressions::node(e, f * 64 + 257, "mul", "", 0 / 1, f * 64 + 258, f * 64 + 259);
+}
+
+rule DerivePowChainNode(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, g: Integer, nv: Rational, x: Text, atag: Text, aname: Text, av: Rational, al: Integer, ar: Integer) strict {
+    label ru unofficial "степень сложного аргумента: цепное правило n·uⁿ⁻¹·u′ (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "pow", "", 0 / 1, a, g))
+        and task_variable(t, x) and monotone(calc.expressions::node(e, a, atag, aname, av, al, ar)) and (atag != "var" or aname != x) and monotone(calc.expressions::node(e, g, "const", "", nv, 0, 0)) and nv >= 1 / 1
+        and monotone(derived(t, e, a));
+    then calc.expressions::node(e, f * 64 + 256, "mul", "", 0 / 1, f * 64 + 257, a * 64 + 256);
+}
+
+rule DerivePowChainDone(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, g: Integer, nv: Rational, x: Text, atag: Text, aname: Text, av: Rational, al: Integer, ar: Integer) strict {
+    label ru unofficial "производная степени сложного аргумента построена (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "pow", "", 0 / 1, a, g))
+        and task_variable(t, x) and monotone(calc.expressions::node(e, a, atag, aname, av, al, ar)) and (atag != "var" or aname != x) and monotone(calc.expressions::node(e, g, "const", "", nv, 0, 0)) and nv >= 1 / 1
+        and monotone(derived(t, e, a));
+    then derived(t, e, f);
+}
+
+rule DerivePowChainMethod(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, g: Integer, nv: Rational, x: Text, atag: Text, aname: Text, av: Rational, al: Integer, ar: Integer) strict {
+    label ru unofficial "правило курса для строки хода (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "pow", "", 0 / 1, a, g))
+        and task_variable(t, x) and monotone(calc.expressions::node(e, a, atag, aname, av, al, ar)) and (atag != "var" or aname != x) and monotone(calc.expressions::node(e, g, "const", "", nv, 0, 0)) and nv >= 1 / 1
+        and monotone(derived(t, e, a));
+    then derivative_method(t, e, f, "power_chain_rule");
+}
+
+// ── Элементарные функции ───────────────────────────────────────────────────
+
+rule DeriveSinBareNode(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, x: Text) strict {
+    label ru unofficial "(sin x)′ = cos x — короткая форма словаря (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "sin", "", 0 / 1, a, 0)) and task_variable(t, x) and monotone(calc.expressions::node(e, a, "var", x, 0 / 1, 0, 0));
+    then calc.expressions::node(e, f * 64 + 256, "cos", "", 0 / 1, a, 0);
+}
+
+rule DeriveSinBareDone(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, x: Text) strict {
+    label ru unofficial "производная синуса переменной построена (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "sin", "", 0 / 1, a, 0)) and task_variable(t, x) and monotone(calc.expressions::node(e, a, "var", x, 0 / 1, 0, 0));
+    then derived(t, e, f);
+}
+
+rule DeriveSinBareMethod(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, x: Text) strict {
+    label ru unofficial "правило курса для строки хода (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "sin", "", 0 / 1, a, 0)) and task_variable(t, x) and monotone(calc.expressions::node(e, a, "var", x, 0 / 1, 0, 0));
+    then derivative_method(t, e, f, "derivative_sin");
+}
+
+rule DeriveSinChainOuter(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, x: Text, atag: Text, aname: Text, av: Rational, al: Integer, ar: Integer) strict {
+    label ru unofficial "синус сложного аргумента: внешняя производная cos u (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "sin", "", 0 / 1, a, 0)) and task_variable(t, x) and monotone(calc.expressions::node(e, a, atag, aname, av, al, ar)) and (atag != "var" or aname != x) and monotone(derived(t, e, a));
+    then calc.expressions::node(e, f * 64 + 257, "cos", "", 0 / 1, a, 0);
+}
+
+rule DeriveSinChainNode(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, x: Text, atag: Text, aname: Text, av: Rational, al: Integer, ar: Integer) strict {
+    label ru unofficial "синус сложного аргумента: цепное правило cos(u)·u′ (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "sin", "", 0 / 1, a, 0)) and task_variable(t, x) and monotone(calc.expressions::node(e, a, atag, aname, av, al, ar)) and (atag != "var" or aname != x) and monotone(derived(t, e, a));
+    then calc.expressions::node(e, f * 64 + 256, "mul", "", 0 / 1, f * 64 + 257, a * 64 + 256);
+}
+
+rule DeriveSinChainDone(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, x: Text, atag: Text, aname: Text, av: Rational, al: Integer, ar: Integer) strict {
+    label ru unofficial "производная синуса сложного аргумента построена (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "sin", "", 0 / 1, a, 0)) and task_variable(t, x) and monotone(calc.expressions::node(e, a, atag, aname, av, al, ar)) and (atag != "var" or aname != x) and monotone(derived(t, e, a));
+    then derived(t, e, f);
+}
+
+rule DeriveSinChainMethod(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, x: Text, atag: Text, aname: Text, av: Rational, al: Integer, ar: Integer) strict {
+    label ru unofficial "правило курса для строки хода (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "sin", "", 0 / 1, a, 0)) and task_variable(t, x) and monotone(calc.expressions::node(e, a, atag, aname, av, al, ar)) and (atag != "var" or aname != x) and monotone(derived(t, e, a));
+    then derivative_method(t, e, f, "derivative_sin_chain");
+}
+
+rule DeriveCosBareInner(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, x: Text) strict {
+    label ru unofficial "(cos x)′ = −sin x: внутренний синус (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "cos", "", 0 / 1, a, 0)) and task_variable(t, x) and monotone(calc.expressions::node(e, a, "var", x, 0 / 1, 0, 0));
+    then calc.expressions::node(e, f * 64 + 257, "sin", "", 0 / 1, a, 0);
+}
+
+rule DeriveCosBareNode(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, x: Text) strict {
+    label ru unofficial "(cos x)′ = −sin x — короткая форма словаря (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "cos", "", 0 / 1, a, 0)) and task_variable(t, x) and monotone(calc.expressions::node(e, a, "var", x, 0 / 1, 0, 0));
+    then calc.expressions::node(e, f * 64 + 256, "neg", "", 0 / 1, f * 64 + 257, 0);
+}
+
+rule DeriveCosBareDone(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, x: Text) strict {
+    label ru unofficial "производная косинуса переменной построена (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "cos", "", 0 / 1, a, 0)) and task_variable(t, x) and monotone(calc.expressions::node(e, a, "var", x, 0 / 1, 0, 0));
+    then derived(t, e, f);
+}
+
+rule DeriveCosBareMethod(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, x: Text) strict {
+    label ru unofficial "правило курса для строки хода (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "cos", "", 0 / 1, a, 0)) and task_variable(t, x) and monotone(calc.expressions::node(e, a, "var", x, 0 / 1, 0, 0));
+    then derivative_method(t, e, f, "derivative_cos");
+}
+
+rule DeriveCosChainInner(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, x: Text, atag: Text, aname: Text, av: Rational, al: Integer, ar: Integer) strict {
+    label ru unofficial "косинус сложного аргумента: sin u (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "cos", "", 0 / 1, a, 0)) and task_variable(t, x) and monotone(calc.expressions::node(e, a, atag, aname, av, al, ar)) and (atag != "var" or aname != x) and monotone(derived(t, e, a));
+    then calc.expressions::node(e, f * 64 + 258, "sin", "", 0 / 1, a, 0);
+}
+
+rule DeriveCosChainOuter(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, x: Text, atag: Text, aname: Text, av: Rational, al: Integer, ar: Integer) strict {
+    label ru unofficial "косинус сложного аргумента: внешняя производная −sin u (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "cos", "", 0 / 1, a, 0)) and task_variable(t, x) and monotone(calc.expressions::node(e, a, atag, aname, av, al, ar)) and (atag != "var" or aname != x) and monotone(derived(t, e, a));
+    then calc.expressions::node(e, f * 64 + 257, "neg", "", 0 / 1, f * 64 + 258, 0);
+}
+
+rule DeriveCosChainNode(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, x: Text, atag: Text, aname: Text, av: Rational, al: Integer, ar: Integer) strict {
+    label ru unofficial "косинус сложного аргумента: цепное правило (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "cos", "", 0 / 1, a, 0)) and task_variable(t, x) and monotone(calc.expressions::node(e, a, atag, aname, av, al, ar)) and (atag != "var" or aname != x) and monotone(derived(t, e, a));
+    then calc.expressions::node(e, f * 64 + 256, "mul", "", 0 / 1, f * 64 + 257, a * 64 + 256);
+}
+
+rule DeriveCosChainDone(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, x: Text, atag: Text, aname: Text, av: Rational, al: Integer, ar: Integer) strict {
+    label ru unofficial "производная косинуса сложного аргумента построена (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "cos", "", 0 / 1, a, 0)) and task_variable(t, x) and monotone(calc.expressions::node(e, a, atag, aname, av, al, ar)) and (atag != "var" or aname != x) and monotone(derived(t, e, a));
+    then derived(t, e, f);
+}
+
+rule DeriveCosChainMethod(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, x: Text, atag: Text, aname: Text, av: Rational, al: Integer, ar: Integer) strict {
+    label ru unofficial "правило курса для строки хода (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "cos", "", 0 / 1, a, 0)) and task_variable(t, x) and monotone(calc.expressions::node(e, a, atag, aname, av, al, ar)) and (atag != "var" or aname != x) and monotone(derived(t, e, a));
+    then derivative_method(t, e, f, "derivative_cos_chain");
+}
+
+rule DeriveExpBareNode(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, x: Text) strict {
+    label ru unofficial "(eˣ)′ = eˣ — короткая форма словаря (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "exp", "", 0 / 1, a, 0)) and task_variable(t, x) and monotone(calc.expressions::node(e, a, "var", x, 0 / 1, 0, 0));
+    then calc.expressions::node(e, f * 64 + 256, "exp", "", 0 / 1, a, 0);
+}
+
+rule DeriveExpBareDone(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, x: Text) strict {
+    label ru unofficial "производная показательной от переменной построена (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "exp", "", 0 / 1, a, 0)) and task_variable(t, x) and monotone(calc.expressions::node(e, a, "var", x, 0 / 1, 0, 0));
+    then derived(t, e, f);
+}
+
+rule DeriveExpBareMethod(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, x: Text) strict {
+    label ru unofficial "правило курса для строки хода (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "exp", "", 0 / 1, a, 0)) and task_variable(t, x) and monotone(calc.expressions::node(e, a, "var", x, 0 / 1, 0, 0));
+    then derivative_method(t, e, f, "derivative_exp");
+}
+
+rule DeriveExpChainOuter(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, x: Text, atag: Text, aname: Text, av: Rational, al: Integer, ar: Integer) strict {
+    label ru unofficial "показательная сложного аргумента: внешняя производная eᵘ (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "exp", "", 0 / 1, a, 0)) and task_variable(t, x) and monotone(calc.expressions::node(e, a, atag, aname, av, al, ar)) and (atag != "var" or aname != x) and monotone(derived(t, e, a));
+    then calc.expressions::node(e, f * 64 + 257, "exp", "", 0 / 1, a, 0);
+}
+
+rule DeriveExpChainNode(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, x: Text, atag: Text, aname: Text, av: Rational, al: Integer, ar: Integer) strict {
+    label ru unofficial "показательная сложного аргумента: цепное правило eᵘ·u′ (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "exp", "", 0 / 1, a, 0)) and task_variable(t, x) and monotone(calc.expressions::node(e, a, atag, aname, av, al, ar)) and (atag != "var" or aname != x) and monotone(derived(t, e, a));
+    then calc.expressions::node(e, f * 64 + 256, "mul", "", 0 / 1, f * 64 + 257, a * 64 + 256);
+}
+
+rule DeriveExpChainDone(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, x: Text, atag: Text, aname: Text, av: Rational, al: Integer, ar: Integer) strict {
+    label ru unofficial "производная показательной сложного аргумента построена (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "exp", "", 0 / 1, a, 0)) and task_variable(t, x) and monotone(calc.expressions::node(e, a, atag, aname, av, al, ar)) and (atag != "var" or aname != x) and monotone(derived(t, e, a));
+    then derived(t, e, f);
+}
+
+rule DeriveExpChainMethod(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, x: Text, atag: Text, aname: Text, av: Rational, al: Integer, ar: Integer) strict {
+    label ru unofficial "правило курса для строки хода (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "exp", "", 0 / 1, a, 0)) and task_variable(t, x) and monotone(calc.expressions::node(e, a, atag, aname, av, al, ar)) and (atag != "var" or aname != x) and monotone(derived(t, e, a));
+    then derivative_method(t, e, f, "derivative_exp_chain");
+}
+
+rule DeriveLnBareOne(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, x: Text) strict {
+    label ru unofficial "(ln x)′ = 1/x: числитель (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "ln", "", 0 / 1, a, 0)) and task_variable(t, x) and monotone(calc.expressions::node(e, a, "var", x, 0 / 1, 0, 0));
+    then calc.expressions::node(e, f * 64 + 257, "const", "", 1 / 1, 0, 0);
+}
+
+rule DeriveLnBareNode(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, x: Text) strict {
+    label ru unofficial "(ln x)′ = 1/x — короткая форма словаря (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "ln", "", 0 / 1, a, 0)) and task_variable(t, x) and monotone(calc.expressions::node(e, a, "var", x, 0 / 1, 0, 0));
+    then calc.expressions::node(e, f * 64 + 256, "div", "", 0 / 1, f * 64 + 257, a);
+}
+
+rule DeriveLnBareDone(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, x: Text) strict {
+    label ru unofficial "производная логарифма переменной построена (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "ln", "", 0 / 1, a, 0)) and task_variable(t, x) and monotone(calc.expressions::node(e, a, "var", x, 0 / 1, 0, 0));
+    then derived(t, e, f);
+}
+
+rule DeriveLnBareMethod(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, x: Text) strict {
+    label ru unofficial "правило курса для строки хода (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "ln", "", 0 / 1, a, 0)) and task_variable(t, x) and monotone(calc.expressions::node(e, a, "var", x, 0 / 1, 0, 0));
+    then derivative_method(t, e, f, "derivative_ln");
+}
+
+rule DeriveLnChainNode(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, x: Text, atag: Text, aname: Text, av: Rational, al: Integer, ar: Integer) strict {
+    label ru unofficial "логарифм сложного аргумента: u′/u (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "ln", "", 0 / 1, a, 0)) and task_variable(t, x) and monotone(calc.expressions::node(e, a, atag, aname, av, al, ar)) and (atag != "var" or aname != x) and monotone(derived(t, e, a));
+    then calc.expressions::node(e, f * 64 + 256, "div", "", 0 / 1, a * 64 + 256, a);
+}
+
+rule DeriveLnChainDone(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, x: Text, atag: Text, aname: Text, av: Rational, al: Integer, ar: Integer) strict {
+    label ru unofficial "производная логарифма сложного аргумента построена (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "ln", "", 0 / 1, a, 0)) and task_variable(t, x) and monotone(calc.expressions::node(e, a, atag, aname, av, al, ar)) and (atag != "var" or aname != x) and monotone(derived(t, e, a));
+    then derived(t, e, f);
+}
+
+rule DeriveLnChainMethod(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, x: Text, atag: Text, aname: Text, av: Rational, al: Integer, ar: Integer) strict {
+    label ru unofficial "правило курса для строки хода (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "ln", "", 0 / 1, a, 0)) and task_variable(t, x) and monotone(calc.expressions::node(e, a, atag, aname, av, al, ar)) and (atag != "var" or aname != x) and monotone(derived(t, e, a));
+    then derivative_method(t, e, f, "derivative_ln_chain");
+}
+
+// ── Квадратный корень ──────────────────────────────────────────────────────
+//
+// (√u)′ = u′ / (2·√u). Внешний корень ПЕРЕИСПОЛЬЗУЕТ исходный узел f: это
+// ровно то же поддерево, и лишнего узла оно не стоит. Условие применимости
+// — положительность подкоренного выражения в окрестности — проверяется не
+// здесь, а при вычислении предела: форма области не знает.
+
+rule DeriveSqrtTwo(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer) strict {
+    label ru unofficial "производная корня: двойка знаменателя (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "sqrt", "", 0 / 1, a, 0)) and monotone(derived(t, e, a));
+    then calc.expressions::node(e, f * 64 + 258, "const", "", 2 / 1, 0, 0);
+}
+
+rule DeriveSqrtDenominator(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer) strict {
+    label ru unofficial "производная корня: знаменатель 2·√u (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "sqrt", "", 0 / 1, a, 0)) and monotone(derived(t, e, a));
+    then calc.expressions::node(e, f * 64 + 257, "mul", "", 0 / 1, f * 64 + 258, f);
+}
+
+rule DeriveSqrtNode(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer) strict {
+    label ru unofficial "производная корня: u′/(2·√u) (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "sqrt", "", 0 / 1, a, 0)) and monotone(derived(t, e, a));
+    then calc.expressions::node(e, f * 64 + 256, "div", "", 0 / 1, a * 64 + 256, f * 64 + 257);
+}
+
+rule DeriveSqrtDone(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer) strict {
+    label ru unofficial "производная корня построена (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "sqrt", "", 0 / 1, a, 0)) and monotone(derived(t, e, a));
+    then derived(t, e, f);
+}
+
+rule DeriveSqrtMethod(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer) strict {
+    label ru unofficial "правило курса для строки хода (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "sqrt", "", 0 / 1, a, 0)) and monotone(derived(t, e, a));
+    then derivative_method(t, e, f, "derivative_sqrt");
+}
+
+rule NeedSqrtChild(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer) strict {
+    label ru unofficial "производная корня требует производной подкоренного (§3 DECISION-0198)";
+    when monotone(need_derivative(t, e, f)) and monotone(calc.expressions::node(e, f, "sqrt", "", 0 / 1, a, 0));
+    then need_derivative(t, e, a);
+}

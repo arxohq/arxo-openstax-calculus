@@ -1,0 +1,27 @@
+name: Selected calculus consumer checks
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  readers:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install the exact published CLI
+        run: npm install -g @arxo/cli@0.2.5
+      - name: Verify exact assets and replay selected task questions twice
+        run: python3 tools/check.py --packages
+      - name: Reproduce the three source depth measurements
+        run: python3 tools/measure_depth.py --check
+      - name: Check existing CNXML measurement regressions
+        run: python3 tools/depth/test_cnxml_depth.py

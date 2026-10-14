@@ -1,0 +1,86 @@
+language "law.core" version "0.2";
+package calc.calculus_checker version "0.1.0";
+namespace "urn:law:calc:calculus-checker";
+
+// DECISION-0197 §4: ожидания из закона и условий применимости.
+test "смешанный ход: 65 строк" {
+ given {
+  assert "f0": document(entity_ref("urn:calc:limits:p"), 65, 1, "calculus/2") { origin case_input; }
+  assert "f1": nodes_of(entity_ref("urn:calc:limits:p"), entity_ref("urn:calc:limits:e")) { origin case_input; }
+  assert "f2": variable(entity_ref("urn:calc:limits:p"), "x") { origin case_input; }
+  assert "f3": closed(entity_ref("urn:calc:limits:p")) { origin case_input; }
+  assert "f4": calc.expressions::closed(entity_ref("urn:calc:limits:e")) { origin case_input; }
+  assert "f5": calc.expressions::node(entity_ref("urn:calc:limits:e"), 1, "const", "", 1 / 1, 0, 0) { origin case_input; }
+  assert "f6": line(entity_ref("urn:calc:limits:p"), 1, 1, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "f7": limit_line(entity_ref("urn:calc:limits:p"), 2, 1, "limit_constant", 0, 0, 0, "at", 0 / 1, "both", "expr", 1) { origin case_input; }
+  assert "f8": line(entity_ref("urn:calc:limits:p"), 3, 1, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "f9": limit_line(entity_ref("urn:calc:limits:p"), 4, 1, "limit_constant", 0, 0, 0, "at", 0 / 1, "both", "expr", 1) { origin case_input; }
+  assert "f10": line(entity_ref("urn:calc:limits:p"), 5, 1, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "f11": limit_line(entity_ref("urn:calc:limits:p"), 6, 1, "limit_constant", 0, 0, 0, "at", 0 / 1, "both", "expr", 1) { origin case_input; }
+  assert "f12": line(entity_ref("urn:calc:limits:p"), 7, 1, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "f13": limit_line(entity_ref("urn:calc:limits:p"), 8, 1, "limit_constant", 0, 0, 0, "at", 0 / 1, "both", "expr", 1) { origin case_input; }
+  assert "f14": line(entity_ref("urn:calc:limits:p"), 9, 1, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "f15": limit_line(entity_ref("urn:calc:limits:p"), 10, 1, "limit_constant", 0, 0, 0, "at", 0 / 1, "both", "expr", 1) { origin case_input; }
+  assert "f16": line(entity_ref("urn:calc:limits:p"), 11, 1, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "f17": limit_line(entity_ref("urn:calc:limits:p"), 12, 1, "limit_constant", 0, 0, 0, "at", 0 / 1, "both", "expr", 1) { origin case_input; }
+  assert "f18": line(entity_ref("urn:calc:limits:p"), 13, 1, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "f19": limit_line(entity_ref("urn:calc:limits:p"), 14, 1, "limit_constant", 0, 0, 0, "at", 0 / 1, "both", "expr", 1) { origin case_input; }
+  assert "f20": line(entity_ref("urn:calc:limits:p"), 15, 1, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "f21": limit_line(entity_ref("urn:calc:limits:p"), 16, 1, "limit_constant", 0, 0, 0, "at", 0 / 1, "both", "expr", 1) { origin case_input; }
+  assert "f22": line(entity_ref("urn:calc:limits:p"), 17, 1, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "f23": limit_line(entity_ref("urn:calc:limits:p"), 18, 1, "limit_constant", 0, 0, 0, "at", 0 / 1, "both", "expr", 1) { origin case_input; }
+  assert "f24": line(entity_ref("urn:calc:limits:p"), 19, 1, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "f25": limit_line(entity_ref("urn:calc:limits:p"), 20, 1, "limit_constant", 0, 0, 0, "at", 0 / 1, "both", "expr", 1) { origin case_input; }
+  assert "f26": line(entity_ref("urn:calc:limits:p"), 21, 1, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "f27": limit_line(entity_ref("urn:calc:limits:p"), 22, 1, "limit_constant", 0, 0, 0, "at", 0 / 1, "both", "expr", 1) { origin case_input; }
+  assert "f28": line(entity_ref("urn:calc:limits:p"), 23, 1, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "f29": limit_line(entity_ref("urn:calc:limits:p"), 24, 1, "limit_constant", 0, 0, 0, "at", 0 / 1, "both", "expr", 1) { origin case_input; }
+  assert "f30": line(entity_ref("urn:calc:limits:p"), 25, 1, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "f31": limit_line(entity_ref("urn:calc:limits:p"), 26, 1, "limit_constant", 0, 0, 0, "at", 0 / 1, "both", "expr", 1) { origin case_input; }
+  assert "f32": line(entity_ref("urn:calc:limits:p"), 27, 1, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "f33": limit_line(entity_ref("urn:calc:limits:p"), 28, 1, "limit_constant", 0, 0, 0, "at", 0 / 1, "both", "expr", 1) { origin case_input; }
+  assert "f34": line(entity_ref("urn:calc:limits:p"), 29, 1, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "f35": limit_line(entity_ref("urn:calc:limits:p"), 30, 1, "limit_constant", 0, 0, 0, "at", 0 / 1, "both", "expr", 1) { origin case_input; }
+  assert "f36": line(entity_ref("urn:calc:limits:p"), 31, 1, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "f37": limit_line(entity_ref("urn:calc:limits:p"), 32, 1, "limit_constant", 0, 0, 0, "at", 0 / 1, "both", "expr", 1) { origin case_input; }
+  assert "f38": line(entity_ref("urn:calc:limits:p"), 33, 1, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "f39": limit_line(entity_ref("urn:calc:limits:p"), 34, 1, "limit_constant", 0, 0, 0, "at", 0 / 1, "both", "expr", 1) { origin case_input; }
+  assert "f40": line(entity_ref("urn:calc:limits:p"), 35, 1, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "f41": limit_line(entity_ref("urn:calc:limits:p"), 36, 1, "limit_constant", 0, 0, 0, "at", 0 / 1, "both", "expr", 1) { origin case_input; }
+  assert "f42": line(entity_ref("urn:calc:limits:p"), 37, 1, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "f43": limit_line(entity_ref("urn:calc:limits:p"), 38, 1, "limit_constant", 0, 0, 0, "at", 0 / 1, "both", "expr", 1) { origin case_input; }
+  assert "f44": line(entity_ref("urn:calc:limits:p"), 39, 1, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "f45": limit_line(entity_ref("urn:calc:limits:p"), 40, 1, "limit_constant", 0, 0, 0, "at", 0 / 1, "both", "expr", 1) { origin case_input; }
+  assert "f46": line(entity_ref("urn:calc:limits:p"), 41, 1, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "f47": limit_line(entity_ref("urn:calc:limits:p"), 42, 1, "limit_constant", 0, 0, 0, "at", 0 / 1, "both", "expr", 1) { origin case_input; }
+  assert "f48": line(entity_ref("urn:calc:limits:p"), 43, 1, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "f49": limit_line(entity_ref("urn:calc:limits:p"), 44, 1, "limit_constant", 0, 0, 0, "at", 0 / 1, "both", "expr", 1) { origin case_input; }
+  assert "f50": line(entity_ref("urn:calc:limits:p"), 45, 1, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "f51": limit_line(entity_ref("urn:calc:limits:p"), 46, 1, "limit_constant", 0, 0, 0, "at", 0 / 1, "both", "expr", 1) { origin case_input; }
+  assert "f52": line(entity_ref("urn:calc:limits:p"), 47, 1, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "f53": limit_line(entity_ref("urn:calc:limits:p"), 48, 1, "limit_constant", 0, 0, 0, "at", 0 / 1, "both", "expr", 1) { origin case_input; }
+  assert "f54": line(entity_ref("urn:calc:limits:p"), 49, 1, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "f55": limit_line(entity_ref("urn:calc:limits:p"), 50, 1, "limit_constant", 0, 0, 0, "at", 0 / 1, "both", "expr", 1) { origin case_input; }
+  assert "f56": line(entity_ref("urn:calc:limits:p"), 51, 1, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "f57": limit_line(entity_ref("urn:calc:limits:p"), 52, 1, "limit_constant", 0, 0, 0, "at", 0 / 1, "both", "expr", 1) { origin case_input; }
+  assert "f58": line(entity_ref("urn:calc:limits:p"), 53, 1, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "f59": limit_line(entity_ref("urn:calc:limits:p"), 54, 1, "limit_constant", 0, 0, 0, "at", 0 / 1, "both", "expr", 1) { origin case_input; }
+  assert "f60": line(entity_ref("urn:calc:limits:p"), 55, 1, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "f61": limit_line(entity_ref("urn:calc:limits:p"), 56, 1, "limit_constant", 0, 0, 0, "at", 0 / 1, "both", "expr", 1) { origin case_input; }
+  assert "f62": line(entity_ref("urn:calc:limits:p"), 57, 1, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "f63": limit_line(entity_ref("urn:calc:limits:p"), 58, 1, "limit_constant", 0, 0, 0, "at", 0 / 1, "both", "expr", 1) { origin case_input; }
+  assert "f64": line(entity_ref("urn:calc:limits:p"), 59, 1, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "f65": limit_line(entity_ref("urn:calc:limits:p"), 60, 1, "limit_constant", 0, 0, 0, "at", 0 / 1, "both", "expr", 1) { origin case_input; }
+  assert "f66": line(entity_ref("urn:calc:limits:p"), 61, 1, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "f67": limit_line(entity_ref("urn:calc:limits:p"), 62, 1, "limit_constant", 0, 0, 0, "at", 0 / 1, "both", "expr", 1) { origin case_input; }
+  assert "f68": line(entity_ref("urn:calc:limits:p"), 63, 1, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "f69": limit_line(entity_ref("urn:calc:limits:p"), 64, 1, "limit_constant", 0, 0, 0, "at", 0 / 1, "both", "expr", 1) { origin case_input; }
+  assert "f70": line(entity_ref("urn:calc:limits:p"), 65, 1, "given", 0, 0, 0, 0) { origin case_input; }
+ }
+ evaluate truth(derivation_valid(entity_ref("urn:calc:limits:p")));
+ expect truth_status == NEITHER;
+ expect evaluation_status == COMPUTED;
+ evaluate truth(budget_exhausted(entity_ref("urn:calc:limits:p")));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+}

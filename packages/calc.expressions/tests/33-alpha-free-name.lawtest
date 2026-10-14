@@ -1,0 +1,65 @@
+language "law.core" version "0.2";
+package calc.expressions version "0.1.0";
+namespace "urn:law:calc:expressions";
+
+// Переименование связанных имён свободные НЕ ТРОГАЕТ — и потому два тела,
+// где свободные переменные названы по-разному, α-равными быть не могут.
+// Соответствие при этом само по себе допустимо: z↔w взаимно однозначно и
+// свободное имя не затрагивает.
+//
+// Это ОПРОВЕРЖЕНИЕ, а не констатация: без него случай (λz. y) и (λw. x)
+// просто не дал бы вердикта, и читатель не отличил бы «пакет не умеет» от
+// «поддеревья не равны». Различие существенно — второе и есть утверждение
+// пакета.
+
+test "two free variables with different names cannot be reconciled by a renaming" {
+ given {
+  assert "n1": node(entity_ref("urn:calc:ex:e33"), 1, "binder", "z", 0 / 1, 2, 0) { origin case_input; }
+  assert "n2": node(entity_ref("urn:calc:ex:e33"), 2, "var", "y", 0 / 1, 0, 0) { origin case_input; }
+  assert "n3": node(entity_ref("urn:calc:ex:e33"), 3, "binder", "w", 0 / 1, 4, 0) { origin case_input; }
+  assert "n4": node(entity_ref("urn:calc:ex:e33"), 4, "var", "x", 0 / 1, 0, 0) { origin case_input; }
+  assert "b1": binder_declared(entity_ref("urn:calc:ex:e33"), 1, "z") { origin case_input; }
+  assert "b2": binder_declared(entity_ref("urn:calc:ex:e33"), 3, "w") { origin case_input; }
+  assert "u1": node_uses(entity_ref("urn:calc:ex:e33"), 2, "y") { origin case_input; }
+  assert "u2": node_uses(entity_ref("urn:calc:ex:e33"), 4, "x") { origin case_input; }
+  assert "c1": alpha_candidate(entity_ref("urn:calc:ex:e33"), 1, 3) { origin case_input; }
+  assert "p1": alpha_pair(entity_ref("urn:calc:ex:e33"), 1, 3, 1, 3, "z", "w") { origin case_input; }
+ }
+ // соответствие допустимо
+ evaluate truth(alpha_equiv(entity_ref("urn:calc:ex:e33"), 1, 3));
+ expect truth_status == TRUE_ONLY;
+ // а равенства нет, и сказано почему
+ evaluate truth(alpha_equal(entity_ref("urn:calc:ex:e33"), 1, 3));
+ expect truth_status == NEITHER;
+ evaluate truth(alpha_error(entity_ref("urn:calc:ex:e33"), 1, 3, "ALPHA_FREE_NAME_MISMATCH"));
+ expect truth_status == TRUE_ONLY;
+ expect applied(AlphaFreeNameMismatch);
+}
+
+test "the symmetric freshness condition is also checked: the old name free in the second subtree" {
+ given {
+  // (λz. 1) и (λw. z) — соответствие z↔w, и СТАРОЕ имя z свободно во втором
+  // поддереве. Переименование w→z захватило бы его, то есть α-конверсия
+  // необратима. Первая свежесть (новое имя свободно в первом поддереве) здесь
+  // не нарушена: "w" в поддереве 1 не встречается вовсе.
+  assert "n1": node(entity_ref("urn:calc:ex:e33b"), 1, "binder", "z", 0 / 1, 2, 0) { origin case_input; }
+  assert "n2": node(entity_ref("urn:calc:ex:e33b"), 2, "const", "", 1 / 1, 0, 0) { origin case_input; }
+  assert "n3": node(entity_ref("urn:calc:ex:e33b"), 3, "binder", "w", 0 / 1, 4, 0) { origin case_input; }
+  assert "n4": node(entity_ref("urn:calc:ex:e33b"), 4, "var", "z", 0 / 1, 0, 0) { origin case_input; }
+  assert "b1": binder_declared(entity_ref("urn:calc:ex:e33b"), 1, "z") { origin case_input; }
+  assert "b2": binder_declared(entity_ref("urn:calc:ex:e33b"), 3, "w") { origin case_input; }
+  assert "u1": node_uses(entity_ref("urn:calc:ex:e33b"), 4, "z") { origin case_input; }
+  assert "c1": alpha_candidate(entity_ref("urn:calc:ex:e33b"), 1, 3) { origin case_input; }
+  assert "p1": alpha_pair(entity_ref("urn:calc:ex:e33b"), 1, 3, 1, 3, "z", "w") { origin case_input; }
+ }
+ evaluate truth(free_in(entity_ref("urn:calc:ex:e33b"), 3, "z"));
+ expect truth_status == TRUE_ONLY;
+ expect applied(FreeUnder);
+ evaluate truth(alpha_error(entity_ref("urn:calc:ex:e33b"), 1, 3, "ALPHA_FREE_TOUCHED"));
+ expect truth_status == NEITHER;
+ evaluate truth(alpha_error(entity_ref("urn:calc:ex:e33b"), 1, 3, "ALPHA_OLD_NAME_TOUCHED"));
+ expect truth_status == TRUE_ONLY;
+ expect applied(AlphaOldNameTouched);
+ evaluate truth(alpha_equal(entity_ref("urn:calc:ex:e33b"), 1, 3));
+ expect truth_status == NEITHER;
+}

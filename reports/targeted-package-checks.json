@@ -1,0 +1,224 @@
+{
+  "format": "arxo.calculus-addressed-package-checks/1",
+  "packages": [
+    {
+      "spec": "openstax.calculus_limits@0.1.1",
+      "suite": "tests/solver-inputs.lawtest",
+      "status": "passed",
+      "total": 8,
+      "passed": 8,
+      "failed": 0
+    },
+    {
+      "spec": "openstax.calculus_derivatives@0.1.1",
+      "suite": "tests/solver-inputs.lawtest",
+      "status": "passed",
+      "total": 12,
+      "passed": 12,
+      "failed": 0
+    },
+    {
+      "spec": "openstax.calculus_integrals@0.1.1",
+      "suite": "tests/solver-inputs.lawtest",
+      "status": "passed",
+      "total": 9,
+      "passed": 9,
+      "failed": 0
+    },
+    {
+      "spec": "calc.polynomials_q@0.1.0",
+      "suite": "tests/39-no-resource-contract.lawtest",
+      "status": "passed",
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    {
+      "spec": "calc.polynomials_q@0.1.0",
+      "suite": "tests/40-slots-exceed-cap.lawtest",
+      "status": "passed",
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    {
+      "spec": "calc.polynomials_q@0.1.0",
+      "suite": "tests/42-incomplete-input.lawtest",
+      "status": "passed",
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    {
+      "spec": "calc.polynomials_q@0.1.0",
+      "suite": "tests/43-contradictory-term.lawtest",
+      "status": "passed",
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    {
+      "spec": "calc.polynomials_q@0.1.0",
+      "suite": "tests/50-derivative-of-constant.lawtest",
+      "status": "passed",
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    {
+      "spec": "calc.polynomials_q@0.1.0",
+      "suite": "tests/51-derivative-drops-degree.lawtest",
+      "status": "passed",
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    {
+      "spec": "calc.polynomials_q@0.1.0",
+      "suite": "tests/52-derivative-coefficient.lawtest",
+      "status": "passed",
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    {
+      "spec": "calc.polynomials_q@0.1.0",
+      "suite": "tests/53-antiderivative-is-inverse.lawtest",
+      "status": "passed",
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    {
+      "spec": "calc.polynomials_q@0.1.0",
+      "suite": "tests/54-definite-integral-fractional-limits.lawtest",
+      "status": "passed",
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    {
+      "spec": "calc.polynomials_q@0.1.0",
+      "suite": "tests/55-bridge-reads-polynomial.lawtest",
+      "status": "passed",
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    {
+      "spec": "calc.polynomials_q@0.1.0",
+      "suite": "tests/56-bridge-refuses-sine.lawtest",
+      "status": "passed",
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    {
+      "spec": "calc.polynomials_q@0.1.0",
+      "suite": "tests/58-bridge-power-leaf.lawtest",
+      "status": "passed",
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    {
+      "spec": "calc.expressions@0.1.0",
+      "suite": "tests/07-ambiguous-node.lawtest",
+      "status": "passed",
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    {
+      "spec": "calc.expressions@0.1.0",
+      "suite": "tests/13-missing-child.lawtest",
+      "status": "passed",
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    {
+      "spec": "calc.expressions@0.1.0",
+      "suite": "tests/16-exponent-out-of-range.lawtest",
+      "status": "passed",
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    {
+      "spec": "calc.expressions@0.1.0",
+      "suite": "tests/22-budget-at-limit.lawtest",
+      "status": "passed",
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    {
+      "spec": "calc.expressions@0.1.0",
+      "suite": "tests/23-budget-exhausted.lawtest",
+      "status": "passed",
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    {
+      "spec": "calc.calculus_checker@0.1.0",
+      "suite": "tests/02-power-rule.lawtest",
+      "status": "passed",
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    {
+      "spec": "calc.calculus_checker@0.1.0",
+      "suite": "tests/03-power-rule-wrong-factor.lawtest",
+      "status": "passed",
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    {
+      "spec": "calc.calculus_checker@0.1.0",
+      "suite": "tests/22-antiderivative-power.lawtest",
+      "status": "passed",
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    {
+      "spec": "calc.calculus_checker@0.1.0",
+      "suite": "tests/24-by-parts.lawtest",
+      "status": "passed",
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    {
+      "spec": "calc.calculus_checker@0.1.0",
+      "suite": "tests/25-by-parts-swapped.lawtest",
+      "status": "passed",
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    }
+  ],
+  "priorRuns": [
+    {
+      "file": "derivatives-all-tests.json",
+      "total": 21,
+      "passed": 21
+    },
+    {
+      "file": "integral-all-tests.json",
+      "total": 15,
+      "passed": 15
+    },
+    {
+      "file": "initial-limit-solver-tests.json",
+      "total": 35,
+      "passed": 35
+    }
+  ],
+  "corpus": "not_checked",
+  "releaseVerified": false
+}

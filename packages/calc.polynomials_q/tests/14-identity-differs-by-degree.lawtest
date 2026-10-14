@@ -1,0 +1,27 @@
+language "law.core" version "0.2";
+package calc.polynomials_q version "0.1.0";
+namespace "urn:law:calc:polynomials-q";
+
+// x³ − 1 против x² − 1: сравнивать коэффициенты по местам здесь нечего.
+
+test "различие по степени — отдельное основание, а не место" {
+ given {
+  assert "f0": degree_cap(8) { origin case_input; }
+  assert "f1": poly(entity_ref("urn:calc:pq:f"), 3) { origin case_input; }
+  assert "f2": term(entity_ref("urn:calc:pq:f"), 0, -1 / 1) { origin case_input; }
+  assert "f3": term(entity_ref("urn:calc:pq:f"), 1, 0 / 1) { origin case_input; }
+  assert "f4": term(entity_ref("urn:calc:pq:f"), 2, 0 / 1) { origin case_input; }
+  assert "f5": term(entity_ref("urn:calc:pq:f"), 3, 1 / 1) { origin case_input; }
+  assert "f6": poly(entity_ref("urn:calc:pq:g"), 2) { origin case_input; }
+  assert "f7": term(entity_ref("urn:calc:pq:g"), 0, -1 / 1) { origin case_input; }
+  assert "f8": term(entity_ref("urn:calc:pq:g"), 1, 0 / 1) { origin case_input; }
+  assert "f9": term(entity_ref("urn:calc:pq:g"), 2, 1 / 1) { origin case_input; }
+  assert "f10": claimed_identity("degrees", entity_ref("urn:calc:pq:f"), entity_ref("urn:calc:pq:g")) { origin case_input; }
+ }
+ evaluate truth(degree_mismatch(entity_ref("urn:calc:pq:f"), entity_ref("urn:calc:pq:g")));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(DegreeMismatch);
+ evaluate truth(identity_holds("degrees"));
+ expect truth_status == FALSE_ONLY;
+}

@@ -1,0 +1,17 @@
+language "law.core" version "0.2";
+package calc.expressions version "0.1.0";
+namespace "urn:law:calc:expressions";
+
+test "log — унарная форма, не неявный синоним структурного ln" {
+ given {
+  assert "f1": node(entity_ref("urn:calc:expr:log"), 1, "const", "", 2 / 1, 0, 0) { origin case_input; }
+  assert "f2": node(entity_ref("urn:calc:expr:log"), 2, "log", "", 0 / 1, 1, 0) { origin case_input; }
+  assert "f3": node(entity_ref("urn:calc:expr:log"), 3, "ln", "", 0 / 1, 1, 0) { origin case_input; }
+  assert "f4": closed(entity_ref("urn:calc:expr:log")) { origin case_input; }
+ }
+ evaluate truth(well_formed(entity_ref("urn:calc:expr:log"), 2));
+ expect truth_status == TRUE_ONLY;
+ evaluate truth(equivalent(entity_ref("urn:calc:expr:log"), 2, 3));
+ expect truth_status == NEITHER;
+ expect evaluation_status == COMPUTED;
+}

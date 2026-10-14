@@ -1,0 +1,184 @@
+language "law.core" version "0.2";
+package calc.calculus_checker version "0.1.0";
+namespace "urn:law:calc:calculus-checker";
+
+// ПРОВЕРКА ПРЕДЪЯВЛЕННОГО ДИФФЕРЕНЦИРОВАНИЯ И ИНТЕГРИРОВАНИЯ (DECISION-0196).
+//
+// Пакет ПРОВЕРЯЕТ ход, предъявленный студентом, и не ищет его. Ни в одном
+// методе нет автоматического выбора: ни `u` и `dv`, ни подстановки, ни
+// направления формулы (§2 DECISION-0154 этим решением не отменяется).
+//
+// СТРОКА ХОДА. `line(p, i, expr, method, ground_j, ground_k, aux_u, aux_dv)`:
+// строка i УСТАНАВЛИВАЕТ выражение `expr`, а `method` объясняет, как оно
+// получено из выражений строк-оснований. Первая строка — `given`: студент
+// предъявляет функцию. Дальше каждая строка преобразует основания по
+// названному правилу словаря.
+//
+// ПОЛЯ `aux_u` И `aux_dv` НЕСУТ ВЫБОР СТУДЕНТА — то, чего Arxo не делает
+// никогда. У `by_parts` это `u` и `dv`; у правил произведения и частного —
+// сами множители f и g. Пакет их ПРОВЕРЯЕТ на месте, но не предлагает: в этом
+// и состоит граница между проверяющим и решателем.
+//
+// ОТКАЗ ХОДА НЕ ЕСТЬ ЛОЖНОСТЬ РЕЗУЛЬТАТА — теми же словами, что у
+// `calc.proof_checker`. `step_error` говорит, что ПРЕДЪЯВЛЕННЫЙ переход не
+// соответствует названному правилу, и ничего не говорит о том, верен ли
+// ответ по существу.
+//
+// БЮДЖЕТ — ЯВНАЯ КОНСТАНТА: не более 64 строк в одном ходе.
+
+import calc.expressions version "0.1.0";
+import calc.polynomials_q version "0.1.0";
+
+pub entity Derivation {
+    label ru unofficial "предъявленный ход дифференцирования или интегрирования";
+}
+
+// ── Что предъявляет дело ───────────────────────────────────────────────────
+
+pub relation document(
+        p: Derivation { label ru unofficial "ход"; },
+        size: Integer { label ru unofficial "число строк"; },
+        target: Integer { label ru unofficial "узел итогового выражения"; },
+        calculus: Text { label ru unofficial "словарь правил"; }
+) kind empirical {
+    label ru unofficial "заголовок хода: число строк, ожидаемый итог и версия словаря";
+}
+
+pub relation nodes_of(
+        p: Derivation { label ru unofficial "ход"; },
+        e: calc.expressions::Expr { label ru unofficial "набор узлов"; }
+) kind empirical {
+    label ru unofficial "набор узлов, в котором разрешаются все выражения этого хода";
+}
+
+pub relation variable(
+        p: Derivation { label ru unofficial "ход"; },
+        x: Text { label ru unofficial "переменная"; }
+) kind empirical {
+    label ru unofficial "переменная, по которой ведётся дифференцирование или интегрирование";
+}
+
+pub relation line(
+        p: Derivation { label ru unofficial "ход"; },
+        i: Integer { label ru unofficial "строка"; },
+        expr: Integer { label ru unofficial "установленное выражение"; },
+        method: Text { label ru unofficial "названное правило"; },
+        ground_j: Integer { label ru unofficial "первое основание"; },
+        ground_k: Integer { label ru unofficial "второе основание"; },
+        aux_u: Integer { label ru unofficial "выбор студента: u либо первый множитель"; },
+        aux_dv: Integer { label ru unofficial "выбор студента: dv либо второй множитель"; }
+) kind empirical {
+    label ru unofficial "предъявленная строка хода";
+}
+
+pub relation closed(
+        p: Derivation { label ru unofficial "ход"; }
+) kind empirical {
+    label ru unofficial "ввод строк завершён: отсутствие строки после этого — дефект";
+}
+
+// ── Служебные различения ───────────────────────────────────────────────────
+
+relation active(p: Derivation, n: Integer, target: Integer) kind institutional {
+    label ru unofficial "однозначный заголовок с поддерживаемым словарём";
+}
+
+relation context_of(p: Derivation, e: calc.expressions::Expr, x: Text) kind institutional {
+    label ru unofficial "набор узлов и переменная хода однозначны";
+}
+
+relation unique_line(
+    p: Derivation,
+    i: Integer,
+    expr: Integer,
+    method: Text,
+    j: Integer,
+    k: Integer,
+    u: Integer,
+    dv: Integer,
+) kind institutional {
+    label ru unofficial "однозначная строка внутри объявленных границ";
+}
+
+relation line_present(p: Derivation, i: Integer) kind institutional {
+    label ru unofficial "номер строки присутствует";
+}
+
+relation required(p: Derivation, i: Integer, j: Integer) kind institutional {
+    label ru unofficial "строка опирается на другую строку";
+}
+
+relation local_match(p: Derivation, i: Integer, expr: Integer) kind institutional {
+    label ru unofficial "форма перехода совпала с названным правилом; основания ещё проверяются";
+}
+
+relation checked(p: Derivation, i: Integer, expr: Integer) kind institutional {
+    label ru unofficial "переход подтверждён через проверенные основания";
+}
+
+relation verified_prefix(p: Derivation, i: Integer) kind institutional {
+    label ru unofficial "все строки от первой до этой проверены";
+}
+
+relation step_problem(p: Derivation, i: Integer) kind institutional {
+    label ru unofficial "строка имеет первичный дефект";
+}
+
+relation problem(p: Derivation) kind institutional {
+    label ru unofficial "ход имеет дефект";
+}
+
+relation earlier_error(p: Derivation, i: Integer) kind institutional {
+    label ru unofficial "существует более ранний первичный дефект";
+}
+
+// ── Наблюдаемые выводы ─────────────────────────────────────────────────────
+
+pub relation step_valid(
+        p: Derivation { label ru unofficial "ход"; },
+        i: Integer { label ru unofficial "строка"; }
+) kind institutional {
+    label ru unofficial "строка проверена и не содержит собственной ошибки";
+}
+
+pub relation derivation_valid(
+        p: Derivation { label ru unofficial "ход"; }
+) kind institutional {
+    label ru unofficial "весь завершённый ход проверен, последняя строка совпала с заявленным итогом";
+}
+
+pub relation step_error(
+        p: Derivation { label ru unofficial "ход"; },
+        i: Integer { label ru unofficial "строка"; },
+        reason: Text { label ru unofficial "причина"; }
+) kind institutional {
+    label ru unofficial "первичный дефект строки: INVALID_INDEX, AMBIGUOUS_LINE, UNKNOWN_METHOD, EXTRA_LINE, FORWARD_REFERENCE, INVALID_REFERENCE, MISSING_REFERENCE, MISSING_LINE, INVALID_LINE_EXPRESSION, RULE_MISMATCH, METHOD_NOT_IN_V1";
+}
+
+pub relation blocked_step(
+        p: Derivation { label ru unofficial "ход"; },
+        i: Integer { label ru unofficial "зависимая строка"; },
+        j: Integer { label ru unofficial "непроверенное основание"; }
+) kind institutional {
+    label ru unofficial "форма перехода правильна, но его основание не проверено";
+}
+
+pub relation first_error(
+        p: Derivation { label ru unofficial "ход"; },
+        i: Integer { label ru unofficial "первая ошибочная строка"; }
+) kind institutional {
+    label ru unofficial "первый первичный дефект по номеру строки";
+}
+
+pub relation derivation_error(
+        p: Derivation { label ru unofficial "ход"; },
+        reason: Text { label ru unofficial "причина"; }
+) kind institutional {
+    label ru unofficial "дефект заголовка или итога: INVALID_SIZE, UNKNOWN_CALCULUS, AMBIGUOUS_DOCUMENT, MISSING_DOCUMENT, NO_CONTEXT, GOAL_MISMATCH";
+}
+
+pub relation budget_exhausted(
+        p: Derivation { label ru unofficial "ход"; }
+) kind institutional {
+    label ru unofficial "ОБЪЯВЛЕННЫЙ ОТКАЗ: строк больше 64, ход не проверяется";
+}

@@ -1,0 +1,27 @@
+language "law.core" version "0.2";
+package calc.polynomials_q version "0.1.0";
+namespace "urn:law:calc:polynomials-q";
+
+// Обе стороны строятся ТЕМИ ЖЕ правилами свёртки; отдельного доверенного пути у проверки нет.
+
+test "тождество f·g = g·f" {
+ given {
+  assert "f0": degree_cap(12) { origin case_input; }
+  assert "f1": poly(entity_ref("urn:calc:pq:f"), 3) { origin case_input; }
+  assert "f2": term(entity_ref("urn:calc:pq:f"), 0, -1 / 1) { origin case_input; }
+  assert "f3": term(entity_ref("urn:calc:pq:f"), 1, 0 / 1) { origin case_input; }
+  assert "f4": term(entity_ref("urn:calc:pq:f"), 2, 0 / 1) { origin case_input; }
+  assert "f5": term(entity_ref("urn:calc:pq:f"), 3, 1 / 1) { origin case_input; }
+  assert "f6": poly(entity_ref("urn:calc:pq:g"), 2) { origin case_input; }
+  assert "f7": term(entity_ref("urn:calc:pq:g"), 0, -1 / 1) { origin case_input; }
+  assert "f8": term(entity_ref("urn:calc:pq:g"), 1, 0 / 1) { origin case_input; }
+  assert "f9": term(entity_ref("urn:calc:pq:g"), 2, 1 / 1) { origin case_input; }
+  assert "f10": product_of(entity_ref("urn:calc:pq:fg"), entity_ref("urn:calc:pq:f"), entity_ref("urn:calc:pq:g")) { origin case_input; }
+  assert "f11": product_of(entity_ref("urn:calc:pq:gf"), entity_ref("urn:calc:pq:g"), entity_ref("urn:calc:pq:f")) { origin case_input; }
+  assert "f12": claimed_identity("commute", entity_ref("urn:calc:pq:fg"), entity_ref("urn:calc:pq:gf")) { origin case_input; }
+ }
+ evaluate truth(identity_holds("commute"));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(PolysEqual);
+}

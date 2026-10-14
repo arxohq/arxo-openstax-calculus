@@ -1,0 +1,293 @@
+// OpenStax Calculus, том 1, глава 3 «Derivatives»: СЛОВАРЬ ПРАВИЛ
+// дифференцирования, на которые студент ссылается шагом.
+//
+// ЧТО ЭТОТ ПАКЕТ ДЕЛАЕТ И ЧЕГО НЕ ДЕЛАЕТ. Он не вычисляет производных: счётом
+// занимается `calc.polynomials_q` там, где класс замкнут, а проверкой
+// предъявленного шага — `calc.calculus_checker`. Здесь живёт ПРОВЕНАНС:
+// каждое правило учебника названо сущностью, снабжено `@source` на
+// закреплённый фрагмент CNXML и связано с методом проверяющего. Потребитель
+// обосновывает, вычислитель подтверждает (DECISION-0196 §1).
+//
+// ПОКАЗ ИНСТРУКЦИИ НЕ ЕСТЬ ВЫПОЛНЕННЫЙ ХОД — граница `logic.core`
+// (06-reasoning.law) соблюдена конструкцией: `instruction_available`
+// выводится из ОПИСАНИЯ правила и не даёт ни одного заключения о
+// предъявленном ходе, а `step_justified_by` приходит ТОЛЬКО из проверенного
+// шага `calc.calculus_checker`.
+//
+// ДОКАЗАТЕЛЬСТВА ОСТАЮТСЯ В ИСТОЧНИКЕ. Пакет удостоверяет ПРИМЕНЕНИЕ
+// формулировки к предъявленным данным, а не повторную проверку доказательства
+// теоремы (docs/sciences/README.ru.md, правило 5). Доказательства и
+// упражнения в закреплённый срез не входят вовсе.
+
+language "law.core" version "0.2";
+package openstax.calculus_derivatives version "0.1.1";
+namespace "urn:openstax:clir:calculus-derivatives";
+
+import calc.expressions version "0.1.0";
+import calc.polynomials_q version "0.1.0";
+import calc.calculus_checker version "0.1.0";
+
+use self::{
+    CD_CHAIN_RULE,
+    CD_CONSTANT_RULE,
+    CD_DERIVATIVE_DEFINITION,
+    CD_NATURAL_EXPONENTIAL,
+    CD_NATURAL_LOGARITHM,
+    CD_POWER_RULE,
+    CD_PRODUCT_RULE,
+    CD_QUOTIENT_RULE,
+    CD_SIN_COS,
+    CD_SUM_DIFFERENCE_MULTIPLE,
+};
+
+@source(CD_DERIVATIVE_DEFINITION)
+pub entity DifferentiationRule {
+    label en official "a rule of the textbook a student may cite as a step";
+    label ru unofficial "правило дифференцирования из словаря учебника";
+}
+
+@source(CD_DERIVATIVE_DEFINITION)
+pub relation rule_method(
+        r: DifferentiationRule { label ru unofficial "правило словаря"; },
+        method: Text { label ru unofficial "метод проверяющего"; }
+) kind empirical {
+    label ru unofficial "какому методу проверяющего соответствует это правило учебника";
+}
+
+@source(CD_DERIVATIVE_DEFINITION)
+pub relation rule_premise(
+        r: DifferentiationRule { label ru unofficial "правило словаря"; },
+        position: Integer { label ru unofficial "номер посылки"; },
+        text: Text { label ru unofficial "условие применимости"; }
+) kind empirical {
+    label ru unofficial "условие применимости правила — для ПОКАЗА инструкции, без всякого дела";
+}
+
+@source(CD_DERIVATIVE_DEFINITION)
+pub relation rule_conclusion(
+        r: DifferentiationRule { label ru unofficial "правило словаря"; },
+        text: Text { label ru unofficial "заключение"; }
+) kind empirical {
+    label ru unofficial "что правило даёт в заключении";
+}
+
+@source(CD_DERIVATIVE_DEFINITION)
+pub relation instruction_available(
+        r: DifferentiationRule { label ru unofficial "правило словаря"; }
+) kind derived {
+    label ru unofficial "у правила есть показываемая инструкция: названы хотя бы одна посылка и заключение. ПОКАЗ НЕ ЕСТЬ ВЫПОЛНЕНИЕ";
+}
+
+@source(CD_DERIVATIVE_DEFINITION)
+pub relation step_justified_by(
+        p: calc.calculus_checker::Derivation { label ru unofficial "ход"; },
+        i: Integer { label ru unofficial "строка"; },
+        r: DifferentiationRule { label ru unofficial "правило словаря"; }
+) kind derived {
+    label ru unofficial "проверенный шаг обоснован НАЗВАННЫМ правилом учебника: потребитель обосновывает, вычислитель подтверждает";
+}
+
+@source(CD_DERIVATIVE_DEFINITION)
+rule InstructionAvailable(r: DifferentiationRule, position: Integer, premise: Text, conclusion: Text) strict {
+    label ru unofficial "инструкция показывается из описания правила и без всякого дела; ни одного заключения о предъявленном ходе она не даёт";
+    when rule_premise(r, position, premise) and rule_conclusion(r, conclusion);
+    then instruction_available(r);
+}
+
+@source(CD_CONSTANT_RULE)
+rule ConstantRuleJustifies(
+    p: calc.calculus_checker::Derivation,
+    i: Integer,
+    r: DifferentiationRule,
+    expr: Integer,
+    j: Integer,
+    k: Integer,
+    u: Integer,
+    dv: Integer,
+) strict {
+    label ru unofficial "§3.3 The Constant Rule: производная константы есть ноль";
+    when monotone(calc.calculus_checker::step_valid(p, i))
+        and calc.calculus_checker::line(p, i, expr, "constant_rule", j, k, u, dv)
+        and rule_method(r, "constant_rule");
+    then step_justified_by(p, i, r);
+}
+
+@source(CD_POWER_RULE)
+rule PowerRuleJustifies(
+    p: calc.calculus_checker::Derivation,
+    i: Integer,
+    r: DifferentiationRule,
+    expr: Integer,
+    j: Integer,
+    k: Integer,
+    u: Integer,
+    dv: Integer,
+) strict {
+    label ru unofficial "§3.3 The Power Rule: производная степени есть n·x^(n−1)";
+    when monotone(calc.calculus_checker::step_valid(p, i))
+        and calc.calculus_checker::line(p, i, expr, "power_rule", j, k, u, dv)
+        and rule_method(r, "power_rule");
+    then step_justified_by(p, i, r);
+}
+
+@source(CD_SUM_DIFFERENCE_MULTIPLE)
+rule SumRuleJustifies(
+    p: calc.calculus_checker::Derivation,
+    i: Integer,
+    r: DifferentiationRule,
+    expr: Integer,
+    j: Integer,
+    k: Integer,
+    u: Integer,
+    dv: Integer,
+) strict {
+    label ru unofficial "§3.3 Sum, Difference, and Constant Multiple Rules: производная суммы есть сумма производных";
+    when monotone(calc.calculus_checker::step_valid(p, i))
+        and calc.calculus_checker::line(p, i, expr, "sum_rule", j, k, u, dv)
+        and rule_method(r, "sum_rule");
+    then step_justified_by(p, i, r);
+}
+
+@source(CD_SUM_DIFFERENCE_MULTIPLE)
+rule ConstantMultipleJustifies(
+    p: calc.calculus_checker::Derivation,
+    i: Integer,
+    r: DifferentiationRule,
+    expr: Integer,
+    j: Integer,
+    k: Integer,
+    u: Integer,
+    dv: Integer,
+) strict {
+    label ru unofficial "§3.3 те же правила: постоянный множитель выносится за знак производной";
+    when monotone(calc.calculus_checker::step_valid(p, i))
+        and calc.calculus_checker::line(p, i, expr, "constant_multiple", j, k, u, dv)
+        and rule_method(r, "constant_multiple");
+    then step_justified_by(p, i, r);
+}
+
+@source(CD_PRODUCT_RULE)
+rule ProductRuleJustifies(
+    p: calc.calculus_checker::Derivation,
+    i: Integer,
+    r: DifferentiationRule,
+    expr: Integer,
+    j: Integer,
+    k: Integer,
+    u: Integer,
+    dv: Integer,
+) strict {
+    label ru unofficial "§3.3 The Product Rule: производная произведения есть f'·g + f·g'";
+    when monotone(calc.calculus_checker::step_valid(p, i))
+        and calc.calculus_checker::line(p, i, expr, "product_rule", j, k, u, dv)
+        and rule_method(r, "product_rule");
+    then step_justified_by(p, i, r);
+}
+
+@source(CD_QUOTIENT_RULE)
+rule QuotientRuleJustifies(
+    p: calc.calculus_checker::Derivation,
+    i: Integer,
+    r: DifferentiationRule,
+    expr: Integer,
+    j: Integer,
+    k: Integer,
+    u: Integer,
+    dv: Integer,
+) strict {
+    label ru unofficial "§3.3 The Quotient Rule: производная частного есть (f'·g − f·g')/g²";
+    when monotone(calc.calculus_checker::step_valid(p, i))
+        and calc.calculus_checker::line(p, i, expr, "quotient_rule", j, k, u, dv)
+        and rule_method(r, "quotient_rule");
+    then step_justified_by(p, i, r);
+}
+
+@source(CD_CHAIN_RULE)
+rule ChainRuleJustifies(
+    p: calc.calculus_checker::Derivation,
+    i: Integer,
+    r: DifferentiationRule,
+    expr: Integer,
+    j: Integer,
+    k: Integer,
+    u: Integer,
+    dv: Integer,
+) strict {
+    label ru unofficial "§3.6 Rule: The Chain Rule: производная сложной функции есть произведение производных";
+    when monotone(calc.calculus_checker::step_valid(p, i))
+        and calc.calculus_checker::line(p, i, expr, "chain_rule", j, k, u, dv)
+        and rule_method(r, "chain_rule");
+    then step_justified_by(p, i, r);
+}
+
+@source(CD_SIN_COS)
+rule SineJustifies(
+    p: calc.calculus_checker::Derivation,
+    i: Integer,
+    r: DifferentiationRule,
+    expr: Integer,
+    j: Integer,
+    k: Integer,
+    u: Integer,
+    dv: Integer,
+) strict {
+    label ru unofficial "§3.5 The Derivatives of sin x and cos x: производная синуса есть косинус";
+    when monotone(calc.calculus_checker::step_valid(p, i))
+        and calc.calculus_checker::line(p, i, expr, "derivative_sin", j, k, u, dv)
+        and rule_method(r, "derivative_sin");
+    then step_justified_by(p, i, r);
+}
+
+@source(CD_SIN_COS)
+rule CosineJustifies(
+    p: calc.calculus_checker::Derivation,
+    i: Integer,
+    r: DifferentiationRule,
+    expr: Integer,
+    j: Integer,
+    k: Integer,
+    u: Integer,
+    dv: Integer,
+) strict {
+    label ru unofficial "§3.5 те же производные: производная косинуса есть минус синус";
+    when monotone(calc.calculus_checker::step_valid(p, i))
+        and calc.calculus_checker::line(p, i, expr, "derivative_cos", j, k, u, dv)
+        and rule_method(r, "derivative_cos");
+    then step_justified_by(p, i, r);
+}
+
+@source(CD_NATURAL_EXPONENTIAL)
+rule ExponentialJustifies(
+    p: calc.calculus_checker::Derivation,
+    i: Integer,
+    r: DifferentiationRule,
+    expr: Integer,
+    j: Integer,
+    k: Integer,
+    u: Integer,
+    dv: Integer,
+) strict {
+    label ru unofficial "§3.9 Derivative of the Natural Exponential Function: e^x совпадает со своей производной";
+    when monotone(calc.calculus_checker::step_valid(p, i))
+        and calc.calculus_checker::line(p, i, expr, "derivative_exp", j, k, u, dv)
+        and rule_method(r, "derivative_exp");
+    then step_justified_by(p, i, r);
+}
+
+@source(CD_NATURAL_LOGARITHM)
+rule LogarithmJustifies(
+    p: calc.calculus_checker::Derivation,
+    i: Integer,
+    r: DifferentiationRule,
+    expr: Integer,
+    j: Integer,
+    k: Integer,
+    u: Integer,
+    dv: Integer,
+) strict {
+    label ru unofficial "§3.9 The Derivative of the Natural Logarithmic Function: производная ln x есть 1/x";
+    when monotone(calc.calculus_checker::step_valid(p, i))
+        and calc.calculus_checker::line(p, i, expr, "derivative_ln", j, k, u, dv)
+        and rule_method(r, "derivative_ln");
+    then step_justified_by(p, i, r);
+}

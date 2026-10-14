@@ -1,0 +1,74 @@
+language "law.core" version "0.2";
+package calc.expressions version "0.1.0";
+namespace "urn:law:calc:expressions";
+
+// СВЯЗЫВАНИЕ КАК ОТНОШЕНИЕ, А НЕ КАК НОВЫЙ ТЕГ (цель §5).
+//
+// Матрица называла пробел: «binder-aware alpha-equivalence (tag set has no
+// binders yet)». Отсутствие связывающих ТЕГОВ — свойство набора тегов, а не
+// ограничение языка: связывание здесь отношение над набором узлов, и всё
+// остальное выводится из уже существующего `node`. Сценарий это проверяет.
+//
+// ТЕРМ `lambda x . x` в терминах пакета: узел 1 — «add» с левым ребёнком 2 и
+// правым 3; узел 2 объявлен связывающим имя "x"; узел 3 — переменная "x".
+// Вхождение в узле 3 СВЯЗАНО, потому что под ним есть связывающий узел с тем
+// же именем.
+
+test "связывание выводится из отношения, а не из набора тегов" {
+ given {
+  assert "n1": node(entity_ref("urn:calc:ex:b1"), 1, "add", "", 0 / 1, 2, 3) { origin case_input; }
+  assert "n2": node(entity_ref("urn:calc:ex:b1"), 2, "add", "", 0 / 1, 4, 3) { origin case_input; }
+  assert "n3": node(entity_ref("urn:calc:ex:b1"), 3, "var", "x", 0 / 1, 0, 0) { origin case_input; }
+  assert "n4": node(entity_ref("urn:calc:ex:b1"), 4, "const", "", 2 / 1, 0, 0) { origin case_input; }
+  assert "cl": closed(entity_ref("urn:calc:ex:b1")) { origin case_input; }
+
+  // узел 2 связывает имя "x" — это объявление, а не новый тег
+  assert "b1": binder_declared(entity_ref("urn:calc:ex:b1"), 2, "x") { origin case_input; }
+  // узел 3 использует это имя
+  assert "u1": node_uses(entity_ref("urn:calc:ex:b1"), 3, "x") { origin case_input; }
+  // и под ним есть связывающий узел с тем же именем
+  assert "bb": bound_below(entity_ref("urn:calc:ex:b1"), 3, "x") { origin case_input; }
+ }
+
+ evaluate truth(binder_name(entity_ref("urn:calc:ex:b1"), 2, "x"));
+ expect truth_status == TRUE_ONLY;
+ expect applied(BinderName);
+ evaluate truth(bound_at(entity_ref("urn:calc:ex:b1"), 3, "x"));
+ expect truth_status == TRUE_ONLY;
+ expect applied(BinderBound);
+}
+
+// ЗАХВАТ ОТВЕРГАЕТСЯ ПОИМЕННО, А НЕ ОБХОДИТСЯ ПЕРЕИМЕНОВАНИЕМ.
+//
+// Подстановка `x` вместо `y` в `lambda y . y + 1` дала бы замкнутый терм там,
+// где исходный имел свободное вхождение. Язык, умеющий переименовать
+// связывающую переменную, поступил бы правильно; этот пакет этого НЕ делает, и
+// причина стоит отдельно: генератор свежих имён должен быть БЕЗУПРЕЧЕН, а
+// неверный даёт корректно построенный неверный терм. Поэтому проверяется
+// предусловие, случай отвергается поимённо (SUBSTITUTION_CAPTURE), а имя
+// выбирает вызывающий — и объявляет его свежим. Отказ, который читатель видит,
+// честнее переименования, которому приходится доверять.
+
+test "a substitution that captures a bound name is refused" {
+ given {
+  // 1 + a, где a — вхождение, НЕ лежащее под связывающим узлом
+  assert "n1": node(entity_ref("urn:calc:ex:b2"), 1, "add", "", 0 / 1, 2, 3) { origin case_input; }
+  assert "n2": node(entity_ref("urn:calc:ex:b2"), 2, "const", "", 1 / 1, 0, 0) { origin case_input; }
+  assert "n3": node(entity_ref("urn:calc:ex:b2"), 3, "var", "a", 0 / 1, 0, 0) { origin case_input; }
+  assert "cl": closed(entity_ref("urn:calc:ex:b2")) { origin case_input; }
+  assert "u1": node_uses(entity_ref("urn:calc:ex:b2"), 3, "a") { origin case_input; }
+
+  // образ подстановки — узел 4, и он УПОМИНАЕТ "y"
+  assert "n4": node(entity_ref("urn:calc:ex:b2"), 4, "var", "y", 0 / 1, 0, 0) { origin case_input; }
+  assert "s1": substitution_into(entity_ref("urn:calc:ex:b2"), 3, 4) { origin case_input; }
+  assert "u2": node_uses(entity_ref("urn:calc:ex:b2"), 4, "y") { origin case_input; }
+
+  // и где-то выше есть связывающий узел с именем "y" — именно он и был бы
+  // захвачен
+  assert "b1": binder_declared(entity_ref("urn:calc:ex:b2"), 5, "y") { origin case_input; }
+ }
+
+ evaluate truth(substitution_capture(entity_ref("urn:calc:ex:b2"), 3, "a", 4));
+ expect truth_status == TRUE_ONLY;
+ expect applied(CaptureGuard);
+}

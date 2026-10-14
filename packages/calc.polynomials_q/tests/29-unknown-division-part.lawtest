@@ -1,0 +1,26 @@
+language "law.core" version "0.2";
+package calc.polynomials_q version "0.1.0";
+namespace "urn:law:calc:polynomials-q";
+
+// «GCD» деление не выдаёт: перечень частей закрыт и предъявлен фактами пакета.
+
+test "дескриптор вне закрытого перечня отклонён" {
+ given {
+  assert "f0": degree_cap(8) { origin case_input; }
+  assert "f1": poly(entity_ref("urn:calc:pq:f"), 3) { origin case_input; }
+  assert "f2": term(entity_ref("urn:calc:pq:f"), 0, 3 / 1) { origin case_input; }
+  assert "f3": term(entity_ref("urn:calc:pq:f"), 1, 0 / 1) { origin case_input; }
+  assert "f4": term(entity_ref("urn:calc:pq:f"), 2, -2 / 1) { origin case_input; }
+  assert "f5": term(entity_ref("urn:calc:pq:f"), 3, 1 / 1) { origin case_input; }
+  assert "f6": poly(entity_ref("urn:calc:pq:g"), 1) { origin case_input; }
+  assert "f7": term(entity_ref("urn:calc:pq:g"), 0, -1 / 1) { origin case_input; }
+  assert "f8": term(entity_ref("urn:calc:pq:g"), 1, 1 / 1) { origin case_input; }
+  assert "f9": produced(entity_ref("urn:calc:pq:x"), 3) { origin case_input; }
+  assert "f10": division(entity_ref("urn:calc:pq:dv"), entity_ref("urn:calc:pq:f"), entity_ref("urn:calc:pq:g")) { origin case_input; }
+  assert "f11": division_binding(entity_ref("urn:calc:pq:dv"), "GCD", entity_ref("urn:calc:pq:x")) { origin case_input; }
+ }
+ evaluate truth(division_defect(entity_ref("urn:calc:pq:dv"), "UNKNOWN_PART"));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(UnknownPart);
+}

@@ -1,0 +1,272 @@
+language "law.core" version "0.2";
+package calc.expressions version "0.1.0";
+namespace "urn:law:calc:expressions";
+
+use self::{
+    Expr,
+    branch_else,
+    branch_then,
+    complex_imag,
+    complex_node,
+    complex_real,
+    entry_chain_ends,
+    entry_item,
+    entry_tail,
+    matrix_cols,
+    matrix_dims,
+    matrix_elements,
+    matrix_node,
+    matrix_rows,
+    matrix_shape_bound,
+    matrix_shape_error,
+    piecewise_branch,
+    piecewise_condition,
+    piecewise_node,
+    required_child,
+    unique_node,
+};
+
+
+
+// МАТРИЦА, КОМПЛЕКСНОЕ И КУСОЧНОЕ: РЕШЕНИЕ О ФОРМАТЕ ПРИНЯТО (scope B02.01).
+//
+// 08-operators.law отказывал этим трём видам ПОИМЕННО, и отказ был честным: узел
+// несёт (тег, имя, значение, левый потомок, правый потомок), а комплексному нужна
+// пара, кусочному — условие и две ветви, матрице — две размерности и элементы.
+// Формат тогда был не решён, а отсутствовал.
+//
+// РЕШЕНИЕ ПРИНЯТО, И ОНО В ПОЛЬЗУ СУЩЕСТВУЮЩИХ СЛОТОВ:
+//
+//   complex   → левый потомок = действительная часть, правый = мнимая;
+//   piecewise → левый = условие, правый = узел тега `branch`, у которого
+//                левый потомок = первая ветвь, правый = вторая;
+//   matrix    → левый = узел тега `dims` (ЗНАЧЕНИЕ = число строк, ИМЯ = число
+//                столбцов текстом), правый = цепочка узлов тега `entry`, где
+//                левый потомок — элемент, правый — хвост, а ноль означает конец.
+//
+// ПОЧЕМУ НЕ «ДОБАВИТЬ ТРЕТИЙ СЛОТ». Это было бы честнее по форме, но изменило бы
+// форму узла для ВСЕГО пакета, то есть затронуло бы чужую работу. Недостающее
+// выражено ПОТОМКАМИ: слоты те же, а недостающие узлы — обычные узлы пакета с
+// обычными правилами.
+//
+// ЧИСЛО СТОЛБЦОВ — ТЕКСТ, и это единственный вынужденный выбор. У узла одно
+// значение и одно имя, а у размерности две компоненты. Значение отдано строкам
+// (целое), имя — столбцам (текст). Сценарий закрепляет ИМЕННО ТЕКСТ: подмена его
+// числом была бы молчаливым изменением контракта, а не уточнением.
+//
+// НИЧЕГО НЕ ВЫЧИСЛЯЕТСЯ. Появляется вид узла и его разобранные части, то есть
+// представление существует и доступно; арифметики ни матриц, ни комплексных, ни
+// кусочных здесь нет.
+
+// ── Комплексное число ────────────────────────────────────────────────────────
+
+rule ComplexNode(e: Expr, f: Integer, l: Integer, r: Integer) strict {
+    label ru unofficial "комплексный узел разобран: действительная часть слева, мнимая справа";
+    when unique_node(e, f, "complex", "", 0 / 1, l, r);
+    then complex_node(e, f);
+}
+
+rule ComplexReal(e: Expr, f: Integer, n: Integer, l: Integer, r: Integer) strict {
+    label ru unofficial "действительная часть комплексного узла — его левый потомок";
+    when unique_node(e, f, "complex", "", 0 / 1, l, r);
+    then complex_real(e, f, l);
+}
+
+rule ComplexImag(e: Expr, f: Integer, n: Integer, l: Integer, r: Integer) strict {
+    label ru unofficial "мнимая часть комплексного узла — его правый потомок";
+    when unique_node(e, f, "complex", "", 0 / 1, l, r);
+    then complex_imag(e, f, r);
+}
+
+// ── Кусочное выражение ──────────────────────────────────────────────────────
+
+rule PiecewiseNode(e: Expr, f: Integer, l: Integer, r: Integer) strict {
+    label ru unofficial "кусочный узел разобран: условие слева, узел пары ветвей справа";
+    when unique_node(e, f, "piecewise", "", 0 / 1, l, r);
+    then piecewise_node(e, f);
+}
+
+rule PiecewiseCondition(e: Expr, f: Integer, n: Integer, l: Integer, r: Integer) strict {
+    label ru unofficial "условие кусочного узла — его левый потомок";
+    when unique_node(e, f, "piecewise", "", 0 / 1, l, r);
+    then piecewise_condition(e, f, l);
+}
+
+rule PiecewiseBranch(e: Expr, f: Integer, n: Integer, l: Integer, r: Integer) strict {
+    label ru unofficial "пара ветвей кусочного узла — его правый потомок";
+    when unique_node(e, f, "piecewise", "", 0 / 1, l, r);
+    then piecewise_branch(e, f, r);
+}
+
+rule BranchNode(e: Expr, g: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "узел пары ветвей: первая ветвь слева, вторая справа";
+    when unique_node(e, g, "branch", "", 0 / 1, a, b);
+    then branch_then(e, g, a);
+}
+
+rule BranchElse(e: Expr, g: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "вторая ветвь узла пары ветвей — его правый потомок";
+    when unique_node(e, g, "branch", "", 0 / 1, a, b);
+    then branch_else(e, g, b);
+}
+
+// ── Матрица ─────────────────────────────────────────────────────────────────
+
+rule MatrixNode(e: Expr, f: Integer, l: Integer, r: Integer) strict {
+    label ru unofficial "матричный узел разобран: размерности слева, цепочка элементов справа";
+    when unique_node(e, f, "matrix", "", 0 / 1, l, r);
+    then matrix_node(e, f);
+}
+
+rule MatrixDims(e: Expr, f: Integer, l: Integer, r: Integer) strict {
+    label ru unofficial "узел размерности матрицы — левый потомок матричного узла";
+    when unique_node(e, f, "matrix", "", 0 / 1, l, r);
+    then matrix_dims(e, f, l);
+}
+
+rule MatrixRows(e: Expr, f: Integer, l: Integer, r: Integer, g: Integer, cols: Text, rows: Rational, a: Integer, b: Integer) strict {
+    label ru unofficial "число строк матрицы — ЗНАЧЕНИЕ узла размерности; имя узла связано, но не читается: строки лежат в значении, а в имени лежат столбцы";
+    when unique_node(e, f, "matrix", "", 0 / 1, l, r) and unique_node(e, g, "dims", cols, rows, a, b);
+    then matrix_rows(e, f, rows);
+}
+
+rule MatrixCols(e: Expr, f: Integer, l: Integer, r: Integer, g: Integer, cols: Text, rows: Rational, a: Integer, b: Integer) strict {
+    label ru unofficial "число столбцов матрицы — ИМЯ узла размерности, и оно текстовое";
+    when unique_node(e, f, "matrix", "", 0 / 1, l, r) and unique_node(e, g, "dims", cols, rows, a, b);
+    then matrix_cols(e, f, cols);
+}
+
+rule MatrixElements(e: Expr, f: Integer, l: Integer, r: Integer) strict {
+    label ru unofficial "цепочка элементов матрицы — правый потомок матричного узла";
+    when unique_node(e, f, "matrix", "", 0 / 1, l, r);
+    then matrix_elements(e, f, r);
+}
+
+rule EntryItem(e: Expr, g: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "элемент цепочки — левый потомок узла `entry`";
+    when unique_node(e, g, "entry", "", 0 / 1, a, b);
+    then entry_item(e, g, a);
+}
+
+rule EntryTail(e: Expr, g: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "хвост цепочки — правый потомок узла `entry`";
+    when unique_node(e, g, "entry", "", 0 / 1, a, b);
+    then entry_tail(e, g, b);
+}
+
+// КОНЕЦ ЦЕПОЧКИ — ФАКТ О СТРУКТУРЕ, а не отсутствие: последний узел `entry`
+// объявлен, и его хвост есть ноль. Формулировка «нет следующего узла» была бы
+// отрицанием, а отрицание в гарде ничего не связывает (§190).
+
+rule EntryChainEnds(e: Expr, g: Integer, a: Integer) strict {
+    label ru unofficial "цепочка элементов матрицы дошла до конца: последний узел `entry` не имеет хвоста";
+    when unique_node(e, g, "entry", "", 0 / 1, a, 0);
+    then entry_chain_ends(e, g);
+}
+
+// ── ССЫЛОЧНАЯ ЦЕЛОСТНОСТЬ НОВЫХ ВИДОВ ────────────────────────────────────────
+//
+// ПРЕДЪЯВЛЕННЫЙ ДЕФЕКТ САМОГО ЭТОГО СРЕЗА, и он смысловой, а не оформленческий.
+// `required_child` питается правилами видов `unary`, `binary`, `exponentiation`
+// (diagnostics.law:33-61). Новые виды в этот список не входили, а значит
+// ССЫЛКА НА НЕПРЕДЪЯВЛЕННЫЙ УЗЕЛ у них не давала `MISSING_CHILD`: комплексный
+// узел, чей мнимый потомок — номер 7, которого в наборе нет, проходил как
+// корректный. То есть представление появилось, а целостность графа — нет, и
+// второе ровно настолько же обязательно, как первое.
+//
+// ХВОСТ ЦЕПОЧКИ — ИСКЛЮЧЕНИЕ, И ОНО ПО-НАСТОЯЩЕМУ. У узла `entry` правый
+// потомок есть ХВОСТ, и его отсутствие означается нулём, а не предъявленным
+// узлом. Поэтому левый потомок обязателен ВСЕГДА, а правый — только когда он
+// положителен. Требование обоих безусловно запретило бы последний элемент
+// матрицы, то есть наказало бы за правильно построенный список.
+
+rule ComplexLeftChild(e: Expr, f: Integer, l: Integer, r: Integer) strict {
+    label ru unofficial "действительная часть комплексного узла объявлена его дочерним узлом";
+    when unique_node(e, f, "complex", "", 0 / 1, l, r);
+    then required_child(e, f, l);
+}
+
+rule ComplexRightChild(e: Expr, f: Integer, l: Integer, r: Integer) strict {
+    label ru unofficial "мнимая часть комплексного узла объявлена его дочерним узлом";
+    when unique_node(e, f, "complex", "", 0 / 1, l, r);
+    then required_child(e, f, r);
+}
+
+rule PiecewiseLeftChild(e: Expr, f: Integer, l: Integer, r: Integer) strict {
+    label ru unofficial "условие кусочного узла объявлено его дочерним узлом";
+    when unique_node(e, f, "piecewise", "", 0 / 1, l, r);
+    then required_child(e, f, l);
+}
+
+rule PiecewiseRightChild(e: Expr, f: Integer, l: Integer, r: Integer) strict {
+    label ru unofficial "пара ветвей кусочного узла объявлена его дочерним узлом";
+    when unique_node(e, f, "piecewise", "", 0 / 1, l, r);
+    then required_child(e, f, r);
+}
+
+rule BranchLeftChild(e: Expr, g: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "первая ветвь узла `branch` объявлена его дочерним узлом";
+    when unique_node(e, g, "branch", "", 0 / 1, a, b);
+    then required_child(e, g, a);
+}
+
+rule BranchRightChild(e: Expr, g: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "вторая ветвь узла `branch` объявлена его дочерним узлом";
+    when unique_node(e, g, "branch", "", 0 / 1, a, b);
+    then required_child(e, g, b);
+}
+
+rule MatrixLeftChild(e: Expr, f: Integer, l: Integer, r: Integer) strict {
+    label ru unofficial "узел размерности матрицы объявлен её дочерним узлом";
+    when unique_node(e, f, "matrix", "", 0 / 1, l, r);
+    then required_child(e, f, l);
+}
+
+rule MatrixRightChild(e: Expr, f: Integer, l: Integer, r: Integer) strict {
+    label ru unofficial "цепочка элементов матрицы объявлена её дочерним узлом";
+    when unique_node(e, f, "matrix", "", 0 / 1, l, r);
+    then required_child(e, f, r);
+}
+
+rule EntryLeftChild(e: Expr, g: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "элемент цепочки объявлен дочерним узлом узла `entry`";
+    when unique_node(e, g, "entry", "", 0 / 1, a, b);
+    then required_child(e, g, a);
+}
+
+rule EntryRightChild(e: Expr, g: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "хвост цепочки объявлен дочерним узлом узла `entry` — только когда он есть, то есть положителен";
+    when unique_node(e, g, "entry", "", 0 / 1, a, b) and b > 0;
+    then required_child(e, g, b);
+}
+
+// ── Объявление формы не остаётся висячим ────────────────────────────────────
+//
+// Решение о формате вынесло одну из двух размерностей в ИМЯ узла размерности.
+// Следствие: сверка длины цепочки элементов с объявленной формой невозможна —
+// для неё нужны обе размерности числами. Что оставалось сделать — ЯВНО
+// ПРОВЕРИТЬ, что решение не оставляет висячее объявление формы. То есть
+// проверить не длину, а СВЯЗАННОСТЬ двух половин.
+//
+// ФОРМА БЕЗ ЭЛЕМЕНТОВ и ЭЛЕМЕНТЫ БЕЗ ФОРМЫ — разные утверждения, и коды
+// разные: первое есть объявление, которому нечем соответствовать; второе есть
+// данные без объявления. Свести их к одному коду значило бы сказать «форма не
+// в порядке» там, где не в порядке что-то другое.
+
+rule MatrixShapeBound(e: Expr, f: Integer, l: Integer, r: Integer) strict {
+    label ru unofficial "размерность и цепочка элементов предъявлены вместе: объявление формы связано";
+    when unique_node(e, f, "matrix", "", 0 / 1, l, r) and l > 0 and r > 0;
+    then matrix_shape_bound(e, f);
+}
+
+rule ShapeWithoutElements(e: Expr, f: Integer, l: Integer, r: Integer) strict {
+    label ru unofficial "SHAPE_WITHOUT_ELEMENTS: форма матрицы объявлена, а цепочка элементов отсутствует";
+    when unique_node(e, f, "matrix", "", 0 / 1, l, r) and l > 0 and r == 0;
+    then matrix_shape_error(e, f, "SHAPE_WITHOUT_ELEMENTS");
+}
+
+rule ElementsWithoutShape(e: Expr, f: Integer, l: Integer, r: Integer) strict {
+    label ru unofficial "ELEMENTS_WITHOUT_SHAPE: цепочка элементов предъявлена, а форма не объявлена";
+    when unique_node(e, f, "matrix", "", 0 / 1, l, r) and l == 0 and r > 0;
+    then matrix_shape_error(e, f, "ELEMENTS_WITHOUT_SHAPE");
+}

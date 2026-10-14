@@ -1,0 +1,368 @@
+// Source-модель: закреплённые байты 6 модулей CNXML
+// Calculus Volume 1, chapters 2 and 4 — limits and L’Hôpital’s rule и 13 фрагментов по идентификаторам элементов —
+// определения и нормативные формулировки правил учебника.
+//
+// ФАЙЛ ПОРОЖДАЕТСЯ. Правится только генератором —
+// `corpus/tools/sources/sync/sync_openstax_calculus_fragments.py`; сверка без
+// записи — его же ключом `--check`. Тексты вырезаются из
+// `sources/calculus-limits/*.cnxml`, поэтому разойтись с публикацией не могут.
+//
+// ПРОВЕНАНС. Байты — CNXML-исходники модулей на коммите main
+// 8dbc2ce19e804924b2517b89ac72ee45be949d15 репозитория
+// github.com/openstax/osbooks-calculus-bundle (2026-07-15).
+// PINNED_OFFICIAL_BYTES: это те самые байты, которые издатель публикует.
+//
+// ЛИЦЕНЗИЯ ИСТОЧНИКА — CC BY-NC-SA 4.0. OpenStax Calculus распространяется
+// под Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+// (лицензия объявлена в самом `calculus-volume-N.collection.xml`, элемент
+// `md:license`). У неё ДВА ограничения, которых нет у прочих источников
+// корпуса: некоммерческое использование и share-alike. Закрепление байтов с
+// атрибуцией лицензией допускается; ограничение названо здесь и в
+// `[metadata]` пакета — DECISION-0196 §2, прецедент физики 06.09.2026.
+//
+// ЕДИНИЦА ЦИТИРОВАНИЯ — ЭЛЕМЕНТ МОДУЛЯ. Локатор `module/<модуль>#<id>`;
+// разметка CNXML внутри фрагмента сохранена как есть (§13). Доказательства и
+// упражнения в срез не входят.
+
+language "law.core" version "0.2";
+package openstax.calculus_limits version "0.1.1";
+namespace "urn:openstax:clir:calculus-limits";
+
+source M53491 {
+    kind treatise;
+    jurisdiction "none";
+    number "OpenStax Calculus, ch. 2 Limits, module m53491";
+    label en official "The Limit of a Function";
+}
+
+edition M53491_MAIN of M53491 {
+    label en official "m53491/index.cnxml at commit 8dbc2ce (main, 2026-07-15)";
+    label ru unofficial "Файл m53491/index.cnxml на коммите 8dbc2ce ветки main";
+    language en;
+    officiality official;
+    adopted @2026-07-15;
+    materialization_status PINNED_OFFICIAL_BYTES;
+}
+
+publication M53491_CNXML of M53491_MAIN {
+    media_type "application/xml; charset=utf-8";
+    uri "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53491/index.cnxml";
+    retrieved_at @2026-09-12T00:00:00Z;
+    content_hash "sha256:662325358794c9abe700e4d19e696c801d9eddd4f6c45b918b6185baa9944374";
+    local_path "sources/calculus-limits/m53491.cnxml";
+}
+
+source M53492 {
+    kind treatise;
+    jurisdiction "none";
+    number "OpenStax Calculus, ch. 2 Limits, module m53492";
+    label en official "The Limit Laws";
+}
+
+edition M53492_MAIN of M53492 {
+    label en official "m53492/index.cnxml at commit 8dbc2ce (main, 2026-07-15)";
+    label ru unofficial "Файл m53492/index.cnxml на коммите 8dbc2ce ветки main";
+    language en;
+    officiality official;
+    adopted @2026-07-15;
+    materialization_status PINNED_OFFICIAL_BYTES;
+}
+
+publication M53492_CNXML of M53492_MAIN {
+    media_type "application/xml; charset=utf-8";
+    uri "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53492/index.cnxml";
+    retrieved_at @2026-09-12T00:00:00Z;
+    content_hash "sha256:57a6b5cf0d644a711ca113582a78a0d6270bfaebb40babddc8b080476a51bb53";
+    local_path "sources/calculus-limits/m53492.cnxml";
+}
+
+source M53489 {
+    kind treatise;
+    jurisdiction "none";
+    number "OpenStax Calculus, ch. 2 Limits, module m53489";
+    label en official "Continuity";
+}
+
+edition M53489_MAIN of M53489 {
+    label en official "m53489/index.cnxml at commit 8dbc2ce (main, 2026-07-15)";
+    label ru unofficial "Файл m53489/index.cnxml на коммите 8dbc2ce ветки main";
+    language en;
+    officiality official;
+    adopted @2026-07-15;
+    materialization_status PINNED_OFFICIAL_BYTES;
+}
+
+publication M53489_CNXML of M53489_MAIN {
+    media_type "application/xml; charset=utf-8";
+    uri "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53489/index.cnxml";
+    retrieved_at @2026-09-12T00:00:00Z;
+    content_hash "sha256:96e89d1cd16c4be5a87a3d68d19f2552204ffc97f6316433ef35689187c5bf7f";
+    local_path "sources/calculus-limits/m53489.cnxml";
+}
+
+source M53493 {
+    kind treatise;
+    jurisdiction "none";
+    number "OpenStax Calculus, ch. 2 Limits, module m53493";
+    label en official "The Precise Definition of a Limit";
+}
+
+edition M53493_MAIN of M53493 {
+    label en official "m53493/index.cnxml at commit 8dbc2ce (main, 2026-07-15)";
+    label ru unofficial "Файл m53493/index.cnxml на коммите 8dbc2ce ветки main";
+    language en;
+    officiality official;
+    adopted @2026-07-15;
+    materialization_status PINNED_OFFICIAL_BYTES;
+}
+
+publication M53493_CNXML of M53493_MAIN {
+    media_type "application/xml; charset=utf-8";
+    uri "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53493/index.cnxml";
+    retrieved_at @2026-09-12T00:00:00Z;
+    content_hash "sha256:e5e046f267dee46ca85a9cfc76847ff31ebb71a9205b5961e1152f2ea77bc666";
+    local_path "sources/calculus-limits/m53493.cnxml";
+}
+
+source M53596 {
+    kind treatise;
+    jurisdiction "none";
+    number "OpenStax Calculus, ch. 4 Applications of Derivatives, module m53596";
+    label en official "Limits at Infinity and Asymptotes";
+}
+
+edition M53596_MAIN of M53596 {
+    label en official "m53596/index.cnxml at commit 8dbc2ce (main, 2026-07-15)";
+    label ru unofficial "Файл m53596/index.cnxml на коммите 8dbc2ce ветки main";
+    language en;
+    officiality official;
+    adopted @2026-07-15;
+    materialization_status PINNED_OFFICIAL_BYTES;
+}
+
+publication M53596_CNXML of M53596_MAIN {
+    media_type "application/xml; charset=utf-8";
+    uri "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53596/index.cnxml";
+    retrieved_at @2026-09-12T00:00:00Z;
+    content_hash "sha256:c0c4d3593c446f99d0700befaf92e1c75d2ba2114feb9711c9075bfeec3c50da";
+    local_path "sources/calculus-limits/m53596.cnxml";
+}
+
+source M53619 {
+    kind treatise;
+    jurisdiction "none";
+    number "OpenStax Calculus, ch. 4 Applications of Derivatives, module m53619";
+    label en official "L’Hôpital’s Rule";
+}
+
+edition M53619_MAIN of M53619 {
+    label en official "m53619/index.cnxml at commit 8dbc2ce (main, 2026-07-15)";
+    label ru unofficial "Файл m53619/index.cnxml на коммите 8dbc2ce ветки main";
+    language en;
+    officiality official;
+    adopted @2026-07-15;
+    materialization_status PINNED_OFFICIAL_BYTES;
+}
+
+publication M53619_CNXML of M53619_MAIN {
+    media_type "application/xml; charset=utf-8";
+    uri "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53619/index.cnxml";
+    retrieved_at @2026-09-12T00:00:00Z;
+    content_hash "sha256:47a9cdb551f68cdd646df68ff7da9b9226fcd1d896af5e203ceb85d170ef9ce4";
+    local_path "sources/calculus-limits/m53619.cnxml";
+}
+
+// m53491 «The Limit of a Function» — fs-id1170572479385
+fragment CL_LIMIT_DEFINITION in M53491_MAIN {
+    kind defn;
+    locator "module/m53491#fs-id1170572479385";
+    text en official """<note id="fs-id1170572479385">
+<title>Definition</title>
+<para id="fs-id1170572151707">Let <m:math><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> be a function defined at all values in an open interval containing <emphasis effect="italics">a</emphasis>, with the possible exception of <emphasis effect="italics">a</emphasis> itself, and let <emphasis effect="italics">L</emphasis> be a real number. If <emphasis effect="italics">all</emphasis> values of the function <m:math><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> approach the real number <emphasis effect="italics">L</emphasis> as the values of <m:math><m:mrow><m:mi>x</m:mi><m:mrow><m:mo>(</m:mo><m:mrow><m:mo>≠</m:mo><m:mi>a</m:mi></m:mrow><m:mo>)</m:mo></m:mrow></m:mrow></m:math> approach the number <emphasis effect="italics">a</emphasis>, then we say that the limit of <m:math><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> as <emphasis effect="italics">x</emphasis> approaches <emphasis effect="italics">a</emphasis> is <emphasis effect="italics">L</emphasis>. (More succinct, as <emphasis effect="italics">x</emphasis> gets closer to <emphasis effect="italics">a</emphasis>, <m:math><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> gets closer and stays close to <emphasis effect="italics">L</emphasis>.) Symbolically, we express this idea as</para>
+<equation id="fs-id1170572133132"><m:math><m:mrow><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mi>L</m:mi><m:mo>.</m:mo></m:mrow></m:math></equation>
+</note>""";
+    content_hash "sha256:335229dc4381cc5f878b1e4778bf404e92521fe37a133a060e0d92a01fc80ea1";
+}
+
+// m53491 «The Limit of a Function» — fs-id1170571598073
+fragment CL_ONE_SIDED in M53491_MAIN {
+    kind section;
+    locator "module/m53491#fs-id1170571598073";
+    text en official """<link target-id="fs-id1170571598073"/>""";
+    content_hash "sha256:01e31a2e8ed7fb8095038db67c468616a140edda6ce24345aebb40921676cfa2";
+}
+
+// m53492 «The Limit Laws» — fs-id1170572451153
+fragment CL_BASIC in M53492_MAIN {
+    kind section;
+    locator "module/m53492#fs-id1170572451153";
+    text en official """<note id="fs-id1170572451153" class="theorem">
+<title>Basic Limit Results</title>
+<para id="fs-id1170572205248">For any real number <emphasis effect="italics">a</emphasis> and any constant <emphasis effect="italics">c</emphasis>,</para>
+<list id="fs-id1170572286963" list-type="enumerated" number-style="lower-roman">
+<item><equation id="fs-id1170572624896"><m:math><m:mrow><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mi>x</m:mi><m:mo>=</m:mo><m:mi>a</m:mi></m:mrow></m:math></equation></item>
+<item><equation id="fs-id1170572209025"><m:math><m:mrow><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mi>c</m:mi><m:mo>=</m:mo><m:mi>c</m:mi></m:mrow></m:math></equation></item>
+</list>
+</note>""";
+    content_hash "sha256:d6557249fd3c95a568dce717d48526f637ebf5b66d46f777d5a7920059bf86c9";
+}
+
+// m53492 «The Limit Laws» — fs-id1170572508800
+fragment CL_LAWS in M53492_MAIN {
+    kind section;
+    locator "module/m53492#fs-id1170572508800";
+    text en official """<note id="fs-id1170572508800" class="theorem">
+<title>Limit Laws</title>
+<para id="fs-id1170572086164">Let <m:math><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> and <m:math><m:mrow><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> be defined for all <m:math><m:mrow><m:mi>x</m:mi><m:mo>≠</m:mo><m:mi>a</m:mi></m:mrow></m:math> over some open interval containing <emphasis effect="italics">a</emphasis>. Assume that <emphasis effect="italics">L</emphasis> and <emphasis effect="italics">M</emphasis> are real numbers such that <m:math><m:mrow><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mi>L</m:mi></m:mrow></m:math> and <m:math><m:mrow><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mi>M</m:mi><m:mo>.</m:mo></m:mrow></m:math> Let <emphasis effect="italics">c</emphasis> be a constant. Then, each of the following statements holds:</para>
+<para id="fs-id1170572204187"><term id="term-00002">Sum law for limits</term>: <m:math><m:mrow><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mrow><m:mo>(</m:mo><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>+</m:mo><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>+</m:mo><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mi>L</m:mi><m:mo>+</m:mo><m:mi>M</m:mi></m:mrow></m:math></para>
+<para id="fs-id1170572627273"><term id="term-00003">Difference law for limits</term>: <m:math><m:mrow><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mrow><m:mo>(</m:mo><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>−</m:mo><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>−</m:mo><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mi>L</m:mi><m:mo>−</m:mo><m:mi>M</m:mi></m:mrow></m:math></para>
+<para id="fs-id1170572450574"><term id="term-00004">Constant multiple law for limits</term>: <m:math><m:mrow><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mi>c</m:mi><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mi>c</m:mi><m:mo>·</m:mo><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mi>c</m:mi><m:mi>L</m:mi></m:mrow></m:math></para>
+<para id="fs-id1170572104032"><term id="term-00005">Product law for limits</term>: <m:math><m:mrow><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mrow><m:mo>(</m:mo><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>·</m:mo><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>·</m:mo><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mi>L</m:mi><m:mo>·</m:mo><m:mi>M</m:mi></m:mrow></m:math></para>
+<para id="fs-id1170572347458"><term id="term-00006">Quotient law for limits</term>: <m:math><m:mrow><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mfrac><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow><m:mrow><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:mfrac><m:mo>=</m:mo><m:mfrac><m:mrow><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow><m:mrow><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:mfrac><m:mo>=</m:mo><m:mfrac><m:mi>L</m:mi><m:mi>M</m:mi></m:mfrac></m:mrow></m:math> for <m:math><m:mrow><m:mi>M</m:mi><m:mo>≠</m:mo><m:mn>0</m:mn></m:mrow></m:math></para>
+<para id="fs-id1170572246193"><term id="term-00007">Power law for limits</term>: <m:math><m:mrow><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:msup><m:mrow><m:mrow><m:mo>(</m:mo><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow><m:mo>)</m:mo></m:mrow></m:mrow><m:mi>n</m:mi></m:msup><m:mo>=</m:mo><m:msup><m:mrow><m:mrow><m:mo>(</m:mo><m:mrow><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow><m:mo>)</m:mo></m:mrow></m:mrow><m:mi>n</m:mi></m:msup><m:mo>=</m:mo><m:msup><m:mi>L</m:mi><m:mi>n</m:mi></m:msup></m:mrow></m:math> for every positive integer <emphasis effect="italics">n</emphasis>.</para>
+<para id="fs-id1170572232633"><term id="term-00008">Root law for limits</term>: <m:math><m:mrow><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mroot><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow><m:mi>n</m:mi></m:mroot><m:mo>=</m:mo><m:mroot><m:mrow><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow><m:mi>n</m:mi></m:mroot><m:mo>=</m:mo><m:mroot><m:mi>L</m:mi><m:mi>n</m:mi></m:mroot></m:mrow></m:math> for all <emphasis effect="italics">L</emphasis> if <emphasis effect="italics">n</emphasis> is odd and for <m:math><m:mrow><m:mi>L</m:mi><m:mo>≥</m:mo><m:mn>0</m:mn></m:mrow></m:math> if <emphasis effect="italics">n</emphasis> is even and <m:math><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo><m:mo>≥</m:mo><m:mn>0</m:mn></m:math>.</para>
+</note>""";
+    content_hash "sha256:e5d5d181fa3559339448bb13eccbbbfaca2ad8095f3518e4f1a1056f6fad491a";
+}
+
+// m53492 «The Limit Laws» — fs-id1170572557796
+fragment CL_SUBSTITUTION in M53492_MAIN {
+    kind section;
+    locator "module/m53492#fs-id1170572557796";
+    text en official """<note id="fs-id1170572557796" class="theorem">
+<title>Limits of Polynomial and Rational Functions</title>
+<para id="fs-id1170572557802">Let <m:math><m:mrow><m:mi>p</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> and <m:math><m:mrow><m:mi>q</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> be polynomial functions. Let <emphasis effect="italics">a</emphasis> be a real number. Then,</para>
+<equation id="fs-id1170572347161" class="unnumbered"><label/><m:math><m:mrow><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mi>p</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mi>p</m:mi><m:mrow><m:mo>(</m:mo><m:mi>a</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math></equation>
+<equation id="fs-id1170571656084" class="unnumbered"><label/><m:math><m:mrow><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mfrac><m:mrow><m:mi>p</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow><m:mrow><m:mi>q</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:mfrac><m:mo>=</m:mo><m:mfrac><m:mrow><m:mi>p</m:mi><m:mrow><m:mo>(</m:mo><m:mi>a</m:mi><m:mo>)</m:mo></m:mrow></m:mrow><m:mrow><m:mi>q</m:mi><m:mrow><m:mo>(</m:mo><m:mi>a</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:mfrac><m:mspace width="0.2em"/><m:mtext>when</m:mtext><m:mspace width="0.2em"/><m:mi>q</m:mi><m:mrow><m:mo>(</m:mo><m:mi>a</m:mi><m:mo>)</m:mo></m:mrow><m:mo>≠</m:mo><m:mn>0</m:mn><m:mo>.</m:mo></m:mrow></m:math></equation>
+</note>""";
+    content_hash "sha256:fa5f5e99cc206e03bdc9cc13bf73710ea722d5b54b406e1b1f86f254effa67ff";
+}
+
+// m53492 «The Limit Laws» — fs-id1170571611384
+fragment CL_CANCEL in M53492_MAIN {
+    kind section;
+    locator "module/m53492#fs-id1170571611384";
+    text en official """<note id="fs-id1170571611384" class="problem-solving">
+<title>Calculating a Limit When <m:math><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mtext>/</m:mtext><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> has the Indeterminate Form 0/0</title>
+<list id="fs-id1170572627081" list-type="enumerated" number-style="arabic">
+<item>First, we need to make sure that our function has the appropriate form and cannot be evaluated immediately using the limit laws.</item>
+<item>We then need to find a function that is equal to <m:math><m:mrow><m:mi>h</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mrow><m:mrow><m:mi>f</m:mi><m:mo stretchy="false">(</m:mo><m:mi>x</m:mi><m:mo stretchy="false">)</m:mo></m:mrow><m:mtext>/</m:mtext><m:mrow><m:mi>g</m:mi><m:mo stretchy="false">(</m:mo><m:mi>x</m:mi><m:mo stretchy="false">)</m:mo></m:mrow></m:mrow></m:mrow></m:math> for all <m:math><m:mrow><m:mi>x</m:mi><m:mo>≠</m:mo><m:mi>a</m:mi></m:mrow></m:math> over some interval containing <emphasis effect="italics">a</emphasis>. To do this, we may need to try one or more of the following steps:
+<list id="fs-id1170572627147" list-type="enumerated" number-style="lower-alpha">
+<item>If <m:math><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> and <m:math><m:mrow><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> are polynomials, we should factor each function and cancel out any common factors.</item>
+<item>If the numerator or denominator contains a difference involving a square root, we should try multiplying the numerator and denominator by the conjugate of the expression involving the square root.</item>
+<item>If <m:math><m:mrow><m:mrow><m:mrow><m:mi>f</m:mi><m:mo stretchy="false">(</m:mo><m:mi>x</m:mi><m:mo stretchy="false">)</m:mo></m:mrow><m:mtext>/</m:mtext><m:mrow><m:mi>g</m:mi><m:mo stretchy="false">(</m:mo><m:mi>x</m:mi><m:mo stretchy="false">)</m:mo></m:mrow></m:mrow></m:mrow></m:math> is a complex fraction, we begin by simplifying it.</item>
+</list></item>
+<item>Last, we apply the limit laws.</item>
+</list>
+</note>""";
+    content_hash "sha256:6fb336d57b2b7b86b73871299958f821af121fb077d33a6b11d7aa9e108b8b7d";
+}
+
+// m53492 «The Limit Laws» — fs-id1170572624507
+fragment CL_SPECIAL in M53492_MAIN {
+    kind section;
+    locator "module/m53492#fs-id1170572624507";
+    text en official """<section id="fs-id1170572624507" class="key-equations">
+<title>Key Equations</title>
+<table id="eip-485" summary="." class="unnumbered unstyled">
+<tgroup cols="2"><tbody>
+  <row>
+    <entry><emphasis effect="bold">Basic Limit Results</emphasis></entry>
+    <entry><m:math><m:mrow><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mi>x</m:mi><m:mo>=</m:mo><m:mi>a</m:mi><m:mspace width="0.2em"/><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mi>c</m:mi><m:mo>=</m:mo><m:mi>c</m:mi></m:mrow></m:math></entry>
+  </row>
+  <row>
+    <entry><emphasis effect="bold">Important Limits</emphasis></entry>
+    <entry><m:math><m:mrow><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>θ</m:mi><m:mo stretchy="false">→</m:mo><m:mn>0</m:mn></m:mrow></m:munder><m:mtext>sin</m:mtext><m:mspace width="0.1em"/><m:mi>θ</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math><newline/>
+    <m:math><m:mrow><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>θ</m:mi><m:mo stretchy="false">→</m:mo><m:mn>0</m:mn></m:mrow></m:munder><m:mtext>cos</m:mtext><m:mspace width="0.1em"/><m:mi>θ</m:mi><m:mo>=</m:mo><m:mn>1</m:mn></m:mrow></m:math><newline/>
+    <m:math><m:mrow><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>θ</m:mi><m:mo stretchy="false">→</m:mo><m:mn>0</m:mn></m:mrow></m:munder><m:mfrac><m:mrow><m:mtext>sin</m:mtext><m:mspace width="0.1em"/><m:mi>θ</m:mi></m:mrow><m:mi>θ</m:mi></m:mfrac><m:mo>=</m:mo><m:mn>1</m:mn></m:mrow></m:math><newline/>
+    <m:math><m:mrow><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>θ</m:mi><m:mo stretchy="false">→</m:mo><m:mn>0</m:mn></m:mrow></m:munder><m:mfrac><m:mrow><m:mn>1</m:mn><m:mo>−</m:mo><m:mtext>cos</m:mtext><m:mspace width="0.1em"/><m:mi>θ</m:mi></m:mrow><m:mi>θ</m:mi></m:mfrac><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math></entry>
+  </row>
+</tbody>
+</tgroup>
+</table>
+</section>""";
+    content_hash "sha256:9ac4589b025e0a2397940a08538f021912839bea6087d07127134c9119cf3a9d";
+}
+
+// m53489 «Continuity» — fs-id1170571048312
+fragment CL_CONTINUITY in M53489_MAIN {
+    kind defn;
+    locator "module/m53489#fs-id1170571048312";
+    text en official """<note id="fs-id1170571048312">
+<title>Definition</title>
+<para id="fs-id1170573381317">A function <m:math><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> is <term id="term-00001">continuous at a point</term> <emphasis effect="italics">a</emphasis> if and only if the following three conditions are satisfied:</para>
+<list id="fs-id1170571094915" list-type="enumerated" number-style="lower-roman">
+<item><m:math><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>a</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> is defined</item>
+<item><m:math><m:mrow><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> exists</item>
+<item><m:math><m:mrow><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>a</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math></item>
+</list>
+<para id="fs-id1170573370662">A function is <term id="term-00002">discontinuous at a point</term> <emphasis effect="italics">a</emphasis> if it fails to be continuous at <emphasis effect="italics">a</emphasis>.</para>
+</note>""";
+    content_hash "sha256:3292e4251fecd670028ac300a28054b5163a3844b6a6e39b0b722ad65aab7661";
+}
+
+// m53489 «Continuity» — fs-id1170573418920
+fragment CL_TRIG_CONTINUITY in M53489_MAIN {
+    kind section;
+    locator "module/m53489#fs-id1170573418920";
+    text en official """<note id="fs-id1170573418920" class="theorem">
+<title>Continuity of Trigonometric Functions</title>
+<para id="fs-id1170573512311">Trigonometric functions are continuous over their entire domains.</para>
+</note>""";
+    content_hash "sha256:14f7acb9225c4cbde4680d8a8e3289776376ca5bd0eb419e13f9e6ad47de6719";
+}
+
+// m53493 «The Precise Definition of a Limit» — fs-id1170572641433
+fragment CL_EPSILON_DELTA in M53493_MAIN {
+    kind defn;
+    locator "module/m53493#fs-id1170572641433";
+    text en official """<note id="fs-id1170572641433">
+<title>Definition</title>
+<para id="fs-id1170572482431">Let <m:math><m:mrow><m:mi>f</m:mi><m:mo stretchy="false">(</m:mo><m:mi>x</m:mi><m:mo stretchy="false">)</m:mo></m:mrow></m:math> be defined for all <m:math><m:mrow><m:mi>x</m:mi><m:mo>≠</m:mo><m:mi>a</m:mi></m:mrow></m:math> over an open interval containing <emphasis effect="italics">a</emphasis>. Let <emphasis effect="italics">L</emphasis> be a real number. Then</para>
+<equation id="fs-id1170571542392" class="unnumbered"><label/><m:math><m:mrow><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mi>f</m:mi><m:mo stretchy="false">(</m:mo><m:mi>x</m:mi><m:mo stretchy="false">)</m:mo><m:mo>=</m:mo><m:mi>L</m:mi></m:mrow></m:math></equation>
+<para id="fs-id1170572217764">if, for every <m:math><m:mrow><m:mi>ε</m:mi><m:mo>></m:mo><m:mn>0</m:mn><m:mo>,</m:mo></m:mrow></m:math> there exists a <m:math><m:mrow><m:mi>δ</m:mi><m:mo>></m:mo><m:mn>0</m:mn><m:mo>,</m:mo></m:mrow></m:math> such that if <m:math><m:mrow><m:mn>0</m:mn><m:mo>&lt;</m:mo><m:mo>|</m:mo><m:mi>x</m:mi><m:mo>−</m:mo><m:mi>a</m:mi><m:mo>|</m:mo><m:mo>&lt;</m:mo><m:mi>δ</m:mi><m:mo>,</m:mo></m:mrow></m:math> then <m:math><m:mrow><m:mo>|</m:mo><m:mi>f</m:mi><m:mo stretchy="false">(</m:mo><m:mi>x</m:mi><m:mo stretchy="false">)</m:mo><m:mo>−</m:mo><m:mi>L</m:mi><m:mo>|</m:mo><m:mo>&lt;</m:mo><m:mi>ε</m:mi><m:mo>.</m:mo></m:mrow></m:math></para>
+</note>""";
+    content_hash "sha256:3193e5de60c09b256f5e97ed07a9c5d602b907bc4285ca833ebb47ee3e2f0fe4";
+}
+
+// m53596 «Limits at Infinity and Asymptotes» — fs-id1165042633662
+fragment CL_INFINITY in M53596_MAIN {
+    kind section;
+    locator "module/m53596#fs-id1165042633662";
+    text en official """<section id="fs-id1165042633662" class="key-concepts">
+<title>Key Concepts</title>
+<list id="fs-id1165042633670" list-type="bulleted" bullet-style="bullet">
+<item>The limit of <m:math><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> is <m:math><m:mi>L</m:mi></m:math> as <m:math><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>∞</m:mi></m:mrow></m:math> (or as <m:math><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mtext>−</m:mtext><m:mi>∞</m:mi><m:mo stretchy="false">)</m:mo></m:mrow></m:math> if the values <m:math><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> become arbitrarily close to <m:math><m:mi>L</m:mi></m:math> as <m:math><m:mi>x</m:mi></m:math> becomes sufficiently large.</item>
+<item>The limit of <m:math><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> is <m:math><m:mi>∞</m:mi></m:math> as <m:math><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>∞</m:mi></m:mrow></m:math> if <m:math><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> becomes arbitrarily large as <m:math><m:mi>x</m:mi></m:math> becomes sufficiently large. The limit of <m:math><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> is <m:math><m:mrow><m:mtext>−</m:mtext><m:mi>∞</m:mi></m:mrow></m:math> as <m:math><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>∞</m:mi></m:mrow></m:math> if <m:math><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>&lt;</m:mo><m:mn>0</m:mn></m:mrow></m:math> and <m:math><m:mrow><m:mrow><m:mo>|</m:mo><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow><m:mo>|</m:mo></m:mrow></m:mrow></m:math> becomes arbitrarily large as <m:math><m:mi>x</m:mi></m:math> becomes sufficiently large. We can define the limit of <m:math><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> as <m:math><m:mi>x</m:mi></m:math> approaches <m:math><m:mrow><m:mtext>−</m:mtext><m:mi>∞</m:mi></m:mrow></m:math> similarly.</item>
+<item>For a polynomial function <m:math><m:mrow><m:mi>p</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:msub><m:mi>a</m:mi><m:mi>n</m:mi></m:msub><m:msup><m:mi>x</m:mi><m:mi>n</m:mi></m:msup><m:mo>+</m:mo><m:msub><m:mi>a</m:mi><m:mrow><m:mi>n</m:mi><m:mo>−</m:mo><m:mn>1</m:mn></m:mrow></m:msub><m:msup><m:mi>x</m:mi><m:mrow><m:mi>n</m:mi><m:mo>−</m:mo><m:mn>1</m:mn></m:mrow></m:msup><m:mo>+</m:mo><m:mtext>…</m:mtext><m:mo>+</m:mo><m:msub><m:mi>a</m:mi><m:mn>1</m:mn></m:msub><m:mi>x</m:mi><m:mo>+</m:mo><m:msub><m:mi>a</m:mi><m:mn>0</m:mn></m:msub><m:mo>,</m:mo></m:mrow></m:math> where <m:math><m:mrow><m:msub><m:mi>a</m:mi><m:mi>n</m:mi></m:msub><m:mo>≠</m:mo><m:mn>0</m:mn><m:mo>,</m:mo></m:mrow></m:math> the end behavior is determined by the leading term <m:math><m:mrow><m:msub><m:mi>a</m:mi><m:mi>n</m:mi></m:msub><m:msup><m:mi>x</m:mi><m:mi>n</m:mi></m:msup><m:mo>.</m:mo></m:mrow></m:math> If <m:math><m:mrow><m:mi>n</m:mi><m:mo>≠</m:mo><m:mn>0</m:mn><m:mo>,</m:mo></m:mrow></m:math> <m:math><m:mrow><m:mi>p</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> approaches <m:math><m:mi>∞</m:mi></m:math> or <m:math><m:mrow><m:mtext>−</m:mtext><m:mi>∞</m:mi></m:mrow></m:math> at each end.</item>
+<item>For a rational function <m:math><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mfrac><m:mrow><m:mi>p</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow><m:mrow><m:mi>q</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:mfrac><m:mo>,</m:mo></m:mrow></m:math> the end behavior is determined by the relationship between the degree of <m:math><m:mi>p</m:mi></m:math> and the degree of <m:math><m:mrow><m:mi>q</m:mi><m:mo>.</m:mo></m:mrow></m:math> If the degree of <m:math><m:mi>p</m:mi></m:math> is less than the degree of <m:math><m:mrow><m:mi>q</m:mi><m:mo>,</m:mo></m:mrow></m:math> the line <m:math><m:mrow><m:mi>y</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math> is a horizontal asymptote for <m:math><m:mrow><m:mi>f</m:mi><m:mo>.</m:mo></m:mrow></m:math> If the degree of <m:math><m:mi>p</m:mi></m:math> is equal to the degree of <m:math><m:mrow><m:mi>q</m:mi><m:mo>,</m:mo></m:mrow></m:math> then the line <m:math><m:mrow><m:mi>y</m:mi><m:mo>=</m:mo><m:mfrac><m:mrow><m:msub><m:mi>a</m:mi><m:mi>n</m:mi></m:msub></m:mrow><m:mrow><m:msub><m:mi>b</m:mi><m:mi>n</m:mi></m:msub></m:mrow></m:mfrac></m:mrow></m:math> is a horizontal asymptote, where <m:math><m:mrow><m:msub><m:mi>a</m:mi><m:mi>n</m:mi></m:msub></m:mrow></m:math> and <m:math><m:mrow><m:msub><m:mi>b</m:mi><m:mi>n</m:mi></m:msub></m:mrow></m:math> are the leading coefficients of <m:math><m:mi>p</m:mi></m:math> and <m:math><m:mrow><m:mi>q</m:mi><m:mo>,</m:mo></m:mrow></m:math> respectively. If the degree of <m:math><m:mi>p</m:mi></m:math> is greater than the degree of <m:math><m:mrow><m:mi>q</m:mi><m:mo>,</m:mo></m:mrow></m:math> then <m:math><m:mi>f</m:mi></m:math> approaches <m:math><m:mi>∞</m:mi></m:math> or <m:math><m:mrow><m:mtext>−</m:mtext><m:mi>∞</m:mi></m:mrow></m:math> at each end.</item>
+</list>
+</section>""";
+    content_hash "sha256:e1edac96f6d0c89fe2f79255ab30d75c52b09dcf2e334fadf4f7fb105d38f0ba";
+}
+
+// m53619 «L’Hôpital’s Rule» — fs-id1165043352593
+fragment CL_LHOPITAL_ZERO in M53619_MAIN {
+    kind section;
+    locator "module/m53619#fs-id1165043352593";
+    text en official """<note id="fs-id1165043352593" class="theorem">
+<title>L’Hôpital’s Rule (0/0 Case)</title>
+<para id="fs-id1165043276140">Suppose <m:math><m:mi>f</m:mi></m:math> and <m:math><m:mi>g</m:mi></m:math> are differentiable functions over an open interval containing <m:math><m:mrow><m:mi>a</m:mi><m:mo>,</m:mo></m:mrow></m:math> except possibly at <m:math><m:mrow><m:mi>a</m:mi><m:mo>.</m:mo></m:mrow></m:math> If <m:math><m:mrow><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math> and <m:math><m:mrow><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mn>0</m:mn><m:mo>,</m:mo></m:mrow></m:math> then</para>
+<equation id="fs-id1165043020148" class="unnumbered"><label/><m:math><m:mrow><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mfrac><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow><m:mrow><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:mfrac><m:mo>=</m:mo><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mfrac><m:mrow><m:msup><m:mi>f</m:mi><m:mo>′</m:mo></m:msup><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow><m:mrow><m:msup><m:mi>g</m:mi><m:mo>′</m:mo></m:msup><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:mfrac><m:mo>,</m:mo></m:mrow></m:math></equation>
+<para id="fs-id1165043035673">assuming the limit on the right exists or is <m:math><m:mi>∞</m:mi></m:math> or <m:math><m:mrow><m:mtext>−</m:mtext><m:mi>∞</m:mi><m:mo>.</m:mo></m:mrow></m:math> This result also holds if we are considering one-sided limits, or if <m:math><m:mrow><m:mi>a</m:mi><m:mo>=</m:mo><m:mi>∞</m:mi><m:mspace width="0.2em"/><m:mtext>and</m:mtext><m:mspace width="0.2em"/><m:mo>−</m:mo><m:mi>∞</m:mi><m:mo>.</m:mo></m:mrow></m:math></para>
+</note>""";
+    content_hash "sha256:85d6fab2cecf7e41a3b73a76bee847330d7b6aaaa810882abddc648c5271890c";
+}
+
+// m53619 «L’Hôpital’s Rule» — fs-id1165042330826
+fragment CL_LHOPITAL_INFINITY in M53619_MAIN {
+    kind section;
+    locator "module/m53619#fs-id1165042330826";
+    text en official """<note id="fs-id1165042330826" class="theorem">
+<title>L’Hôpital’s Rule <m:math><m:mrow><m:mo stretchy="false">(</m:mo><m:mi>∞</m:mi><m:mtext>/</m:mtext><m:mi>∞</m:mi></m:mrow></m:math> Case)</title>
+<para id="fs-id1165043426174">Suppose <m:math><m:mi>f</m:mi></m:math> and <m:math><m:mi>g</m:mi></m:math> are differentiable functions over an open interval containing <m:math><m:mrow><m:mi>a</m:mi><m:mo>,</m:mo></m:mrow></m:math> except possibly at <m:math><m:mrow><m:mi>a</m:mi><m:mo>.</m:mo></m:mrow></m:math> Suppose <m:math><m:mrow><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mi>∞</m:mi></m:mrow></m:math> (or <m:math><m:mrow><m:mtext>−</m:mtext><m:mi>∞</m:mi><m:mo stretchy="false">)</m:mo></m:mrow></m:math> and <m:math><m:mrow><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mi>∞</m:mi></m:mrow></m:math> (or <m:math><m:mrow><m:mtext>−</m:mtext><m:mi>∞</m:mi><m:mo stretchy="false">)</m:mo><m:mo>.</m:mo></m:mrow></m:math> Then,</para>
+<equation id="fs-id1165042373703" class="unnumbered"><label/><m:math><m:mrow><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mfrac><m:mrow><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow><m:mrow><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:mfrac><m:mo>=</m:mo><m:munder><m:mrow><m:mtext>lim</m:mtext></m:mrow><m:mrow><m:mi>x</m:mi><m:mo stretchy="false">→</m:mo><m:mi>a</m:mi></m:mrow></m:munder><m:mfrac><m:mrow><m:msup><m:mi>f</m:mi><m:mo>′</m:mo></m:msup><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow><m:mrow><m:msup><m:mi>g</m:mi><m:mo>′</m:mo></m:msup><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:mfrac><m:mo>,</m:mo></m:mrow></m:math></equation>
+<para id="fs-id1165042707280">assuming the limit on the right exists or is <m:math><m:mi>∞</m:mi></m:math> or <m:math><m:mrow><m:mtext>−</m:mtext><m:mi>∞</m:mi><m:mo>.</m:mo></m:mrow></m:math> This result also holds if the limit is infinite, if <m:math><m:mrow><m:mi>a</m:mi><m:mo>=</m:mo><m:mi>∞</m:mi></m:mrow></m:math> or <m:math><m:mrow><m:mtext>−</m:mtext><m:mi>∞</m:mi><m:mo>,</m:mo></m:mrow></m:math> or the limit is one-sided.</para>
+</note>""";
+    content_hash "sha256:204c9997191b9ede4863c77cc8c11b0b7a3bc3275e4a56228db6b3f68df4126a";
+}

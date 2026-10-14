@@ -1,0 +1,17 @@
+language "law.core" version "0.2";
+package calc.expressions version "0.1.0";
+namespace "urn:law:calc:expressions";
+
+// DECISION-0198 §2: `sqrt` — аддитивный вид узла. Форма проверяет АРНОСТЬ и
+// конечность, область определения остаётся заботой читателя.
+test "квадратный корень: корректная форма и структурное равенство" {
+ given {
+  assert "a1": node(entity_ref("urn:e"), 1, "var", "x", 0 / 1, 0, 0) { origin case_input; }
+  assert "a2": node(entity_ref("urn:e"), 2, "sqrt", "", 0 / 1, 1, 0) { origin case_input; }
+  assert "a3": node(entity_ref("urn:e"), 3, "sqrt", "", 0 / 1, 1, 0) { origin case_input; }
+  assert "a4": closed(entity_ref("urn:e")) { origin case_input; }
+ }
+ evaluate truth(equivalent(entity_ref("urn:e"), 2, 3));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+}

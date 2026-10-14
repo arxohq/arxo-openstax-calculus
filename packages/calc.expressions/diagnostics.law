@@ -1,0 +1,228 @@
+language "law.core" version "0.2";
+package calc.expressions version "0.1.0";
+namespace "urn:law:calc:expressions";
+
+use self::{
+    Expr,
+    binary,
+    closed,
+    exponent_ok,
+    exponentiation,
+    formula_error,
+    known_tag,
+    node,
+    node_present,
+    unary,
+    unique_node,
+    well_formed,
+    within_budget,
+};
+
+// НАЗВАННЫЕ ОТКАЗЫ. Отсутствие узла ДО `closed` — ещё не предъявленные
+// данные; после `closed` — дефект. Ровно то же различение, что у
+// `calc.proof_checker`.
+//
+// Всё, что можно доказать положительно, доказывается положительно:
+// отрицательный показатель, слишком большой показатель, лишний дочерний,
+// имя у составного узла. `not_known` применяется только НАД завершённым
+// производителем — к `exponent_ok`, `node_present` и `well_formed`.
+
+relation required_child(e: Expr, f: Integer, a: Integer) kind institutional {
+    label ru unofficial "узел f ссылается на дочерний a";
+}
+
+rule ChildOfUnary(e: Expr, f: Integer, tag: Text, a: Integer) strict {
+    label ru unofficial "единственный дочерний унарного узла";
+    when unary(e, f, tag, a);
+    then required_child(e, f, a);
+}
+
+rule ChildOfBinaryLeft(e: Expr, f: Integer, tag: Text, a: Integer, b: Integer) strict {
+    label ru unofficial "левый дочерний бинарного узла";
+    when binary(e, f, tag, a, b);
+    then required_child(e, f, a);
+}
+
+rule ChildOfBinaryRight(e: Expr, f: Integer, tag: Text, a: Integer, b: Integer) strict {
+    label ru unofficial "правый дочерний бинарного узла";
+    when binary(e, f, tag, a, b);
+    then required_child(e, f, b);
+}
+
+rule ChildOfExponentiationBase(e: Expr, f: Integer, a: Integer, g: Integer) strict {
+    label ru unofficial "основание степени";
+    when exponentiation(e, f, a, g);
+    then required_child(e, f, a);
+}
+
+rule ChildOfExponentiationExponent(e: Expr, f: Integer, a: Integer, g: Integer) strict {
+    label ru unofficial "узел показателя степени";
+    when exponentiation(e, f, a, g);
+    then required_child(e, f, g);
+}
+
+// ── Дефекты объявления узла ────────────────────────────────────────────────
+
+rule InvalidNodeId(e: Expr, f: Integer, tag: Text, name: Text, v: Rational, a: Integer, b: Integer) strict {
+    label ru unofficial "дефект INVALID_NODE_ID: идентификатор узла не положителен";
+    when node(e, f, tag, name, v, a, b) and f <= 0;
+    then formula_error(e, f, "INVALID_NODE_ID");
+}
+
+rule AmbiguousNode(e: Expr, f: Integer, tag: Text, name: Text, v: Rational, a: Integer, b: Integer) strict {
+    label ru unofficial "дефект AMBIGUOUS_NODE: два определения одного идентификатора";
+    when node(e, f, tag, name, v, a, b)
+        and (count all t: Text for s: Text, w: Rational, l: Integer, r: Integer where node(e, f, t, s, w, l, r)) > 1;
+    then formula_error(e, f, "AMBIGUOUS_NODE");
+}
+
+rule KnownTag(e: Expr, f: Integer, tag: Text, name: Text, v: Rational, a: Integer, b: Integer) strict {
+    label ru unofficial "вид узла входит в объявленный словарь: константа, переменная, алгебраическая константа, девять унарных видов, четыре бинарные операции, степень, интеграл, производная, комплексное, кусочное, пара ветвей, матрица, размерности и элемент. Форма — ДИЗЪЮНКЦИЯ, и это вынужденно: цепочка неравенств выражает «вне словаря», то есть ровно противоположное. Плата за дизъюнкцию известна и здесь сработала: правило разбивается на узлы /alt/N, и `applied(ИмяПравила)` его не находит — поэтому сценарий 39 проверяет истинность факта, а не имя правила";
+    when node(e, f, tag, name, v, a, b)
+        and (tag == "const" or tag == "var" or tag == "algebraic"
+            or tag == "neg" or tag == "sin" or tag == "cos" or tag == "exp" or tag == "ln" or tag == "log" or tag == "sqrt" or tag == "atan"
+            or tag == "add" or tag == "sub" or tag == "mul" or tag == "div" or tag == "pow"
+            or tag == "integral" or tag == "derivative"
+            or tag == "complex" or tag == "piecewise" or tag == "branch"
+            or tag == "matrix" or tag == "dims" or tag == "entry");
+    then known_tag(e, f, tag);
+}
+
+rule UnknownTag(e: Expr, f: Integer, tag: Text, name: Text, v: Rational, a: Integer, b: Integer) strict {
+    label ru unofficial "дефект UNKNOWN_TAG: вид узла не входит в объявленный словарь";
+    when node(e, f, tag, name, v, a, b) and not_known(known_tag(e, f, tag));
+    then formula_error(e, f, "UNKNOWN_TAG");
+}
+
+rule EmptyVariableName(e: Expr, f: Integer, v: Rational, a: Integer, b: Integer) strict {
+    label ru unofficial "дефект EMPTY_VARIABLE_NAME: у переменной нет имени";
+    when node(e, f, "var", "", v, a, b);
+    then formula_error(e, f, "EMPTY_VARIABLE_NAME");
+}
+
+rule EmptyAlgebraicName(e: Expr, f: Integer, v: Rational, a: Integer, b: Integer) strict {
+    label ru unofficial "дефект EMPTY_ALGEBRAIC_NAME: у алгебраической константы нет стабильного дескриптора";
+    when node(e, f, "algebraic", "", v, a, b);
+    then formula_error(e, f, "EMPTY_ALGEBRAIC_NAME");
+}
+
+rule ExtraChildOnConst(e: Expr, f: Integer, name: Text, v: Rational, a: Integer, b: Integer) strict {
+    label ru unofficial "дефект EXTRA_CHILD: у константы предъявлен дочерний узел";
+    when node(e, f, "const", name, v, a, b) and a != 0;
+    then formula_error(e, f, "EXTRA_CHILD");
+}
+
+rule ExtraChildOnConstRight(e: Expr, f: Integer, name: Text, v: Rational, a: Integer, b: Integer) strict {
+    label ru unofficial "дефект EXTRA_CHILD: у константы предъявлен правый дочерний узел";
+    when node(e, f, "const", name, v, a, b) and b != 0;
+    then formula_error(e, f, "EXTRA_CHILD");
+}
+
+rule ExtraChildOnAlgebraic(e: Expr, f: Integer, name: Text, v: Rational, a: Integer, b: Integer) strict {
+    label ru unofficial "дефект EXTRA_CHILD: у алгебраической константы предъявлен дочерний узел";
+    when node(e, f, "algebraic", name, v, a, b) and a != 0;
+    then formula_error(e, f, "EXTRA_CHILD");
+}
+
+rule ExtraChildOnAlgebraicRight(e: Expr, f: Integer, name: Text, v: Rational, a: Integer, b: Integer) strict {
+    label ru unofficial "дефект EXTRA_CHILD: у алгебраической константы предъявлен правый дочерний узел";
+    when node(e, f, "algebraic", name, v, a, b) and b != 0;
+    then formula_error(e, f, "EXTRA_CHILD");
+}
+
+rule ExtraChildOnVar(e: Expr, f: Integer, name: Text, v: Rational, a: Integer, b: Integer) strict {
+    label ru unofficial "дефект EXTRA_CHILD: у переменной предъявлен дочерний узел";
+    when node(e, f, "var", name, v, a, b) and a != 0;
+    then formula_error(e, f, "EXTRA_CHILD");
+}
+
+rule ExtraChildOnVarRight(e: Expr, f: Integer, name: Text, v: Rational, a: Integer, b: Integer) strict {
+    label ru unofficial "дефект EXTRA_CHILD: у переменной предъявлен правый дочерний узел";
+    when node(e, f, "var", name, v, a, b) and b != 0;
+    then formula_error(e, f, "EXTRA_CHILD");
+}
+
+rule ExtraChildOnUnary(e: Expr, f: Integer, tag: Text, name: Text, v: Rational, a: Integer, b: Integer) strict {
+    label ru unofficial "дефект EXTRA_CHILD: у унарного узла предъявлен второй дочерний";
+    when node(e, f, tag, name, v, a, b) and b != 0
+        and (tag == "neg" or tag == "sin" or tag == "cos" or tag == "exp" or tag == "ln" or tag == "log" or tag == "sqrt" or tag == "atan");
+    then formula_error(e, f, "EXTRA_CHILD");
+}
+
+rule NameOnCompound(e: Expr, f: Integer, tag: Text, name: Text, v: Rational, a: Integer, b: Integer) strict {
+    label ru unofficial "дефект NAME_ON_COMPOUND: имя предъявлено узлу, который не является переменной";
+    when node(e, f, tag, name, v, a, b) and name != "" and tag != "var" and tag != "algebraic";
+    then formula_error(e, f, "NAME_ON_COMPOUND");
+}
+
+rule ValueOnNonConstPositive(e: Expr, f: Integer, tag: Text, name: Text, v: Rational, a: Integer, b: Integer) strict {
+    label ru unofficial "дефект VALUE_ON_NON_CONST: значение предъявлено узлу, который не является константой";
+    when node(e, f, tag, name, v, a, b) and v > 0 / 1 and tag != "const";
+    then formula_error(e, f, "VALUE_ON_NON_CONST");
+}
+
+rule ValueOnNonConstNegative(e: Expr, f: Integer, tag: Text, name: Text, v: Rational, a: Integer, b: Integer) strict {
+    label ru unofficial "то же для отрицательного значения";
+    when node(e, f, tag, name, v, a, b) and v < 0 / 1 and tag != "const";
+    then formula_error(e, f, "VALUE_ON_NON_CONST");
+}
+
+// ── Дефекты ссылок ─────────────────────────────────────────────────────────
+
+rule InvalidChildReference(e: Expr, f: Integer, a: Integer) strict {
+    label ru unofficial "дефект MISSING_CHILD: номер дочернего узла не положителен";
+    when required_child(e, f, a) and a <= 0;
+    then formula_error(e, f, "MISSING_CHILD");
+}
+
+rule MissingChild(e: Expr, f: Integer, a: Integer) defeasible {
+    label ru unofficial "дефект MISSING_CHILD: названный дочерний узел не предъявлен";
+    when required_child(e, f, a) and a > 0 and closed(e) and not_known(node_present(e, a));
+    then formula_error(e, f, "MISSING_CHILD");
+}
+
+// ── Дефекты показателя ─────────────────────────────────────────────────────
+
+rule NegativeExponent(e: Expr, f: Integer, a: Integer, g: Integer, v: Rational) strict {
+    label ru unofficial "дефект NEGATIVE_EXPONENT: показатель отрицателен — рациональные функции вне первой версии";
+    when exponentiation(e, f, a, g) and unique_node(e, g, "const", "", v, 0, 0) and v < 0 / 1;
+    then formula_error(e, f, "NEGATIVE_EXPONENT");
+}
+
+rule ExponentOutOfRange(e: Expr, f: Integer, a: Integer, g: Integer, v: Rational) strict {
+    label ru unofficial "дефект EXPONENT_OUT_OF_RANGE: показатель больше объявленной границы 32";
+    when exponentiation(e, f, a, g) and unique_node(e, g, "const", "", v, 0, 0) and v > 32 / 1;
+    then formula_error(e, f, "EXPONENT_OUT_OF_RANGE");
+}
+
+rule FractionalExponent(e: Expr, f: Integer, a: Integer, g: Integer, v: Rational) defeasible {
+    label ru unofficial "дефект FRACTIONAL_EXPONENT: показатель в пределах границы, но не целый";
+    when exponentiation(e, f, a, g) and unique_node(e, g, "const", "", v, 0, 0)
+        and v >= 0 / 1 and v <= 32 / 1 and closed(e) and not_known(exponent_ok(e, g));
+    then formula_error(e, f, "FRACTIONAL_EXPONENT");
+}
+
+rule ExponentNotConstant(e: Expr, f: Integer, a: Integer, g: Integer) defeasible {
+    label ru unofficial "дефект EXPONENT_NOT_CONSTANT: показатель предъявлен не константой";
+    when exponentiation(e, f, a, g) and node_present(e, g) and closed(e)
+        and not_known(exponent_is_constant(e, g));
+    then formula_error(e, f, "EXPONENT_NOT_CONSTANT");
+}
+
+relation exponent_is_constant(e: Expr, g: Integer) kind institutional {
+    label ru unofficial "узел показателя предъявлен константой";
+}
+
+rule ExponentIsConstant(e: Expr, g: Integer, v: Rational) strict {
+    label ru unofficial "показатель предъявлен константой независимо от её значения";
+    when unique_node(e, g, "const", "", v, 0, 0);
+    then exponent_is_constant(e, g);
+}
+
+// ── Итоговый дефект узла ───────────────────────────────────────────────────
+
+rule NodeNotWellFormed(e: Expr, f: Integer) defeasible {
+    label ru unofficial "дефект NODE_NOT_WELL_FORMED: узел не образует конечного корректного поддерева — сюда попадает и цикл по дочерним ссылкам";
+    when closed(e) and node_present(e, f) and within_budget(e) and not_known(well_formed(e, f));
+    then formula_error(e, f, "NODE_NOT_WELL_FORMED");
+}

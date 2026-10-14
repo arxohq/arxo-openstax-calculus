@@ -1,0 +1,28 @@
+language "law.core" version "0.2";
+package calc.polynomials_q version "0.1.0";
+namespace "urn:law:calc:polynomials-q";
+
+// (x + 1)(x − 1) = x² − 1: средний коэффициент обращается в ноль, и это ВЫЧИСЛЕНО, а не отсутствует.
+
+test "произведение двучленов" {
+ given {
+  assert "f0": degree_cap(8) { origin case_input; }
+  assert "f1": poly(entity_ref("urn:calc:pq:f"), 1) { origin case_input; }
+  assert "f2": term(entity_ref("urn:calc:pq:f"), 0, 1 / 1) { origin case_input; }
+  assert "f3": term(entity_ref("urn:calc:pq:f"), 1, 1 / 1) { origin case_input; }
+  assert "f4": poly(entity_ref("urn:calc:pq:g"), 1) { origin case_input; }
+  assert "f5": term(entity_ref("urn:calc:pq:g"), 0, -1 / 1) { origin case_input; }
+  assert "f6": term(entity_ref("urn:calc:pq:g"), 1, 1 / 1) { origin case_input; }
+  assert "f7": product_of(entity_ref("urn:calc:pq:p"), entity_ref("urn:calc:pq:f"), entity_ref("urn:calc:pq:g")) { origin case_input; }
+ }
+ evaluate truth(coeff(entity_ref("urn:calc:pq:p"), 0, -1 / 1));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ evaluate truth(coeff(entity_ref("urn:calc:pq:p"), 1, 0 / 1));
+ expect truth_status == TRUE_ONLY;
+ evaluate truth(coeff(entity_ref("urn:calc:pq:p"), 2, 1 / 1));
+ expect truth_status == TRUE_ONLY;
+ evaluate truth(degree(entity_ref("urn:calc:pq:p"), 2));
+ expect truth_status == TRUE_ONLY;
+ expect applied(ConvStep);
+}

@@ -1,0 +1,56 @@
+language "law.core" version "0.2";
+package calc.expressions version "0.1.0";
+namespace "urn:law:calc:expressions";
+
+// α-РАВЕНСТВО ВЫРАЖЕНИЙ, а не только соответствия связываний (цель §5).
+//
+// 06-alpha.law доказал, что соответствие между связанными именами взаимно
+// однозначно. Этого мало: (λz. z + 1) и (λz. z + 2) имеют одно и то же
+// тождественное соответствие и означают разное. Теперь равенство РЕШАЕТСЯ.
+//
+// Первое выражение: 1 + 2 = (λz. z + 1) + 0, где 0 = (λw. w + 1).
+// Поддеревья-кандидаты — тела 2 и 7, соответствие 3↔8 переименовывает z в w.
+// Узлы 4 и 9 суть переменные с РАЗНЫМИ именами, и они совпадают только
+// потому, что имена связаны соответствующими узлами. Это и есть работа
+// правила AlphaVarRenamed: буквальное совпадение имён здесь не нужно.
+//
+// ГРАНИЦА, КОТОРУЮ ЗАКРЕПЛЯЕТ ФАЙЛ: соответствие ПРЕДЪЯВЛЯЕТСЯ. Пара
+// действительно равных выражений без предъявленного соответствия не даёт
+// НИКАКОГО вердикта — и это молчание не означает «не равны».
+
+test "bodies that differ only by a bound name are alpha-equal" {
+ given {
+  // (λz. z + 1) + 0, где 0 = (λw. w + 1); узлы 5 и 6 — общая константа 1.
+  // Тег бинарного узла в этом пакете — "add": у 06-alpha.law в тесте 31 стоял
+  // "sum", а такого тега среди шести бинарных нет, и structural-факты там не
+  // выводились — на проверку соответствия это не влияло, здесь влияло бы.
+  assert "n1": node(entity_ref("urn:calc:ex:e32"), 1, "add", "", 0 / 1, 2, 7) { origin case_input; }
+  assert "n2": node(entity_ref("urn:calc:ex:e32"), 2, "add", "", 0 / 1, 3, 5) { origin case_input; }
+  assert "n3": node(entity_ref("urn:calc:ex:e32"), 3, "binder", "z", 0 / 1, 4, 0) { origin case_input; }
+  assert "n4": node(entity_ref("urn:calc:ex:e32"), 4, "var", "z", 0 / 1, 0, 0) { origin case_input; }
+  assert "n5": node(entity_ref("urn:calc:ex:e32"), 5, "const", "", 1 / 1, 0, 0) { origin case_input; }
+  assert "n6": node(entity_ref("urn:calc:ex:e32"), 6, "const", "", 1 / 1, 0, 0) { origin case_input; }
+  assert "n7": node(entity_ref("urn:calc:ex:e32"), 7, "add", "", 0 / 1, 8, 6) { origin case_input; }
+  assert "n8": node(entity_ref("urn:calc:ex:e32"), 8, "binder", "w", 0 / 1, 9, 0) { origin case_input; }
+  assert "n9": node(entity_ref("urn:calc:ex:e32"), 9, "var", "w", 0 / 1, 0, 0) { origin case_input; }
+  assert "b1": binder_declared(entity_ref("urn:calc:ex:e32"), 3, "z") { origin case_input; }
+  assert "b2": binder_declared(entity_ref("urn:calc:ex:e32"), 8, "w") { origin case_input; }
+  assert "u1": node_uses(entity_ref("urn:calc:ex:e32"), 4, "z") { origin case_input; }
+  assert "u2": node_uses(entity_ref("urn:calc:ex:e32"), 9, "w") { origin case_input; }
+  assert "c1": alpha_candidate(entity_ref("urn:calc:ex:e32"), 2, 7) { origin case_input; }
+  assert "p1": alpha_pair(entity_ref("urn:calc:ex:e32"), 2, 7, 3, 8, "z", "w") { origin case_input; }
+ }
+ // соответствие взаимно однозначно — и это отдельное утверждение
+ evaluate truth(alpha_equiv(entity_ref("urn:calc:ex:e32"), 2, 7));
+ expect truth_status == TRUE_ONLY;
+ expect applied(AlphaEquiv);
+ // переименованные листья совпадают через соответствие
+ evaluate truth(alpha_eq(entity_ref("urn:calc:ex:e32"), 2, 7, 4, 9));
+ expect truth_status == TRUE_ONLY;
+ expect applied(AlphaVarRenamed);
+ // и только теперь — равенство
+ evaluate truth(alpha_equal(entity_ref("urn:calc:ex:e32"), 2, 7));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(AlphaEqualTop);
+}

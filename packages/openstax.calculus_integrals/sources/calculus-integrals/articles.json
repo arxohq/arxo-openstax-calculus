@@ -1,0 +1,41 @@
+{
+  "format": "law.source-divisions/0.1",
+  "editions": [
+    {
+      "document": "m53621.cnxml",
+      "unit": "cnxml_module",
+      "edition": "urn:openstax:clir:calculus-integrals#M53621_MAIN",
+      "snapshotScope": "whole retained publisher module; selected rules/checkers/solver bridges formalized"
+    },
+    {
+      "document": "m53623.cnxml",
+      "unit": "cnxml_module",
+      "edition": "urn:openstax:clir:calculus-integrals#M53623_MAIN",
+      "snapshotScope": "whole retained publisher module; selected rules/checkers/solver bridges formalized"
+    },
+    {
+      "document": "m53631.cnxml",
+      "unit": "cnxml_module",
+      "edition": "urn:openstax:clir:calculus-integrals#M53631_MAIN",
+      "snapshotScope": "whole retained publisher module; selected rules/checkers/solver bridges formalized"
+    },
+    {
+      "document": "m53632.cnxml",
+      "unit": "cnxml_module",
+      "edition": "urn:openstax:clir:calculus-integrals#M53632_MAIN",
+      "snapshotScope": "whole retained publisher module; selected rules/checkers/solver bridges formalized"
+    },
+    {
+      "document": "m53633.cnxml",
+      "unit": "cnxml_module",
+      "edition": "urn:openstax:clir:calculus-integrals#M53633_MAIN",
+      "snapshotScope": "whole retained publisher module; selected rules/checkers/solver bridges formalized"
+    },
+    {
+      "document": "m53656.cnxml",
+      "unit": "cnxml_module",
+      "edition": "urn:openstax:clir:calculus-integrals#M53656_MAIN",
+      "snapshotScope": "whole retained publisher module; selected rules/checkers/solver bridges formalized"
+    }
+  ]
+}

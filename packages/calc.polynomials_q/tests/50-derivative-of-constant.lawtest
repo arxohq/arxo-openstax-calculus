@@ -1,0 +1,18 @@
+language "law.core" version "0.2";
+package calc.polynomials_q version "0.1.0";
+namespace "urn:law:calc:polynomials-q";
+
+// Производная константы — НУЛЕВОЙ многочлен. У него нет степени, и это отдельный ответ, а не нулевая степень.
+
+test "производная константы есть нулевой многочлен" {
+ given {
+  assert "f0": degree_cap(8) { origin case_input; }
+  assert "f1": poly(entity_ref("urn:calc:pq:da"), 0) { origin case_input; }
+  assert "f2": term(entity_ref("urn:calc:pq:da"), 0, 5 / 1) { origin case_input; }
+  assert "f3": derivative_of(entity_ref("urn:calc:pq:dd"), entity_ref("urn:calc:pq:da")) { origin case_input; }
+ }
+ evaluate truth(zero_polynomial(entity_ref("urn:calc:pq:dd")));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(RawDerivativeOfConstant);
+}

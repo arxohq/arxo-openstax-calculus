@@ -1,0 +1,296 @@
+language "law.core" version "0.2";
+package calc.polynomials_q version "0.1.0";
+namespace "urn:law:calc:polynomials-q";
+
+use self::{
+    Poly,
+    difference_of,
+    monomial_of,
+    operand,
+    product_of,
+    scaled_of,
+    slot,
+    sum_of,
+    term,
+    usable,
+};
+
+// СОДЕРЖИМОЕ И КАНОН.
+//
+//   `raw(p, k, v)`   — действующий коэффициент ПО МЕСТУ k (0 … slots);
+//   `degree(p, d)`   — настоящая степень: наибольшее место с ненулевым raw;
+//   `coeff(p, k, v)` — КАНОН: тот же коэффициент, обрезанный по степени.
+//
+// Разница видна сразу: многочлен, предъявленный как `0·x² + 2x + 1`, имеет три
+// МЕСТА, степень ОДИН и два КАНОНИЧЕСКИХ коэффициента. Ниже по цепочке и в
+// импортирующих пакетах читается `coeff`; `raw` нужен только арифметике, где
+// места старше степени законно участвуют в выкладке.
+//
+// НУЛЕВОЙ МНОГОЧЛЕН — отдельный случай. Степени у него нет: приписывать ему
+// нулевую значило бы спутать его с константой, а «минус бесконечность» язык не
+// знает. Поэтому `degree` для него просто не выводится, а `zero_polynomial`
+// выводится, и всякий читатель обязан различать эти два ответа.
+//
+// Все правила арифметики образуют ОДНУ рекурсивную компоненту: коэффициент
+// произведения читает коэффициенты сомножителей. Внутри неё каждое
+// рекурсивное чтение идёт через `monotone(...)`; агрегаты (степень, полнота)
+// стоят ВЫШЕ компоненты.
+//
+// Разные ширины слагаемых выравниваются ПОЛОЖИТЕЛЬНО, без отрицания: `padded`
+// даёт коэффициент операнда по месту результата, а там, где место результата
+// шире операнда, — ноль по сравнению `k > slots(операнда)`.
+
+pub relation raw(p: Poly, k: Integer, v: Rational) kind institutional {
+    label ru unofficial "действующий коэффициент по месту k (может быть нулевым старшим)";
+}
+
+relation padded(result: Poly, src: Poly, k: Integer, v: Rational) kind institutional {
+    label ru unofficial "коэффициент операнда по месту РЕЗУЛЬТАТА: свой там, где место есть, и ноль там, где операнд уже кончился";
+}
+
+relation conv(p: Poly, k: Integer, t: Integer, acc: Rational) kind institutional {
+    label ru unofficial "курсор свёртки произведения: сумма слагаемых a_i · b_(k−i) по i = 0 … t";
+}
+
+relation nonzero_raw(p: Poly, k: Integer) kind institutional {
+    label ru unofficial "место с ненулевым коэффициентом";
+}
+
+pub relation degree(p: Poly, d: Integer) kind institutional {
+    label ru unofficial "степень: наибольшее место с ненулевым коэффициентом. У нулевого многочлена НЕ выводится";
+}
+
+pub relation zero_polynomial(p: Poly) kind institutional {
+    label ru unofficial "нулевой многочлен: ни одного ненулевого коэффициента. Степени у него нет";
+}
+
+pub relation coeff(p: Poly, k: Integer, v: Rational) kind institutional {
+    label ru unofficial "КАНОНИЧЕСКИЙ коэффициент: raw, обрезанный по настоящей степени";
+}
+
+pub relation leading(p: Poly, v: Rational) kind institutional {
+    label ru unofficial "старший коэффициент — по определению ненулевой";
+}
+
+pub relation monic(p: Poly) kind institutional {
+    label ru unofficial "многочлен приведённый: старший коэффициент равен единице";
+}
+
+pub relation content_complete(p: Poly) kind institutional {
+    label ru unofficial "содержимое получено по всем местам";
+}
+
+pub relation content_defect(p: Poly, reason: Text) kind institutional {
+    label ru unofficial "итоговый дефект содержимого: CONFLICTING_COEFFICIENT, CONTENT_INCOMPLETE";
+}
+
+pub relation ready(p: Poly, n: Integer) kind institutional {
+    label ru unofficial "многочлен вычислен целиком и годен к чтению";
+}
+
+// ── Предъявленное содержимое ───────────────────────────────────────────────
+
+rule RawPresented(p: Poly, n: Integer, k: Integer, v: Rational) strict {
+    label ru unofficial "у предъявленного многочлена коэффициент по месту — предъявленное значение";
+    when usable(p, n) and term(p, k, v);
+    then raw(p, k, v);
+}
+
+rule RawMonomialAtDegree(m: Poly, e: Integer, n: Integer, c: Rational) strict {
+    label ru unofficial "у одночлена старшее место несёт его коэффициент";
+    when usable(m, n) and monomial_of(m, e, c) and n == e;
+    then raw(m, e, c);
+}
+
+rule RawMonomialBelow(m: Poly, e: Integer, n: Integer, k: Integer, c: Rational) strict {
+    label ru unofficial "остальные места одночлена нулевые";
+    when usable(m, n) and monomial_of(m, e, c) and slot(m, k) and k < e;
+    then raw(m, k, 0 / 1);
+}
+
+// ── Выравнивание ширин ─────────────────────────────────────────────────────
+
+rule PaddedWithin(
+    result: Poly,
+    src: Poly,
+    k: Integer,
+    ns: Integer,
+    nr: Integer,
+    v: Rational,
+) strict {
+    label ru unofficial "место результата попадает в операнд: его собственный коэффициент";
+    when usable(result, nr) and operand(result, src) and slot(result, k)
+        and monotone(usable(src, ns)) and k <= ns and monotone(raw(src, k, v));
+    then padded(result, src, k, v);
+}
+
+rule PaddedBeyond(result: Poly, src: Poly, k: Integer, ns: Integer, nr: Integer) strict {
+    label ru unofficial "место результата шире операнда: там ноль, и это ВЫВЕДЕНО сравнением, а не получено отсутствием факта";
+    when usable(result, nr) and operand(result, src) and slot(result, k)
+        and monotone(usable(src, ns)) and k > ns;
+    then padded(result, src, k, 0 / 1);
+}
+
+// ── Арифметика ─────────────────────────────────────────────────────────────
+
+rule RawSum(s: Poly, a: Poly, b: Poly, n: Integer, k: Integer, x: Rational, y: Rational) strict {
+    label ru unofficial "коэффициент суммы — сумма коэффициентов по тому же месту";
+    when sum_of(s, a, b) and usable(s, n)
+        and monotone(padded(s, a, k, x)) and monotone(padded(s, b, k, y));
+    then raw(s, k, x + y);
+}
+
+rule RawDifference(
+    d: Poly,
+    a: Poly,
+    b: Poly,
+    n: Integer,
+    k: Integer,
+    x: Rational,
+    y: Rational,
+) strict {
+    label ru unofficial "коэффициент разности — разность коэффициентов по тому же месту";
+    when difference_of(d, a, b) and usable(d, n)
+        and monotone(padded(d, a, k, x)) and monotone(padded(d, b, k, y));
+    then raw(d, k, x - y);
+}
+
+rule RawScaled(t: Poly, a: Poly, c: Rational, x: Rational, n: Integer, k: Integer) strict {
+    label ru unofficial "коэффициент масштабированного — произведение скаляра на исходный";
+    when scaled_of(t, a, c) and usable(t, n) and monotone(padded(t, a, k, x));
+    then raw(t, k, c * x);
+}
+
+rule ConvStart(p: Poly, a: Poly, b: Poly, n: Integer, k: Integer, x: Rational, y: Rational) strict {
+    label ru unofficial "свёртка места k начинается с первого слагаемого a_0 · b_k";
+    when product_of(p, a, b) and usable(p, n) and slot(p, k)
+        and monotone(padded(p, a, 0, x)) and monotone(padded(p, b, k, y));
+    then conv(p, k, 0, x * y);
+}
+
+rule ConvStep(
+    p: Poly,
+    a: Poly,
+    b: Poly,
+    n: Integer,
+    k: Integer,
+    t: Integer,
+    t2: Integer,
+    j: Integer,
+    acc: Rational,
+    x: Rational,
+    y: Rational,
+) strict {
+    label ru unofficial "прибавить a_t · b_(k−t): агрегат внутри рекурсивной компоненты сделал бы программу нестратифицируемой, поэтому свёртка идёт курсором";
+    when monotone(conv(p, k, t, acc)) and product_of(p, a, b) and usable(p, n)
+        and slot(p, t2) and t2 == t + 1 and t2 <= k
+        and slot(p, j) and j == k - t2
+        and monotone(padded(p, a, t2, x)) and monotone(padded(p, b, j, y));
+    then conv(p, k, t2, acc + x * y);
+}
+
+rule RawProduct(p: Poly, a: Poly, b: Poly, n: Integer, k: Integer, v: Rational) strict {
+    label ru unofficial "коэффициент произведения — свёртка, дошедшая до места k";
+    when product_of(p, a, b) and usable(p, n) and monotone(conv(p, k, k, v));
+    then raw(p, k, v);
+}
+
+// ── Степень и канон (выше рекурсивной компоненты) ──────────────────────────
+
+rule NonzeroPositive(p: Poly, k: Integer, v: Rational) strict {
+    label ru unofficial "место с положительным коэффициентом ненулевое";
+    when monotone(raw(p, k, v)) and v > 0 / 1;
+    then nonzero_raw(p, k);
+}
+
+rule NonzeroNegative(p: Poly, k: Integer, v: Rational) strict {
+    label ru unofficial "место с отрицательным коэффициентом ненулевое";
+    when monotone(raw(p, k, v)) and v < 0 / 1;
+    then nonzero_raw(p, k);
+}
+
+// СТЕПЕНЬ БЕЗ АГРЕГАТА. Первая редакция брала её как `max(collect …)` — и
+// программа перестала быть стратифицируемой, как только деление начало ПИСАТЬ
+// коэффициенты своих выходов: круг `nonzero_raw → raw → … → leading → degree
+// → nonzero_raw` замкнулся статусным ребром агрегата. Лечение то же, что у
+// выбора ведущего элемента в `calc.row_reduction`: цепочка `top_zero`
+// доказывает нулевые старшие места ПОЛОЖИТЕЛЬНЫМИ чтениями, и степень
+// оказывается первым местом ниже неё с ненулевым коэффициентом. Ни агрегата,
+// ни отрицания — вся конструкция живёт внутри рекурсивной компоненты.
+
+relation top_zero(p: Poly, k: Integer) kind institutional {
+    label ru unofficial "все места от старшего до k включительно нулевые";
+}
+
+rule TopZeroStart(p: Poly, n: Integer) strict {
+    label ru unofficial "выше старшего места нулевых мест ещё не просмотрено";
+    when usable(p, n);
+    then top_zero(p, n + 1);
+}
+
+rule TopZeroStep(p: Poly, k: Integer, k2: Integer, n: Integer) strict {
+    label ru unofficial "следующее вниз место тоже нулевое";
+    when monotone(top_zero(p, k2)) and usable(p, n) and monotone(slot(p, k)) and k2 == k + 1
+        and monotone(raw(p, k, 0 / 1));
+    then top_zero(p, k);
+}
+
+rule Degree(p: Poly, d: Integer, d2: Integer) strict {
+    label ru unofficial "степень — первое сверху место с ненулевым коэффициентом";
+    when monotone(top_zero(p, d2)) and d2 == d + 1 and monotone(slot(p, d))
+        and monotone(nonzero_raw(p, d));
+    then degree(p, d);
+}
+
+rule ZeroPolynomial(p: Poly) strict {
+    label ru unofficial "нулевой многочлен: цепочка нулей дошла до свободного члена. Степень при этом НЕ выводится — приписать ему нулевую значило бы спутать его с константой";
+    when monotone(top_zero(p, 0));
+    then zero_polynomial(p);
+}
+
+rule Coefficient(p: Poly, k: Integer, d: Integer, v: Rational) strict {
+    label ru unofficial "канонический коэффициент — по месту не старше степени";
+    when monotone(degree(p, d)) and monotone(raw(p, k, v)) and k <= d;
+    then coeff(p, k, v);
+}
+
+rule Leading(p: Poly, d: Integer, v: Rational) strict {
+    label ru unofficial "старший коэффициент стоит на месте степени";
+    when monotone(degree(p, d)) and monotone(coeff(p, d, v));
+    then leading(p, v);
+}
+
+rule Monic(p: Poly, v: Rational) strict {
+    label ru unofficial "приведённый многочлен: старший коэффициент равен единице";
+    when leading(p, v) and v == 1 / 1;
+    then monic(p);
+}
+
+// ── Полнота и итоговые дефекты ─────────────────────────────────────────────
+
+rule ConflictingCoefficient(p: Poly, k: Integer, v: Rational, w: Rational) strict {
+    label ru unofficial "итоговый дефект CONFLICTING_COEFFICIENT: у одного места получились два разных значения";
+    when raw(p, k, v) and raw(p, k, w) and v != w;
+    then content_defect(p, "CONFLICTING_COEFFICIENT");
+}
+
+rule ContentIncomplete(p: Poly, n: Integer) strict {
+    label ru unofficial "итоговый дефект CONTENT_INCOMPLETE: получено меньше коэффициентов, чем мест";
+    when usable(p, n)
+        and (count all k: Integer for v: Rational where raw(p, k, v)) < n + 1;
+    then content_defect(p, "CONTENT_INCOMPLETE");
+}
+
+rule ContentComplete(p: Poly, n: Integer) strict {
+    label ru unofficial "содержимое получено по всем местам и без конфликтов";
+    when usable(p, n)
+        and (count all k: Integer for v: Rational where raw(p, k, v)) == n + 1
+        and (count distinct reason: Text where content_defect(p, reason)) == 0;
+    then content_complete(p);
+}
+
+rule Ready(p: Poly, n: Integer) strict {
+    label ru unofficial "многочлен вычислен целиком";
+    when usable(p, n) and content_complete(p);
+    then ready(p, n);
+}

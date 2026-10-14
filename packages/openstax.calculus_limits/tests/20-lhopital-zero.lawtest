@@ -1,0 +1,34 @@
+language "law.core" version "0.2";
+package openstax.calculus_limits version "0.1.1";
+namespace "urn:openstax:clir:calculus-limits";
+
+// CL_LHOPITAL_ZERO: живой ход, без подстановки step_valid фактом дела.
+test "фрагмент CL_LHOPITAL_ZERO: lhopital" {
+ given {
+  assert "f0": calc.calculus_checker::document(entity_ref("urn:calc:limits:p"), 5, 7, "calculus/2") { origin case_input; }
+  assert "f1": calc.calculus_checker::nodes_of(entity_ref("urn:calc:limits:p"), entity_ref("urn:calc:limits:e")) { origin case_input; }
+  assert "f2": calc.calculus_checker::variable(entity_ref("urn:calc:limits:p"), "x") { origin case_input; }
+  assert "f3": calc.calculus_checker::closed(entity_ref("urn:calc:limits:p")) { origin case_input; }
+  assert "f4": calc.expressions::closed(entity_ref("urn:calc:limits:e")) { origin case_input; }
+  assert "f5": calc.expressions::node(entity_ref("urn:calc:limits:e"), 1, "var", "x", 0 / 1, 0, 0) { origin case_input; }
+  assert "f6": calc.expressions::node(entity_ref("urn:calc:limits:e"), 2, "const", "", 0 / 1, 0, 0) { origin case_input; }
+  assert "f7": calc.expressions::node(entity_ref("urn:calc:limits:e"), 3, "const", "", 1 / 1, 0, 0) { origin case_input; }
+  assert "f8": calc.expressions::node(entity_ref("urn:calc:limits:e"), 4, "const", "", 2 / 1, 0, 0) { origin case_input; }
+  assert "f9": calc.expressions::node(entity_ref("urn:calc:limits:e"), 5, "sin", "", 0 / 1, 1, 0) { origin case_input; }
+  assert "f10": calc.expressions::node(entity_ref("urn:calc:limits:e"), 6, "cos", "", 0 / 1, 1, 0) { origin case_input; }
+  assert "f11": calc.expressions::node(entity_ref("urn:calc:limits:e"), 7, "div", "", 0 / 1, 5, 5) { origin case_input; }
+  assert "f12": calc.expressions::node(entity_ref("urn:calc:limits:e"), 8, "div", "", 0 / 1, 6, 6) { origin case_input; }
+  assert "f13": calc.calculus_checker::lhopital_derivatives(entity_ref("urn:calc:limits:p"), 5, 2, 2) { origin case_input; }
+  assert "f14": calc.calculus_checker::nonzero_near(entity_ref("urn:calc:limits:p"), 5) { origin case_input; }
+  assert "f15": calc.calculus_checker::line(entity_ref("urn:calc:limits:p"), 1, 5, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "f16": calc.calculus_checker::line(entity_ref("urn:calc:limits:p"), 2, 6, "derivative_sin", 1, 0, 0, 0) { origin case_input; }
+  assert "f17": calc.calculus_checker::limit_line(entity_ref("urn:calc:limits:p"), 3, 5, "limit_given", 0, 0, 0, "at", 0 / 1, "both", "expr", 2) { origin case_input; }
+  assert "f18": calc.calculus_checker::limit_line(entity_ref("urn:calc:limits:p"), 4, 8, "limit_given", 0, 0, 0, "at", 0 / 1, "both", "expr", 3) { origin case_input; }
+  assert "f19": calc.calculus_checker::limit_line(entity_ref("urn:calc:limits:p"), 5, 7, "lhopital", 3, 3, 4, "at", 0 / 1, "both", "expr", 3) { origin case_input; }
+  assert "f20": rule_method(entity_ref("urn:openstax:limits:rule"), "lhopital") { origin case_input; }
+ }
+ evaluate truth(step_justified_by(entity_ref("urn:calc:limits:p"), 5, entity_ref("urn:openstax:limits:rule")));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(JustifyLhopital18);
+}

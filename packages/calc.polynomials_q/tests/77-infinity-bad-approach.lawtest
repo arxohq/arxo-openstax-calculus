@@ -1,0 +1,18 @@
+language "law.core" version "0.2";
+package calc.polynomials_q version "0.1.0";
+namespace "urn:law:calc:polynomials-q";
+
+// Ожидания: школьная арифметика над ℚ, DECISION-0197 §4.
+test "неизвестное направление бесконечности" {
+ given {
+  assert "f0": degree_cap(12) { origin case_input; }
+  assert "f1": poly(entity_ref("urn:calc:limit:n"), 0) { origin case_input; }
+  assert "f2": term(entity_ref("urn:calc:limit:n"), 0, 1 / 1) { origin case_input; }
+  assert "f3": poly(entity_ref("urn:calc:limit:d"), 0) { origin case_input; }
+  assert "f4": term(entity_ref("urn:calc:limit:d"), 0, 1 / 1) { origin case_input; }
+  assert "f5": infinity_limit_request(entity_ref("urn:calc:limit:n"), entity_ref("urn:calc:limit:d"), "at") { origin case_input; }
+ }
+ evaluate truth(infinity_limit_error(entity_ref("urn:calc:limit:n"), entity_ref("urn:calc:limit:d"), "at", "INVALID_INFINITY_APPROACH"));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+}

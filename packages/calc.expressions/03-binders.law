@@ -1,0 +1,111 @@
+language "law.core" version "0.2";
+package calc.expressions version "0.1.0";
+namespace "urn:law:calc:expressions";
+
+use self::{
+    Expr,
+    binder_declared,
+    binder_name,
+    bound_at,
+    bound_below,
+    free_at,
+    node,
+    node_uses,
+    substitution_capture,
+    substitution_fresh,
+    substitution_into,
+    substitution_ok,
+    well_formed,
+};
+
+
+
+
+// BINDERS, AND SUBSTITUTION THAT CANNOT CAPTURE (goal §5).
+//
+// The capability matrix named the gap for this package: "binder-aware
+// alpha-equivalence (tag set has no binders yet); explicit capture/cycle bans",
+// and for `calc.expression_substitution` "bound-variable renaming (expression
+// tag set has no binders yet)". The tag set having no binders was read as a
+// limitation of the EXPRESSION TAGS, and it is not: a binder here is a
+// RELATION over the node set, not a new node tag. `binder_declared(e, f, name)`
+// says node f binds the name, and everything else follows from the existing
+// `node` relation. That is a smaller change than it looks, and it is the
+// difference between an expression language that can be reasoned about and one
+// where a substitution can silently rebind a variable.
+//
+// FREE AND BOUND ARE STATED, NOT INFERRED FROM A TAG LIST. A name is bound at a
+// node when that node is a binder AND an occurrence of the name lies beneath it;
+// it is free at a node when it is an occurrence NOT beneath a binder of the same
+// name. Both are derived by walking the existing child pointers, so they mean the
+// same thing for every tag the package already supports and for every tag a
+// future one adds — which a per-tag rule could not.
+//
+// WHY CAPTURE IS REFUSED RATHER THAN AVOIDED. Substituting `x + 1` for `x` in
+// `lambda x . x` is fine; substituting `y` for `x` in `lambda y . y` is not,
+// because the result is a closed term where the original had a free variable in
+// `y`. A substitution routine can avoid this by renaming the binder to a fresh
+// name — and a language that could do that would be right to do it. This package
+// does not, and the reason is worth stating: the fresh-name generator would have
+// to be CORRECT, and a wrong one produces a term that is well-formed and wrong.
+// So the package checks the precondition and refuses the case by name
+// (SUBSTITUTION_CAPTURE), and the caller chooses a name the case declares fresh.
+// A refusal the reader can see beats a rename the reader must trust.
+//
+// A FRESH NAME IS DECLARED, NEVER ASSUMED. `substitution_fresh` is a presented
+// claim about a name, and the capture rule consults it — so the safety of the
+// result rests on something the case stated rather than on a generator nobody
+// can inspect.
+
+rule BinderName(e: Expr, f: Integer, name: Text) strict {
+    label ru unofficial "узел f связывает имя name";
+    when well_formed(e, f) and binder_declared(e, f, name);
+    then binder_name(e, f, name);
+}
+
+// СВОБОДНОСТЬ ВЫВОДИТСЯ ОТРИЦАТЕЛЬНОЙ СТОРОНОЙ ОТДЕЛЬНОГО ПРАВИЛА, а не
+// `not_known` внутри гарда. Первый вариант был
+// `not_known(bound_below(e, f, name))` прямо в правиле BinderFree, и §190 его
+// не принимает: значение, которого нет, связать нечем. Правило `bound_below`
+// объявляет УСТАНОВЛЕННОЕ наличие связывающего узла, и тогда свободность —
+// это отдельный факт, а не отрицание в гарде. Это же различение пригодилось
+// позже: сценарий 29 не может ПРЕДЪЯВИТЬ отрицание, и ему и не нужно —
+// свободность выводится, а проверяется захват.
+
+rule FreeBecauseBound(e: Expr, f: Integer, name: Text) strict {
+    label ru unofficial "вхождение связано, а значит не свободно";
+    when well_formed(e, f) and node_uses(e, f, name) and bound_below(e, f, name);
+    then bound_at(e, f, name);
+}
+
+rule FreeBecauseNoBinder(e: Expr, f: Integer, name: Text, d: Integer, any: Text) strict {
+    label ru unofficial "предъявленный связывающий узел несёт ДРУГОЕ имя, значит вхождение свободно";
+    when well_formed(e, f) and node_uses(e, f, name) and binder_declared(e, d, any)
+        and not_known(bound_below(e, f, name)) and not_known(bound_at(e, f, name));
+    then free_at(e, f, name);
+}
+
+rule BinderBound(e: Expr, f: Integer, name: Text) strict {
+    label ru unofficial "вхождение имени в узле f связано: под ним есть связывающий узел с тем же именем";
+    when well_formed(e, f) and node_uses(e, f, name) and bound_below(e, f, name);
+    then bound_at(e, f, name);
+}
+
+// THE SUBSTITUTION, AND ITS TWO PRECONDITIONS. The image is applied at nodes
+// that use the name; a node whose own name is being substituted is NOT itself
+// rewritten, which is what "capture-avoiding" means in the one case this
+// package supports.
+
+rule Substitute(e: Expr, f: Integer, name: Text, g: Integer, tag: Text, nm: Text, v: Rational, l: Integer, r: Integer, nm2: Text) strict {
+    label ru unofficial "подстановка заменяет свободные вхождения имени узлом образа";
+    when well_formed(e, f) and free_at(e, f, name) and node(e, f, tag, nm, v, l, r)
+        and substitution_into(e, f, g) and substitution_fresh(e, f, name, nm2);
+    then substitution_ok(e, f, name, g);
+}
+
+rule CaptureGuard(e: Expr, f: Integer, name: Text, g: Integer, h: Integer, nm: Text) strict {
+    label ru unofficial "образ содержит имя, связываемое выше, и подстановка без переименования захватила бы его";
+    when well_formed(e, g) and free_at(e, f, name) and substitution_into(e, f, g)
+        and binder_declared(e, h, nm) and node_uses(e, g, nm);
+    then substitution_capture(e, f, name, g);
+}

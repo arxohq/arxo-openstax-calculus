@@ -1,0 +1,129 @@
+language "law.core" version "0.2";
+package calc.expressions version "0.1.0";
+namespace "urn:law:calc:expressions";
+
+// МАТРИЦА, КОМПЛЕКСНОЕ И КУСОЧНОЕ: ФОРМАТ УЗЛА РЕШЁН (scope B02.01).
+//
+// 08-operators.law отказывал этим трём видам ПОИМЕННО, потому что формат не был
+// решён. Теперь решён явно и ни одна деталь не оставлена на догадку:
+//
+//   complex   → левый потомок = действительная часть, правый = мнимая;
+//   piecewise → левый = условие, правый = узел `branch`;
+//                у `branch` левый = первая ветвь, правый = вторая;
+//   matrix    → левый = узел `dims` (ЗНАЧЕНИЕ = строки, ИМЯ = столбцы ТЕКСТОМ),
+//                правый = цепочка `entry`, где левый = элемент, правый = хвост.
+//
+// Сценарий 35 закреплял ОТКАЗ по матрице; он переписан, потому что оставить его
+// означало бы утверждать в одном мире, что вид узла и не представлен, и
+// представлен. Отказ удалён, а не смягчён.
+
+// (a) КОМПЛЕКСНОЕ: пара разложена, и части — РАЗНЫЕ узлы. Если бы обе части
+// читались из одного слота, комплексное (2 + 3i) и (3 + 2i) были бы неразличимы.
+test "a complex node carries its two parts in the two child slots" {
+ given {
+  assert "n1": node(entity_ref("urn:calc:ex:e40"), 1, "complex", "", 0 / 1, 2, 3) { origin case_input; }
+  assert "n2": node(entity_ref("urn:calc:ex:e40"), 2, "const", "", 2 / 1, 0, 0) { origin case_input; }
+  assert "n3": node(entity_ref("urn:calc:ex:e40"), 3, "const", "", 3 / 1, 0, 0) { origin case_input; }
+ }
+ evaluate truth(complex_node(entity_ref("urn:calc:ex:e40"), 1));
+ expect truth_status == TRUE_ONLY;
+ evaluate truth(complex_real(entity_ref("urn:calc:ex:e40"), 1, 2));
+ expect truth_status == TRUE_ONLY;
+ evaluate truth(complex_imag(entity_ref("urn:calc:ex:e40"), 1, 3));
+ expect truth_status == TRUE_ONLY;
+
+ // и узел этого вида больше НЕ отвергается собственным кодом
+ evaluate truth(formula_error(entity_ref("urn:calc:ex:e40"), 1, "COMPLEX_NODE_UNSUPPORTED"));
+ expect truth_status == NEITHER;
+
+ // переставленные части — другой узел, и это видно по разобранным слотам
+ evaluate truth(complex_real(entity_ref("urn:calc:ex:e40"), 1, 3));
+ expect truth_status == NEITHER;
+}
+
+// (b) КУСОЧНОЕ: условие и пара ветвей на трёх разных узлах. Третьего слота у
+// узла нет, и он не появился — третье место занял узел `branch`.
+test "a piecewise node carries a condition and a pair of branches" {
+ given {
+  assert "n1": node(entity_ref("urn:calc:ex:e41"), 1, "piecewise", "", 0 / 1, 2, 3) { origin case_input; }
+  assert "n2": node(entity_ref("urn:calc:ex:e41"), 2, "const", "", 1 / 1, 0, 0) { origin case_input; }
+  assert "n3": node(entity_ref("urn:calc:ex:e41"), 3, "branch", "", 0 / 1, 4, 5) { origin case_input; }
+  assert "n4": node(entity_ref("urn:calc:ex:e41"), 4, "var", "x", 0 / 1, 0, 0) { origin case_input; }
+  assert "n5": node(entity_ref("urn:calc:ex:e41"), 5, "var", "y", 0 / 1, 0, 0) { origin case_input; }
+ }
+ evaluate truth(piecewise_node(entity_ref("urn:calc:ex:e41"), 1));
+ expect truth_status == TRUE_ONLY;
+ evaluate truth(piecewise_condition(entity_ref("urn:calc:ex:e41"), 1, 2));
+ expect truth_status == TRUE_ONLY;
+ evaluate truth(piecewise_branch(entity_ref("urn:calc:ex:e41"), 1, 3));
+ expect truth_status == TRUE_ONLY;
+ evaluate truth(branch_then(entity_ref("urn:calc:ex:e41"), 3, 4));
+ expect truth_status == TRUE_ONLY;
+ evaluate truth(branch_else(entity_ref("urn:calc:ex:e41"), 3, 5));
+ expect truth_status == TRUE_ONLY;
+
+ // ветви переставлены — вердикт другой
+ evaluate truth(branch_then(entity_ref("urn:calc:ex:e41"), 3, 5));
+ expect truth_status == NEITHER;
+
+ // и отказа PIECEWISE_NODE_UNSUPPORTED больше нет
+ evaluate truth(formula_error(entity_ref("urn:calc:ex:e41"), 1, "PIECEWISE_NODE_UNSUPPORTED"));
+ expect truth_status == NEITHER;
+}
+
+// (c) МАТРИЦА: РАЗМЕРНОСТЬ — ЗНАЧЕНИЕ И ИМЯ, ЭЛЕМЕНТЫ — ЦЕПОЧКА. Число
+// столбцов приходит ТЕКСТОМ, и это закреплено: подмена его числом была бы
+// молчаливым изменением контракта.
+test "a matrix node carries its dimensions and its element chain" {
+ given {
+  assert "n1": node(entity_ref("urn:calc:ex:e42"), 1, "matrix", "", 0 / 1, 2, 3) { origin case_input; }
+  assert "n2": node(entity_ref("urn:calc:ex:e42"), 2, "dims", "3", 2 / 1, 0, 0) { origin case_input; }
+  assert "n3": node(entity_ref("urn:calc:ex:e42"), 3, "entry", "", 0 / 1, 4, 5) { origin case_input; }
+  assert "n4": node(entity_ref("urn:calc:ex:e42"), 4, "const", "", 7 / 1, 0, 0) { origin case_input; }
+  assert "n5": node(entity_ref("urn:calc:ex:e42"), 5, "entry", "", 0 / 1, 6, 0) { origin case_input; }
+  assert "n6": node(entity_ref("urn:calc:ex:e42"), 6, "const", "", 8 / 1, 0, 0) { origin case_input; }
+ }
+ evaluate truth(matrix_node(entity_ref("urn:calc:ex:e42"), 1));
+ expect truth_status == TRUE_ONLY;
+ evaluate truth(matrix_rows(entity_ref("urn:calc:ex:e42"), 1, 2 / 1));
+ expect truth_status == TRUE_ONLY;
+ evaluate truth(matrix_cols(entity_ref("urn:calc:ex:e42"), 1, "3"));
+ expect truth_status == TRUE_ONLY;
+ evaluate truth(matrix_elements(entity_ref("urn:calc:ex:e42"), 1, 3));
+ expect truth_status == TRUE_ONLY;
+ evaluate truth(entry_item(entity_ref("urn:calc:ex:e42"), 3, 4));
+ expect truth_status == TRUE_ONLY;
+ evaluate truth(entry_tail(entity_ref("urn:calc:ex:e42"), 3, 5));
+ expect truth_status == TRUE_ONLY;
+
+ // и последний узел цепочки ОБЪЯВЛЕН как конец: это факт о структуре, а не
+ // отсутствие следующего узла
+ evaluate truth(entry_chain_ends(entity_ref("urn:calc:ex:e42"), 5));
+ expect truth_status == TRUE_ONLY;
+ evaluate truth(entry_chain_ends(entity_ref("urn:calc:ex:e42"), 3));
+ expect truth_status == NEITHER;
+
+ // и отказа MATRIX_NODE_UNSUPPORTED больше нет
+ evaluate truth(formula_error(entity_ref("urn:calc:ex:e42"), 1, "MATRIX_NODE_UNSUPPORTED"));
+ expect truth_status == NEITHER;
+}
+
+// (d) РАЗМЕРНОСТЬ ДВИГАЕТ РАЗОБРАННЫЙ УЗЕЛ. Две матрицы, чьи размерности
+// переставлены, дают разные строки и разные столбцы — иначе представление было
+// бы формой без содержания.
+test "the dimensions of a matrix node are read apart" {
+ given {
+  assert "n1": node(entity_ref("urn:calc:ex:e43"), 1, "matrix", "", 0 / 1, 2, 0) { origin case_input; }
+  assert "n2": node(entity_ref("urn:calc:ex:e43"), 2, "dims", "5", 3 / 1, 0, 0) { origin case_input; }
+ }
+ evaluate truth(matrix_rows(entity_ref("urn:calc:ex:e43"), 1, 3 / 1));
+ expect truth_status == TRUE_ONLY;
+ evaluate truth(matrix_cols(entity_ref("urn:calc:ex:e43"), 1, "5"));
+ expect truth_status == TRUE_ONLY;
+
+ // перепутанные компоненты не подходят
+ evaluate truth(matrix_rows(entity_ref("urn:calc:ex:e43"), 1, 5 / 1));
+ expect truth_status == NEITHER;
+ evaluate truth(matrix_cols(entity_ref("urn:calc:ex:e43"), 1, "3"));
+ expect truth_status == NEITHER;
+}

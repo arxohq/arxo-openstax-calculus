@@ -1,0 +1,15 @@
+language "law.core" version "0.2";
+package openstax.calculus_limits version "0.1.1";
+namespace "urn:openstax:clir:calculus-limits";
+
+test "инструкция доступна без выполненного хода" {
+ given {
+  assert "p": rule_premise(entity_ref("urn:openstax:limits:rule"), 1, "Пределы числителя и знаменателя дают 0/0 либо ∞/∞; функции дифференцируемы в проколотой окрестности, g′ не обращается в ноль, предел f′/g′ установлен") { origin case_input; }
+  assert "c": rule_conclusion(entity_ref("urn:openstax:limits:rule"), "Предел f/g равен предъявленному пределу f′/g′") { origin case_input; }
+ }
+ evaluate truth(instruction_available(entity_ref("urn:openstax:limits:rule")));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ evaluate truth(step_justified_by(entity_ref("urn:calc:limits:p"), 1, entity_ref("urn:openstax:limits:rule")));
+ expect truth_status == NEITHER;
+}

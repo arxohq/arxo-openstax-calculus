@@ -1,0 +1,21 @@
+language "law.core" version "0.2";
+package calc.polynomials_q version "0.1.0";
+namespace "urn:law:calc:polynomials-q";
+
+// (x³ − 1) в точке 2 равно 7. Возведения в степень не возникает: свёртка идёт умножением и сложением.
+
+test "значение по схеме Горнера" {
+ given {
+  assert "f0": degree_cap(8) { origin case_input; }
+  assert "f1": poly(entity_ref("urn:calc:pq:f"), 3) { origin case_input; }
+  assert "f2": term(entity_ref("urn:calc:pq:f"), 0, -1 / 1) { origin case_input; }
+  assert "f3": term(entity_ref("urn:calc:pq:f"), 1, 0 / 1) { origin case_input; }
+  assert "f4": term(entity_ref("urn:calc:pq:f"), 2, 0 / 1) { origin case_input; }
+  assert "f5": term(entity_ref("urn:calc:pq:f"), 3, 1 / 1) { origin case_input; }
+  assert "f6": evaluation_request(entity_ref("urn:calc:pq:f"), 2 / 1) { origin case_input; }
+ }
+ evaluate truth(poly_value(entity_ref("urn:calc:pq:f"), 2 / 1, 7 / 1));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(HornerStep);
+}

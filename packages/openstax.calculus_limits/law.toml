@@ -1,0 +1,59 @@
+[package]
+name = "openstax.calculus_limits"
+version = "0.1.1"
+language = "0.2"
+namespace = "urn:openstax:clir:calculus-limits"
+
+[dependencies]
+"calc.limit_solver" = "0.1.0"
+"calc.expressions" = "0.1.0"
+"calc.polynomials_q" = "0.1.0"
+"calc.calculus_checker" = "0.1.0"
+
+[features]
+semanticLayer = "L3"
+
+# Каталожная метадата (DECISION-0051; docs/PACKAGE-METADATA.ru.md).
+[metadata]
+act = "openstax-calculus-limits"
+title = "OpenStax Calculus: предел функции, законы пределов и правило Лопиталя"
+primarySource = "M53492"
+jurisdiction = "none"
+instrument = "treatise"
+sourceFidelity = "pinned_official_bytes"
+issuer = "OpenStax, Rice University — Calculus Volumes 1–2 (osbooks-calculus-bundle, commit 8dbc2ce)"
+legalStatus = "doctrine"
+verifiedAgainstSource = false
+# Лицензия CC BY-NC-SA 4.0 — см. шапку sources.law.
+
+# Сценарии пакета (DECISION-0127): мир — потребитель, затем зависимости.
+[[tests]]
+family = "openstax_calculus_limits"
+suites = [
+  "tests/solver-inputs.lawtest",
+  "tests/01-instruction.lawtest",
+  "tests/02-limit_given-ok.lawtest",
+  "tests/03-limit_constant-ok.lawtest",
+  "tests/04-limit_identity-ok.lawtest",
+  "tests/05-limit_sum-ok.lawtest",
+  "tests/06-limit_difference-ok.lawtest",
+  "tests/07-limit_product-ok.lawtest",
+  "tests/08-limit_constant_multiple-ok.lawtest",
+  "tests/09-limit_power-ok.lawtest",
+  "tests/10-limit_quotient-ok.lawtest",
+  "tests/11-substitution-ratio-ok.lawtest",
+  "tests/12-factor-cancel-ok.lawtest",
+  "tests/13-continuity-exp-ok.lawtest",
+  "tests/14-continuity-sin-ok.lawtest",
+  "tests/15-special_limit_sin-ok.lawtest",
+  "tests/16-special_limit_one_minus_cos-ok.lawtest",
+  "tests/17-one_sided_agree-ok.lawtest",
+  "tests/18-one_sided_differ-ok.lawtest",
+  "tests/19-infinity-rational-ok.lawtest",
+  "tests/20-lhopital-zero.lawtest",
+  "tests/21-lhopital-infinity.lawtest",
+]
+world = ["openstax.calculus_limits", "calc.limit_solver", "calc.calculus_checker", "calc.polynomials_q", "calc.expressions"]
+
+[authoring]
+local_imports = "explicit"

@@ -1,0 +1,4231 @@
+{
+  "format": "arxo.openstax-calculus-source-pin/1",
+  "repository": "https://github.com/arxohq/arxo-corpus",
+  "sourceBaseCommit": "6754df94a780214c37c3337156453ae3f0ddcb32",
+  "sourceCommit": "79cc15239ccc60a898d7fb630b4621235261318d",
+  "capture": "2026-10-14T16:54:04.738366+00:00",
+  "originalInputs": [
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/03-binders.law",
+      "path": "packages/calc.expressions/03-binders.law",
+      "size": 6134,
+      "sha256": "sha256:591a9def4d20fda6654082ec94db29cc4ea241493d1fcc344b5aaa57b61fa0c2"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/05-reach.law",
+      "path": "packages/calc.expressions/05-reach.law",
+      "size": 4789,
+      "sha256": "sha256:49bad06332f3fc86bbf94197e475e5964eee106a1679a95e4614b75e31473646"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/06-alpha.law",
+      "path": "packages/calc.expressions/06-alpha.law",
+      "size": 9150,
+      "sha256": "sha256:963c1966b02180492a196b378ec9a8b9a45bcca333610554e0aad8c229a301c9"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/07-alpha-equality.law",
+      "path": "packages/calc.expressions/07-alpha-equality.law",
+      "size": 17322,
+      "sha256": "sha256:7085990bcca3f7ab8c982c1b3610160d25b58879e9276d4edb24b0dbe32542df"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/08-operators.law",
+      "path": "packages/calc.expressions/08-operators.law",
+      "size": 5552,
+      "sha256": "sha256:82a77d1da0c3bb2833cac31eff4a12f018b7b9d8cce023790b6fb0c56aa51c91"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/09-types.law",
+      "path": "packages/calc.expressions/09-types.law",
+      "size": 21132,
+      "sha256": "sha256:8a158c1e7d5f2b932185d14cb7dae04391a22da1e76def0d87941ce0cf9827cf"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/10-structured.law",
+      "path": "packages/calc.expressions/10-structured.law",
+      "size": 16638,
+      "sha256": "sha256:2a9f3a483269ddb18ae7b9dee820b181f35ee5c45424a434956bbd499218063e"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/diagnostics.law",
+      "path": "packages/calc.expressions/diagnostics.law",
+      "size": 13606,
+      "sha256": "sha256:7491a4ef1db0a6a84ccb30b6630c5796edf65f21845612276f47674ede702e11"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/law.toml",
+      "path": "packages/calc.expressions/law.toml",
+      "size": 2319,
+      "sha256": "sha256:cd03175a3449129ad1985a8e0e4f4594637d6654e5c9e575e649baf73c846ec9"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/package.law",
+      "path": "packages/calc.expressions/package.law",
+      "size": 29074,
+      "sha256": "sha256:458861b88029b8dfcaec24a3a2bb925879dec41ae6d3084ac04162333b7cb96c"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/structure.law",
+      "path": "packages/calc.expressions/structure.law",
+      "size": 14867,
+      "sha256": "sha256:87fd160dacbdba7f01c3f34d572a3a5d842e30ec0eea654b6de90a55f51bcb13"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/01-constant.lawtest",
+      "path": "packages/calc.expressions/tests/01-constant.lawtest",
+      "size": 651,
+      "sha256": "sha256:9079a2ec1685f3cd32f939aedac62ad27c35e80dd8ef0fd13a6ae7204bc4e557"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/02-variable.lawtest",
+      "path": "packages/calc.expressions/tests/02-variable.lawtest",
+      "size": 626,
+      "sha256": "sha256:1ecef0bd532924740af8e1f815e1d36a45c28823edbedb7aa0fda1d34fe9a6d9"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/03-sum.lawtest",
+      "path": "packages/calc.expressions/tests/03-sum.lawtest",
+      "size": 791,
+      "sha256": "sha256:6822ccdb5aabacdc2725e75ca171a2a412493c3bca8642395e026a32cf54fb70"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/04-unary-ln.lawtest",
+      "path": "packages/calc.expressions/tests/04-unary-ln.lawtest",
+      "size": 681,
+      "sha256": "sha256:cd9f8670ed07bbd02b7b9ced54174061c69ea0d50c1401348998037eceb4cdfd"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/05-power-integral.lawtest",
+      "path": "packages/calc.expressions/tests/05-power-integral.lawtest",
+      "size": 860,
+      "sha256": "sha256:a17eea56635a74fe36676a226ad63038401baa45cef023ce36d0dea0ffa6a908"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/06-invalid-node-id.lawtest",
+      "path": "packages/calc.expressions/tests/06-invalid-node-id.lawtest",
+      "size": 612,
+      "sha256": "sha256:c365a3864d1484765d90688df5fac7fb5bd218029848f96ee14f09812a39af2b"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/07-ambiguous-node.lawtest",
+      "path": "packages/calc.expressions/tests/07-ambiguous-node.lawtest",
+      "size": 697,
+      "sha256": "sha256:9390d2d5a01f4d0c47e709e3dc93015515354389d62a4ff18db802fc097d87e8"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/08-unknown-tag.lawtest",
+      "path": "packages/calc.expressions/tests/08-unknown-tag.lawtest",
+      "size": 722,
+      "sha256": "sha256:da7244e5aebab2021f30614cbaa067f1928bb1e33e776b1500dfbc232275011e"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/09-extra-child.lawtest",
+      "path": "packages/calc.expressions/tests/09-extra-child.lawtest",
+      "size": 693,
+      "sha256": "sha256:18836e6a4179caa20504c59917d7ea9cef06fd7ffe769cac64f57e60d7c9d40f"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/10-empty-variable-name.lawtest",
+      "path": "packages/calc.expressions/tests/10-empty-variable-name.lawtest",
+      "size": 592,
+      "sha256": "sha256:36eeb997ab2127e9b01543d2ac35027c1cd5a163134e30ea4e864cf652dda58c"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/11-name-on-compound.lawtest",
+      "path": "packages/calc.expressions/tests/11-name-on-compound.lawtest",
+      "size": 792,
+      "sha256": "sha256:0f0a293c87c6868cd86f7ca8f3b3c33ddfeb34557cc3d80e63ee0ba047e75bd8"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/12-value-on-non-const.lawtest",
+      "path": "packages/calc.expressions/tests/12-value-on-non-const.lawtest",
+      "size": 650,
+      "sha256": "sha256:b5b8427209c260637fffc41754aa664b6ab6b84fea73da74ae408bdbfe042a01"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/13-missing-child.lawtest",
+      "path": "packages/calc.expressions/tests/13-missing-child.lawtest",
+      "size": 735,
+      "sha256": "sha256:6c34fb0d743f5691a0b33570ca300cef8c77c4fbb0f92695467e734d72ffac0c"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/14-negative-exponent.lawtest",
+      "path": "packages/calc.expressions/tests/14-negative-exponent.lawtest",
+      "size": 858,
+      "sha256": "sha256:176413482090a73630b4236ca8c1b9d7377667dfb869f7a38cef443b1ae1efa4"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/15-fractional-exponent.lawtest",
+      "path": "packages/calc.expressions/tests/15-fractional-exponent.lawtest",
+      "size": 864,
+      "sha256": "sha256:3193b088d2a4f50d4b065dac2d7b732a7478e42343e1a61afd35a18cab3d6313"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/16-exponent-out-of-range.lawtest",
+      "path": "packages/calc.expressions/tests/16-exponent-out-of-range.lawtest",
+      "size": 821,
+      "sha256": "sha256:9bf6ae1a1f79ae921ad06cebe796ebcadf99b0adf753ad0c5ce181500261b70d"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/17-exponent-not-constant.lawtest",
+      "path": "packages/calc.expressions/tests/17-exponent-not-constant.lawtest",
+      "size": 870,
+      "sha256": "sha256:a7bd43f85c838b3f8097188048de267a7ea00810666db5d17f21c54105a4677a"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/18-cycle.lawtest",
+      "path": "packages/calc.expressions/tests/18-cycle.lawtest",
+      "size": 616,
+      "sha256": "sha256:00149377beb537dcf4dec6d5e188f1d9651dd40f7352a5a3ba14917a27ad19ba"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/19-alias-equivalent.lawtest",
+      "path": "packages/calc.expressions/tests/19-alias-equivalent.lawtest",
+      "size": 1154,
+      "sha256": "sha256:3f974a00d47fd927169f583d74c42b400da5f4a7fbc17ed9740c7337871a44d5"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/20-order-matters.lawtest",
+      "path": "packages/calc.expressions/tests/20-order-matters.lawtest",
+      "size": 921,
+      "sha256": "sha256:41606e62accc5504bbf44ec523953d4093a2a7184922877fa634e6fb1c1379b5"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/21-shared-subexpression.lawtest",
+      "path": "packages/calc.expressions/tests/21-shared-subexpression.lawtest",
+      "size": 722,
+      "sha256": "sha256:aeae0920776067b3c65feccec4d3ba3e19f553da85ce6ab4981e9345dc49f715"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/22-budget-at-limit.lawtest",
+      "path": "packages/calc.expressions/tests/22-budget-at-limit.lawtest",
+      "size": 27846,
+      "sha256": "sha256:e2427600edd0ed8af9647b0513fbc88e3cebe26b7d0923663210fb9856bab58b"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/23-budget-exhausted.lawtest",
+      "path": "packages/calc.expressions/tests/23-budget-exhausted.lawtest",
+      "size": 27941,
+      "sha256": "sha256:61a8ca367dd2c57d8ddfb09f2c9dd3117ca6cf653ef24fef6720db246cb13df6"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/24-sqrt.lawtest",
+      "path": "packages/calc.expressions/tests/24-sqrt.lawtest",
+      "size": 955,
+      "sha256": "sha256:b04a78d94622a9139fb8fb4d8a50bba50824f9e11817a4577145af2fd6354a74"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/25-sqrt-extra-child.lawtest",
+      "path": "packages/calc.expressions/tests/25-sqrt-extra-child.lawtest",
+      "size": 764,
+      "sha256": "sha256:da3729e2249527fd7d27c4fa47974183ded974da22bde7dc4db26af8a561c2b1"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/26-atan.lawtest",
+      "path": "packages/calc.expressions/tests/26-atan.lawtest",
+      "size": 651,
+      "sha256": "sha256:0c07bc48f08a69afb765b7b2c8032e5d4fe68d041e43b9204044c46027eea4ea"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/27-algebraic-leaf.lawtest",
+      "path": "packages/calc.expressions/tests/27-algebraic-leaf.lawtest",
+      "size": 1171,
+      "sha256": "sha256:c11f69371699c13bb8d654facc15046c2d27096fe1831c280886c00057954662"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/28-log-structural.lawtest",
+      "path": "packages/calc.expressions/tests/28-log-structural.lawtest",
+      "size": 866,
+      "sha256": "sha256:490fa7eaaba20d1751817593bd7c7e1e1b437afc3bdc16dccabe7d28e8ca1f51"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/29-binder.lawtest",
+      "path": "packages/calc.expressions/tests/29-binder.lawtest",
+      "size": 5040,
+      "sha256": "sha256:6801062c5f3e674e3c1dbe37c4e3fa2814e45642031bc9c8c5c2502b0005c094"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/30-reachability.lawtest",
+      "path": "packages/calc.expressions/tests/30-reachability.lawtest",
+      "size": 4316,
+      "sha256": "sha256:01080985fdd0ee32543acf4387bbd89449c45b610044c4be3eee528e2a1300dd"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/31-alpha.lawtest",
+      "path": "packages/calc.expressions/tests/31-alpha.lawtest",
+      "size": 6836,
+      "sha256": "sha256:177f0b5c451c27b28cefdd65f764fcca63696f88a8bfe36c5d9827773e4ef1c1"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/32-alpha-equality.lawtest",
+      "path": "packages/calc.expressions/tests/32-alpha-equality.lawtest",
+      "size": 4344,
+      "sha256": "sha256:fb2e2b4642bfdb204e27897d15115270e6491dba310142b56b78f38248671cd8"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/33-alpha-free-name.lawtest",
+      "path": "packages/calc.expressions/tests/33-alpha-free-name.lawtest",
+      "size": 4541,
+      "sha256": "sha256:91b7207aa92458d4ae3cec7751d48c79385d11f7c92b2e84f0dbf79b5004d846"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/34-alpha-shape.lawtest",
+      "path": "packages/calc.expressions/tests/34-alpha-shape.lawtest",
+      "size": 4666,
+      "sha256": "sha256:58ec04df911bfabb8f7498d8b10a0f9de6c88ce5cb3dc8048933c21be06458b8"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/35-operators.lawtest",
+      "path": "packages/calc.expressions/tests/35-operators.lawtest",
+      "size": 2607,
+      "sha256": "sha256:c62cf13d12821b17caf2d16a1cc691336f3afb9cf2bff14a2ed7c63236d41dbb"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/36-typed-arithmetic.lawtest",
+      "path": "packages/calc.expressions/tests/36-typed-arithmetic.lawtest",
+      "size": 7918,
+      "sha256": "sha256:9141312460f369d9d73446be2fb09439a27f0df5b0b4240a88a5514bcf3c6e6d"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/37-typed-domain.lawtest",
+      "path": "packages/calc.expressions/tests/37-typed-domain.lawtest",
+      "size": 3426,
+      "sha256": "sha256:51fa548f0e493220f3a90a56ddadbbc88ffd16b3ac8ef6a27c2a5b4b61b0dfc0"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/38-typed-environment.lawtest",
+      "path": "packages/calc.expressions/tests/38-typed-environment.lawtest",
+      "size": 5744,
+      "sha256": "sha256:51bfa53de0bb8ea843de155c0fd97710e1caae826777642bb431cd65e16dd45f"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/39-node-dictionary.lawtest",
+      "path": "packages/calc.expressions/tests/39-node-dictionary.lawtest",
+      "size": 3476,
+      "sha256": "sha256:d484cf82c1c3619faa2fd8d0e5fe6e875f389b5c698d01292308685bd683da2b"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/40-structured-nodes.lawtest",
+      "path": "packages/calc.expressions/tests/40-structured-nodes.lawtest",
+      "size": 7879,
+      "sha256": "sha256:0ce415d0cee524a49b85a0ca4ff0725620d8b1b47c4869787dd7931ab6be635d"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/41-child-references.lawtest",
+      "path": "packages/calc.expressions/tests/41-child-references.lawtest",
+      "size": 4568,
+      "sha256": "sha256:74021c64ceda3d9cdfadd5af2699bc4313ed80ec1c0f48517c5b6fb8b6e395e8"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions/tests/42-matrix-shape.lawtest",
+      "path": "packages/calc.expressions/tests/42-matrix-shape.lawtest",
+      "size": 3788,
+      "sha256": "sha256:9066fbcf605f983555aebc3af409e0f92828667bd95d88ec81dd9134f032249e"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/derive.law",
+      "path": "packages/calc.limit_solver/derive.law",
+      "size": 50886,
+      "sha256": "sha256:c9dae84cbc5de92fc2e19a7ff6026064cccd562c5002611386fb06bcaf2c5bba"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/law.toml",
+      "path": "packages/calc.limit_solver/law.toml",
+      "size": 2228,
+      "sha256": "sha256:c48da1f410598923f3a87ee7af869afd3be6260b2e3b50c530740160d5f9d9f5"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/limits.law",
+      "path": "packages/calc.limit_solver/limits.law",
+      "size": 69785,
+      "sha256": "sha256:9d238e9eacf30a3f8f68785aeb6d8f5c1c62fc86f3c49a71c936b21e2f395b88"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/outcome.law",
+      "path": "packages/calc.limit_solver/outcome.law",
+      "size": 21299,
+      "sha256": "sha256:5eded402588c0935efc78c651704d01d48a192477f85792d3bae8d8fd202e3ee"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/package.law",
+      "path": "packages/calc.limit_solver/package.law",
+      "size": 14691,
+      "sha256": "sha256:a4b61b33d77e7efdb4be7dd7d26a55fde3a143aedb117cf0f1d03daef436e2fb"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/search.law",
+      "path": "packages/calc.limit_solver/search.law",
+      "size": 11286,
+      "sha256": "sha256:a1ddfc9acc786ca2c3f1f1bfad5edecb47d7a934c4a27bbea1760623b673539a"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/01-rational-cancel.lawtest",
+      "path": "packages/calc.limit_solver/tests/01-rational-cancel.lawtest",
+      "size": 2284,
+      "sha256": "sha256:8870f1180fb877626b6baf5a59a9c6c4ece2bfad469d2e5367dfdfa8047e8012"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/02-rational-double-root.lawtest",
+      "path": "packages/calc.limit_solver/tests/02-rational-double-root.lawtest",
+      "size": 2295,
+      "sha256": "sha256:8226a87c4c92d98a37b06dd07492475694e3016ac2deff8ff469baabcb8de399"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/03-infinity-plus.lawtest",
+      "path": "packages/calc.limit_solver/tests/03-infinity-plus.lawtest",
+      "size": 2569,
+      "sha256": "sha256:a943deb18e48f292db7a5a66240c01b133d9ca0f81a5eb7aab49e24da5dce60a"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/04-infinity-minus.lawtest",
+      "path": "packages/calc.limit_solver/tests/04-infinity-minus.lawtest",
+      "size": 2574,
+      "sha256": "sha256:57eca6558825c3b5c1d49e3d45a0698a2ea8da1af016fbe4a9107154ecf61562"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/05-one-sided-right.lawtest",
+      "path": "packages/calc.limit_solver/tests/05-one-sided-right.lawtest",
+      "size": 1879,
+      "sha256": "sha256:26fff27cbdfe8c6a559b71872f7ddc40ae89d70c3ba7368c658f0fff74951f7a"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/06-one-sided-left.lawtest",
+      "path": "packages/calc.limit_solver/tests/06-one-sided-left.lawtest",
+      "size": 1788,
+      "sha256": "sha256:8a700128b08038d3508d93c6f9c0f846e44cc498cf3796c6ca1aeb851383134b"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/07-two-sided-dne.lawtest",
+      "path": "packages/calc.limit_solver/tests/07-two-sided-dne.lawtest",
+      "size": 1909,
+      "sha256": "sha256:5de629dd46b7c22874f150fe797afc78ea80dd9b29e74f5076e058437c18ef57"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/08-special-sin.lawtest",
+      "path": "packages/calc.limit_solver/tests/08-special-sin.lawtest",
+      "size": 1759,
+      "sha256": "sha256:185c9c7be3a14cc7f23094d23183c3d7345c13e03948cb5c443ec488974aa363"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/09-special-one-minus-cos.lawtest",
+      "path": "packages/calc.limit_solver/tests/09-special-one-minus-cos.lawtest",
+      "size": 2275,
+      "sha256": "sha256:ce83599ab77a3d4b13a32c50e91bb005cca9ea4f08a28b8895bd32842a0de7c7"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/10-lhopital-exp.lawtest",
+      "path": "packages/calc.limit_solver/tests/10-lhopital-exp.lawtest",
+      "size": 2082,
+      "sha256": "sha256:a54b76590d7d40bf063e19a00fecdad582b3fd2b6bbadd0c19f747bab946fa43"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/11-lhopital-ln.lawtest",
+      "path": "packages/calc.limit_solver/tests/11-lhopital-ln.lawtest",
+      "size": 2142,
+      "sha256": "sha256:8a9cf220d60ced33ac9c4202bd4856d2c8f767bde5a8fcf7cd3798041cebaba8"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/12-lhopital-twice.lawtest",
+      "path": "packages/calc.limit_solver/tests/12-lhopital-twice.lawtest",
+      "size": 2426,
+      "sha256": "sha256:b37e5fb1124d73ef2d0ac533d2dbeb1177d14c3ee8d5f2a9d1eff15ceef27d58"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/13-lhopital-infinity.lawtest",
+      "path": "packages/calc.limit_solver/tests/13-lhopital-infinity.lawtest",
+      "size": 1756,
+      "sha256": "sha256:307b4810d9c87ca7b9a1f2310f79d228481f67755aadd9c348227cae26142eee"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/14-sqrt-conjugate.lawtest",
+      "path": "packages/calc.limit_solver/tests/14-sqrt-conjugate.lawtest",
+      "size": 2274,
+      "sha256": "sha256:2edb32f3bbfed4bfc71cb0c081fa648bb8b6c3e0cbed9019c136aa193bf00bea"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/15-oscillation-honest.lawtest",
+      "path": "packages/calc.limit_solver/tests/15-oscillation-honest.lawtest",
+      "size": 2045,
+      "sha256": "sha256:55b396aaad2f848b76ba13c67b28db6a7afa70cc0e001ba8ebe1559188750168"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/16-sqrt-negative-domain.lawtest",
+      "path": "packages/calc.limit_solver/tests/16-sqrt-negative-domain.lawtest",
+      "size": 1949,
+      "sha256": "sha256:72eaaaf25c853cde3e41a4e1f43266c2d72f4a453c5cd5f5a5ce2f555cad5462"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/17-ln-right.lawtest",
+      "path": "packages/calc.limit_solver/tests/17-ln-right.lawtest",
+      "size": 1703,
+      "sha256": "sha256:a4bc2aba85aaab7f0fd8fdc47f9769b8075bd08296e5e505ee128f124014100f"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/18-ln-two-sided-domain.lawtest",
+      "path": "packages/calc.limit_solver/tests/18-ln-two-sided-domain.lawtest",
+      "size": 1715,
+      "sha256": "sha256:b8958d597eee73934210dd1b0c95500bfd7a3cd4b4abe5c20eedf70cc1b66c90"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/19-no-indeterminacy.lawtest",
+      "path": "packages/calc.limit_solver/tests/19-no-indeterminacy.lawtest",
+      "size": 2088,
+      "sha256": "sha256:da2810b5854203f2c3879f585156c76955d4a34246b8877f8b3f7e1d5cda2ec1"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/20-lhopital-not-applied.lawtest",
+      "path": "packages/calc.limit_solver/tests/20-lhopital-not-applied.lawtest",
+      "size": 2067,
+      "sha256": "sha256:82806c16f1a57ac8ffcff1cff5b5098565ad794a94c6389857079d4fb828a1f7"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/21-lhopital-thrice.lawtest",
+      "path": "packages/calc.limit_solver/tests/21-lhopital-thrice.lawtest",
+      "size": 2367,
+      "sha256": "sha256:c750564354c3714fc519290247b0ade2e81e9ec3b127dd8794b086a89f9b6f00"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/22-invalid-node-id.lawtest",
+      "path": "packages/calc.limit_solver/tests/22-invalid-node-id.lawtest",
+      "size": 1523,
+      "sha256": "sha256:42158866adef9e1d891fba89219ad2c7fd982182c063e138af0b20c49f641329"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/23-budget-inside.lawtest",
+      "path": "packages/calc.limit_solver/tests/23-budget-inside.lawtest",
+      "size": 2018,
+      "sha256": "sha256:99b00406a9a0f7841ed68d33331743ea56e65adf5581809a7bf248c8b5ad8194"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/24-budget-exhausted.lawtest",
+      "path": "packages/calc.limit_solver/tests/24-budget-exhausted.lawtest",
+      "size": 2029,
+      "sha256": "sha256:9afa9a3f61cd92132f48e47a7645dd39d3ad01aaaea352aa2646a142fdc4f310"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/25-trace-derivative-node.lawtest",
+      "path": "packages/calc.limit_solver/tests/25-trace-derivative-node.lawtest",
+      "size": 2353,
+      "sha256": "sha256:ce3c636f88a8ce4e78e18565deb3098602a488b4f08158916da73d00d1b78901"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/26-trace-method-name.lawtest",
+      "path": "packages/calc.limit_solver/tests/26-trace-method-name.lawtest",
+      "size": 2159,
+      "sha256": "sha256:736f2111ca944b3d3d4c8a5d9230dc4523e9396bb980066236cf749b2d68b77e"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/27-trace-lhopital-applied.lawtest",
+      "path": "packages/calc.limit_solver/tests/27-trace-lhopital-applied.lawtest",
+      "size": 2336,
+      "sha256": "sha256:5bcca8dcbc8d5b9118e52ccdc8f8642cdbc61ec78eb8bc9b3661e96fffe4cf63"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/28-trace-well-formed.lawtest",
+      "path": "packages/calc.limit_solver/tests/28-trace-well-formed.lawtest",
+      "size": 2159,
+      "sha256": "sha256:90de6d870575bb07bdb263ce573b330ebc25c7b2a3e773eb4a5d30e2c446a8ba"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/29-condition-not-established.lawtest",
+      "path": "packages/calc.limit_solver/tests/29-condition-not-established.lawtest",
+      "size": 2572,
+      "sha256": "sha256:13d4d041e71119079b55bb55a72d4b165ef5f4cc5de7db6c111fd0c82e3f54f7"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/30-pole-shifted-both.lawtest",
+      "path": "packages/calc.limit_solver/tests/30-pole-shifted-both.lawtest",
+      "size": 2459,
+      "sha256": "sha256:59d0614ecb6c5a700bd15a449bb9ca4faedbd483ea2484f0b1f7ef8fb5ba58b2"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/31-pole-shifted-right.lawtest",
+      "path": "packages/calc.limit_solver/tests/31-pole-shifted-right.lawtest",
+      "size": 2305,
+      "sha256": "sha256:efc279ec39c386f6a4057d8705f97c289b32e98d76415cb3f906b1d6a424ff29"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/32-pole-double-root.lawtest",
+      "path": "packages/calc.limit_solver/tests/32-pole-double-root.lawtest",
+      "size": 3204,
+      "sha256": "sha256:d94bdb73cd02f1b3753e9bf9ff89fcaf4f4f9f9bc3f627223f3726a5e1a72612"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/33-leading-term-infinity.lawtest",
+      "path": "packages/calc.limit_solver/tests/33-leading-term-infinity.lawtest",
+      "size": 2860,
+      "sha256": "sha256:0afacf416f3da26ad85f19309e1f3fc5907f74a64fee6c47d1cb0c66309608f9"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/34-pole-shifted-left.lawtest",
+      "path": "packages/calc.limit_solver/tests/34-pole-shifted-left.lawtest",
+      "size": 2302,
+      "sha256": "sha256:8789410b967111f08b99f204869ab9e112b6c93e482a8b7f1617ad6df5c9083c"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver/tests/35-pole-triple-root-honest.lawtest",
+      "path": "packages/calc.limit_solver/tests/35-pole-triple-root-honest.lawtest",
+      "size": 3918,
+      "sha256": "sha256:4c176492f5b2c15fec006ff6658bd7a3e032c052166a1ac5e63ae5658a247438"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/analysis.law",
+      "path": "packages/calc.polynomials_q/analysis.law",
+      "size": 22482,
+      "sha256": "sha256:31f3cec6e50ddbed66d13c4b3c39347fa301a13f7e555678f12cd5a781603ec0"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/content.law",
+      "path": "packages/calc.polynomials_q/content.law",
+      "size": 15496,
+      "sha256": "sha256:4827c70d92600ea49f0de2bdf22ced726e1fc3fcc1fdb9f9ca33d52812f396b1"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/division.law",
+      "path": "packages/calc.polynomials_q/division.law",
+      "size": 21638,
+      "sha256": "sha256:be0d1be71f63f4a8f7ae43710b4bc14dec9fcde50f47acfe18b172e5eb19019e"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/euclid.law",
+      "path": "packages/calc.polynomials_q/euclid.law",
+      "size": 18136,
+      "sha256": "sha256:0c7b39e5abc0ca5995dfc1536eb82d0ff2c0f18798eb5a2a47141c5817dd5cdc"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/identities.law",
+      "path": "packages/calc.polynomials_q/identities.law",
+      "size": 9027,
+      "sha256": "sha256:e1a03681865bc0349f9514e00829677a1f3b25303a0ebb893102a5f58131bf63"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/invariants.law",
+      "path": "packages/calc.polynomials_q/invariants.law",
+      "size": 3653,
+      "sha256": "sha256:368fa8a3ee0b75f53f3cfc7c989e7f67ce8cb52a339339bc92b8f3a1764dfafa"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/law.toml",
+      "path": "packages/calc.polynomials_q/law.toml",
+      "size": 4146,
+      "sha256": "sha256:93b480c621b1df21820ced61a336c61e774cd2e26f888673ccca0abefae21426"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/limits.law",
+      "path": "packages/calc.polynomials_q/limits.law",
+      "size": 16658,
+      "sha256": "sha256:26887142c67fcbbcba795c365edd28d8f03e10268e04a866da9431c3d6ff3a0c"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/package.law",
+      "path": "packages/calc.polynomials_q/package.law",
+      "size": 21688,
+      "sha256": "sha256:420066cebc52c773e89891483aac6f1e09d1654f942c1a9a6575302b8dec64ca"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/01-product.lawtest",
+      "path": "packages/calc.polynomials_q/tests/01-product.lawtest",
+      "size": 1475,
+      "sha256": "sha256:0f46d157bb2126ec3cd88c8846f048193a35f7b3958918397a57924eac1ceecc"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/02-canonical-trims-leading-zero.lawtest",
+      "path": "packages/calc.polynomials_q/tests/02-canonical-trims-leading-zero.lawtest",
+      "size": 1209,
+      "sha256": "sha256:e56e87066b733c6313bb7817919ff5cf9dbbfde38626516bc1c75b165c6e4042"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/03-zero-polynomial-has-no-degree.lawtest",
+      "path": "packages/calc.polynomials_q/tests/03-zero-polynomial-has-no-degree.lawtest",
+      "size": 1283,
+      "sha256": "sha256:a4953812bec642033fee51d17798f1dfd7a86bc549238eb531b48c5883e3f8ed"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/04-constant-has-degree-zero.lawtest",
+      "path": "packages/calc.polynomials_q/tests/04-constant-has-degree-zero.lawtest",
+      "size": 830,
+      "sha256": "sha256:c721aae1c0bb7d1d0c7a70cadc48bbdfd7803513eaecfaecc9c0abd0a6b8f674"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/05-degree-of-product.lawtest",
+      "path": "packages/calc.polynomials_q/tests/05-degree-of-product.lawtest",
+      "size": 1428,
+      "sha256": "sha256:db78b2ff51aad78617df543571cddd39a0066b28d273e66efc8e275bbef0e725"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/06-cancellation-lowers-degree.lawtest",
+      "path": "packages/calc.polynomials_q/tests/06-cancellation-lowers-degree.lawtest",
+      "size": 1513,
+      "sha256": "sha256:fa91b6e0147c2aca1e1eb565c6c25d45fa9c100a17f06e7687fdf7aecb9e1a58"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/07-sum-different-widths.lawtest",
+      "path": "packages/calc.polynomials_q/tests/07-sum-different-widths.lawtest",
+      "size": 1600,
+      "sha256": "sha256:9ab2f9a65b13bcb834d6b860719848f7f64f942bff3f0e17d6c345c2ec7da957"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/08-difference.lawtest",
+      "path": "packages/calc.polynomials_q/tests/08-difference.lawtest",
+      "size": 1393,
+      "sha256": "sha256:c05b73b665dbe5ae1dc7d3404b1528f70b8cfe070cf5e8f41d875aa39dd628c5"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/09-scaled-fraction.lawtest",
+      "path": "packages/calc.polynomials_q/tests/09-scaled-fraction.lawtest",
+      "size": 1130,
+      "sha256": "sha256:ff8bbf5007d17a9f709788cc4c8cb6b0545dbf492b454542335eee8a2efc5244"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/10-fractional-product.lawtest",
+      "path": "packages/calc.polynomials_q/tests/10-fractional-product.lawtest",
+      "size": 1410,
+      "sha256": "sha256:08db8c548934f905a773ba79a9f337f1a55a6ef5bb9e034bf00fa4b2f3279be6"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/11-monomial.lawtest",
+      "path": "packages/calc.polynomials_q/tests/11-monomial.lawtest",
+      "size": 768,
+      "sha256": "sha256:3ccffd53100b00953fd5b3ef2596c785d5b8836750c77fffb938398e9f339679"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/12-identity-commutes.lawtest",
+      "path": "packages/calc.polynomials_q/tests/12-identity-commutes.lawtest",
+      "size": 1676,
+      "sha256": "sha256:83c9d843510676eb6dd1748ed859f9aa1218839e5ed22addb48124c15f036cef"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/13-identity-refuted.lawtest",
+      "path": "packages/calc.polynomials_q/tests/13-identity-refuted.lawtest",
+      "size": 1532,
+      "sha256": "sha256:c25068af481f9538e66fa64ebc21a81fa04703ffa7695c06c5edc87c963687c1"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/14-identity-differs-by-degree.lawtest",
+      "path": "packages/calc.polynomials_q/tests/14-identity-differs-by-degree.lawtest",
+      "size": 1551,
+      "sha256": "sha256:40566d4aa0e15501d4d71aeac0417b7374b96fe497442070cf62cb228f54f098"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/15-two-zero-polynomials-are-equal.lawtest",
+      "path": "packages/calc.polynomials_q/tests/15-two-zero-polynomials-are-equal.lawtest",
+      "size": 1247,
+      "sha256": "sha256:4d4e1fbbff9ad04fb95d00a403a20faab29e667cb969ad0d3a4703d2e573710d"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/16-horner-value.lawtest",
+      "path": "packages/calc.polynomials_q/tests/16-horner-value.lawtest",
+      "size": 1093,
+      "sha256": "sha256:65fd8ae862ebabd0d4db20ede60be2d5273682803efe226d3cc2760608079457"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/17-horner-fraction.lawtest",
+      "path": "packages/calc.polynomials_q/tests/17-horner-fraction.lawtest",
+      "size": 868,
+      "sha256": "sha256:ff081117520f5d4cf92ffc7a71c0e80d79306af3b6df85ad063bec0a80a46cfe"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/18-root.lawtest",
+      "path": "packages/calc.polynomials_q/tests/18-root.lawtest",
+      "size": 1047,
+      "sha256": "sha256:ac33da1b2a4184405985909fd9b2aef31d9bb9f7cf1601679c38d8a506d1834a"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/19-zero-polynomial-value.lawtest",
+      "path": "packages/calc.polynomials_q/tests/19-zero-polynomial-value.lawtest",
+      "size": 940,
+      "sha256": "sha256:da45296a3edf26ee811d6d015556b32865176e99a09f649fab6a10e6e50a3847"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/20-division-quotient.lawtest",
+      "path": "packages/calc.polynomials_q/tests/20-division-quotient.lawtest",
+      "size": 1869,
+      "sha256": "sha256:bbcbd601c366d0c9cd70f85c30fb9977462b5cca977bb82d67ba95f4a9067018"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/21-division-remainder.lawtest",
+      "path": "packages/calc.polynomials_q/tests/21-division-remainder.lawtest",
+      "size": 1941,
+      "sha256": "sha256:58d0a90b2e69d46a838bc09edca3bed3147239ffcc2629796477086398aa5d17"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/22-division-identity.lawtest",
+      "path": "packages/calc.polynomials_q/tests/22-division-identity.lawtest",
+      "size": 2139,
+      "sha256": "sha256:707eaad5f561be9f912212124bd1400c8d04d81fb0e763f27a1bf4c1cbbc5cf6"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/23-division-exact.lawtest",
+      "path": "packages/calc.polynomials_q/tests/23-division-exact.lawtest",
+      "size": 1977,
+      "sha256": "sha256:065d6475a92771294386506e168f2d345dbba503522367a69c424f198d34fb36"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/24-division-fractional.lawtest",
+      "path": "packages/calc.polynomials_q/tests/24-division-fractional.lawtest",
+      "size": 2167,
+      "sha256": "sha256:7e2c68f2e93db217b5c259287107bb42942f96f76474a45a45862e39be9158d7"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/25-division-trivial-smaller.lawtest",
+      "path": "packages/calc.polynomials_q/tests/25-division-trivial-smaller.lawtest",
+      "size": 2023,
+      "sha256": "sha256:a700a168d53bef0691f4346ea1d768ead89fc1743a1f6453954bef289f106696"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/26-division-zero-dividend.lawtest",
+      "path": "packages/calc.polynomials_q/tests/26-division-zero-dividend.lawtest",
+      "size": 1827,
+      "sha256": "sha256:3dccd9bbaf59c8dfb9788c82f1b7956735a16c68d4d630a59bdf6f5f79f3644a"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/27-division-by-zero-polynomial.lawtest",
+      "path": "packages/calc.polynomials_q/tests/27-division-by-zero-polynomial.lawtest",
+      "size": 1966,
+      "sha256": "sha256:3cd22831b6d70e3faa63496128d6bd50aa8cc3377d9e423379024c2cb3b53a9e"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/28-quotient-descriptor-too-narrow.lawtest",
+      "path": "packages/calc.polynomials_q/tests/28-quotient-descriptor-too-narrow.lawtest",
+      "size": 1865,
+      "sha256": "sha256:57d5f0da52be337b10ea5ad689e1f9992af0257966e70ed9e18b0ebfeddd1033"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/29-unknown-division-part.lawtest",
+      "path": "packages/calc.polynomials_q/tests/29-unknown-division-part.lawtest",
+      "size": 1581,
+      "sha256": "sha256:9dd54237cb4fd971e808898686d2e6e39d951fa8bb92371038089c4301f9ebd4"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/30-gcd-index.lawtest",
+      "path": "packages/calc.polynomials_q/tests/30-gcd-index.lawtest",
+      "size": 5419,
+      "sha256": "sha256:3023993c31408bb4936be424c75a340745ab11e8b4c25a86afc23d2966329a47"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/31-gcd-value.lawtest",
+      "path": "packages/calc.polynomials_q/tests/31-gcd-value.lawtest",
+      "size": 5537,
+      "sha256": "sha256:082c85137de59d7a9088e1a2e5ffb6bf9a668ba5d901fa4564e37d4bb2fcac9a"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/32-bezout-coefficients.lawtest",
+      "path": "packages/calc.polynomials_q/tests/32-bezout-coefficients.lawtest",
+      "size": 5340,
+      "sha256": "sha256:9a29303f11dc2b332e7c8b64b5564974a605e964bf27f83b3d4e8cdcaeb0094d"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/33-bezout-identity.lawtest",
+      "path": "packages/calc.polynomials_q/tests/33-bezout-identity.lawtest",
+      "size": 5789,
+      "sha256": "sha256:53e19bd369af9d138324b1842bafe72325b97e3941ff3b223aca8b13d0250046"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/34-gcd-longer-chain.lawtest",
+      "path": "packages/calc.polynomials_q/tests/34-gcd-longer-chain.lawtest",
+      "size": 5644,
+      "sha256": "sha256:1a2f059efe85612c5c4fa479c4a18c0990c1748583f8fc7687dd81377964cdb5"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/35-bezout-longer-chain.lawtest",
+      "path": "packages/calc.polynomials_q/tests/35-bezout-longer-chain.lawtest",
+      "size": 5965,
+      "sha256": "sha256:1b222c50d1fe40740d3c165a765fb7c9700424e8127f1b47d503be000a437172"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/36-coprime-gcd-is-one.lawtest",
+      "path": "packages/calc.polynomials_q/tests/36-coprime-gcd-is-one.lawtest",
+      "size": 5056,
+      "sha256": "sha256:2322bc97d81e661b5018c937cf8d1442dde97413429d5785bf077a53c3dd79bb"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/37-coprime-bezout.lawtest",
+      "path": "packages/calc.polynomials_q/tests/37-coprime-bezout.lawtest",
+      "size": 5390,
+      "sha256": "sha256:8d4e30af46e175855ca11aa935e0aa79b047630059bf92aeed3fc4defd606dbe"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/38-chain-unfinished.lawtest",
+      "path": "packages/calc.polynomials_q/tests/38-chain-unfinished.lawtest",
+      "size": 4617,
+      "sha256": "sha256:123c696f7a92c84040b6f51815df5d2612a13ce25c402b39b7fa28f11ef55c7e"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/39-no-resource-contract.lawtest",
+      "path": "packages/calc.polynomials_q/tests/39-no-resource-contract.lawtest",
+      "size": 877,
+      "sha256": "sha256:b655f607cfa1c62bafa9c3a03adf1b694771f83ff09636a019b850fc31f97553"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/40-slots-exceed-cap.lawtest",
+      "path": "packages/calc.polynomials_q/tests/40-slots-exceed-cap.lawtest",
+      "size": 1327,
+      "sha256": "sha256:396df04d36cb58ae32ece5c0877ce99a73ad17dc9d601a2b6d845e418a06ea0a"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/41-product-exceeds-cap.lawtest",
+      "path": "packages/calc.polynomials_q/tests/41-product-exceeds-cap.lawtest",
+      "size": 1651,
+      "sha256": "sha256:7ba631a7c577bc9d6e4015854bed46721f6f6483c8ca127de4886e88bdc6926a"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/42-incomplete-input.lawtest",
+      "path": "packages/calc.polynomials_q/tests/42-incomplete-input.lawtest",
+      "size": 885,
+      "sha256": "sha256:afd5b651584f29544ce2c5a9dd863e5191275383f3a1776fab01393ec83dc1ea"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/43-contradictory-term.lawtest",
+      "path": "packages/calc.polynomials_q/tests/43-contradictory-term.lawtest",
+      "size": 924,
+      "sha256": "sha256:7f869366e7aa4cd5aab9caf65421141ffc002bcf32428fbfa7f4d3d0dbf0dc8d"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/44-index-out-of-range.lawtest",
+      "path": "packages/calc.polynomials_q/tests/44-index-out-of-range.lawtest",
+      "size": 934,
+      "sha256": "sha256:31807c2ac07cff29711ce2e78737da7e10fb34cbba220ed3189232dbdd39a672"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/45-ambiguous-definition.lawtest",
+      "path": "packages/calc.polynomials_q/tests/45-ambiguous-definition.lawtest",
+      "size": 1567,
+      "sha256": "sha256:d6ec9a5c429c84d5a39f1411eec9b6efba34239ae597535592f2e68c414a11ba"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/46-undefined-operand.lawtest",
+      "path": "packages/calc.polynomials_q/tests/46-undefined-operand.lawtest",
+      "size": 947,
+      "sha256": "sha256:e8a714049186627df0bbcf282529ec1861f19e2629ef8125dc0701e2120c47d4"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/47-isolation.lawtest",
+      "path": "packages/calc.polynomials_q/tests/47-isolation.lawtest",
+      "size": 1311,
+      "sha256": "sha256:a31a3211e0f2462e00ddde3d4eb7d8ebf25ca1f0757fba349cf07883f31ced8a"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/48-taint-propagates.lawtest",
+      "path": "packages/calc.polynomials_q/tests/48-taint-propagates.lawtest",
+      "size": 1359,
+      "sha256": "sha256:a9a0eaa86c0f5106782be37f35acf6caeae73e246e79a74ce5be59974a1e57f1"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/49-two-independent-divisions.lawtest",
+      "path": "packages/calc.polynomials_q/tests/49-two-independent-divisions.lawtest",
+      "size": 2898,
+      "sha256": "sha256:5369ce7a85f9cd1a0dabac9cdc3446dbb0c2d537e5b3092042cc2db065624a05"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/50-derivative-of-constant.lawtest",
+      "path": "packages/calc.polynomials_q/tests/50-derivative-of-constant.lawtest",
+      "size": 931,
+      "sha256": "sha256:61302d162c5a2e9b5b8a4bcc6d5eeb4923acb3c4aa70b393a81601f4e63cb091"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/51-derivative-drops-degree.lawtest",
+      "path": "packages/calc.polynomials_q/tests/51-derivative-drops-degree.lawtest",
+      "size": 1008,
+      "sha256": "sha256:71eb69c945b770be8b1694531bcefabe91b6fe99dfca73b45495f301f59d28af"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/52-derivative-coefficient.lawtest",
+      "path": "packages/calc.polynomials_q/tests/52-derivative-coefficient.lawtest",
+      "size": 935,
+      "sha256": "sha256:349ea17904f36ed8b25714335e3f8fc1c952c4afea297f6c1990f5c0265368b0"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/53-antiderivative-is-inverse.lawtest",
+      "path": "packages/calc.polynomials_q/tests/53-antiderivative-is-inverse.lawtest",
+      "size": 983,
+      "sha256": "sha256:a64885f29a2beebf75db1f8fe4866310d91d59ae937aa6d7ff93093ebb5fb208"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/54-definite-integral-fractional-limits.lawtest",
+      "path": "packages/calc.polynomials_q/tests/54-definite-integral-fractional-limits.lawtest",
+      "size": 1139,
+      "sha256": "sha256:229a36ec56af090189e3b07b2ce80e7bb8b1c3ff9d1f34170b87a9fd55e01e7d"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/55-bridge-reads-polynomial.lawtest",
+      "path": "packages/calc.polynomials_q/tests/55-bridge-reads-polynomial.lawtest",
+      "size": 1739,
+      "sha256": "sha256:b3d178fac8c23ea37f0de9cfb1cbaef515988a92b652202eb230b5367d451f85"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/56-bridge-refuses-sine.lawtest",
+      "path": "packages/calc.polynomials_q/tests/56-bridge-refuses-sine.lawtest",
+      "size": 1028,
+      "sha256": "sha256:785d72269e24ca7e206b4d17d9e0c763e59ab62b5e49aca4aa51d6e1786207db"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/57-bridge-constant-leaf.lawtest",
+      "path": "packages/calc.polynomials_q/tests/57-bridge-constant-leaf.lawtest",
+      "size": 1693,
+      "sha256": "sha256:367dd67625ccafdb44dd4aca1c0fe5700306e28f75ea3514267402b2aa58ef69"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/58-bridge-power-leaf.lawtest",
+      "path": "packages/calc.polynomials_q/tests/58-bridge-power-leaf.lawtest",
+      "size": 1698,
+      "sha256": "sha256:43bd90872884cb7ff69b1d1f73a113b98426792d79fb779ec0b404eb03750d39"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/59-rational-value.lawtest",
+      "path": "packages/calc.polynomials_q/tests/59-rational-value.lawtest",
+      "size": 1167,
+      "sha256": "sha256:69f9fb97122bb5b6b041bf10b52e4a046ffae266df108308b75cbadb83d87c67"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/60-rational-zero-denominator.lawtest",
+      "path": "packages/calc.polynomials_q/tests/60-rational-zero-denominator.lawtest",
+      "size": 1362,
+      "sha256": "sha256:f9b28abe79a1b0b240ff0ceb76cbc5afaf97fa9c9fabae4746864d9e9ac6ae3b"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/61-cancel-exact.lawtest",
+      "path": "packages/calc.polynomials_q/tests/61-cancel-exact.lawtest",
+      "size": 2352,
+      "sha256": "sha256:04046612d2e24905b041776eceaef3b9b97c8acfa584f5a8013d5e11dfa657f7"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/62-cancel-fractional.lawtest",
+      "path": "packages/calc.polynomials_q/tests/62-cancel-fractional.lawtest",
+      "size": 2357,
+      "sha256": "sha256:735452a9eb6d0a85cb5b82abc544dc23975b15d126427dc514bf7ee8d0a1347e"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/63-cancel-zero.lawtest",
+      "path": "packages/calc.polynomials_q/tests/63-cancel-zero.lawtest",
+      "size": 2037,
+      "sha256": "sha256:1cbf529fd506d980ebfba90ca1dcd0ca375e6beeb6f3f07687f00e6932bea926"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/64-cancel-bad-numerator.lawtest",
+      "path": "packages/calc.polynomials_q/tests/64-cancel-bad-numerator.lawtest",
+      "size": 1894,
+      "sha256": "sha256:ae7b05cd20ac068b266c9bb3fdba84353239e3e1ba38258c612a1d2acd2f5ecd"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/65-cancel-bad-denominator.lawtest",
+      "path": "packages/calc.polynomials_q/tests/65-cancel-bad-denominator.lawtest",
+      "size": 1810,
+      "sha256": "sha256:7939c962861e8f1316b2cf194c0f4d3b4bf66ea5a842ad522d6e46414731ef6a"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/66-infinity-0.lawtest",
+      "path": "packages/calc.polynomials_q/tests/66-infinity-0.lawtest",
+      "size": 1003,
+      "sha256": "sha256:012e25f5b36b736e43224bd92bbba65e33c9b81e801a5d89ccbefb2428cdd022"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/67-infinity-1.lawtest",
+      "path": "packages/calc.polynomials_q/tests/67-infinity-1.lawtest",
+      "size": 1090,
+      "sha256": "sha256:7a7ef155ab1f4e96fe933b9243bb2bae262d7f273d4be057a4f37086c83dad56"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/68-infinity-2.lawtest",
+      "path": "packages/calc.polynomials_q/tests/68-infinity-2.lawtest",
+      "size": 1173,
+      "sha256": "sha256:ad43162a65746afdfc70671d29ed68c8a68aebec1d14c3570160389ba5fe7bc9"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/69-infinity-3.lawtest",
+      "path": "packages/calc.polynomials_q/tests/69-infinity-3.lawtest",
+      "size": 1175,
+      "sha256": "sha256:1daa5fb32e6c1df2d1029f9b508bc523f5ac70d5d2d35c24910d218ae39eef11"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/70-infinity-4.lawtest",
+      "path": "packages/calc.polynomials_q/tests/70-infinity-4.lawtest",
+      "size": 1173,
+      "sha256": "sha256:a758813677565d6e45afb6d043eac312506b27fb719d7f33b1d33fcf70c1f308"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/71-infinity-5.lawtest",
+      "path": "packages/calc.polynomials_q/tests/71-infinity-5.lawtest",
+      "size": 1175,
+      "sha256": "sha256:32e3c09f95c2d5a19d43606c82ac5f73457d2d19f57822e9ba54919e6d92eaa0"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/72-infinity-6.lawtest",
+      "path": "packages/calc.polynomials_q/tests/72-infinity-6.lawtest",
+      "size": 1175,
+      "sha256": "sha256:7974bee67a2a92a9b80b87ca92447a6a36fd02ab8bd1877728da24a3573d874e"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/73-infinity-7.lawtest",
+      "path": "packages/calc.polynomials_q/tests/73-infinity-7.lawtest",
+      "size": 1177,
+      "sha256": "sha256:7c760d1fb3834bb62ca785bb4c4a6eeb1b5e460ba7e1e1a7364c5a83437b1c82"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/74-infinity-8.lawtest",
+      "path": "packages/calc.polynomials_q/tests/74-infinity-8.lawtest",
+      "size": 1091,
+      "sha256": "sha256:971b4d0f9c960237930c31d979b4af5e53dc68960477374dadd37bddde080669"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/75-infinity-9.lawtest",
+      "path": "packages/calc.polynomials_q/tests/75-infinity-9.lawtest",
+      "size": 1091,
+      "sha256": "sha256:a3558fa44fc13515b8fc52918e622f8b2a176c943d84d8ce77c3ab000a250f4f"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/76-infinity-zero-denominator.lawtest",
+      "path": "packages/calc.polynomials_q/tests/76-infinity-zero-denominator.lawtest",
+      "size": 1026,
+      "sha256": "sha256:490639ab85f2e9196c1cb12009ddf0462c1eee31f8f84ace4033245654a072fa"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/77-infinity-bad-approach.lawtest",
+      "path": "packages/calc.polynomials_q/tests/77-infinity-bad-approach.lawtest",
+      "size": 1028,
+      "sha256": "sha256:62bb335a0b315bd7153ccd96027c8ee5908d2c28ad80943162a8d45edcd9ae5b"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/78-linear-resultant.lawtest",
+      "path": "packages/calc.polynomials_q/tests/78-linear-resultant.lawtest",
+      "size": 1251,
+      "sha256": "sha256:fe131eaec42bbdc4bac637b92c2cad826b2370e6e42eb2bcf6851b653f910ac6"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q/tests/79-quadratic-discriminant.lawtest",
+      "path": "packages/calc.polynomials_q/tests/79-quadratic-discriminant.lawtest",
+      "size": 1022,
+      "sha256": "sha256:860fb1787b667b705d29f95a8ff86d180986f670972ebdc7d0d9f90f4cd71c09"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/checking.law",
+      "path": "packages/calc.calculus_checker/checking.law",
+      "size": 25989,
+      "sha256": "sha256:183565e615de814cec55d5d3d2fb728a5dbbbfda3f7d06a0d02d25eef8685137"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/diagnostics.law",
+      "path": "packages/calc.calculus_checker/diagnostics.law",
+      "size": 9926,
+      "sha256": "sha256:618c2c50f9b3a81ba4cbf7fc3baa4e659960da5bf8318c861de00aae71e04167"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/law.toml",
+      "path": "packages/calc.calculus_checker/law.toml",
+      "size": 5334,
+      "sha256": "sha256:c63e709044b1b8e5e3ddecc461c927b38677e0e78605dd178b24222a87e62adc"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/limits.law",
+      "path": "packages/calc.calculus_checker/limits.law",
+      "size": 97422,
+      "sha256": "sha256:fb3ccfde92174c5938f431caea7631d407cbcf9d12c1e28665116ada241c6180"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/package.law",
+      "path": "packages/calc.calculus_checker/package.law",
+      "size": 9626,
+      "sha256": "sha256:5b2231bb6c6bf13e87c9130dfb9530cc5e17e410aa1d58dc32d903e81aef3ad5"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/01-given.lawtest",
+      "path": "packages/calc.calculus_checker/tests/01-given.lawtest",
+      "size": 1136,
+      "sha256": "sha256:79187542cf6cc8040ca3ec1b66dfd856e47a85b6533e34ef742ada2c5414c663"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/02-power-rule.lawtest",
+      "path": "packages/calc.calculus_checker/tests/02-power-rule.lawtest",
+      "size": 2026,
+      "sha256": "sha256:c77879919f2ee920910ef75c6ea4f7f5168e52222c951d58c7c1b0fe0871fb0f"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/03-power-rule-wrong-factor.lawtest",
+      "path": "packages/calc.calculus_checker/tests/03-power-rule-wrong-factor.lawtest",
+      "size": 2048,
+      "sha256": "sha256:5a16592da86b257b91b538f5009fe71529fb3804279f23b09a94b04099b20b43"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/04-derivative-sin.lawtest",
+      "path": "packages/calc.calculus_checker/tests/04-derivative-sin.lawtest",
+      "size": 1555,
+      "sha256": "sha256:d16e6375a7f747b91d4d2dd8cd4da62b9eb61c8831749a3f82935390624d9e37"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/05-derivative-sin-wrong.lawtest",
+      "path": "packages/calc.calculus_checker/tests/05-derivative-sin-wrong.lawtest",
+      "size": 1531,
+      "sha256": "sha256:0ef655fef2856df24dbfb9618d39d2b86a561dc9ddc76e34b0f01d50f76cb0e5"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/06-unknown-method.lawtest",
+      "path": "packages/calc.calculus_checker/tests/06-unknown-method.lawtest",
+      "size": 1183,
+      "sha256": "sha256:fa62a50b3581b63345d121107fa1c8dec897b4ef037ec8bbdde2c6dabf8e174e"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/07-missing-reference.lawtest",
+      "path": "packages/calc.calculus_checker/tests/07-missing-reference.lawtest",
+      "size": 1529,
+      "sha256": "sha256:fea7671032c623c98de3438c5970cac2356b72420f50eb3180f2417df73154dd"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/08-budget-exhausted.lawtest",
+      "path": "packages/calc.calculus_checker/tests/08-budget-exhausted.lawtest",
+      "size": 1202,
+      "sha256": "sha256:2be8de8d478172255a6b490542fb0ddae1129a8a37c829f125a25edf93f5d240"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/09-fundamental-theorem-boundary.lawtest",
+      "path": "packages/calc.calculus_checker/tests/09-fundamental-theorem-boundary.lawtest",
+      "size": 1622,
+      "sha256": "sha256:d299e0990afa4c96f8073d91e654e31f9786072377a332382476e4bac689efb2"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/10-constant-rule.lawtest",
+      "path": "packages/calc.calculus_checker/tests/10-constant-rule.lawtest",
+      "size": 1330,
+      "sha256": "sha256:5fadadefaa427a9dbea9461321c1b56e3eee944e8abff881eadf210fdc87838a"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/100-old-calculus.lawtest",
+      "path": "packages/calc.calculus_checker/tests/100-old-calculus.lawtest",
+      "size": 1491,
+      "sha256": "sha256:86f10d5887cca369e746ceb59035ae0981f54d7b906a27f85a96fa09a97c4d2b"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/101-cancel-nonzero-remainder.lawtest",
+      "path": "packages/calc.calculus_checker/tests/101-cancel-nonzero-remainder.lawtest",
+      "size": 4195,
+      "sha256": "sha256:94a5eeb1574e049f328d545622e143a3a3e8706f44b39b1b58e4a7ca4fb429f1"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/102-table-antiderivative-sin.lawtest",
+      "path": "packages/calc.calculus_checker/tests/102-table-antiderivative-sin.lawtest",
+      "size": 1707,
+      "sha256": "sha256:c5477b310befef3a3f7d5addd368bc109e1db022a8497fdb99586d7d97c83c71"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/103-table-antiderivative-sin-wrong.lawtest",
+      "path": "packages/calc.calculus_checker/tests/103-table-antiderivative-sin-wrong.lawtest",
+      "size": 1551,
+      "sha256": "sha256:4795f3f686fd45b223c8500a988855e460713eca690d10f466a8b519d523d0db"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/11-constant-rule-wrong.lawtest",
+      "path": "packages/calc.calculus_checker/tests/11-constant-rule-wrong.lawtest",
+      "size": 1394,
+      "sha256": "sha256:9f25a625fd9c161ff4ff49215879f3771475d902977dec1b8178ed22634c0b92"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/12-sum-rule.lawtest",
+      "path": "packages/calc.calculus_checker/tests/12-sum-rule.lawtest",
+      "size": 1629,
+      "sha256": "sha256:41bef95c1794e5cdf8d3d45ba524f757331e017f9f4884e45df5093feb013570"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/13-sum-rule-wrong.lawtest",
+      "path": "packages/calc.calculus_checker/tests/13-sum-rule-wrong.lawtest",
+      "size": 1605,
+      "sha256": "sha256:82fa1ea2f325189c7a276ec47ac3699a24b8a29c240f92535bcddebdb1ee3bf9"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/14-constant-multiple.lawtest",
+      "path": "packages/calc.calculus_checker/tests/14-constant-multiple.lawtest",
+      "size": 1615,
+      "sha256": "sha256:c71915cbda96328f6aa19262b00adf2c7fd5252b68a242278f1d7e70839dc501"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/15-product-rule.lawtest",
+      "path": "packages/calc.calculus_checker/tests/15-product-rule.lawtest",
+      "size": 2094,
+      "sha256": "sha256:df20086c712f40113cc2644a075decb761f1a07deb2b34947b48213230140a42"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/16-product-rule-swapped-factors.lawtest",
+      "path": "packages/calc.calculus_checker/tests/16-product-rule-swapped-factors.lawtest",
+      "size": 2145,
+      "sha256": "sha256:362c2349d53081c086fbc5d2fdf85e1a05779b5106f7e2bd8a0f8f68149ecdaa"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/17-quotient-rule.lawtest",
+      "path": "packages/calc.calculus_checker/tests/17-quotient-rule.lawtest",
+      "size": 2502,
+      "sha256": "sha256:279bc069f82891d474b7a73a566897aea2a69cc727ecb2a4971fc04293b952d6"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/18-chain-rule.lawtest",
+      "path": "packages/calc.calculus_checker/tests/18-chain-rule.lawtest",
+      "size": 1769,
+      "sha256": "sha256:8df3318485307f72a040fe38010c45c719562aa6416f6ce04ee138a12ce8140d"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/19-derivative-cos.lawtest",
+      "path": "packages/calc.calculus_checker/tests/19-derivative-cos.lawtest",
+      "size": 1531,
+      "sha256": "sha256:35c3676a8d445be07b5345332605f536468b55dddd32d19c1c621c79e74f42ad"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/20-derivative-exp.lawtest",
+      "path": "packages/calc.calculus_checker/tests/20-derivative-exp.lawtest",
+      "size": 1523,
+      "sha256": "sha256:a0fc0928bc947eb0a4a4ad74a13f83f8c610d95b0a88dcc0aa8c3a345065c960"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/21-derivative-ln.lawtest",
+      "path": "packages/calc.calculus_checker/tests/21-derivative-ln.lawtest",
+      "size": 1526,
+      "sha256": "sha256:84c7a60992ea0fff2ff0037920c7a6285783ed356c437844bdd0f9057229cd02"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/22-antiderivative-power.lawtest",
+      "path": "packages/calc.calculus_checker/tests/22-antiderivative-power.lawtest",
+      "size": 2069,
+      "sha256": "sha256:35f7422079356d5f623dd3d4908ea893fbcf3ef429e72fd83fca5910e88a1149"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/23-table-antiderivative.lawtest",
+      "path": "packages/calc.calculus_checker/tests/23-table-antiderivative.lawtest",
+      "size": 1473,
+      "sha256": "sha256:675127a2793e2c566ef2c06ecacf34a00ba9b1182bc63708489972536db47781"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/24-by-parts.lawtest",
+      "path": "packages/calc.calculus_checker/tests/24-by-parts.lawtest",
+      "size": 1987,
+      "sha256": "sha256:a8df770a22f0a50d9fe8a6853a6ca8f39ef221b80b95c667a744d527bf83c3ba"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/25-by-parts-swapped.lawtest",
+      "path": "packages/calc.calculus_checker/tests/25-by-parts-swapped.lawtest",
+      "size": 1988,
+      "sha256": "sha256:e0081039cb292b1654acf31eb466b5b6aab3a4e757e12b2b36e9fb5f17cef183"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/26-algebra-equal.lawtest",
+      "path": "packages/calc.calculus_checker/tests/26-algebra-equal.lawtest",
+      "size": 3109,
+      "sha256": "sha256:c4b02c9aa5a5317c1468277c18ca6f417f98b2b172e91efbd0e3cbc0143a6e03"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/27-algebra-unequal.lawtest",
+      "path": "packages/calc.calculus_checker/tests/27-algebra-unequal.lawtest",
+      "size": 3026,
+      "sha256": "sha256:1873388abb4a8aea466fc619a553c0f9a7c92299f128fd065ac3538d02a12a3c"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/28-identity.lawtest",
+      "path": "packages/calc.calculus_checker/tests/28-identity.lawtest",
+      "size": 1551,
+      "sha256": "sha256:eef7c960d423377e18428b9857bdaf8d7d99a4d1beecdd9c6b3258749b691e5b"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/29-first-error-strict-cause.lawtest",
+      "path": "packages/calc.calculus_checker/tests/29-first-error-strict-cause.lawtest",
+      "size": 1190,
+      "sha256": "sha256:8e511305777234110c5c20be244b8bedcbfd6ee9cfd4f7f4c1fcc7f1d0dbcb6e"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/30-first-error-defeasible-cause.lawtest",
+      "path": "packages/calc.calculus_checker/tests/30-first-error-defeasible-cause.lawtest",
+      "size": 1425,
+      "sha256": "sha256:1709b99def1ed9b986f233ee366449b3fc2ac15e5d607b8678f806b961772438"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/31-limit_given-ok.lawtest",
+      "path": "packages/calc.calculus_checker/tests/31-limit_given-ok.lawtest",
+      "size": 1409,
+      "sha256": "sha256:03d3ddf5e06b03cf1d094206f43093a0ef240574003f60374c5c2c245ece8df9"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/32-limit_given-bad.lawtest",
+      "path": "packages/calc.calculus_checker/tests/32-limit_given-bad.lawtest",
+      "size": 1700,
+      "sha256": "sha256:7b2b245dea4fd75783c4eaa8e2d7ad2a0e51c83e74dbf5d90b9a653f27f69d36"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/33-limit_constant-ok.lawtest",
+      "path": "packages/calc.calculus_checker/tests/33-limit_constant-ok.lawtest",
+      "size": 1415,
+      "sha256": "sha256:cdf69ccb82441953d1ea7ec83412698977ab698a22cb7258d5fd8c150dc293cf"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/34-limit_constant-bad.lawtest",
+      "path": "packages/calc.calculus_checker/tests/34-limit_constant-bad.lawtest",
+      "size": 1700,
+      "sha256": "sha256:a11e13deb60ac84043adaafab7f6e015275c1ae2e467b28a64b4e3736bcb24a5"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/35-limit_identity-ok.lawtest",
+      "path": "packages/calc.calculus_checker/tests/35-limit_identity-ok.lawtest",
+      "size": 1415,
+      "sha256": "sha256:957a7a2329a8cf73a0d25025782812d5e0bcc00e9f44d6acb1e9892cb05d91f8"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/36-limit_identity-bad.lawtest",
+      "path": "packages/calc.calculus_checker/tests/36-limit_identity-bad.lawtest",
+      "size": 1700,
+      "sha256": "sha256:f45378720ee240598272b7a937be76c3437292c069e33e145e52a6249e00f879"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/37-limit_sum-ok.lawtest",
+      "path": "packages/calc.calculus_checker/tests/37-limit_sum-ok.lawtest",
+      "size": 2182,
+      "sha256": "sha256:cfd1bac8e8c8e8d84d6f9e46890031915ad2412bb6cdd6ad7fbe956030ab7cfc"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/38-limit_sum-bad.lawtest",
+      "path": "packages/calc.calculus_checker/tests/38-limit_sum-bad.lawtest",
+      "size": 2467,
+      "sha256": "sha256:4dea08ee6bbcca6529b6ae9d486f6cd9ee3eac8089e9e7bc412b278a46b3f46d"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/39-limit_difference-ok.lawtest",
+      "path": "packages/calc.calculus_checker/tests/39-limit_difference-ok.lawtest",
+      "size": 2196,
+      "sha256": "sha256:4269967376264c878726778b03527b26081c4662aa9f7aa00c95a3421cd9657c"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/40-limit_difference-bad.lawtest",
+      "path": "packages/calc.calculus_checker/tests/40-limit_difference-bad.lawtest",
+      "size": 2481,
+      "sha256": "sha256:415951bd1673de58829f8960be2081999c1816c122943819ac7c624a3251f6e6"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/41-limit_product-ok.lawtest",
+      "path": "packages/calc.calculus_checker/tests/41-limit_product-ok.lawtest",
+      "size": 2190,
+      "sha256": "sha256:5335ea38a1b5882d691b4e4e5e1ffab4d96324678bdf4d64f2cc03ac14c40259"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/42-limit_product-bad.lawtest",
+      "path": "packages/calc.calculus_checker/tests/42-limit_product-bad.lawtest",
+      "size": 2475,
+      "sha256": "sha256:5a054daede37c5b1fa8b6d9ad155aa790b6086a96ce53f154fa3012b511b2938"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/43-limit_quotient-ok.lawtest",
+      "path": "packages/calc.calculus_checker/tests/43-limit_quotient-ok.lawtest",
+      "size": 2192,
+      "sha256": "sha256:c12524ae627a319092ffd22b77956219977cf535b6a378407626f548d392eb6e"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/44-limit_quotient-bad.lawtest",
+      "path": "packages/calc.calculus_checker/tests/44-limit_quotient-bad.lawtest",
+      "size": 2477,
+      "sha256": "sha256:7b257807df3adba1f0d62f8f0b5910b2205481444daa748d557bd67a0ae5f9b8"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/45-limit_constant_multiple-ok.lawtest",
+      "path": "packages/calc.calculus_checker/tests/45-limit_constant_multiple-ok.lawtest",
+      "size": 1821,
+      "sha256": "sha256:3b3ddac6bc6fefc8574533f9f27a22282c0d340f3418de8a626b4004adf86c03"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/46-limit_constant_multiple-bad.lawtest",
+      "path": "packages/calc.calculus_checker/tests/46-limit_constant_multiple-bad.lawtest",
+      "size": 2106,
+      "sha256": "sha256:45d995c027393aba6628be70ba07b39892747b7161f807b011897c8908c95cba"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/47-limit_power-ok.lawtest",
+      "path": "packages/calc.calculus_checker/tests/47-limit_power-ok.lawtest",
+      "size": 1797,
+      "sha256": "sha256:c04973bc12eca2dee92879232e2a610d323c1663d25b130b35d787831a8edaf1"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/48-limit_power-bad.lawtest",
+      "path": "packages/calc.calculus_checker/tests/48-limit_power-bad.lawtest",
+      "size": 2082,
+      "sha256": "sha256:1cde9a5140d9a7ac5c1d1c7469eab7f0e1ef6261a16cc60aa83fc0765a982290"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/49-continuity-sin-ok.lawtest",
+      "path": "packages/calc.calculus_checker/tests/49-continuity-sin-ok.lawtest",
+      "size": 1670,
+      "sha256": "sha256:6e759b6765b7a393b224e0a121cb49252aff1c94e15e99ce966c50f091cd6d0d"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/50-continuity-sin-bad.lawtest",
+      "path": "packages/calc.calculus_checker/tests/50-continuity-sin-bad.lawtest",
+      "size": 1955,
+      "sha256": "sha256:e5ba1ff2ba7f0a2b8b1bd0ae7fb392235fca03ccab1667422dfe4043872b04b8"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/51-continuity-cos-ok.lawtest",
+      "path": "packages/calc.calculus_checker/tests/51-continuity-cos-ok.lawtest",
+      "size": 1670,
+      "sha256": "sha256:b170d381e58b8b09114ea0155f86b153ca81404d121b9568fe5a346b2809f5de"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/52-continuity-cos-bad.lawtest",
+      "path": "packages/calc.calculus_checker/tests/52-continuity-cos-bad.lawtest",
+      "size": 1955,
+      "sha256": "sha256:a812c1c3a8bf73ae8b7d7d79a04c68314f7fd13872f8538b344a119339a78f8a"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/53-continuity-exp-ok.lawtest",
+      "path": "packages/calc.calculus_checker/tests/53-continuity-exp-ok.lawtest",
+      "size": 1670,
+      "sha256": "sha256:40273212d7750061d181e382842ddb748c8d64d78c0363e1a0066ef0ccc7b0b4"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/54-continuity-exp-bad.lawtest",
+      "path": "packages/calc.calculus_checker/tests/54-continuity-exp-bad.lawtest",
+      "size": 1955,
+      "sha256": "sha256:b41d039f2400bf0ba4e7d29ca33aeee58fc1f9d0cc5bda8e77b9b11c459b5ab7"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/55-continuity-ln-ok.lawtest",
+      "path": "packages/calc.calculus_checker/tests/55-continuity-ln-ok.lawtest",
+      "size": 1667,
+      "sha256": "sha256:7bcf4dddc6775043fb39a898cd465a7c80a31db37240b47d0039463602f157e4"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/56-continuity-ln-bad.lawtest",
+      "path": "packages/calc.calculus_checker/tests/56-continuity-ln-bad.lawtest",
+      "size": 1952,
+      "sha256": "sha256:c04117725457d5b5969073de7b7a06adce04aed226e76830d02958baf3fb22c1"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/57-special_limit_sin-ok.lawtest",
+      "path": "packages/calc.calculus_checker/tests/57-special_limit_sin-ok.lawtest",
+      "size": 1664,
+      "sha256": "sha256:2f3a581b414ad4975eec2a38c6404c3f08e375ed55ed8256d74d10d23ba564ba"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/58-special_limit_sin-bad.lawtest",
+      "path": "packages/calc.calculus_checker/tests/58-special_limit_sin-bad.lawtest",
+      "size": 1949,
+      "sha256": "sha256:ec9c936d50b20e7f79bae8183820131e5972bfe9fafa7a6e77191b8f48ce555e"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/59-special_limit_one_minus_cos-ok.lawtest",
+      "path": "packages/calc.calculus_checker/tests/59-special_limit_one_minus_cos-ok.lawtest",
+      "size": 1806,
+      "sha256": "sha256:1ff0c358e30cb8569b42da1362102eb26aa885876b09ddf9cf149c68cbc7e1ff"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/60-special_limit_one_minus_cos-bad.lawtest",
+      "path": "packages/calc.calculus_checker/tests/60-special_limit_one_minus_cos-bad.lawtest",
+      "size": 2091,
+      "sha256": "sha256:5d9e9c31333b09308b52f73f333deca500e28b76fa869565b4b6707743e94d86"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/61-one_sided_agree-ok.lawtest",
+      "path": "packages/calc.calculus_checker/tests/61-one_sided_agree-ok.lawtest",
+      "size": 1707,
+      "sha256": "sha256:0fcb6b066bcf8bd8dabc9f1780f56474e4f43d8e7998f8cd47a48718525b521e"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/62-one_sided_agree-bad.lawtest",
+      "path": "packages/calc.calculus_checker/tests/62-one_sided_agree-bad.lawtest",
+      "size": 1992,
+      "sha256": "sha256:fd42a944c92d1c8330d4372796f8b9a2d6e15541dcb09e432cd1b7c948ac1277"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/63-one_sided_differ-ok.lawtest",
+      "path": "packages/calc.calculus_checker/tests/63-one_sided_differ-ok.lawtest",
+      "size": 1708,
+      "sha256": "sha256:122ea48718c9b198ce660adf2162e990f6f500922334d3ac793caaffcd033a09"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/64-one_sided_differ-bad.lawtest",
+      "path": "packages/calc.calculus_checker/tests/64-one_sided_differ-bad.lawtest",
+      "size": 1993,
+      "sha256": "sha256:d35686ed7883b62befa2cf936e5b04c03526d7c61eea31dc8d865f28aa2c7b42"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/65-substitution-poly-ok.lawtest",
+      "path": "packages/calc.calculus_checker/tests/65-substitution-poly-ok.lawtest",
+      "size": 2482,
+      "sha256": "sha256:d3776fb2ff50ce47b8eb0bcc928136c5dc3f0cd1a5c68650ca75e5db60126a14"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/66-substitution-poly-bad.lawtest",
+      "path": "packages/calc.calculus_checker/tests/66-substitution-poly-bad.lawtest",
+      "size": 2767,
+      "sha256": "sha256:5a336cf0ac58e1a1da3694b70375c05b24af84a4331679a4034428f74346b24a"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/67-substitution-ratio-ok.lawtest",
+      "path": "packages/calc.calculus_checker/tests/67-substitution-ratio-ok.lawtest",
+      "size": 2594,
+      "sha256": "sha256:800e81789a00aabf5852ce46ed81636d5c673bf7ba0e7d4c192946f1838f2c99"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/68-substitution-ratio-bad.lawtest",
+      "path": "packages/calc.calculus_checker/tests/68-substitution-ratio-bad.lawtest",
+      "size": 2879,
+      "sha256": "sha256:e8efb5595015b4b3247878bd0b9b27503214a2f9bfb4eead98faf328cd8779f3"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/69-infinity-rational-ok.lawtest",
+      "path": "packages/calc.calculus_checker/tests/69-infinity-rational-ok.lawtest",
+      "size": 2117,
+      "sha256": "sha256:74852a20921a10c2126e26bcba6e2ff5fb0411063759ad4928b3fc7000b52a17"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/70-infinity-rational-bad.lawtest",
+      "path": "packages/calc.calculus_checker/tests/70-infinity-rational-bad.lawtest",
+      "size": 2401,
+      "sha256": "sha256:dc0afa7880e23d9baf45d03db45e706bc8325a6e93e03a4ac39797bca0ccea16"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/71-factor-cancel-ok.lawtest",
+      "path": "packages/calc.calculus_checker/tests/71-factor-cancel-ok.lawtest",
+      "size": 3856,
+      "sha256": "sha256:3455e90bf5a0a6b3c5af5cc989e84a354188426034d8364386e9afa02d425c13"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/72-factor-cancel-bad.lawtest",
+      "path": "packages/calc.calculus_checker/tests/72-factor-cancel-bad.lawtest",
+      "size": 4141,
+      "sha256": "sha256:4c9f0ac07463f225c82c6677a7798a12015226eae77a0a4f6b65b9a9e0eb9d79"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/73-lhopital-zero.lawtest",
+      "path": "packages/calc.calculus_checker/tests/73-lhopital-zero.lawtest",
+      "size": 2843,
+      "sha256": "sha256:c00791145bc5a8b991d32854889783d55ab3a3223482f94be72e0ddc36722e56"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/74-lhopital-infinity.lawtest",
+      "path": "packages/calc.calculus_checker/tests/74-lhopital-infinity.lawtest",
+      "size": 2747,
+      "sha256": "sha256:8531dd9431c8761249d640b8b9e727259838959c4f9cc88c1f50b4ec79102261"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/75-lhopital-nested.lawtest",
+      "path": "packages/calc.calculus_checker/tests/75-lhopital-nested.lawtest",
+      "size": 3083,
+      "sha256": "sha256:ee371e615e953ed70ca9ad04b12d868d819957da9970b991b1b47b1afd3515b9"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/76-lhopital-not-indeterminate.lawtest",
+      "path": "packages/calc.calculus_checker/tests/76-lhopital-not-indeterminate.lawtest",
+      "size": 3154,
+      "sha256": "sha256:f93ce4d2e9bb5d43fa73859aefeb94cce815803c5072f92ec0f2d87b68ea9b55"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/77-lhopital-bad-derivative.lawtest",
+      "path": "packages/calc.calculus_checker/tests/77-lhopital-bad-derivative.lawtest",
+      "size": 3160,
+      "sha256": "sha256:18cbdf74b54512df8263a66d66764d8787e5545d72e63ed46fe70857cf6a04dc"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/78-lhopital-bad-ratio.lawtest",
+      "path": "packages/calc.calculus_checker/tests/78-lhopital-bad-ratio.lawtest",
+      "size": 3156,
+      "sha256": "sha256:57b6f3f4349d748df258d32cc13f9fbbfbca8d5e32c8199329aaac854b7cde7b"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/79-lhopital-no-nonzero.lawtest",
+      "path": "packages/calc.calculus_checker/tests/79-lhopital-no-nonzero.lawtest",
+      "size": 3070,
+      "sha256": "sha256:a8f80b68603dda06e45305eb8f713e50e72f824b52f49d6333aff7e8dad98242"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/80-lhopital-wrong-result.lawtest",
+      "path": "packages/calc.calculus_checker/tests/80-lhopital-wrong-result.lawtest",
+      "size": 3145,
+      "sha256": "sha256:aed9895bca867b9d60194f17aaa197a91b717e4d4718b427f9040a9ef8389d22"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/81-limit-diagnostic-unknown.lawtest",
+      "path": "packages/calc.calculus_checker/tests/81-limit-diagnostic-unknown.lawtest",
+      "size": 1811,
+      "sha256": "sha256:8646c131a2646d6f822b5d2353e34e9a5a8c2df908a0c8abb00a4d826775dc84"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/82-limit-diagnostic-fields.lawtest",
+      "path": "packages/calc.calculus_checker/tests/82-limit-diagnostic-fields.lawtest",
+      "size": 1821,
+      "sha256": "sha256:ec99ddcef336fde45ef13e530a732dfcae97a2b25888411a7baff53b29d726bd"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/83-limit-diagnostic-mixed-duplicate.lawtest",
+      "path": "packages/calc.calculus_checker/tests/83-limit-diagnostic-mixed-duplicate.lawtest",
+      "size": 1929,
+      "sha256": "sha256:66b57547993880940cbe61467c64e60f824b5b5d3e2208410a281bd716cbc234"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/84-limit-diagnostic-forward.lawtest",
+      "path": "packages/calc.calculus_checker/tests/84-limit-diagnostic-forward.lawtest",
+      "size": 1815,
+      "sha256": "sha256:752c2ed203c6bf066730e2bd3d06fac8bf1713c46f43e98397f8aaea9fee4e14"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/85-limit-diagnostic-quotient-zero.lawtest",
+      "path": "packages/calc.calculus_checker/tests/85-limit-diagnostic-quotient-zero.lawtest",
+      "size": 1983,
+      "sha256": "sha256:2ba051cb26183272384eb0ee725b0c0df9a6069f9221f01159210d8dadf33a33"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/86-limit-diagnostic-missing.lawtest",
+      "path": "packages/calc.calculus_checker/tests/86-limit-diagnostic-missing.lawtest",
+      "size": 1815,
+      "sha256": "sha256:97e8dfd7fbd4d7d98be0b852e1a57ab290d97c74591318de605005171ce9fe8a"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/87-mixed-budget-64.lawtest",
+      "path": "packages/calc.calculus_checker/tests/87-mixed-budget-64.lawtest",
+      "size": 9157,
+      "sha256": "sha256:dae2671f723775c866944ae7cadeff80d4982cec18e0bc894c8b811ffb0814b0"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/88-mixed-budget-65.lawtest",
+      "path": "packages/calc.calculus_checker/tests/88-mixed-budget-65.lawtest",
+      "size": 9389,
+      "sha256": "sha256:99c7f7b8aa9f1e4ca9c080b32215d5e7f502317d34b38ff122a063fd9f8d3d3a"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/89-substitution-zero-denominator.lawtest",
+      "path": "packages/calc.calculus_checker/tests/89-substitution-zero-denominator.lawtest",
+      "size": 2142,
+      "sha256": "sha256:be813d848d8392f61d36c9b43fc3e21b05722da95328e51045c62b5c6d041cdd"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/90-infinity-zero-denominator.lawtest",
+      "path": "packages/calc.calculus_checker/tests/90-infinity-zero-denominator.lawtest",
+      "size": 2285,
+      "sha256": "sha256:619844f220cc94ba1a78c6bba95d9dd48d0386ea3b523fd0bc657807ea2e6294"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/91-nested-substitution-True.lawtest",
+      "path": "packages/calc.calculus_checker/tests/91-nested-substitution-True.lawtest",
+      "size": 2182,
+      "sha256": "sha256:7124d859343ebb8e70489469962e5b0eb41944d225a313d8a2244e61d21ba598"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/92-nested-substitution-False.lawtest",
+      "path": "packages/calc.calculus_checker/tests/92-nested-substitution-False.lawtest",
+      "size": 2477,
+      "sha256": "sha256:251f30957daa77ec4e0a350adfef05ffd4fb9d26f715ca610f96eafd9cac6a5a"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/93-ln-domain.lawtest",
+      "path": "packages/calc.calculus_checker/tests/93-ln-domain.lawtest",
+      "size": 1860,
+      "sha256": "sha256:a83a1faff2b0f01c5e8698d6348050fbbbadd7c297c39f5c28f256fd82b00090"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/94-lhopital-polynomial-True.lawtest",
+      "path": "packages/calc.calculus_checker/tests/94-lhopital-polynomial-True.lawtest",
+      "size": 3636,
+      "sha256": "sha256:0a6a636457ec62333eba52bcd40ca0662f726097b17629f5df7453158d28c6f7"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/95-lhopital-polynomial-False.lawtest",
+      "path": "packages/calc.calculus_checker/tests/95-lhopital-polynomial-False.lawtest",
+      "size": 3935,
+      "sha256": "sha256:94d1fe1f179d5e12d2955710e741188bb00cc3b452945f0c8b03995914ad5bad"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/96-lhopital-side-mismatch.lawtest",
+      "path": "packages/calc.calculus_checker/tests/96-lhopital-side-mismatch.lawtest",
+      "size": 2847,
+      "sha256": "sha256:bfc8310ccb4843ad6f94a65f7c6f916e48284b917550619858c566cd30103a63"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/97-invalid-index.lawtest",
+      "path": "packages/calc.calculus_checker/tests/97-invalid-index.lawtest",
+      "size": 1480,
+      "sha256": "sha256:759c3b357628900f7985a67009b44a641b876ffb15cca306d9343d128b6d263d"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/98-extra-line.lawtest",
+      "path": "packages/calc.calculus_checker/tests/98-extra-line.lawtest",
+      "size": 1621,
+      "sha256": "sha256:165c708f98a87970c76733dc7b87436bbcf4ad9dbe463820e539cba91c48f838"
+    },
+    {
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker/tests/99-duplicate-limit.lawtest",
+      "path": "packages/calc.calculus_checker/tests/99-duplicate-limit.lawtest",
+      "size": 1634,
+      "sha256": "sha256:4d9536c22edc7227b25fddf1586be009ce66e8e8cba1d1e941fb4b74394d148a"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-limits/law.toml",
+      "path": "packages/openstax.calculus_limits/law.toml",
+      "size": 2042,
+      "sha256": "sha256:d0adad124afd228b6e029b7941834446748082ea422d91bafa90cde111fa7abe"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-limits/package.law",
+      "path": "packages/openstax.calculus_limits/package.law",
+      "size": 17377,
+      "sha256": "sha256:01abf241ace774d78535ec4954e4fe8e1e291bd599acc47d8141297447fd48bd"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-limits/sources/calculus-limits/m53489.cnxml",
+      "path": "packages/openstax.calculus_limits/sources/calculus-limits/m53489.cnxml",
+      "size": 144155,
+      "sha256": "sha256:96e89d1cd16c4be5a87a3d68d19f2552204ffc97f6316433ef35689187c5bf7f"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-limits/sources/calculus-limits/m53491.cnxml",
+      "path": "packages/openstax.calculus_limits/sources/calculus-limits/m53491.cnxml",
+      "size": 203095,
+      "sha256": "sha256:662325358794c9abe700e4d19e696c801d9eddd4f6c45b918b6185baa9944374"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-limits/sources/calculus-limits/m53492.cnxml",
+      "path": "packages/openstax.calculus_limits/sources/calculus-limits/m53492.cnxml",
+      "size": 190699,
+      "sha256": "sha256:57a6b5cf0d644a711ca113582a78a0d6270bfaebb40babddc8b080476a51bb53"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-limits/sources/calculus-limits/m53493.cnxml",
+      "path": "packages/openstax.calculus_limits/sources/calculus-limits/m53493.cnxml",
+      "size": 152035,
+      "sha256": "sha256:e5e046f267dee46ca85a9cfc76847ff31ebb71a9205b5961e1152f2ea77bc666"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-limits/sources/calculus-limits/m53596.cnxml",
+      "path": "packages/openstax.calculus_limits/sources/calculus-limits/m53596.cnxml",
+      "size": 279974,
+      "sha256": "sha256:c0c4d3593c446f99d0700befaf92e1c75d2ba2114feb9711c9075bfeec3c50da"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-limits/sources/calculus-limits/m53619.cnxml",
+      "path": "packages/openstax.calculus_limits/sources/calculus-limits/m53619.cnxml",
+      "size": 188388,
+      "sha256": "sha256:47a9cdb551f68cdd646df68ff7da9b9226fcd1d896af5e203ceb85d170ef9ce4"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-limits/sources.law",
+      "path": "packages/openstax.calculus_limits/sources.law",
+      "size": 42114,
+      "sha256": "sha256:5dccabb4b752ccab532d97933df2a7e9804cca4eb14f19254def243b6e4c0298"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-limits/tests/01-instruction.lawtest",
+      "path": "packages/openstax.calculus_limits/tests/01-instruction.lawtest",
+      "size": 1081,
+      "sha256": "sha256:9e489763351474790f18a52830843febbfb53644c08c280885fc480dc635c45e"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-limits/tests/02-limit_given-ok.lawtest",
+      "path": "packages/openstax.calculus_limits/tests/02-limit_given-ok.lawtest",
+      "size": 1740,
+      "sha256": "sha256:cb8d885db2a31a8050a5d63b51d6058fab8e55c510c5527519e23a28f3f34b8a"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-limits/tests/03-limit_constant-ok.lawtest",
+      "path": "packages/openstax.calculus_limits/tests/03-limit_constant-ok.lawtest",
+      "size": 1730,
+      "sha256": "sha256:2bd76340d981cc44b09aa32fb795ddb71c126f10b4f1ed0f3598ed92e606e18e"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-limits/tests/04-limit_identity-ok.lawtest",
+      "path": "packages/openstax.calculus_limits/tests/04-limit_identity-ok.lawtest",
+      "size": 1730,
+      "sha256": "sha256:e316903aecf7d2d16f4acd66654c9b724ffd43b4ca68a1cbf645f28a0ed7b791"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-limits/tests/05-limit_sum-ok.lawtest",
+      "path": "packages/openstax.calculus_limits/tests/05-limit_sum-ok.lawtest",
+      "size": 2532,
+      "sha256": "sha256:d743a650dae509a2db6b8bbeaff7a49e867f211dc1496e7875c1b31ace88b001"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-limits/tests/06-limit_difference-ok.lawtest",
+      "path": "packages/openstax.calculus_limits/tests/06-limit_difference-ok.lawtest",
+      "size": 2560,
+      "sha256": "sha256:5b035e57cbe85f080a0f762bc6f3c65160c5cce7bd6d117791c26d8c9b0ce171"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-limits/tests/07-limit_product-ok.lawtest",
+      "path": "packages/openstax.calculus_limits/tests/07-limit_product-ok.lawtest",
+      "size": 2548,
+      "sha256": "sha256:cbf2b7162d99b9aa0a5dda81530b3941e3c079c053f20197449e5ed1c1aff3e1"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-limits/tests/08-limit_constant_multiple-ok.lawtest",
+      "path": "packages/openstax.calculus_limits/tests/08-limit_constant_multiple-ok.lawtest",
+      "size": 2175,
+      "sha256": "sha256:a43f50563f26ab098edec606d6325390c76c6c3f13001d57a02cc6556c1f8b7a"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-limits/tests/09-limit_power-ok.lawtest",
+      "path": "packages/openstax.calculus_limits/tests/09-limit_power-ok.lawtest",
+      "size": 2128,
+      "sha256": "sha256:96a58a32266e56eafba67fa6340e90bf4b324bfb8e750ddda11cf6d295695659"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-limits/tests/10-limit_quotient-ok.lawtest",
+      "path": "packages/openstax.calculus_limits/tests/10-limit_quotient-ok.lawtest",
+      "size": 2552,
+      "sha256": "sha256:03c6882fd4ff0c0081aa39da5b00d7fb30d985c7dba02ca473cbb2c3d80bda4a"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-limits/tests/11-substitution-ratio-ok.lawtest",
+      "path": "packages/openstax.calculus_limits/tests/11-substitution-ratio-ok.lawtest",
+      "size": 2920,
+      "sha256": "sha256:1701e98d583f8d5e9aecaa31b9790e1c27e74db30484c8bb458f6ce62e680711"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-limits/tests/12-factor-cancel-ok.lawtest",
+      "path": "packages/openstax.calculus_limits/tests/12-factor-cancel-ok.lawtest",
+      "size": 4212,
+      "sha256": "sha256:eb0d01ca7838a3eafe3f51a62536f8cc54cd2762d22a16e2327af8461b74fa5a"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-limits/tests/13-continuity-exp-ok.lawtest",
+      "path": "packages/openstax.calculus_limits/tests/13-continuity-exp-ok.lawtest",
+      "size": 1970,
+      "sha256": "sha256:66b9213aa566afa04f5a8b3249098c9ed521810a149ae29d4f0af019be2fb892"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-limits/tests/14-continuity-sin-ok.lawtest",
+      "path": "packages/openstax.calculus_limits/tests/14-continuity-sin-ok.lawtest",
+      "size": 1980,
+      "sha256": "sha256:d6f2c982cdfddb123e11b23a4d5c4b963a3af3b3f5c15c1be585d3dfc439510a"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-limits/tests/15-special_limit_sin-ok.lawtest",
+      "path": "packages/openstax.calculus_limits/tests/15-special_limit_sin-ok.lawtest",
+      "size": 1990,
+      "sha256": "sha256:8449b0584c0758f3f02c8da97263acdef2cdfdfa6962494587a25037aef4460b"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-limits/tests/16-special_limit_one_minus_cos-ok.lawtest",
+      "path": "packages/openstax.calculus_limits/tests/16-special_limit_one_minus_cos-ok.lawtest",
+      "size": 2150,
+      "sha256": "sha256:b0b727f7d9ef83621575e24dabb7cdaf64e2ea2d68eb8df0c19257c28fdb8de8"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-limits/tests/17-one_sided_agree-ok.lawtest",
+      "path": "packages/openstax.calculus_limits/tests/17-one_sided_agree-ok.lawtest",
+      "size": 2079,
+      "sha256": "sha256:fa9469a2d83fe8baa7f877dd98c244a13c2d3473b29cebd63987c1b178b4407b"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-limits/tests/18-one_sided_differ-ok.lawtest",
+      "path": "packages/openstax.calculus_limits/tests/18-one_sided_differ-ok.lawtest",
+      "size": 2082,
+      "sha256": "sha256:d64cc95edcd17e9c0a278dc0fb4b597cd1f554f80ed57757297e3f8d85ae1ec6"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-limits/tests/19-infinity-rational-ok.lawtest",
+      "path": "packages/openstax.calculus_limits/tests/19-infinity-rational-ok.lawtest",
+      "size": 2433,
+      "sha256": "sha256:a8eb9c6bbb6f0036dbcf15b9014a9f5c56814dbe07268c560c9acd3f1c47a433"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-limits/tests/20-lhopital-zero.lawtest",
+      "path": "packages/openstax.calculus_limits/tests/20-lhopital-zero.lawtest",
+      "size": 3171,
+      "sha256": "sha256:32948446eec3fb9e4935f4beeb8b27b25035e4d0a42bb762ea019cce19cfda49"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-limits/tests/21-lhopital-infinity.lawtest",
+      "path": "packages/openstax.calculus_limits/tests/21-lhopital-infinity.lawtest",
+      "size": 3079,
+      "sha256": "sha256:2410a66a4d90573e3302520cb7fd3399262487813704deef022585a7f172010d"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-derivatives/law.toml",
+      "path": "packages/openstax.calculus_derivatives/law.toml",
+      "size": 1932,
+      "sha256": "sha256:290d6caeb208c2b3cee48936253382415595ebe3e3d4c519416c69e4cbd74eca"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-derivatives/package.law",
+      "path": "packages/openstax.calculus_derivatives/package.law",
+      "size": 11838,
+      "sha256": "sha256:60e3c0189ef57aac5261705456b90b02dfc618d6e3aef70040d835ced4284482"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-derivatives/sources/calculus-derivatives/m53494.cnxml",
+      "path": "packages/openstax.calculus_derivatives/sources/calculus-derivatives/m53494.cnxml",
+      "size": 1667,
+      "sha256": "sha256:bf52253dc77f810ec3d7b5af0c5b7efc811d7868887d42c0029ac4c9312faf36"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-derivatives/sources/calculus-derivatives/m53495.cnxml",
+      "path": "packages/openstax.calculus_derivatives/sources/calculus-derivatives/m53495.cnxml",
+      "size": 153928,
+      "sha256": "sha256:d0668acbea9b24dfe647e4383e48b1b21c630f21b503883ef1e94eaa7406a4bf"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-derivatives/sources/calculus-derivatives/m53573.cnxml",
+      "path": "packages/openstax.calculus_derivatives/sources/calculus-derivatives/m53573.cnxml",
+      "size": 151955,
+      "sha256": "sha256:d2247c767bd52283744dbb2641a7713d07d8af4a1e7455dcaf8cfb8ff0201bb0"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-derivatives/sources/calculus-derivatives/m53575.cnxml",
+      "path": "packages/openstax.calculus_derivatives/sources/calculus-derivatives/m53575.cnxml",
+      "size": 179167,
+      "sha256": "sha256:3c3beba11831d0ffe0994cd1eeca05bb5d72519c3f9ff1f420ac0cadd80a931b"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-derivatives/sources/calculus-derivatives/m53578.cnxml",
+      "path": "packages/openstax.calculus_derivatives/sources/calculus-derivatives/m53578.cnxml",
+      "size": 99480,
+      "sha256": "sha256:68d65321d8a387027ec0f236860f653000ea77100a7a59b057d0297a9a9c9c9f"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-derivatives/sources/calculus-derivatives/m53581.cnxml",
+      "path": "packages/openstax.calculus_derivatives/sources/calculus-derivatives/m53581.cnxml",
+      "size": 164893,
+      "sha256": "sha256:f848070e09084722cee9c21879d33b1873118bc7ec600d4c7f2bcd1e07693219"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-derivatives/sources/calculus-derivatives/m53586.cnxml",
+      "path": "packages/openstax.calculus_derivatives/sources/calculus-derivatives/m53586.cnxml",
+      "size": 148353,
+      "sha256": "sha256:6ac66df1d00f39513463ac330c27d2cfc16fe1a504c00191c20bad32c92cfbd5"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-derivatives/sources.law",
+      "path": "packages/openstax.calculus_derivatives/sources.law",
+      "size": 35475,
+      "sha256": "sha256:4d290a14870bcf545398d00437eba852a1a20352e1bc99f1c5abf9d4cf6625f8"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-derivatives/tests/01-instruction-without-a-case.lawtest",
+      "path": "packages/openstax.calculus_derivatives/tests/01-instruction-without-a-case.lawtest",
+      "size": 1158,
+      "sha256": "sha256:95b067cf6a6a660beaa3d0ce455be4e2e043fb67a39b3c39f994832771cc5398"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-derivatives/tests/02-step-justified-by-the-power-rule.lawtest",
+      "path": "packages/openstax.calculus_derivatives/tests/02-step-justified-by-the-power-rule.lawtest",
+      "size": 2452,
+      "sha256": "sha256:a432c794c7bf843819972ebe3b40fbe2e58cfad15254af02f429b95f7bb789f4"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-derivatives/tests/03-constant-rule.lawtest",
+      "path": "packages/openstax.calculus_derivatives/tests/03-constant-rule.lawtest",
+      "size": 1749,
+      "sha256": "sha256:02d9cf4afd2a7244388737c9febbf1006a99e3b00f3461e6dbc5f72567bdb41e"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-derivatives/tests/04-sum-rule.lawtest",
+      "path": "packages/openstax.calculus_derivatives/tests/04-sum-rule.lawtest",
+      "size": 1997,
+      "sha256": "sha256:5a32d278a4aed595120ae1a3c8bba3f8e19664adb33ac629bd705983342925a0"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-derivatives/tests/05-constant-multiple.lawtest",
+      "path": "packages/openstax.calculus_derivatives/tests/05-constant-multiple.lawtest",
+      "size": 2032,
+      "sha256": "sha256:b4331620684708618e59a833408c12668cb78dc8805e244da870a600b8c417fe"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-derivatives/tests/06-product-rule.lawtest",
+      "path": "packages/openstax.calculus_derivatives/tests/06-product-rule.lawtest",
+      "size": 2505,
+      "sha256": "sha256:2e5b51ed4a9d1554d428e1929176e6e92a212e21359076b488d4a30c524fb24f"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-derivatives/tests/07-quotient-rule.lawtest",
+      "path": "packages/openstax.calculus_derivatives/tests/07-quotient-rule.lawtest",
+      "size": 2838,
+      "sha256": "sha256:ee5261521676de5786cee012413d254d1f20ef3d8ac886d367ff83602484a931"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-derivatives/tests/08-chain-rule.lawtest",
+      "path": "packages/openstax.calculus_derivatives/tests/08-chain-rule.lawtest",
+      "size": 2052,
+      "sha256": "sha256:3c7c132352dc0353061637c1c9edae2863297de6fb926dcd6a0a493a66a79064"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-derivatives/tests/09-derivative-sin.lawtest",
+      "path": "packages/openstax.calculus_derivatives/tests/09-derivative-sin.lawtest",
+      "size": 1803,
+      "sha256": "sha256:3d8f85ac33de446c9c77a5b23485489261b3db84e180c5fa9836430f5caec84d"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-derivatives/tests/10-derivative-cos.lawtest",
+      "path": "packages/openstax.calculus_derivatives/tests/10-derivative-cos.lawtest",
+      "size": 1936,
+      "sha256": "sha256:aae798d608d0fcadd338b39f21257dc98df3737421c316a3f38bb4897d568247"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-derivatives/tests/11-derivative-exp.lawtest",
+      "path": "packages/openstax.calculus_derivatives/tests/11-derivative-exp.lawtest",
+      "size": 1820,
+      "sha256": "sha256:b54a85fac95c5bb9c89b673023e4ac5d3408d911862f91d6353abda9af1f419e"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-derivatives/tests/12-derivative-ln.lawtest",
+      "path": "packages/openstax.calculus_derivatives/tests/12-derivative-ln.lawtest",
+      "size": 1934,
+      "sha256": "sha256:ff528c97b7650eb4bd56b7f24b8c81b9bc8c0a6b9b5c73a25b4e3ac4eab8532a"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-integrals/law.toml",
+      "path": "packages/openstax.calculus_integrals/law.toml",
+      "size": 1705,
+      "sha256": "sha256:b7595b023e64f04ac9dd1753395e1a672b2c91e41946dff56f65eefb007db92c"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-integrals/package.law",
+      "path": "packages/openstax.calculus_integrals/package.law",
+      "size": 12001,
+      "sha256": "sha256:19adf9ff5ef9fb52536a17bdea959c8a3beba5e4d082512980712df22b95e1a2"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-integrals/sources/calculus-integrals/m53621.cnxml",
+      "path": "packages/openstax.calculus_integrals/sources/calculus-integrals/m53621.cnxml",
+      "size": 161550,
+      "sha256": "sha256:368612823e0e54e1f08bcdddcf0c9380d69ed13e6a3dea5075e01fef655a3eb1"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-integrals/sources/calculus-integrals/m53623.cnxml",
+      "path": "packages/openstax.calculus_integrals/sources/calculus-integrals/m53623.cnxml",
+      "size": 1892,
+      "sha256": "sha256:1691e917ed545efcd23fee144189cead4dc4e5c697b2549c4e6ffa951e89757d"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-integrals/sources/calculus-integrals/m53631.cnxml",
+      "path": "packages/openstax.calculus_integrals/sources/calculus-integrals/m53631.cnxml",
+      "size": 209273,
+      "sha256": "sha256:12ffeaa33f9f990dedc128214239abb7fbef92d13556990bb1c79a6ec0ed223e"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-integrals/sources/calculus-integrals/m53632.cnxml",
+      "path": "packages/openstax.calculus_integrals/sources/calculus-integrals/m53632.cnxml",
+      "size": 159262,
+      "sha256": "sha256:730f40d14f0ae8e84dca2c53116a1b044f6521b54e4a4b21f22a500825e33c7a"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-integrals/sources/calculus-integrals/m53633.cnxml",
+      "path": "packages/openstax.calculus_integrals/sources/calculus-integrals/m53633.cnxml",
+      "size": 135519,
+      "sha256": "sha256:a94ea4a8f62d8613744d11e9506517dcaf265286f13c5581479a31d5440e6722"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-integrals/sources/calculus-integrals/m53656.cnxml",
+      "path": "packages/openstax.calculus_integrals/sources/calculus-integrals/m53656.cnxml",
+      "size": 137740,
+      "sha256": "sha256:1a5687db35d297d966b060133293c34c7167fe8abe1246de759273832fa9bf78"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-integrals/sources.law",
+      "path": "packages/openstax.calculus_integrals/sources.law",
+      "size": 22410,
+      "sha256": "sha256:cd5d307941b0a4b11a670073a8dcd5a30043546775570f1ab7d78b79b79eafcf"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-integrals/tests/01-instruction-without-a-case.lawtest",
+      "path": "packages/openstax.calculus_integrals/tests/01-instruction-without-a-case.lawtest",
+      "size": 1079,
+      "sha256": "sha256:d0db38adb72bf31af0ff9a31fb787c7dec78b7880ab93cd62ebc793aece72193"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-integrals/tests/02-step-justified-by-integration-by-parts.lawtest",
+      "path": "packages/openstax.calculus_integrals/tests/02-step-justified-by-integration-by-parts.lawtest",
+      "size": 2402,
+      "sha256": "sha256:88572dbe1308be75bfc9014dc08511450d0fa5868ef5eb708d79a9d5b6c486f8"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-integrals/tests/03-antiderivative-power.lawtest",
+      "path": "packages/openstax.calculus_integrals/tests/03-antiderivative-power.lawtest",
+      "size": 2375,
+      "sha256": "sha256:d6762e3b4cfee020ed910118648ab267a631c264e2242ba0d628180cb2d7a149"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-integrals/tests/04-table-antiderivative.lawtest",
+      "path": "packages/openstax.calculus_integrals/tests/04-table-antiderivative.lawtest",
+      "size": 1873,
+      "sha256": "sha256:b2b00e34b8d63d68e706aa408fb857cc4b668c6c4122677b587ebbd5d1f78f66"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-integrals/tests/05-net-change.lawtest",
+      "path": "packages/openstax.calculus_integrals/tests/05-net-change.lawtest",
+      "size": 1458,
+      "sha256": "sha256:77377ba087ac2ece0249db9d39e97b1a3d14e086c2433d7e1cf3b1687756c89c"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-integrals/tests/06-ftc-part-two-boundary.lawtest",
+      "path": "packages/openstax.calculus_integrals/tests/06-ftc-part-two-boundary.lawtest",
+      "size": 5445,
+      "sha256": "sha256:88ec198a28f8ce0d8be2e9676f69e6e57eb37c1da80196a702f7975f90f9e1b1"
+    },
+    {
+      "sourcePath": "corpus/laws/org/openstax/calculus-integrals/tests/07-table-antiderivative-sin.lawtest",
+      "path": "packages/openstax.calculus_integrals/tests/07-table-antiderivative-sin.lawtest",
+      "size": 2046,
+      "sha256": "sha256:bee2b505a705d0cca86a68e32ce33813c3136e29ae55203ab0ebb0726f14f083"
+    }
+  ],
+  "models": [
+    {
+      "name": "calc.expressions",
+      "version": "0.1.0",
+      "namespace": "urn:law:calc:expressions",
+      "path": "packages/calc.expressions",
+      "sourcePath": "packs/primitives/mathematics-and-logic/expressions",
+      "dependencies": {},
+      "role": "dependency",
+      "hashes": {
+        "original": "sha256:67a032a96c983e724e0af4781fc287617140741319ebe2e55ac54ca35467a265",
+        "package": "sha256:67a032a96c983e724e0af4781fc287617140741319ebe2e55ac54ca35467a265",
+        "world": "sha256:67a032a96c983e724e0af4781fc287617140741319ebe2e55ac54ca35467a265"
+      },
+      "originalVersion": "0.1.0"
+    },
+    {
+      "name": "calc.limit_solver",
+      "version": "0.1.0",
+      "namespace": "urn:law:calc:limit-solver",
+      "path": "packages/calc.limit_solver",
+      "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver",
+      "dependencies": {
+        "calc.expressions": "0.1.0"
+      },
+      "role": "dependency",
+      "hashes": {
+        "original": "sha256:fccff8c3ddc6ad47df65058381698306871e3e395f79ea7877b3eeeab10e4790",
+        "package": "sha256:fccff8c3ddc6ad47df65058381698306871e3e395f79ea7877b3eeeab10e4790",
+        "world": "sha256:89980fb7cd9e813dff9c914d7ff181409dace83573e0a50f9d57c266af4d0987"
+      },
+      "originalVersion": "0.1.0"
+    },
+    {
+      "name": "calc.polynomials_q",
+      "version": "0.1.0",
+      "namespace": "urn:law:calc:polynomials-q",
+      "path": "packages/calc.polynomials_q",
+      "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q",
+      "dependencies": {
+        "calc.expressions": "0.1.0"
+      },
+      "role": "dependency",
+      "originalVersion": "0.1.0",
+      "hashes": {
+        "original": "sha256:0445837b7789d2e5cfbf981b8906abaab92e9bd4c48cdd1d6919f71852a3e943",
+        "package": "sha256:0445837b7789d2e5cfbf981b8906abaab92e9bd4c48cdd1d6919f71852a3e943",
+        "world": "sha256:415143608c9b5bd0b70b67ba2fe1e6b3ac6abacb13b638e309769d42bfb0fd59"
+      }
+    },
+    {
+      "name": "calc.calculus_checker",
+      "version": "0.1.0",
+      "namespace": "urn:law:calc:calculus-checker",
+      "path": "packages/calc.calculus_checker",
+      "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker",
+      "dependencies": {
+        "calc.expressions": "0.1.0",
+        "calc.polynomials_q": "0.1.0"
+      },
+      "role": "dependency",
+      "originalVersion": "0.1.0",
+      "hashes": {
+        "original": "sha256:b75365247b72ff3fe18032690ea518992e2927d3057939ddfe6b169b26d74d16",
+        "package": "sha256:b75365247b72ff3fe18032690ea518992e2927d3057939ddfe6b169b26d74d16",
+        "world": "sha256:7dff85184e1605037ab4474ba6d7cfbf980eead0627a748559af2b380812d95a"
+      }
+    },
+    {
+      "name": "openstax.calculus_limits",
+      "version": "0.1.1",
+      "namespace": "urn:openstax:clir:calculus-limits",
+      "path": "packages/openstax.calculus_limits",
+      "sourcePath": "corpus/laws/org/openstax/calculus-limits",
+      "dependencies": {
+        "calc.expressions": "0.1.0",
+        "calc.polynomials_q": "0.1.0",
+        "calc.calculus_checker": "0.1.0",
+        "calc.limit_solver": "0.1.0"
+      },
+      "role": "entry",
+      "originalVersion": "0.1.0",
+      "hashes": {
+        "original": "sha256:30c21134e70244adb0c4129bce5263107624e13bb2a3828d18a5adb67f0a1ecd",
+        "package": "sha256:1e4e9da74639d625261337c15b4355c43c749337acab9df49d2591bdafe975b1",
+        "world": "sha256:bdd5108d49e2ec95294531e81acd10e2a877c0617e60786e3b1fedd62645a6f8"
+      }
+    },
+    {
+      "name": "openstax.calculus_derivatives",
+      "version": "0.1.1",
+      "namespace": "urn:openstax:clir:calculus-derivatives",
+      "path": "packages/openstax.calculus_derivatives",
+      "sourcePath": "corpus/laws/org/openstax/calculus-derivatives",
+      "dependencies": {
+        "calc.expressions": "0.1.0",
+        "calc.polynomials_q": "0.1.0",
+        "calc.calculus_checker": "0.1.0"
+      },
+      "role": "entry",
+      "originalVersion": "0.1.0",
+      "hashes": {
+        "original": "sha256:fbea6c078e29959c435b763bff3d69bb189dba788dc7f464a72d3a0508fbf35d",
+        "package": "sha256:210a95a19dd394e50185483747ab2dd6e7aa997dd90bdbd4f42a22778e76b174",
+        "world": "sha256:4046050db003d2529603d2ba584c01106c67286f61b7d277f5bac9fd2760a66f"
+      }
+    },
+    {
+      "name": "openstax.calculus_integrals",
+      "version": "0.1.1",
+      "namespace": "urn:openstax:clir:calculus-integrals",
+      "path": "packages/openstax.calculus_integrals",
+      "sourcePath": "corpus/laws/org/openstax/calculus-integrals",
+      "dependencies": {
+        "calc.expressions": "0.1.0",
+        "calc.polynomials_q": "0.1.0",
+        "calc.calculus_checker": "0.1.0"
+      },
+      "role": "entry",
+      "originalVersion": "0.1.0",
+      "hashes": {
+        "original": "sha256:d1567c131010ffcaa59110be55714cd275c7c560f108bc08a754cd21693cc31b",
+        "package": "sha256:6cdf0274b3fa28c1ddfe6667d8208ec60185854be4afb996ed267e77cee959a2",
+        "world": "sha256:c899c44a92a7521da0250d9bd9dc5b657444dc5430734042542e48a9c20a0633"
+      }
+    }
+  ],
+  "files": [
+    {
+      "path": "packages/calc.calculus_checker/checking.law",
+      "size": 25989,
+      "sha256": "sha256:183565e615de814cec55d5d3d2fb728a5dbbbfda3f7d06a0d02d25eef8685137"
+    },
+    {
+      "path": "packages/calc.calculus_checker/deps/calc.expressions.lawir.json",
+      "size": 388733,
+      "sha256": "sha256:67a032a96c983e724e0af4781fc287617140741319ebe2e55ac54ca35467a265"
+    },
+    {
+      "path": "packages/calc.calculus_checker/deps/calc.polynomials_q.lawir.json",
+      "size": 485857,
+      "sha256": "sha256:0445837b7789d2e5cfbf981b8906abaab92e9bd4c48cdd1d6919f71852a3e943"
+    },
+    {
+      "path": "packages/calc.calculus_checker/diagnostics.law",
+      "size": 9926,
+      "sha256": "sha256:618c2c50f9b3a81ba4cbf7fc3baa4e659960da5bf8318c861de00aae71e04167"
+    },
+    {
+      "path": "packages/calc.calculus_checker/law.lock",
+      "size": 1997,
+      "sha256": "sha256:0d5e987e8b24e7a2fe8c1f056c6ba4e2b3ad4eadfab81c7a4ae845cc7724d3a3"
+    },
+    {
+      "path": "packages/calc.calculus_checker/law.toml",
+      "size": 5334,
+      "sha256": "sha256:c63e709044b1b8e5e3ddecc461c927b38677e0e78605dd178b24222a87e62adc"
+    },
+    {
+      "path": "packages/calc.calculus_checker/limits.law",
+      "size": 97422,
+      "sha256": "sha256:fb3ccfde92174c5938f431caea7631d407cbcf9d12c1e28665116ada241c6180"
+    },
+    {
+      "path": "packages/calc.calculus_checker/package.law",
+      "size": 9626,
+      "sha256": "sha256:5b2231bb6c6bf13e87c9130dfb9530cc5e17e410aa1d58dc32d903e81aef3ad5"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/01-given.lawtest",
+      "size": 1136,
+      "sha256": "sha256:79187542cf6cc8040ca3ec1b66dfd856e47a85b6533e34ef742ada2c5414c663"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/02-power-rule.lawtest",
+      "size": 2026,
+      "sha256": "sha256:c77879919f2ee920910ef75c6ea4f7f5168e52222c951d58c7c1b0fe0871fb0f"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/03-power-rule-wrong-factor.lawtest",
+      "size": 2048,
+      "sha256": "sha256:5a16592da86b257b91b538f5009fe71529fb3804279f23b09a94b04099b20b43"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/04-derivative-sin.lawtest",
+      "size": 1555,
+      "sha256": "sha256:d16e6375a7f747b91d4d2dd8cd4da62b9eb61c8831749a3f82935390624d9e37"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/05-derivative-sin-wrong.lawtest",
+      "size": 1531,
+      "sha256": "sha256:0ef655fef2856df24dbfb9618d39d2b86a561dc9ddc76e34b0f01d50f76cb0e5"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/06-unknown-method.lawtest",
+      "size": 1183,
+      "sha256": "sha256:fa62a50b3581b63345d121107fa1c8dec897b4ef037ec8bbdde2c6dabf8e174e"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/07-missing-reference.lawtest",
+      "size": 1529,
+      "sha256": "sha256:fea7671032c623c98de3438c5970cac2356b72420f50eb3180f2417df73154dd"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/08-budget-exhausted.lawtest",
+      "size": 1202,
+      "sha256": "sha256:2be8de8d478172255a6b490542fb0ddae1129a8a37c829f125a25edf93f5d240"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/09-fundamental-theorem-boundary.lawtest",
+      "size": 1622,
+      "sha256": "sha256:d299e0990afa4c96f8073d91e654e31f9786072377a332382476e4bac689efb2"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/10-constant-rule.lawtest",
+      "size": 1330,
+      "sha256": "sha256:5fadadefaa427a9dbea9461321c1b56e3eee944e8abff881eadf210fdc87838a"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/100-old-calculus.lawtest",
+      "size": 1491,
+      "sha256": "sha256:86f10d5887cca369e746ceb59035ae0981f54d7b906a27f85a96fa09a97c4d2b"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/101-cancel-nonzero-remainder.lawtest",
+      "size": 4195,
+      "sha256": "sha256:94a5eeb1574e049f328d545622e143a3a3e8706f44b39b1b58e4a7ca4fb429f1"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/102-table-antiderivative-sin.lawtest",
+      "size": 1707,
+      "sha256": "sha256:c5477b310befef3a3f7d5addd368bc109e1db022a8497fdb99586d7d97c83c71"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/103-table-antiderivative-sin-wrong.lawtest",
+      "size": 1551,
+      "sha256": "sha256:4795f3f686fd45b223c8500a988855e460713eca690d10f466a8b519d523d0db"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/11-constant-rule-wrong.lawtest",
+      "size": 1394,
+      "sha256": "sha256:9f25a625fd9c161ff4ff49215879f3771475d902977dec1b8178ed22634c0b92"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/12-sum-rule.lawtest",
+      "size": 1629,
+      "sha256": "sha256:41bef95c1794e5cdf8d3d45ba524f757331e017f9f4884e45df5093feb013570"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/13-sum-rule-wrong.lawtest",
+      "size": 1605,
+      "sha256": "sha256:82fa1ea2f325189c7a276ec47ac3699a24b8a29c240f92535bcddebdb1ee3bf9"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/14-constant-multiple.lawtest",
+      "size": 1615,
+      "sha256": "sha256:c71915cbda96328f6aa19262b00adf2c7fd5252b68a242278f1d7e70839dc501"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/15-product-rule.lawtest",
+      "size": 2094,
+      "sha256": "sha256:df20086c712f40113cc2644a075decb761f1a07deb2b34947b48213230140a42"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/16-product-rule-swapped-factors.lawtest",
+      "size": 2145,
+      "sha256": "sha256:362c2349d53081c086fbc5d2fdf85e1a05779b5106f7e2bd8a0f8f68149ecdaa"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/17-quotient-rule.lawtest",
+      "size": 2502,
+      "sha256": "sha256:279bc069f82891d474b7a73a566897aea2a69cc727ecb2a4971fc04293b952d6"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/18-chain-rule.lawtest",
+      "size": 1769,
+      "sha256": "sha256:8df3318485307f72a040fe38010c45c719562aa6416f6ce04ee138a12ce8140d"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/19-derivative-cos.lawtest",
+      "size": 1531,
+      "sha256": "sha256:35c3676a8d445be07b5345332605f536468b55dddd32d19c1c621c79e74f42ad"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/20-derivative-exp.lawtest",
+      "size": 1523,
+      "sha256": "sha256:a0fc0928bc947eb0a4a4ad74a13f83f8c610d95b0a88dcc0aa8c3a345065c960"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/21-derivative-ln.lawtest",
+      "size": 1526,
+      "sha256": "sha256:84c7a60992ea0fff2ff0037920c7a6285783ed356c437844bdd0f9057229cd02"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/22-antiderivative-power.lawtest",
+      "size": 2069,
+      "sha256": "sha256:35f7422079356d5f623dd3d4908ea893fbcf3ef429e72fd83fca5910e88a1149"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/23-table-antiderivative.lawtest",
+      "size": 1473,
+      "sha256": "sha256:675127a2793e2c566ef2c06ecacf34a00ba9b1182bc63708489972536db47781"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/24-by-parts.lawtest",
+      "size": 1987,
+      "sha256": "sha256:a8df770a22f0a50d9fe8a6853a6ca8f39ef221b80b95c667a744d527bf83c3ba"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/25-by-parts-swapped.lawtest",
+      "size": 1988,
+      "sha256": "sha256:e0081039cb292b1654acf31eb466b5b6aab3a4e757e12b2b36e9fb5f17cef183"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/26-algebra-equal.lawtest",
+      "size": 3109,
+      "sha256": "sha256:c4b02c9aa5a5317c1468277c18ca6f417f98b2b172e91efbd0e3cbc0143a6e03"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/27-algebra-unequal.lawtest",
+      "size": 3026,
+      "sha256": "sha256:1873388abb4a8aea466fc619a553c0f9a7c92299f128fd065ac3538d02a12a3c"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/28-identity.lawtest",
+      "size": 1551,
+      "sha256": "sha256:eef7c960d423377e18428b9857bdaf8d7d99a4d1beecdd9c6b3258749b691e5b"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/29-first-error-strict-cause.lawtest",
+      "size": 1190,
+      "sha256": "sha256:8e511305777234110c5c20be244b8bedcbfd6ee9cfd4f7f4c1fcc7f1d0dbcb6e"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/30-first-error-defeasible-cause.lawtest",
+      "size": 1425,
+      "sha256": "sha256:1709b99def1ed9b986f233ee366449b3fc2ac15e5d607b8678f806b961772438"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/31-limit_given-ok.lawtest",
+      "size": 1409,
+      "sha256": "sha256:03d3ddf5e06b03cf1d094206f43093a0ef240574003f60374c5c2c245ece8df9"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/32-limit_given-bad.lawtest",
+      "size": 1700,
+      "sha256": "sha256:7b2b245dea4fd75783c4eaa8e2d7ad2a0e51c83e74dbf5d90b9a653f27f69d36"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/33-limit_constant-ok.lawtest",
+      "size": 1415,
+      "sha256": "sha256:cdf69ccb82441953d1ea7ec83412698977ab698a22cb7258d5fd8c150dc293cf"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/34-limit_constant-bad.lawtest",
+      "size": 1700,
+      "sha256": "sha256:a11e13deb60ac84043adaafab7f6e015275c1ae2e467b28a64b4e3736bcb24a5"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/35-limit_identity-ok.lawtest",
+      "size": 1415,
+      "sha256": "sha256:957a7a2329a8cf73a0d25025782812d5e0bcc00e9f44d6acb1e9892cb05d91f8"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/36-limit_identity-bad.lawtest",
+      "size": 1700,
+      "sha256": "sha256:f45378720ee240598272b7a937be76c3437292c069e33e145e52a6249e00f879"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/37-limit_sum-ok.lawtest",
+      "size": 2182,
+      "sha256": "sha256:cfd1bac8e8c8e8d84d6f9e46890031915ad2412bb6cdd6ad7fbe956030ab7cfc"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/38-limit_sum-bad.lawtest",
+      "size": 2467,
+      "sha256": "sha256:4dea08ee6bbcca6529b6ae9d486f6cd9ee3eac8089e9e7bc412b278a46b3f46d"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/39-limit_difference-ok.lawtest",
+      "size": 2196,
+      "sha256": "sha256:4269967376264c878726778b03527b26081c4662aa9f7aa00c95a3421cd9657c"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/40-limit_difference-bad.lawtest",
+      "size": 2481,
+      "sha256": "sha256:415951bd1673de58829f8960be2081999c1816c122943819ac7c624a3251f6e6"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/41-limit_product-ok.lawtest",
+      "size": 2190,
+      "sha256": "sha256:5335ea38a1b5882d691b4e4e5e1ffab4d96324678bdf4d64f2cc03ac14c40259"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/42-limit_product-bad.lawtest",
+      "size": 2475,
+      "sha256": "sha256:5a054daede37c5b1fa8b6d9ad155aa790b6086a96ce53f154fa3012b511b2938"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/43-limit_quotient-ok.lawtest",
+      "size": 2192,
+      "sha256": "sha256:c12524ae627a319092ffd22b77956219977cf535b6a378407626f548d392eb6e"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/44-limit_quotient-bad.lawtest",
+      "size": 2477,
+      "sha256": "sha256:7b257807df3adba1f0d62f8f0b5910b2205481444daa748d557bd67a0ae5f9b8"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/45-limit_constant_multiple-ok.lawtest",
+      "size": 1821,
+      "sha256": "sha256:3b3ddac6bc6fefc8574533f9f27a22282c0d340f3418de8a626b4004adf86c03"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/46-limit_constant_multiple-bad.lawtest",
+      "size": 2106,
+      "sha256": "sha256:45d995c027393aba6628be70ba07b39892747b7161f807b011897c8908c95cba"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/47-limit_power-ok.lawtest",
+      "size": 1797,
+      "sha256": "sha256:c04973bc12eca2dee92879232e2a610d323c1663d25b130b35d787831a8edaf1"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/48-limit_power-bad.lawtest",
+      "size": 2082,
+      "sha256": "sha256:1cde9a5140d9a7ac5c1d1c7469eab7f0e1ef6261a16cc60aa83fc0765a982290"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/49-continuity-sin-ok.lawtest",
+      "size": 1670,
+      "sha256": "sha256:6e759b6765b7a393b224e0a121cb49252aff1c94e15e99ce966c50f091cd6d0d"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/50-continuity-sin-bad.lawtest",
+      "size": 1955,
+      "sha256": "sha256:e5ba1ff2ba7f0a2b8b1bd0ae7fb392235fca03ccab1667422dfe4043872b04b8"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/51-continuity-cos-ok.lawtest",
+      "size": 1670,
+      "sha256": "sha256:b170d381e58b8b09114ea0155f86b153ca81404d121b9568fe5a346b2809f5de"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/52-continuity-cos-bad.lawtest",
+      "size": 1955,
+      "sha256": "sha256:a812c1c3a8bf73ae8b7d7d79a04c68314f7fd13872f8538b344a119339a78f8a"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/53-continuity-exp-ok.lawtest",
+      "size": 1670,
+      "sha256": "sha256:40273212d7750061d181e382842ddb748c8d64d78c0363e1a0066ef0ccc7b0b4"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/54-continuity-exp-bad.lawtest",
+      "size": 1955,
+      "sha256": "sha256:b41d039f2400bf0ba4e7d29ca33aeee58fc1f9d0cc5bda8e77b9b11c459b5ab7"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/55-continuity-ln-ok.lawtest",
+      "size": 1667,
+      "sha256": "sha256:7bcf4dddc6775043fb39a898cd465a7c80a31db37240b47d0039463602f157e4"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/56-continuity-ln-bad.lawtest",
+      "size": 1952,
+      "sha256": "sha256:c04117725457d5b5969073de7b7a06adce04aed226e76830d02958baf3fb22c1"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/57-special_limit_sin-ok.lawtest",
+      "size": 1664,
+      "sha256": "sha256:2f3a581b414ad4975eec2a38c6404c3f08e375ed55ed8256d74d10d23ba564ba"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/58-special_limit_sin-bad.lawtest",
+      "size": 1949,
+      "sha256": "sha256:ec9c936d50b20e7f79bae8183820131e5972bfe9fafa7a6e77191b8f48ce555e"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/59-special_limit_one_minus_cos-ok.lawtest",
+      "size": 1806,
+      "sha256": "sha256:1ff0c358e30cb8569b42da1362102eb26aa885876b09ddf9cf149c68cbc7e1ff"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/60-special_limit_one_minus_cos-bad.lawtest",
+      "size": 2091,
+      "sha256": "sha256:5d9e9c31333b09308b52f73f333deca500e28b76fa869565b4b6707743e94d86"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/61-one_sided_agree-ok.lawtest",
+      "size": 1707,
+      "sha256": "sha256:0fcb6b066bcf8bd8dabc9f1780f56474e4f43d8e7998f8cd47a48718525b521e"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/62-one_sided_agree-bad.lawtest",
+      "size": 1992,
+      "sha256": "sha256:fd42a944c92d1c8330d4372796f8b9a2d6e15541dcb09e432cd1b7c948ac1277"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/63-one_sided_differ-ok.lawtest",
+      "size": 1708,
+      "sha256": "sha256:122ea48718c9b198ce660adf2162e990f6f500922334d3ac793caaffcd033a09"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/64-one_sided_differ-bad.lawtest",
+      "size": 1993,
+      "sha256": "sha256:d35686ed7883b62befa2cf936e5b04c03526d7c61eea31dc8d865f28aa2c7b42"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/65-substitution-poly-ok.lawtest",
+      "size": 2482,
+      "sha256": "sha256:d3776fb2ff50ce47b8eb0bcc928136c5dc3f0cd1a5c68650ca75e5db60126a14"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/66-substitution-poly-bad.lawtest",
+      "size": 2767,
+      "sha256": "sha256:5a336cf0ac58e1a1da3694b70375c05b24af84a4331679a4034428f74346b24a"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/67-substitution-ratio-ok.lawtest",
+      "size": 2594,
+      "sha256": "sha256:800e81789a00aabf5852ce46ed81636d5c673bf7ba0e7d4c192946f1838f2c99"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/68-substitution-ratio-bad.lawtest",
+      "size": 2879,
+      "sha256": "sha256:e8efb5595015b4b3247878bd0b9b27503214a2f9bfb4eead98faf328cd8779f3"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/69-infinity-rational-ok.lawtest",
+      "size": 2117,
+      "sha256": "sha256:74852a20921a10c2126e26bcba6e2ff5fb0411063759ad4928b3fc7000b52a17"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/70-infinity-rational-bad.lawtest",
+      "size": 2401,
+      "sha256": "sha256:dc0afa7880e23d9baf45d03db45e706bc8325a6e93e03a4ac39797bca0ccea16"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/71-factor-cancel-ok.lawtest",
+      "size": 3856,
+      "sha256": "sha256:3455e90bf5a0a6b3c5af5cc989e84a354188426034d8364386e9afa02d425c13"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/72-factor-cancel-bad.lawtest",
+      "size": 4141,
+      "sha256": "sha256:4c9f0ac07463f225c82c6677a7798a12015226eae77a0a4f6b65b9a9e0eb9d79"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/73-lhopital-zero.lawtest",
+      "size": 2843,
+      "sha256": "sha256:c00791145bc5a8b991d32854889783d55ab3a3223482f94be72e0ddc36722e56"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/74-lhopital-infinity.lawtest",
+      "size": 2747,
+      "sha256": "sha256:8531dd9431c8761249d640b8b9e727259838959c4f9cc88c1f50b4ec79102261"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/75-lhopital-nested.lawtest",
+      "size": 3083,
+      "sha256": "sha256:ee371e615e953ed70ca9ad04b12d868d819957da9970b991b1b47b1afd3515b9"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/76-lhopital-not-indeterminate.lawtest",
+      "size": 3154,
+      "sha256": "sha256:f93ce4d2e9bb5d43fa73859aefeb94cce815803c5072f92ec0f2d87b68ea9b55"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/77-lhopital-bad-derivative.lawtest",
+      "size": 3160,
+      "sha256": "sha256:18cbdf74b54512df8263a66d66764d8787e5545d72e63ed46fe70857cf6a04dc"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/78-lhopital-bad-ratio.lawtest",
+      "size": 3156,
+      "sha256": "sha256:57b6f3f4349d748df258d32cc13f9fbbfbca8d5e32c8199329aaac854b7cde7b"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/79-lhopital-no-nonzero.lawtest",
+      "size": 3070,
+      "sha256": "sha256:a8f80b68603dda06e45305eb8f713e50e72f824b52f49d6333aff7e8dad98242"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/80-lhopital-wrong-result.lawtest",
+      "size": 3145,
+      "sha256": "sha256:aed9895bca867b9d60194f17aaa197a91b717e4d4718b427f9040a9ef8389d22"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/81-limit-diagnostic-unknown.lawtest",
+      "size": 1811,
+      "sha256": "sha256:8646c131a2646d6f822b5d2353e34e9a5a8c2df908a0c8abb00a4d826775dc84"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/82-limit-diagnostic-fields.lawtest",
+      "size": 1821,
+      "sha256": "sha256:ec99ddcef336fde45ef13e530a732dfcae97a2b25888411a7baff53b29d726bd"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/83-limit-diagnostic-mixed-duplicate.lawtest",
+      "size": 1929,
+      "sha256": "sha256:66b57547993880940cbe61467c64e60f824b5b5d3e2208410a281bd716cbc234"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/84-limit-diagnostic-forward.lawtest",
+      "size": 1815,
+      "sha256": "sha256:752c2ed203c6bf066730e2bd3d06fac8bf1713c46f43e98397f8aaea9fee4e14"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/85-limit-diagnostic-quotient-zero.lawtest",
+      "size": 1983,
+      "sha256": "sha256:2ba051cb26183272384eb0ee725b0c0df9a6069f9221f01159210d8dadf33a33"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/86-limit-diagnostic-missing.lawtest",
+      "size": 1815,
+      "sha256": "sha256:97e8dfd7fbd4d7d98be0b852e1a57ab290d97c74591318de605005171ce9fe8a"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/87-mixed-budget-64.lawtest",
+      "size": 9157,
+      "sha256": "sha256:dae2671f723775c866944ae7cadeff80d4982cec18e0bc894c8b811ffb0814b0"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/88-mixed-budget-65.lawtest",
+      "size": 9389,
+      "sha256": "sha256:99c7f7b8aa9f1e4ca9c080b32215d5e7f502317d34b38ff122a063fd9f8d3d3a"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/89-substitution-zero-denominator.lawtest",
+      "size": 2142,
+      "sha256": "sha256:be813d848d8392f61d36c9b43fc3e21b05722da95328e51045c62b5c6d041cdd"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/90-infinity-zero-denominator.lawtest",
+      "size": 2285,
+      "sha256": "sha256:619844f220cc94ba1a78c6bba95d9dd48d0386ea3b523fd0bc657807ea2e6294"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/91-nested-substitution-True.lawtest",
+      "size": 2182,
+      "sha256": "sha256:7124d859343ebb8e70489469962e5b0eb41944d225a313d8a2244e61d21ba598"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/92-nested-substitution-False.lawtest",
+      "size": 2477,
+      "sha256": "sha256:251f30957daa77ec4e0a350adfef05ffd4fb9d26f715ca610f96eafd9cac6a5a"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/93-ln-domain.lawtest",
+      "size": 1860,
+      "sha256": "sha256:a83a1faff2b0f01c5e8698d6348050fbbbadd7c297c39f5c28f256fd82b00090"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/94-lhopital-polynomial-True.lawtest",
+      "size": 3636,
+      "sha256": "sha256:0a6a636457ec62333eba52bcd40ca0662f726097b17629f5df7453158d28c6f7"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/95-lhopital-polynomial-False.lawtest",
+      "size": 3935,
+      "sha256": "sha256:94d1fe1f179d5e12d2955710e741188bb00cc3b452945f0c8b03995914ad5bad"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/96-lhopital-side-mismatch.lawtest",
+      "size": 2847,
+      "sha256": "sha256:bfc8310ccb4843ad6f94a65f7c6f916e48284b917550619858c566cd30103a63"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/97-invalid-index.lawtest",
+      "size": 1480,
+      "sha256": "sha256:759c3b357628900f7985a67009b44a641b876ffb15cca306d9343d128b6d263d"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/98-extra-line.lawtest",
+      "size": 1621,
+      "sha256": "sha256:165c708f98a87970c76733dc7b87436bbcf4ad9dbe463820e539cba91c48f838"
+    },
+    {
+      "path": "packages/calc.calculus_checker/tests/99-duplicate-limit.lawtest",
+      "size": 1634,
+      "sha256": "sha256:4d9536c22edc7227b25fddf1586be009ce66e8e8cba1d1e941fb4b74394d148a"
+    },
+    {
+      "path": "packages/calc.expressions/03-binders.law",
+      "size": 6134,
+      "sha256": "sha256:591a9def4d20fda6654082ec94db29cc4ea241493d1fcc344b5aaa57b61fa0c2"
+    },
+    {
+      "path": "packages/calc.expressions/05-reach.law",
+      "size": 4789,
+      "sha256": "sha256:49bad06332f3fc86bbf94197e475e5964eee106a1679a95e4614b75e31473646"
+    },
+    {
+      "path": "packages/calc.expressions/06-alpha.law",
+      "size": 9150,
+      "sha256": "sha256:963c1966b02180492a196b378ec9a8b9a45bcca333610554e0aad8c229a301c9"
+    },
+    {
+      "path": "packages/calc.expressions/07-alpha-equality.law",
+      "size": 17322,
+      "sha256": "sha256:7085990bcca3f7ab8c982c1b3610160d25b58879e9276d4edb24b0dbe32542df"
+    },
+    {
+      "path": "packages/calc.expressions/08-operators.law",
+      "size": 5552,
+      "sha256": "sha256:82a77d1da0c3bb2833cac31eff4a12f018b7b9d8cce023790b6fb0c56aa51c91"
+    },
+    {
+      "path": "packages/calc.expressions/09-types.law",
+      "size": 21132,
+      "sha256": "sha256:8a158c1e7d5f2b932185d14cb7dae04391a22da1e76def0d87941ce0cf9827cf"
+    },
+    {
+      "path": "packages/calc.expressions/10-structured.law",
+      "size": 16638,
+      "sha256": "sha256:2a9f3a483269ddb18ae7b9dee820b181f35ee5c45424a434956bbd499218063e"
+    },
+    {
+      "path": "packages/calc.expressions/diagnostics.law",
+      "size": 13606,
+      "sha256": "sha256:7491a4ef1db0a6a84ccb30b6630c5796edf65f21845612276f47674ede702e11"
+    },
+    {
+      "path": "packages/calc.expressions/law.lock",
+      "size": 556,
+      "sha256": "sha256:145f4a5faf3c268b8f245eb3ac5514be8b478573f026cac442a100d7dc6686d7"
+    },
+    {
+      "path": "packages/calc.expressions/law.toml",
+      "size": 2319,
+      "sha256": "sha256:cd03175a3449129ad1985a8e0e4f4594637d6654e5c9e575e649baf73c846ec9"
+    },
+    {
+      "path": "packages/calc.expressions/package.law",
+      "size": 29074,
+      "sha256": "sha256:458861b88029b8dfcaec24a3a2bb925879dec41ae6d3084ac04162333b7cb96c"
+    },
+    {
+      "path": "packages/calc.expressions/structure.law",
+      "size": 14867,
+      "sha256": "sha256:87fd160dacbdba7f01c3f34d572a3a5d842e30ec0eea654b6de90a55f51bcb13"
+    },
+    {
+      "path": "packages/calc.expressions/tests/01-constant.lawtest",
+      "size": 651,
+      "sha256": "sha256:9079a2ec1685f3cd32f939aedac62ad27c35e80dd8ef0fd13a6ae7204bc4e557"
+    },
+    {
+      "path": "packages/calc.expressions/tests/02-variable.lawtest",
+      "size": 626,
+      "sha256": "sha256:1ecef0bd532924740af8e1f815e1d36a45c28823edbedb7aa0fda1d34fe9a6d9"
+    },
+    {
+      "path": "packages/calc.expressions/tests/03-sum.lawtest",
+      "size": 791,
+      "sha256": "sha256:6822ccdb5aabacdc2725e75ca171a2a412493c3bca8642395e026a32cf54fb70"
+    },
+    {
+      "path": "packages/calc.expressions/tests/04-unary-ln.lawtest",
+      "size": 681,
+      "sha256": "sha256:cd9f8670ed07bbd02b7b9ced54174061c69ea0d50c1401348998037eceb4cdfd"
+    },
+    {
+      "path": "packages/calc.expressions/tests/05-power-integral.lawtest",
+      "size": 860,
+      "sha256": "sha256:a17eea56635a74fe36676a226ad63038401baa45cef023ce36d0dea0ffa6a908"
+    },
+    {
+      "path": "packages/calc.expressions/tests/06-invalid-node-id.lawtest",
+      "size": 612,
+      "sha256": "sha256:c365a3864d1484765d90688df5fac7fb5bd218029848f96ee14f09812a39af2b"
+    },
+    {
+      "path": "packages/calc.expressions/tests/07-ambiguous-node.lawtest",
+      "size": 697,
+      "sha256": "sha256:9390d2d5a01f4d0c47e709e3dc93015515354389d62a4ff18db802fc097d87e8"
+    },
+    {
+      "path": "packages/calc.expressions/tests/08-unknown-tag.lawtest",
+      "size": 722,
+      "sha256": "sha256:da7244e5aebab2021f30614cbaa067f1928bb1e33e776b1500dfbc232275011e"
+    },
+    {
+      "path": "packages/calc.expressions/tests/09-extra-child.lawtest",
+      "size": 693,
+      "sha256": "sha256:18836e6a4179caa20504c59917d7ea9cef06fd7ffe769cac64f57e60d7c9d40f"
+    },
+    {
+      "path": "packages/calc.expressions/tests/10-empty-variable-name.lawtest",
+      "size": 592,
+      "sha256": "sha256:36eeb997ab2127e9b01543d2ac35027c1cd5a163134e30ea4e864cf652dda58c"
+    },
+    {
+      "path": "packages/calc.expressions/tests/11-name-on-compound.lawtest",
+      "size": 792,
+      "sha256": "sha256:0f0a293c87c6868cd86f7ca8f3b3c33ddfeb34557cc3d80e63ee0ba047e75bd8"
+    },
+    {
+      "path": "packages/calc.expressions/tests/12-value-on-non-const.lawtest",
+      "size": 650,
+      "sha256": "sha256:b5b8427209c260637fffc41754aa664b6ab6b84fea73da74ae408bdbfe042a01"
+    },
+    {
+      "path": "packages/calc.expressions/tests/13-missing-child.lawtest",
+      "size": 735,
+      "sha256": "sha256:6c34fb0d743f5691a0b33570ca300cef8c77c4fbb0f92695467e734d72ffac0c"
+    },
+    {
+      "path": "packages/calc.expressions/tests/14-negative-exponent.lawtest",
+      "size": 858,
+      "sha256": "sha256:176413482090a73630b4236ca8c1b9d7377667dfb869f7a38cef443b1ae1efa4"
+    },
+    {
+      "path": "packages/calc.expressions/tests/15-fractional-exponent.lawtest",
+      "size": 864,
+      "sha256": "sha256:3193b088d2a4f50d4b065dac2d7b732a7478e42343e1a61afd35a18cab3d6313"
+    },
+    {
+      "path": "packages/calc.expressions/tests/16-exponent-out-of-range.lawtest",
+      "size": 821,
+      "sha256": "sha256:9bf6ae1a1f79ae921ad06cebe796ebcadf99b0adf753ad0c5ce181500261b70d"
+    },
+    {
+      "path": "packages/calc.expressions/tests/17-exponent-not-constant.lawtest",
+      "size": 870,
+      "sha256": "sha256:a7bd43f85c838b3f8097188048de267a7ea00810666db5d17f21c54105a4677a"
+    },
+    {
+      "path": "packages/calc.expressions/tests/18-cycle.lawtest",
+      "size": 616,
+      "sha256": "sha256:00149377beb537dcf4dec6d5e188f1d9651dd40f7352a5a3ba14917a27ad19ba"
+    },
+    {
+      "path": "packages/calc.expressions/tests/19-alias-equivalent.lawtest",
+      "size": 1154,
+      "sha256": "sha256:3f974a00d47fd927169f583d74c42b400da5f4a7fbc17ed9740c7337871a44d5"
+    },
+    {
+      "path": "packages/calc.expressions/tests/20-order-matters.lawtest",
+      "size": 921,
+      "sha256": "sha256:41606e62accc5504bbf44ec523953d4093a2a7184922877fa634e6fb1c1379b5"
+    },
+    {
+      "path": "packages/calc.expressions/tests/21-shared-subexpression.lawtest",
+      "size": 722,
+      "sha256": "sha256:aeae0920776067b3c65feccec4d3ba3e19f553da85ce6ab4981e9345dc49f715"
+    },
+    {
+      "path": "packages/calc.expressions/tests/22-budget-at-limit.lawtest",
+      "size": 27846,
+      "sha256": "sha256:e2427600edd0ed8af9647b0513fbc88e3cebe26b7d0923663210fb9856bab58b"
+    },
+    {
+      "path": "packages/calc.expressions/tests/23-budget-exhausted.lawtest",
+      "size": 27941,
+      "sha256": "sha256:61a8ca367dd2c57d8ddfb09f2c9dd3117ca6cf653ef24fef6720db246cb13df6"
+    },
+    {
+      "path": "packages/calc.expressions/tests/24-sqrt.lawtest",
+      "size": 955,
+      "sha256": "sha256:b04a78d94622a9139fb8fb4d8a50bba50824f9e11817a4577145af2fd6354a74"
+    },
+    {
+      "path": "packages/calc.expressions/tests/25-sqrt-extra-child.lawtest",
+      "size": 764,
+      "sha256": "sha256:da3729e2249527fd7d27c4fa47974183ded974da22bde7dc4db26af8a561c2b1"
+    },
+    {
+      "path": "packages/calc.expressions/tests/26-atan.lawtest",
+      "size": 651,
+      "sha256": "sha256:0c07bc48f08a69afb765b7b2c8032e5d4fe68d041e43b9204044c46027eea4ea"
+    },
+    {
+      "path": "packages/calc.expressions/tests/27-algebraic-leaf.lawtest",
+      "size": 1171,
+      "sha256": "sha256:c11f69371699c13bb8d654facc15046c2d27096fe1831c280886c00057954662"
+    },
+    {
+      "path": "packages/calc.expressions/tests/28-log-structural.lawtest",
+      "size": 866,
+      "sha256": "sha256:490fa7eaaba20d1751817593bd7c7e1e1b437afc3bdc16dccabe7d28e8ca1f51"
+    },
+    {
+      "path": "packages/calc.expressions/tests/29-binder.lawtest",
+      "size": 5040,
+      "sha256": "sha256:6801062c5f3e674e3c1dbe37c4e3fa2814e45642031bc9c8c5c2502b0005c094"
+    },
+    {
+      "path": "packages/calc.expressions/tests/30-reachability.lawtest",
+      "size": 4316,
+      "sha256": "sha256:01080985fdd0ee32543acf4387bbd89449c45b610044c4be3eee528e2a1300dd"
+    },
+    {
+      "path": "packages/calc.expressions/tests/31-alpha.lawtest",
+      "size": 6836,
+      "sha256": "sha256:177f0b5c451c27b28cefdd65f764fcca63696f88a8bfe36c5d9827773e4ef1c1"
+    },
+    {
+      "path": "packages/calc.expressions/tests/32-alpha-equality.lawtest",
+      "size": 4344,
+      "sha256": "sha256:fb2e2b4642bfdb204e27897d15115270e6491dba310142b56b78f38248671cd8"
+    },
+    {
+      "path": "packages/calc.expressions/tests/33-alpha-free-name.lawtest",
+      "size": 4541,
+      "sha256": "sha256:91b7207aa92458d4ae3cec7751d48c79385d11f7c92b2e84f0dbf79b5004d846"
+    },
+    {
+      "path": "packages/calc.expressions/tests/34-alpha-shape.lawtest",
+      "size": 4666,
+      "sha256": "sha256:58ec04df911bfabb8f7498d8b10a0f9de6c88ce5cb3dc8048933c21be06458b8"
+    },
+    {
+      "path": "packages/calc.expressions/tests/35-operators.lawtest",
+      "size": 2607,
+      "sha256": "sha256:c62cf13d12821b17caf2d16a1cc691336f3afb9cf2bff14a2ed7c63236d41dbb"
+    },
+    {
+      "path": "packages/calc.expressions/tests/36-typed-arithmetic.lawtest",
+      "size": 7918,
+      "sha256": "sha256:9141312460f369d9d73446be2fb09439a27f0df5b0b4240a88a5514bcf3c6e6d"
+    },
+    {
+      "path": "packages/calc.expressions/tests/37-typed-domain.lawtest",
+      "size": 3426,
+      "sha256": "sha256:51fa548f0e493220f3a90a56ddadbbc88ffd16b3ac8ef6a27c2a5b4b61b0dfc0"
+    },
+    {
+      "path": "packages/calc.expressions/tests/38-typed-environment.lawtest",
+      "size": 5744,
+      "sha256": "sha256:51bfa53de0bb8ea843de155c0fd97710e1caae826777642bb431cd65e16dd45f"
+    },
+    {
+      "path": "packages/calc.expressions/tests/39-node-dictionary.lawtest",
+      "size": 3476,
+      "sha256": "sha256:d484cf82c1c3619faa2fd8d0e5fe6e875f389b5c698d01292308685bd683da2b"
+    },
+    {
+      "path": "packages/calc.expressions/tests/40-structured-nodes.lawtest",
+      "size": 7879,
+      "sha256": "sha256:0ce415d0cee524a49b85a0ca4ff0725620d8b1b47c4869787dd7931ab6be635d"
+    },
+    {
+      "path": "packages/calc.expressions/tests/41-child-references.lawtest",
+      "size": 4568,
+      "sha256": "sha256:74021c64ceda3d9cdfadd5af2699bc4313ed80ec1c0f48517c5b6fb8b6e395e8"
+    },
+    {
+      "path": "packages/calc.expressions/tests/42-matrix-shape.lawtest",
+      "size": 3788,
+      "sha256": "sha256:9066fbcf605f983555aebc3af409e0f92828667bd95d88ec81dd9134f032249e"
+    },
+    {
+      "path": "packages/calc.limit_solver/deps/calc.expressions.lawir.json",
+      "size": 388733,
+      "sha256": "sha256:67a032a96c983e724e0af4781fc287617140741319ebe2e55ac54ca35467a265"
+    },
+    {
+      "path": "packages/calc.limit_solver/derive.law",
+      "size": 50886,
+      "sha256": "sha256:c9dae84cbc5de92fc2e19a7ff6026064cccd562c5002611386fb06bcaf2c5bba"
+    },
+    {
+      "path": "packages/calc.limit_solver/law.lock",
+      "size": 1189,
+      "sha256": "sha256:a1557133382127034379889f9dab325c15294d0e574fbdd8215c78827a24d533"
+    },
+    {
+      "path": "packages/calc.limit_solver/law.toml",
+      "size": 2228,
+      "sha256": "sha256:c48da1f410598923f3a87ee7af869afd3be6260b2e3b50c530740160d5f9d9f5"
+    },
+    {
+      "path": "packages/calc.limit_solver/limits.law",
+      "size": 69785,
+      "sha256": "sha256:9d238e9eacf30a3f8f68785aeb6d8f5c1c62fc86f3c49a71c936b21e2f395b88"
+    },
+    {
+      "path": "packages/calc.limit_solver/outcome.law",
+      "size": 21299,
+      "sha256": "sha256:5eded402588c0935efc78c651704d01d48a192477f85792d3bae8d8fd202e3ee"
+    },
+    {
+      "path": "packages/calc.limit_solver/package.law",
+      "size": 14691,
+      "sha256": "sha256:a4b61b33d77e7efdb4be7dd7d26a55fde3a143aedb117cf0f1d03daef436e2fb"
+    },
+    {
+      "path": "packages/calc.limit_solver/search.law",
+      "size": 11286,
+      "sha256": "sha256:a1ddfc9acc786ca2c3f1f1bfad5edecb47d7a934c4a27bbea1760623b673539a"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/01-rational-cancel.lawtest",
+      "size": 2284,
+      "sha256": "sha256:8870f1180fb877626b6baf5a59a9c6c4ece2bfad469d2e5367dfdfa8047e8012"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/02-rational-double-root.lawtest",
+      "size": 2295,
+      "sha256": "sha256:8226a87c4c92d98a37b06dd07492475694e3016ac2deff8ff469baabcb8de399"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/03-infinity-plus.lawtest",
+      "size": 2569,
+      "sha256": "sha256:a943deb18e48f292db7a5a66240c01b133d9ca0f81a5eb7aab49e24da5dce60a"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/04-infinity-minus.lawtest",
+      "size": 2574,
+      "sha256": "sha256:57eca6558825c3b5c1d49e3d45a0698a2ea8da1af016fbe4a9107154ecf61562"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/05-one-sided-right.lawtest",
+      "size": 1879,
+      "sha256": "sha256:26fff27cbdfe8c6a559b71872f7ddc40ae89d70c3ba7368c658f0fff74951f7a"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/06-one-sided-left.lawtest",
+      "size": 1788,
+      "sha256": "sha256:8a700128b08038d3508d93c6f9c0f846e44cc498cf3796c6ca1aeb851383134b"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/07-two-sided-dne.lawtest",
+      "size": 1909,
+      "sha256": "sha256:5de629dd46b7c22874f150fe797afc78ea80dd9b29e74f5076e058437c18ef57"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/08-special-sin.lawtest",
+      "size": 1759,
+      "sha256": "sha256:185c9c7be3a14cc7f23094d23183c3d7345c13e03948cb5c443ec488974aa363"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/09-special-one-minus-cos.lawtest",
+      "size": 2275,
+      "sha256": "sha256:ce83599ab77a3d4b13a32c50e91bb005cca9ea4f08a28b8895bd32842a0de7c7"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/10-lhopital-exp.lawtest",
+      "size": 2082,
+      "sha256": "sha256:a54b76590d7d40bf063e19a00fecdad582b3fd2b6bbadd0c19f747bab946fa43"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/11-lhopital-ln.lawtest",
+      "size": 2142,
+      "sha256": "sha256:8a9cf220d60ced33ac9c4202bd4856d2c8f767bde5a8fcf7cd3798041cebaba8"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/12-lhopital-twice.lawtest",
+      "size": 2426,
+      "sha256": "sha256:b37e5fb1124d73ef2d0ac533d2dbeb1177d14c3ee8d5f2a9d1eff15ceef27d58"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/13-lhopital-infinity.lawtest",
+      "size": 1756,
+      "sha256": "sha256:307b4810d9c87ca7b9a1f2310f79d228481f67755aadd9c348227cae26142eee"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/14-sqrt-conjugate.lawtest",
+      "size": 2274,
+      "sha256": "sha256:2edb32f3bbfed4bfc71cb0c081fa648bb8b6c3e0cbed9019c136aa193bf00bea"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/15-oscillation-honest.lawtest",
+      "size": 2045,
+      "sha256": "sha256:55b396aaad2f848b76ba13c67b28db6a7afa70cc0e001ba8ebe1559188750168"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/16-sqrt-negative-domain.lawtest",
+      "size": 1949,
+      "sha256": "sha256:72eaaaf25c853cde3e41a4e1f43266c2d72f4a453c5cd5f5a5ce2f555cad5462"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/17-ln-right.lawtest",
+      "size": 1703,
+      "sha256": "sha256:a4bc2aba85aaab7f0fd8fdc47f9769b8075bd08296e5e505ee128f124014100f"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/18-ln-two-sided-domain.lawtest",
+      "size": 1715,
+      "sha256": "sha256:b8958d597eee73934210dd1b0c95500bfd7a3cd4b4abe5c20eedf70cc1b66c90"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/19-no-indeterminacy.lawtest",
+      "size": 2088,
+      "sha256": "sha256:da2810b5854203f2c3879f585156c76955d4a34246b8877f8b3f7e1d5cda2ec1"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/20-lhopital-not-applied.lawtest",
+      "size": 2067,
+      "sha256": "sha256:82806c16f1a57ac8ffcff1cff5b5098565ad794a94c6389857079d4fb828a1f7"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/21-lhopital-thrice.lawtest",
+      "size": 2367,
+      "sha256": "sha256:c750564354c3714fc519290247b0ade2e81e9ec3b127dd8794b086a89f9b6f00"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/22-invalid-node-id.lawtest",
+      "size": 1523,
+      "sha256": "sha256:42158866adef9e1d891fba89219ad2c7fd982182c063e138af0b20c49f641329"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/23-budget-inside.lawtest",
+      "size": 2018,
+      "sha256": "sha256:99b00406a9a0f7841ed68d33331743ea56e65adf5581809a7bf248c8b5ad8194"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/24-budget-exhausted.lawtest",
+      "size": 2029,
+      "sha256": "sha256:9afa9a3f61cd92132f48e47a7645dd39d3ad01aaaea352aa2646a142fdc4f310"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/25-trace-derivative-node.lawtest",
+      "size": 2353,
+      "sha256": "sha256:ce3c636f88a8ce4e78e18565deb3098602a488b4f08158916da73d00d1b78901"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/26-trace-method-name.lawtest",
+      "size": 2159,
+      "sha256": "sha256:736f2111ca944b3d3d4c8a5d9230dc4523e9396bb980066236cf749b2d68b77e"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/27-trace-lhopital-applied.lawtest",
+      "size": 2336,
+      "sha256": "sha256:5bcca8dcbc8d5b9118e52ccdc8f8642cdbc61ec78eb8bc9b3661e96fffe4cf63"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/28-trace-well-formed.lawtest",
+      "size": 2159,
+      "sha256": "sha256:90de6d870575bb07bdb263ce573b330ebc25c7b2a3e773eb4a5d30e2c446a8ba"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/29-condition-not-established.lawtest",
+      "size": 2572,
+      "sha256": "sha256:13d4d041e71119079b55bb55a72d4b165ef5f4cc5de7db6c111fd0c82e3f54f7"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/30-pole-shifted-both.lawtest",
+      "size": 2459,
+      "sha256": "sha256:59d0614ecb6c5a700bd15a449bb9ca4faedbd483ea2484f0b1f7ef8fb5ba58b2"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/31-pole-shifted-right.lawtest",
+      "size": 2305,
+      "sha256": "sha256:efc279ec39c386f6a4057d8705f97c289b32e98d76415cb3f906b1d6a424ff29"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/32-pole-double-root.lawtest",
+      "size": 3204,
+      "sha256": "sha256:d94bdb73cd02f1b3753e9bf9ff89fcaf4f4f9f9bc3f627223f3726a5e1a72612"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/33-leading-term-infinity.lawtest",
+      "size": 2860,
+      "sha256": "sha256:0afacf416f3da26ad85f19309e1f3fc5907f74a64fee6c47d1cb0c66309608f9"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/34-pole-shifted-left.lawtest",
+      "size": 2302,
+      "sha256": "sha256:8789410b967111f08b99f204869ab9e112b6c93e482a8b7f1617ad6df5c9083c"
+    },
+    {
+      "path": "packages/calc.limit_solver/tests/35-pole-triple-root-honest.lawtest",
+      "size": 3918,
+      "sha256": "sha256:4c176492f5b2c15fec006ff6658bd7a3e032c052166a1ac5e63ae5658a247438"
+    },
+    {
+      "path": "packages/calc.polynomials_q/analysis.law",
+      "size": 22482,
+      "sha256": "sha256:31f3cec6e50ddbed66d13c4b3c39347fa301a13f7e555678f12cd5a781603ec0"
+    },
+    {
+      "path": "packages/calc.polynomials_q/content.law",
+      "size": 15496,
+      "sha256": "sha256:4827c70d92600ea49f0de2bdf22ced726e1fc3fcc1fdb9f9ca33d52812f396b1"
+    },
+    {
+      "path": "packages/calc.polynomials_q/deps/calc.expressions.lawir.json",
+      "size": 388733,
+      "sha256": "sha256:67a032a96c983e724e0af4781fc287617140741319ebe2e55ac54ca35467a265"
+    },
+    {
+      "path": "packages/calc.polynomials_q/division.law",
+      "size": 21638,
+      "sha256": "sha256:be0d1be71f63f4a8f7ae43710b4bc14dec9fcde50f47acfe18b172e5eb19019e"
+    },
+    {
+      "path": "packages/calc.polynomials_q/euclid.law",
+      "size": 18136,
+      "sha256": "sha256:0c7b39e5abc0ca5995dfc1536eb82d0ff2c0f18798eb5a2a47141c5817dd5cdc"
+    },
+    {
+      "path": "packages/calc.polynomials_q/identities.law",
+      "size": 9027,
+      "sha256": "sha256:e1a03681865bc0349f9514e00829677a1f3b25303a0ebb893102a5f58131bf63"
+    },
+    {
+      "path": "packages/calc.polynomials_q/invariants.law",
+      "size": 3653,
+      "sha256": "sha256:368fa8a3ee0b75f53f3cfc7c989e7f67ce8cb52a339339bc92b8f3a1764dfafa"
+    },
+    {
+      "path": "packages/calc.polynomials_q/law.lock",
+      "size": 1192,
+      "sha256": "sha256:1fd38a622bef342746fff0b614be30d1d34c6b1ec964627da32c58f319942f8f"
+    },
+    {
+      "path": "packages/calc.polynomials_q/law.toml",
+      "size": 4146,
+      "sha256": "sha256:93b480c621b1df21820ced61a336c61e774cd2e26f888673ccca0abefae21426"
+    },
+    {
+      "path": "packages/calc.polynomials_q/limits.law",
+      "size": 16658,
+      "sha256": "sha256:26887142c67fcbbcba795c365edd28d8f03e10268e04a866da9431c3d6ff3a0c"
+    },
+    {
+      "path": "packages/calc.polynomials_q/package.law",
+      "size": 21688,
+      "sha256": "sha256:420066cebc52c773e89891483aac6f1e09d1654f942c1a9a6575302b8dec64ca"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/01-product.lawtest",
+      "size": 1475,
+      "sha256": "sha256:0f46d157bb2126ec3cd88c8846f048193a35f7b3958918397a57924eac1ceecc"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/02-canonical-trims-leading-zero.lawtest",
+      "size": 1209,
+      "sha256": "sha256:e56e87066b733c6313bb7817919ff5cf9dbbfde38626516bc1c75b165c6e4042"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/03-zero-polynomial-has-no-degree.lawtest",
+      "size": 1283,
+      "sha256": "sha256:a4953812bec642033fee51d17798f1dfd7a86bc549238eb531b48c5883e3f8ed"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/04-constant-has-degree-zero.lawtest",
+      "size": 830,
+      "sha256": "sha256:c721aae1c0bb7d1d0c7a70cadc48bbdfd7803513eaecfaecc9c0abd0a6b8f674"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/05-degree-of-product.lawtest",
+      "size": 1428,
+      "sha256": "sha256:db78b2ff51aad78617df543571cddd39a0066b28d273e66efc8e275bbef0e725"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/06-cancellation-lowers-degree.lawtest",
+      "size": 1513,
+      "sha256": "sha256:fa91b6e0147c2aca1e1eb565c6c25d45fa9c100a17f06e7687fdf7aecb9e1a58"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/07-sum-different-widths.lawtest",
+      "size": 1600,
+      "sha256": "sha256:9ab2f9a65b13bcb834d6b860719848f7f64f942bff3f0e17d6c345c2ec7da957"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/08-difference.lawtest",
+      "size": 1393,
+      "sha256": "sha256:c05b73b665dbe5ae1dc7d3404b1528f70b8cfe070cf5e8f41d875aa39dd628c5"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/09-scaled-fraction.lawtest",
+      "size": 1130,
+      "sha256": "sha256:ff8bbf5007d17a9f709788cc4c8cb6b0545dbf492b454542335eee8a2efc5244"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/10-fractional-product.lawtest",
+      "size": 1410,
+      "sha256": "sha256:08db8c548934f905a773ba79a9f337f1a55a6ef5bb9e034bf00fa4b2f3279be6"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/11-monomial.lawtest",
+      "size": 768,
+      "sha256": "sha256:3ccffd53100b00953fd5b3ef2596c785d5b8836750c77fffb938398e9f339679"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/12-identity-commutes.lawtest",
+      "size": 1676,
+      "sha256": "sha256:83c9d843510676eb6dd1748ed859f9aa1218839e5ed22addb48124c15f036cef"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/13-identity-refuted.lawtest",
+      "size": 1532,
+      "sha256": "sha256:c25068af481f9538e66fa64ebc21a81fa04703ffa7695c06c5edc87c963687c1"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/14-identity-differs-by-degree.lawtest",
+      "size": 1551,
+      "sha256": "sha256:40566d4aa0e15501d4d71aeac0417b7374b96fe497442070cf62cb228f54f098"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/15-two-zero-polynomials-are-equal.lawtest",
+      "size": 1247,
+      "sha256": "sha256:4d4e1fbbff9ad04fb95d00a403a20faab29e667cb969ad0d3a4703d2e573710d"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/16-horner-value.lawtest",
+      "size": 1093,
+      "sha256": "sha256:65fd8ae862ebabd0d4db20ede60be2d5273682803efe226d3cc2760608079457"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/17-horner-fraction.lawtest",
+      "size": 868,
+      "sha256": "sha256:ff081117520f5d4cf92ffc7a71c0e80d79306af3b6df85ad063bec0a80a46cfe"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/18-root.lawtest",
+      "size": 1047,
+      "sha256": "sha256:ac33da1b2a4184405985909fd9b2aef31d9bb9f7cf1601679c38d8a506d1834a"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/19-zero-polynomial-value.lawtest",
+      "size": 940,
+      "sha256": "sha256:da45296a3edf26ee811d6d015556b32865176e99a09f649fab6a10e6e50a3847"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/20-division-quotient.lawtest",
+      "size": 1869,
+      "sha256": "sha256:bbcbd601c366d0c9cd70f85c30fb9977462b5cca977bb82d67ba95f4a9067018"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/21-division-remainder.lawtest",
+      "size": 1941,
+      "sha256": "sha256:58d0a90b2e69d46a838bc09edca3bed3147239ffcc2629796477086398aa5d17"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/22-division-identity.lawtest",
+      "size": 2139,
+      "sha256": "sha256:707eaad5f561be9f912212124bd1400c8d04d81fb0e763f27a1bf4c1cbbc5cf6"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/23-division-exact.lawtest",
+      "size": 1977,
+      "sha256": "sha256:065d6475a92771294386506e168f2d345dbba503522367a69c424f198d34fb36"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/24-division-fractional.lawtest",
+      "size": 2167,
+      "sha256": "sha256:7e2c68f2e93db217b5c259287107bb42942f96f76474a45a45862e39be9158d7"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/25-division-trivial-smaller.lawtest",
+      "size": 2023,
+      "sha256": "sha256:a700a168d53bef0691f4346ea1d768ead89fc1743a1f6453954bef289f106696"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/26-division-zero-dividend.lawtest",
+      "size": 1827,
+      "sha256": "sha256:3dccd9bbaf59c8dfb9788c82f1b7956735a16c68d4d630a59bdf6f5f79f3644a"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/27-division-by-zero-polynomial.lawtest",
+      "size": 1966,
+      "sha256": "sha256:3cd22831b6d70e3faa63496128d6bd50aa8cc3377d9e423379024c2cb3b53a9e"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/28-quotient-descriptor-too-narrow.lawtest",
+      "size": 1865,
+      "sha256": "sha256:57d5f0da52be337b10ea5ad689e1f9992af0257966e70ed9e18b0ebfeddd1033"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/29-unknown-division-part.lawtest",
+      "size": 1581,
+      "sha256": "sha256:9dd54237cb4fd971e808898686d2e6e39d951fa8bb92371038089c4301f9ebd4"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/30-gcd-index.lawtest",
+      "size": 5419,
+      "sha256": "sha256:3023993c31408bb4936be424c75a340745ab11e8b4c25a86afc23d2966329a47"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/31-gcd-value.lawtest",
+      "size": 5537,
+      "sha256": "sha256:082c85137de59d7a9088e1a2e5ffb6bf9a668ba5d901fa4564e37d4bb2fcac9a"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/32-bezout-coefficients.lawtest",
+      "size": 5340,
+      "sha256": "sha256:9a29303f11dc2b332e7c8b64b5564974a605e964bf27f83b3d4e8cdcaeb0094d"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/33-bezout-identity.lawtest",
+      "size": 5789,
+      "sha256": "sha256:53e19bd369af9d138324b1842bafe72325b97e3941ff3b223aca8b13d0250046"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/34-gcd-longer-chain.lawtest",
+      "size": 5644,
+      "sha256": "sha256:1a2f059efe85612c5c4fa479c4a18c0990c1748583f8fc7687dd81377964cdb5"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/35-bezout-longer-chain.lawtest",
+      "size": 5965,
+      "sha256": "sha256:1b222c50d1fe40740d3c165a765fb7c9700424e8127f1b47d503be000a437172"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/36-coprime-gcd-is-one.lawtest",
+      "size": 5056,
+      "sha256": "sha256:2322bc97d81e661b5018c937cf8d1442dde97413429d5785bf077a53c3dd79bb"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/37-coprime-bezout.lawtest",
+      "size": 5390,
+      "sha256": "sha256:8d4e30af46e175855ca11aa935e0aa79b047630059bf92aeed3fc4defd606dbe"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/38-chain-unfinished.lawtest",
+      "size": 4617,
+      "sha256": "sha256:123c696f7a92c84040b6f51815df5d2612a13ce25c402b39b7fa28f11ef55c7e"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/39-no-resource-contract.lawtest",
+      "size": 877,
+      "sha256": "sha256:b655f607cfa1c62bafa9c3a03adf1b694771f83ff09636a019b850fc31f97553"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/40-slots-exceed-cap.lawtest",
+      "size": 1327,
+      "sha256": "sha256:396df04d36cb58ae32ece5c0877ce99a73ad17dc9d601a2b6d845e418a06ea0a"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/41-product-exceeds-cap.lawtest",
+      "size": 1651,
+      "sha256": "sha256:7ba631a7c577bc9d6e4015854bed46721f6f6483c8ca127de4886e88bdc6926a"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/42-incomplete-input.lawtest",
+      "size": 885,
+      "sha256": "sha256:afd5b651584f29544ce2c5a9dd863e5191275383f3a1776fab01393ec83dc1ea"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/43-contradictory-term.lawtest",
+      "size": 924,
+      "sha256": "sha256:7f869366e7aa4cd5aab9caf65421141ffc002bcf32428fbfa7f4d3d0dbf0dc8d"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/44-index-out-of-range.lawtest",
+      "size": 934,
+      "sha256": "sha256:31807c2ac07cff29711ce2e78737da7e10fb34cbba220ed3189232dbdd39a672"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/45-ambiguous-definition.lawtest",
+      "size": 1567,
+      "sha256": "sha256:d6ec9a5c429c84d5a39f1411eec9b6efba34239ae597535592f2e68c414a11ba"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/46-undefined-operand.lawtest",
+      "size": 947,
+      "sha256": "sha256:e8a714049186627df0bbcf282529ec1861f19e2629ef8125dc0701e2120c47d4"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/47-isolation.lawtest",
+      "size": 1311,
+      "sha256": "sha256:a31a3211e0f2462e00ddde3d4eb7d8ebf25ca1f0757fba349cf07883f31ced8a"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/48-taint-propagates.lawtest",
+      "size": 1359,
+      "sha256": "sha256:a9a0eaa86c0f5106782be37f35acf6caeae73e246e79a74ce5be59974a1e57f1"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/49-two-independent-divisions.lawtest",
+      "size": 2898,
+      "sha256": "sha256:5369ce7a85f9cd1a0dabac9cdc3446dbb0c2d537e5b3092042cc2db065624a05"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/50-derivative-of-constant.lawtest",
+      "size": 931,
+      "sha256": "sha256:61302d162c5a2e9b5b8a4bcc6d5eeb4923acb3c4aa70b393a81601f4e63cb091"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/51-derivative-drops-degree.lawtest",
+      "size": 1008,
+      "sha256": "sha256:71eb69c945b770be8b1694531bcefabe91b6fe99dfca73b45495f301f59d28af"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/52-derivative-coefficient.lawtest",
+      "size": 935,
+      "sha256": "sha256:349ea17904f36ed8b25714335e3f8fc1c952c4afea297f6c1990f5c0265368b0"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/53-antiderivative-is-inverse.lawtest",
+      "size": 983,
+      "sha256": "sha256:a64885f29a2beebf75db1f8fe4866310d91d59ae937aa6d7ff93093ebb5fb208"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/54-definite-integral-fractional-limits.lawtest",
+      "size": 1139,
+      "sha256": "sha256:229a36ec56af090189e3b07b2ce80e7bb8b1c3ff9d1f34170b87a9fd55e01e7d"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/55-bridge-reads-polynomial.lawtest",
+      "size": 1739,
+      "sha256": "sha256:b3d178fac8c23ea37f0de9cfb1cbaef515988a92b652202eb230b5367d451f85"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/56-bridge-refuses-sine.lawtest",
+      "size": 1028,
+      "sha256": "sha256:785d72269e24ca7e206b4d17d9e0c763e59ab62b5e49aca4aa51d6e1786207db"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/57-bridge-constant-leaf.lawtest",
+      "size": 1693,
+      "sha256": "sha256:367dd67625ccafdb44dd4aca1c0fe5700306e28f75ea3514267402b2aa58ef69"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/58-bridge-power-leaf.lawtest",
+      "size": 1698,
+      "sha256": "sha256:43bd90872884cb7ff69b1d1f73a113b98426792d79fb779ec0b404eb03750d39"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/59-rational-value.lawtest",
+      "size": 1167,
+      "sha256": "sha256:69f9fb97122bb5b6b041bf10b52e4a046ffae266df108308b75cbadb83d87c67"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/60-rational-zero-denominator.lawtest",
+      "size": 1362,
+      "sha256": "sha256:f9b28abe79a1b0b240ff0ceb76cbc5afaf97fa9c9fabae4746864d9e9ac6ae3b"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/61-cancel-exact.lawtest",
+      "size": 2352,
+      "sha256": "sha256:04046612d2e24905b041776eceaef3b9b97c8acfa584f5a8013d5e11dfa657f7"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/62-cancel-fractional.lawtest",
+      "size": 2357,
+      "sha256": "sha256:735452a9eb6d0a85cb5b82abc544dc23975b15d126427dc514bf7ee8d0a1347e"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/63-cancel-zero.lawtest",
+      "size": 2037,
+      "sha256": "sha256:1cbf529fd506d980ebfba90ca1dcd0ca375e6beeb6f3f07687f00e6932bea926"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/64-cancel-bad-numerator.lawtest",
+      "size": 1894,
+      "sha256": "sha256:ae7b05cd20ac068b266c9bb3fdba84353239e3e1ba38258c612a1d2acd2f5ecd"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/65-cancel-bad-denominator.lawtest",
+      "size": 1810,
+      "sha256": "sha256:7939c962861e8f1316b2cf194c0f4d3b4bf66ea5a842ad522d6e46414731ef6a"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/66-infinity-0.lawtest",
+      "size": 1003,
+      "sha256": "sha256:012e25f5b36b736e43224bd92bbba65e33c9b81e801a5d89ccbefb2428cdd022"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/67-infinity-1.lawtest",
+      "size": 1090,
+      "sha256": "sha256:7a7ef155ab1f4e96fe933b9243bb2bae262d7f273d4be057a4f37086c83dad56"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/68-infinity-2.lawtest",
+      "size": 1173,
+      "sha256": "sha256:ad43162a65746afdfc70671d29ed68c8a68aebec1d14c3570160389ba5fe7bc9"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/69-infinity-3.lawtest",
+      "size": 1175,
+      "sha256": "sha256:1daa5fb32e6c1df2d1029f9b508bc523f5ac70d5d2d35c24910d218ae39eef11"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/70-infinity-4.lawtest",
+      "size": 1173,
+      "sha256": "sha256:a758813677565d6e45afb6d043eac312506b27fb719d7f33b1d33fcf70c1f308"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/71-infinity-5.lawtest",
+      "size": 1175,
+      "sha256": "sha256:32e3c09f95c2d5a19d43606c82ac5f73457d2d19f57822e9ba54919e6d92eaa0"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/72-infinity-6.lawtest",
+      "size": 1175,
+      "sha256": "sha256:7974bee67a2a92a9b80b87ca92447a6a36fd02ab8bd1877728da24a3573d874e"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/73-infinity-7.lawtest",
+      "size": 1177,
+      "sha256": "sha256:7c760d1fb3834bb62ca785bb4c4a6eeb1b5e460ba7e1e1a7364c5a83437b1c82"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/74-infinity-8.lawtest",
+      "size": 1091,
+      "sha256": "sha256:971b4d0f9c960237930c31d979b4af5e53dc68960477374dadd37bddde080669"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/75-infinity-9.lawtest",
+      "size": 1091,
+      "sha256": "sha256:a3558fa44fc13515b8fc52918e622f8b2a176c943d84d8ce77c3ab000a250f4f"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/76-infinity-zero-denominator.lawtest",
+      "size": 1026,
+      "sha256": "sha256:490639ab85f2e9196c1cb12009ddf0462c1eee31f8f84ace4033245654a072fa"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/77-infinity-bad-approach.lawtest",
+      "size": 1028,
+      "sha256": "sha256:62bb335a0b315bd7153ccd96027c8ee5908d2c28ad80943162a8d45edcd9ae5b"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/78-linear-resultant.lawtest",
+      "size": 1251,
+      "sha256": "sha256:fe131eaec42bbdc4bac637b92c2cad826b2370e6e42eb2bcf6851b653f910ac6"
+    },
+    {
+      "path": "packages/calc.polynomials_q/tests/79-quadratic-discriminant.lawtest",
+      "size": 1022,
+      "sha256": "sha256:860fb1787b667b705d29f95a8ff86d180986f670972ebdc7d0d9f90f4cd71c09"
+    },
+    {
+      "path": "packages/openstax.calculus_derivatives/deps/calc.calculus_checker.lawir.json",
+      "size": 660073,
+      "sha256": "sha256:b75365247b72ff3fe18032690ea518992e2927d3057939ddfe6b169b26d74d16"
+    },
+    {
+      "path": "packages/openstax.calculus_derivatives/deps/calc.expressions.lawir.json",
+      "size": 388733,
+      "sha256": "sha256:67a032a96c983e724e0af4781fc287617140741319ebe2e55ac54ca35467a265"
+    },
+    {
+      "path": "packages/openstax.calculus_derivatives/deps/calc.polynomials_q.lawir.json",
+      "size": 485857,
+      "sha256": "sha256:0445837b7789d2e5cfbf981b8906abaab92e9bd4c48cdd1d6919f71852a3e943"
+    },
+    {
+      "path": "packages/openstax.calculus_derivatives/law.lock",
+      "size": 3011,
+      "sha256": "sha256:b5ba40d5ae91aee305d33f2ed7f979877242e10f66090cc7972544748ea07b42"
+    },
+    {
+      "path": "packages/openstax.calculus_derivatives/law.toml",
+      "size": 1966,
+      "sha256": "sha256:b1321d6ea32b1de4e3b23ccd3e013dfe2048b1b36e80d174fe813a364616beb4"
+    },
+    {
+      "path": "packages/openstax.calculus_derivatives/package.law",
+      "size": 11838,
+      "sha256": "sha256:00902c98645f99debeefcffa04fbe777cbba11843f4aeae5dff9955255b479e8"
+    },
+    {
+      "path": "packages/openstax.calculus_derivatives/solver.law",
+      "size": 8614,
+      "sha256": "sha256:872d4ba441d50378ff9d7709a71490ed1c7b4ddcb1d1f00f97d2afac8a34994f"
+    },
+    {
+      "path": "packages/openstax.calculus_derivatives/sources/calculus-derivatives/articles.json",
+      "size": 1855,
+      "sha256": "sha256:f73ec4dfda5eef921cbdad939bc47e09e7b4a91df81f5d2ce2e96e3bf4f8ce8d"
+    },
+    {
+      "path": "packages/openstax.calculus_derivatives/sources/calculus-derivatives/m53494.cnxml",
+      "size": 1667,
+      "sha256": "sha256:bf52253dc77f810ec3d7b5af0c5b7efc811d7868887d42c0029ac4c9312faf36"
+    },
+    {
+      "path": "packages/openstax.calculus_derivatives/sources/calculus-derivatives/m53495.cnxml",
+      "size": 153928,
+      "sha256": "sha256:d0668acbea9b24dfe647e4383e48b1b21c630f21b503883ef1e94eaa7406a4bf"
+    },
+    {
+      "path": "packages/openstax.calculus_derivatives/sources/calculus-derivatives/m53573.cnxml",
+      "size": 151955,
+      "sha256": "sha256:d2247c767bd52283744dbb2641a7713d07d8af4a1e7455dcaf8cfb8ff0201bb0"
+    },
+    {
+      "path": "packages/openstax.calculus_derivatives/sources/calculus-derivatives/m53575.cnxml",
+      "size": 179167,
+      "sha256": "sha256:3c3beba11831d0ffe0994cd1eeca05bb5d72519c3f9ff1f420ac0cadd80a931b"
+    },
+    {
+      "path": "packages/openstax.calculus_derivatives/sources/calculus-derivatives/m53578.cnxml",
+      "size": 99480,
+      "sha256": "sha256:68d65321d8a387027ec0f236860f653000ea77100a7a59b057d0297a9a9c9c9f"
+    },
+    {
+      "path": "packages/openstax.calculus_derivatives/sources/calculus-derivatives/m53581.cnxml",
+      "size": 164893,
+      "sha256": "sha256:f848070e09084722cee9c21879d33b1873118bc7ec600d4c7f2bcd1e07693219"
+    },
+    {
+      "path": "packages/openstax.calculus_derivatives/sources/calculus-derivatives/m53586.cnxml",
+      "size": 148353,
+      "sha256": "sha256:6ac66df1d00f39513463ac330c27d2cfc16fe1a504c00191c20bad32c92cfbd5"
+    },
+    {
+      "path": "packages/openstax.calculus_derivatives/sources.law",
+      "size": 35475,
+      "sha256": "sha256:05bbd3484b6c2f685023fbabb58992ec264e1ac96ff53fac1c1164f6f03778ee"
+    },
+    {
+      "path": "packages/openstax.calculus_derivatives/tests/01-instruction-without-a-case.lawtest",
+      "size": 1158,
+      "sha256": "sha256:6dfd54f22458f7676c88ab573f5a5b73cb273d6e837b01363c37e97798344059"
+    },
+    {
+      "path": "packages/openstax.calculus_derivatives/tests/02-step-justified-by-the-power-rule.lawtest",
+      "size": 2452,
+      "sha256": "sha256:ee8fab78fec0ce18d533507afc7e34aabcfe5348c1c49a8bce5f828b20862846"
+    },
+    {
+      "path": "packages/openstax.calculus_derivatives/tests/03-constant-rule.lawtest",
+      "size": 1749,
+      "sha256": "sha256:52df30efba51264e3c76e71a0355cef80bf5e1907e826a680277773f354c5ef9"
+    },
+    {
+      "path": "packages/openstax.calculus_derivatives/tests/04-sum-rule.lawtest",
+      "size": 1997,
+      "sha256": "sha256:f387b5127fda7aabeae394965de259518a2cf20623aac985660123faadc41659"
+    },
+    {
+      "path": "packages/openstax.calculus_derivatives/tests/05-constant-multiple.lawtest",
+      "size": 2032,
+      "sha256": "sha256:c3b17437246a06600164c6946909ab8b3bddf8e7dbdbe28f05985e5932ccfcfd"
+    },
+    {
+      "path": "packages/openstax.calculus_derivatives/tests/06-product-rule.lawtest",
+      "size": 2505,
+      "sha256": "sha256:db95d80b73d8485692eb675a08c1be4811e14749ad67836939922e97928f5572"
+    },
+    {
+      "path": "packages/openstax.calculus_derivatives/tests/07-quotient-rule.lawtest",
+      "size": 2838,
+      "sha256": "sha256:ba7a64eca10654aee97b0bac77b181d3263654e272e9840453c87b4b4ec72f04"
+    },
+    {
+      "path": "packages/openstax.calculus_derivatives/tests/08-chain-rule.lawtest",
+      "size": 2052,
+      "sha256": "sha256:a87253b8cac47360ff9bb6d5a314abd16cbfeec048aea3d1a6bc99902eedbbfa"
+    },
+    {
+      "path": "packages/openstax.calculus_derivatives/tests/09-derivative-sin.lawtest",
+      "size": 1803,
+      "sha256": "sha256:845e45ebc88fa76da826203f040035af841c8c0e7700c838cee6b9b6eb6b79f9"
+    },
+    {
+      "path": "packages/openstax.calculus_derivatives/tests/10-derivative-cos.lawtest",
+      "size": 1936,
+      "sha256": "sha256:e73cca79189a00d33368b1224a555a478b463ab9e4f487f8ce9db275db7ab1b1"
+    },
+    {
+      "path": "packages/openstax.calculus_derivatives/tests/11-derivative-exp.lawtest",
+      "size": 1820,
+      "sha256": "sha256:03aca296904229400f8701560350c630526ef54e2c0f8beaed195c3a15ba028e"
+    },
+    {
+      "path": "packages/openstax.calculus_derivatives/tests/12-derivative-ln.lawtest",
+      "size": 1934,
+      "sha256": "sha256:1250700da53974fef812ff1bfe54bd1d795bbf76e0f3a831452c909a21475265"
+    },
+    {
+      "path": "packages/openstax.calculus_derivatives/tests/solver-inputs.lawtest",
+      "size": 542150,
+      "sha256": "sha256:18340733d9000df8ea2d6cd9dcc9e57bf20d7db71c0e4cc16cd1b6e8a2752ea7"
+    },
+    {
+      "path": "packages/openstax.calculus_integrals/deps/calc.calculus_checker.lawir.json",
+      "size": 660073,
+      "sha256": "sha256:b75365247b72ff3fe18032690ea518992e2927d3057939ddfe6b169b26d74d16"
+    },
+    {
+      "path": "packages/openstax.calculus_integrals/deps/calc.expressions.lawir.json",
+      "size": 388733,
+      "sha256": "sha256:67a032a96c983e724e0af4781fc287617140741319ebe2e55ac54ca35467a265"
+    },
+    {
+      "path": "packages/openstax.calculus_integrals/deps/calc.polynomials_q.lawir.json",
+      "size": 485857,
+      "sha256": "sha256:0445837b7789d2e5cfbf981b8906abaab92e9bd4c48cdd1d6919f71852a3e943"
+    },
+    {
+      "path": "packages/openstax.calculus_integrals/law.lock",
+      "size": 3001,
+      "sha256": "sha256:95931ef1a605edbd195e57174380a7de770fdd579671a017886eea65075ec005"
+    },
+    {
+      "path": "packages/openstax.calculus_integrals/law.toml",
+      "size": 1739,
+      "sha256": "sha256:75319a7eab9cc5192a3482ec71f39462b85edc37d26bc98e61c78079618b7c31"
+    },
+    {
+      "path": "packages/openstax.calculus_integrals/package.law",
+      "size": 12001,
+      "sha256": "sha256:83b3d3cf616c035660c98594346eb36ad916d13791b637ba8b6483fef66e4f3d"
+    },
+    {
+      "path": "packages/openstax.calculus_integrals/solver.law",
+      "size": 12224,
+      "sha256": "sha256:cd7a04a6c723b6e59a430ec03ea3fc8841b732c4782b1f4418897f69c05c846e"
+    },
+    {
+      "path": "packages/openstax.calculus_integrals/sources/calculus-integrals/articles.json",
+      "size": 1587,
+      "sha256": "sha256:1bbdaac5cf6f1435ff66b53ec6e2cf191616a2b5f38dd55f468c7019e2650b5e"
+    },
+    {
+      "path": "packages/openstax.calculus_integrals/sources/calculus-integrals/m53621.cnxml",
+      "size": 161550,
+      "sha256": "sha256:368612823e0e54e1f08bcdddcf0c9380d69ed13e6a3dea5075e01fef655a3eb1"
+    },
+    {
+      "path": "packages/openstax.calculus_integrals/sources/calculus-integrals/m53623.cnxml",
+      "size": 1892,
+      "sha256": "sha256:1691e917ed545efcd23fee144189cead4dc4e5c697b2549c4e6ffa951e89757d"
+    },
+    {
+      "path": "packages/openstax.calculus_integrals/sources/calculus-integrals/m53631.cnxml",
+      "size": 209273,
+      "sha256": "sha256:12ffeaa33f9f990dedc128214239abb7fbef92d13556990bb1c79a6ec0ed223e"
+    },
+    {
+      "path": "packages/openstax.calculus_integrals/sources/calculus-integrals/m53632.cnxml",
+      "size": 159262,
+      "sha256": "sha256:730f40d14f0ae8e84dca2c53116a1b044f6521b54e4a4b21f22a500825e33c7a"
+    },
+    {
+      "path": "packages/openstax.calculus_integrals/sources/calculus-integrals/m53633.cnxml",
+      "size": 135519,
+      "sha256": "sha256:a94ea4a8f62d8613744d11e9506517dcaf265286f13c5581479a31d5440e6722"
+    },
+    {
+      "path": "packages/openstax.calculus_integrals/sources/calculus-integrals/m53656.cnxml",
+      "size": 137740,
+      "sha256": "sha256:1a5687db35d297d966b060133293c34c7167fe8abe1246de759273832fa9bf78"
+    },
+    {
+      "path": "packages/openstax.calculus_integrals/sources.law",
+      "size": 22410,
+      "sha256": "sha256:b56ce5222ade3a83a0be6825b1b59664614cfb4e2afa0908ef0c61f66b92e648"
+    },
+    {
+      "path": "packages/openstax.calculus_integrals/tests/01-instruction-without-a-case.lawtest",
+      "size": 1079,
+      "sha256": "sha256:b8f64546d54ac12e046a94ae2c7750ce543a68dc8d0fbdd2da94fb749923a3fd"
+    },
+    {
+      "path": "packages/openstax.calculus_integrals/tests/02-step-justified-by-integration-by-parts.lawtest",
+      "size": 2402,
+      "sha256": "sha256:762c7f8e93a33ceca7ae6ec64e201aae264c9402e5123ad6e05efeadc5120934"
+    },
+    {
+      "path": "packages/openstax.calculus_integrals/tests/03-antiderivative-power.lawtest",
+      "size": 2375,
+      "sha256": "sha256:da21b20d4745d9e056ef9916855a663d4f6b18c652519596f50685d5c38f2c8b"
+    },
+    {
+      "path": "packages/openstax.calculus_integrals/tests/04-table-antiderivative.lawtest",
+      "size": 1873,
+      "sha256": "sha256:8a11aa0b4c49bca2613eb7d3ece4050841243e67d8ce138cec12acd0daa8db02"
+    },
+    {
+      "path": "packages/openstax.calculus_integrals/tests/05-net-change.lawtest",
+      "size": 1458,
+      "sha256": "sha256:a8b2335219924e5f043b6e120e4b5e3da734ec061fb89f5d83351dc906e01ce7"
+    },
+    {
+      "path": "packages/openstax.calculus_integrals/tests/06-ftc-part-two-boundary.lawtest",
+      "size": 5445,
+      "sha256": "sha256:37ed9b561c16804f51e0ca0105bb090dfbea54b8c895cf5802294053557e7d18"
+    },
+    {
+      "path": "packages/openstax.calculus_integrals/tests/07-table-antiderivative-sin.lawtest",
+      "size": 2046,
+      "sha256": "sha256:cea6ef20f4dd238a3a68f51df9c78bb82d7b291a6d89545b1c4f6d4b2363a76b"
+    },
+    {
+      "path": "packages/openstax.calculus_integrals/tests/solver-inputs.lawtest",
+      "size": 408999,
+      "sha256": "sha256:450a5a25d62e60a4893a588dbf0f2a4b04c0803b5c7ebfe623650bc79b3807f2"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/deps/calc.calculus_checker.lawir.json",
+      "size": 660073,
+      "sha256": "sha256:b75365247b72ff3fe18032690ea518992e2927d3057939ddfe6b169b26d74d16"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/deps/calc.expressions.lawir.json",
+      "size": 388733,
+      "sha256": "sha256:67a032a96c983e724e0af4781fc287617140741319ebe2e55ac54ca35467a265"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/deps/calc.limit_solver.lawir.json",
+      "size": 829810,
+      "sha256": "sha256:fccff8c3ddc6ad47df65058381698306871e3e395f79ea7877b3eeeab10e4790"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/deps/calc.polynomials_q.lawir.json",
+      "size": 485857,
+      "sha256": "sha256:0445837b7789d2e5cfbf981b8906abaab92e9bd4c48cdd1d6919f71852a3e943"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/law.lock",
+      "size": 3780,
+      "sha256": "sha256:450ab45fda1d5c1c34faa230d2cf2cacd49d242b6e46c1ffe7ebec56a2edd6e3"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/law.toml",
+      "size": 2127,
+      "sha256": "sha256:e542f879220e464b4a587e95fa65ca62c057853309a854c6971188cfabdd6a90"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/package.law",
+      "size": 17377,
+      "sha256": "sha256:6497fff48e88ae84f6cb42686e9bace9d148dd323d1540dc1ec03e431ea4a7f0"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/solver.law",
+      "size": 1628,
+      "sha256": "sha256:9919de53e7944d0306c2062fb88133019079fb96a040f0e731112d48795cd580"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/sources/calculus-limits/articles.json",
+      "size": 1569,
+      "sha256": "sha256:847ab9b222eed89c141f8a4b2dd04f287329c19fef7715adb4a13fa11056ef64"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/sources/calculus-limits/m53489.cnxml",
+      "size": 144155,
+      "sha256": "sha256:96e89d1cd16c4be5a87a3d68d19f2552204ffc97f6316433ef35689187c5bf7f"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/sources/calculus-limits/m53491.cnxml",
+      "size": 203095,
+      "sha256": "sha256:662325358794c9abe700e4d19e696c801d9eddd4f6c45b918b6185baa9944374"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/sources/calculus-limits/m53492.cnxml",
+      "size": 190699,
+      "sha256": "sha256:57a6b5cf0d644a711ca113582a78a0d6270bfaebb40babddc8b080476a51bb53"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/sources/calculus-limits/m53493.cnxml",
+      "size": 152035,
+      "sha256": "sha256:e5e046f267dee46ca85a9cfc76847ff31ebb71a9205b5961e1152f2ea77bc666"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/sources/calculus-limits/m53596.cnxml",
+      "size": 279974,
+      "sha256": "sha256:c0c4d3593c446f99d0700befaf92e1c75d2ba2114feb9711c9075bfeec3c50da"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/sources/calculus-limits/m53619.cnxml",
+      "size": 188388,
+      "sha256": "sha256:47a9cdb551f68cdd646df68ff7da9b9226fcd1d896af5e203ceb85d170ef9ce4"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/sources.law",
+      "size": 42114,
+      "sha256": "sha256:a1f0ea87dcc3abed307d2af530f6bf120c6ef090b611f9dc0b43509fd932ad30"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/tests/01-instruction.lawtest",
+      "size": 1081,
+      "sha256": "sha256:11fd6a987c1906553440e37802da0b4e76486890b4eb544719fe92f3d01f0672"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/tests/02-limit_given-ok.lawtest",
+      "size": 1740,
+      "sha256": "sha256:c34002381921351a6f90f9abe89ef9543ec1498bc6f2e751555df8996a25d349"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/tests/03-limit_constant-ok.lawtest",
+      "size": 1730,
+      "sha256": "sha256:3a1086c9c954109f3d521b7b55808464b66340d60148ceec16359fa9d59ac330"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/tests/04-limit_identity-ok.lawtest",
+      "size": 1730,
+      "sha256": "sha256:0369b4f477517669af75da0f214ab27c9b8e27dbd189b1f3ca167d017071320b"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/tests/05-limit_sum-ok.lawtest",
+      "size": 2532,
+      "sha256": "sha256:903e75b99fd44d56ccd4e4c5c5d688415a294d4c0859b3dd98bfd18adb043f16"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/tests/06-limit_difference-ok.lawtest",
+      "size": 2560,
+      "sha256": "sha256:3a1f95316938fe5d70f7c8948679e7da986d72404cb7dde1f078f364d1c2e397"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/tests/07-limit_product-ok.lawtest",
+      "size": 2548,
+      "sha256": "sha256:4ea2d8eae6a192adfa101d081af02c56696d4f79f04d0ce43d10fcbb5f5d90ad"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/tests/08-limit_constant_multiple-ok.lawtest",
+      "size": 2175,
+      "sha256": "sha256:fb8df6e3b407d98a9a14d8597bf86637e9cd4ea4fdced454a48597f8d6573334"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/tests/09-limit_power-ok.lawtest",
+      "size": 2128,
+      "sha256": "sha256:7dc345fdb22649704cd62342c731526920c2c128790c99edd59d086832f6ffaa"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/tests/10-limit_quotient-ok.lawtest",
+      "size": 2552,
+      "sha256": "sha256:780e1d428b5046c2e2c5c0bd32d1a9fb766de0444d00a988a871fcf69ca2c9ed"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/tests/11-substitution-ratio-ok.lawtest",
+      "size": 2920,
+      "sha256": "sha256:3943ac004a8bc5485526225c3cae8284fcee62fba202810942ea94bdc50568d3"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/tests/12-factor-cancel-ok.lawtest",
+      "size": 4212,
+      "sha256": "sha256:975b8d7638568b948a0760b930ff3c3e3f6cfa7d52e761e85ea2257ab47180c6"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/tests/13-continuity-exp-ok.lawtest",
+      "size": 1970,
+      "sha256": "sha256:551624c18e7d8fce80e9a855e80f3d97f826441183b62683f4dff25afd2a4835"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/tests/14-continuity-sin-ok.lawtest",
+      "size": 1980,
+      "sha256": "sha256:426b5ab107537f86c16be56ceb1ac2f7e14b63f833fc55f0a7e50a1ced8b68a2"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/tests/15-special_limit_sin-ok.lawtest",
+      "size": 1990,
+      "sha256": "sha256:9b4ec9554a6b769c1a4eff832bd62db9f52be0dfd0cef83f224404e7570258f8"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/tests/16-special_limit_one_minus_cos-ok.lawtest",
+      "size": 2150,
+      "sha256": "sha256:c727ee4fc3e43a1dfb16241c19a0236caab7bc181e32eadb3b507b9c42c0805e"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/tests/17-one_sided_agree-ok.lawtest",
+      "size": 2079,
+      "sha256": "sha256:29440d92e3cf93ea1d2dbe73dacb9464f17b064a11b38745273dddc8aff2d341"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/tests/18-one_sided_differ-ok.lawtest",
+      "size": 2082,
+      "sha256": "sha256:8d77eeb28581e886dbffcfe0110ac8a5833f3bd4890fdde404d19a7a8a764934"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/tests/19-infinity-rational-ok.lawtest",
+      "size": 2433,
+      "sha256": "sha256:af6630600e1d35392722d9c35f18c77bde4ee8f82269ab9d4fb2a0d2a42ac5a0"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/tests/20-lhopital-zero.lawtest",
+      "size": 3171,
+      "sha256": "sha256:a821ee1b12d773d2838c2ec12746b95105a51b2d32fe46035b2cc0c14cab1a44"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/tests/21-lhopital-infinity.lawtest",
+      "size": 3079,
+      "sha256": "sha256:e22ec0d10bd5a8b3e4298aac88d761be4d887c0ee470c7602f7ca6c590beab3c"
+    },
+    {
+      "path": "packages/openstax.calculus_limits/tests/solver-inputs.lawtest",
+      "size": 16000,
+      "sha256": "sha256:5cd7582ac71f2fc225f61241859e7a10293b454d9792f4b7fe36155e88482cf2"
+    }
+  ],
+  "semantics": "law.core/0.2.11",
+  "publisherRepository": "https://github.com/openstax/osbooks-calculus-bundle",
+  "publisherCommit": "8dbc2ce19e804924b2517b89ac72ee45be949d15",
+  "corpus": "not_checked",
+  "releaseVerified": false
+}

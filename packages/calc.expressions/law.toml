@@ -1,0 +1,66 @@
+# Манифест §10 — маркер корня пакета (DECISION-0033).
+#
+# ВЫЧИСЛИТЕЛЬНЫЙ пакет (DECISION-0123): нормативного источника, юрисдикции и
+# правового статуса у него нет; каталожная секция `[metadata]` DECISION-0051
+# описывает АКТ и здесь намеренно отсутствует.
+[package]
+name = "calc.expressions"
+version = "0.1.0"
+language = "0.2"
+namespace = "urn:law:calc:expressions"
+pinned = true
+
+[features]
+semanticLayer = "L0"
+
+[[tests]]
+family = "calc.expressions#authored"
+regression = false
+world = ["calc.expressions"]
+suites = [
+    "tests/31-alpha.lawtest",
+    "tests/29-binder.lawtest",
+    "tests/30-reachability.lawtest",
+    "tests/01-constant.lawtest",
+    "tests/02-variable.lawtest",
+    "tests/03-sum.lawtest",
+    "tests/04-unary-ln.lawtest",
+    "tests/05-power-integral.lawtest",
+    "tests/06-invalid-node-id.lawtest",
+    "tests/07-ambiguous-node.lawtest",
+    "tests/08-unknown-tag.lawtest",
+    "tests/09-extra-child.lawtest",
+    "tests/10-empty-variable-name.lawtest",
+    "tests/11-name-on-compound.lawtest",
+    "tests/12-value-on-non-const.lawtest",
+    "tests/13-missing-child.lawtest",
+    "tests/14-negative-exponent.lawtest",
+    "tests/15-fractional-exponent.lawtest",
+    "tests/16-exponent-out-of-range.lawtest",
+    "tests/17-exponent-not-constant.lawtest",
+    "tests/18-cycle.lawtest",
+    "tests/19-alias-equivalent.lawtest",
+    "tests/20-order-matters.lawtest",
+    "tests/21-shared-subexpression.lawtest",
+    "tests/22-budget-at-limit.lawtest",
+    "tests/23-budget-exhausted.lawtest",
+    "tests/24-sqrt.lawtest",
+    "tests/25-sqrt-extra-child.lawtest",
+    "tests/26-atan.lawtest",
+    "tests/27-algebraic-leaf.lawtest",
+    "tests/28-log-structural.lawtest",
+    "tests/32-alpha-equality.lawtest",
+    "tests/33-alpha-free-name.lawtest",
+    "tests/34-alpha-shape.lawtest",
+    "tests/35-operators.lawtest",
+    "tests/36-typed-arithmetic.lawtest",
+    "tests/37-typed-domain.lawtest",
+    "tests/38-typed-environment.lawtest",
+    "tests/39-node-dictionary.lawtest",
+    "tests/40-structured-nodes.lawtest",
+    "tests/41-child-references.lawtest",
+    "tests/42-matrix-shape.lawtest",
+]
+
+[authoring]
+local_imports = "explicit"

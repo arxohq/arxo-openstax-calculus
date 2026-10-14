@@ -1,0 +1,25 @@
+language "law.core" version "0.2";
+package calc.calculus_checker version "0.1.0";
+namespace "urn:law:calc:calculus-checker";
+
+// Правило суммы: результат есть сумма производных слагаемых, предъявленных основаниями.
+
+test "правило суммы" {
+ given {
+  assert "d": document(entity_ref("urn:calc:cc:d1"), 3, 4, "calculus/1") { origin case_input; }
+  assert "ctx": nodes_of(entity_ref("urn:calc:cc:d1"), entity_ref("urn:calc:cc:e1")) { origin case_input; }
+  assert "var": variable(entity_ref("urn:calc:cc:d1"), "x") { origin case_input; }
+  assert "n2": calc.expressions::node(entity_ref("urn:calc:cc:e1"), 2, "const", "", 2 / 1, 0, 0) { origin case_input; }
+  assert "n3": calc.expressions::node(entity_ref("urn:calc:cc:e1"), 3, "const", "", 3 / 1, 0, 0) { origin case_input; }
+  assert "n4": calc.expressions::node(entity_ref("urn:calc:cc:e1"), 4, "add", "", 0 / 1, 2, 3) { origin case_input; }
+  assert "l1": line(entity_ref("urn:calc:cc:d1"), 1, 2, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "l2": line(entity_ref("urn:calc:cc:d1"), 2, 3, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "l3": line(entity_ref("urn:calc:cc:d1"), 3, 4, "sum_rule", 1, 2, 0, 0) { origin case_input; }
+  assert "clx": calc.expressions::closed(entity_ref("urn:calc:cc:e1")) { origin case_input; }
+  assert "clp": closed(entity_ref("urn:calc:cc:d1")) { origin case_input; }
+ }
+ evaluate truth(derivation_valid(entity_ref("urn:calc:cc:d1")));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(SumRuleMatches);
+}

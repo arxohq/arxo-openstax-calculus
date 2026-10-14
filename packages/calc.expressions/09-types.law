@@ -1,0 +1,300 @@
+language "law.core" version "0.2";
+package calc.expressions version "0.1.0";
+namespace "urn:law:calc:expressions";
+
+use self::{
+    Expr,
+    binary,
+    context_present,
+    exponentiation,
+    formula_error,
+    level_ambiguous,
+    single_typed,
+    type_absent,
+    type_level,
+    type_of,
+    typing_conflict,
+    unary,
+    unique_node,
+    var_typing,
+    vocabulary_ok,
+};
+
+// ── ТИПИЗИРОВАННЫЕ ПЕРЕМЕННЫЕ (scope B02.01, приёмка «однозначность узлов и типов») ─
+//
+// Приёмка B02.01 требует ОДНОЗНАЧНОСТИ УЗЛОВ И ТИПОВ. Узлы уже однозначны:
+// AmbiguousNode отказывает двум определениям одного идентификатора. Типы до этого
+// модуля в пакете не было вовсе — отношение типа не существовало, и объявление
+// `var` не несло ничего, кроме имени.
+//
+// СЛОВАРЬ: integer < real < complex. Три типа, и это не бедность, а решение.
+// Рациональные и вещественные числа в этом словаре не различаются, потому что
+// слот значения узла объявлен Rational и ПРОВЕРИТЬ целочисленность константы
+// здесь нечем: для этого понадобилась бы цепочка целых значений, то есть ещё
+// один ограниченный счётчик ради одного частного случая. Вместо этого константа
+// типизируется real — это ВЕРХНЯЯ ГРАНИЦА, и всё, что ниже неё, сужает проверку,
+// а не расширяет её. Сужение проверки — честная потеря точности; расширение было бы
+// ложью.
+//
+// СРЕДА ПРЕДЪЯВЛЯЕТСЯ ПО ИМЕНИ (`var_typing`), а не по узлу. Одна и та же
+// переменная встречается во многих узлах, и объявление типа в каждом узле
+// отдельно позволяло бы одному имени нести два разных типа — то есть ровно то
+// нарушение однозначности, которое приёмка запрещает. Имя, а не узел, —
+// единственный ключ, при котором объявление принадлежит переменной.
+//
+// ВЫВОД ИДЁТ СНИЗУ ВВЕРХ, и тип узла — это ВЕРХНЯЯ ГРАНЬ типов операндов, то
+// есть максимум их уровней. Верхняя грань выбрана потому, что она единственная
+// не лжёт: если объявить `x : integer`, то `x + 1` не целое лишь при неудачном
+// представлении константы, и объявлять его целым было бы утверждением, которое
+// иногда ложно. Максимум по трём уровням — четыре строки правил вместо таблицы
+// из шести пар имён.
+//
+// ДЕЛЕНИЕ — ЕДИНСТВЕННОЕ ИСКЛЮЧЕНИЕ ИЗ МАКСИМУМА. Частное двух целых не
+// обязано быть целым, поэтому наименьшая верхняя грань уровней 1 и 1 есть 2.
+// Это единственное место, где операция не наследует максимум, и оно сказано
+// правилом, а не оставлено читателю.
+//
+// ВЕЩЕСТВЕННЫЕ ФУНКЦИИ: sin, cos, exp, ln, log, sqrt, atan, интеграл и
+// производная объявлены функциями ВЕЩЕСТВЕННЫМИ, ибо таковы они в этом
+// словаре. Комплексный операнд для них — не «неизвестный тип», а
+// TYPE_DOMAIN_MISMATCH, и узел при этом НЕ получает типа: отсутствие остаётся
+// отсутствием.
+//
+// ГРАНИЦЫ, НАЗВАННЫЕ ЗАРАНЕЕ, а не по факту:
+//   — тип КОНСТАНТЫ целочисленностью не определяется (слот Rational);
+//   — объявленный тип не проверяется на согласие с тем, как имя используется,
+//     кроме одного случая: вещественная функция над комплексным оперантом;
+//   — соответствие типов по ИМЕНАМ (например, что x и y обязаны иметь один тип)
+//     не проверяется: это решение о discipline выражения, а не о его форме.
+
+// ── Словарь и его нарушения ────────────────────────────────────────────────
+//
+// Всё положительное, что можно доказать положительно. Конфликт — это не
+// отрицание «типов разные», а ПАРА объявлений: двум разным именам типов
+// соответствует одно имя переменной, и это утверждается прямо.
+
+rule VocabularyOk(e: Expr) strict {
+    label ru unofficial "СРЕДА ЧИСТА: каждое объявленное имя входит в словарь integer, real, complex";
+    when context_present(e)
+        and (count all u: Text for nm: Text where var_typing(e, nm, u)
+            and u != "integer" and u != "real" and u != "complex") == 0;
+    then vocabulary_ok(e);
+}
+
+rule TypingConflictIntegerReal(e: Expr, name: Text) strict {
+    label ru unofficial "имя объявлено и целым, и вещественным — тип не единственен";
+    when var_typing(e, name, "integer") and var_typing(e, name, "real");
+    then typing_conflict(e, name, "integer");
+}
+
+rule TypingConflictIntegerComplex(e: Expr, name: Text) strict {
+    label ru unofficial "имя объявлено и целым, и комплексным — тип не единственен";
+    when var_typing(e, name, "integer") and var_typing(e, name, "complex");
+    then typing_conflict(e, name, "integer");
+}
+
+rule TypingConflictRealComplex(e: Expr, name: Text) strict {
+    label ru unofficial "имя объявлено и вещественным, и комплексным — тип не единственен";
+    when var_typing(e, name, "real") and var_typing(e, name, "complex");
+    then typing_conflict(e, name, "real");
+}
+
+rule TypingNotInVocabulary(e: Expr, f: Integer, name: Text, u: Text) strict {
+    label ru unofficial "ОТКАЗ TYPE_NOT_IN_VOCABULARY: объявленный тип вне словаря integer, real, complex — это не «тип неизвестен», а объявление, которого этот словарь не содержит";
+    when unique_node(e, f, "var", name, 0 / 1, 0, 0) and var_typing(e, name, u)
+        and u != "integer" and u != "real" and u != "complex";
+    then formula_error(e, f, "TYPE_NOT_IN_VOCABULARY");
+}
+
+rule TypingConflictAtVar(e: Expr, f: Integer, name: Text, t: Text) strict {
+    label ru unofficial "ОТКАЗ TYPE_CONFLICT: имя, по которому объявлен тип, несёт противоречивое объявление, и узел с таким именем не типизирован единственным образом";
+    when typing_conflict(e, name, t) and unique_node(e, f, "var", name, 0 / 1, 0, 0);
+    then formula_error(e, f, "TYPE_CONFLICT");
+}
+
+// ── Листья ─────────────────────────────────────────────────────────────────
+//
+// Тип переменной есть её объявление. Тип константы и алгебраической константы
+// есть real по построению: обе суть вещественные числа, и доказывать целочисленность
+// здесь нечем (см. границу в шапке модуля).
+
+rule VarLevelInteger(e: Expr, f: Integer, name: Text) strict {
+    label ru unofficial "переменная объявлена целой: тип ЛИСТА есть объявление";
+    when unique_node(e, f, "var", name, 0 / 1, 0, 0) and var_typing(e, name, "integer");
+    then type_level(e, f, 1);
+}
+
+rule VarLevelReal(e: Expr, f: Integer, name: Text) strict {
+    label ru unofficial "переменная объявлена вещественной";
+    when unique_node(e, f, "var", name, 0 / 1, 0, 0) and var_typing(e, name, "real");
+    then type_level(e, f, 2);
+}
+
+rule VarLevelComplex(e: Expr, f: Integer, name: Text) strict {
+    label ru unofficial "переменная объявлена комплексной";
+    when unique_node(e, f, "var", name, 0 / 1, 0, 0) and var_typing(e, name, "complex");
+    then type_level(e, f, 3);
+}
+
+rule ConstLevelReal(e: Expr, f: Integer, v: Rational) strict {
+    label ru unofficial "константа типизируется real: значение рационально, а целочисленность не проверяется — верхняя грань, которая не лжёт";
+    when unique_node(e, f, "const", "", v, 0, 0);
+    then type_level(e, f, 2);
+}
+
+rule AlgebraicLevelReal(e: Expr, f: Integer, name: Text) strict {
+    label ru unofficial "алгебраическая константа вещественна по построению; её математическая валидность принадлежит calc.algebraic_numbers";
+    when unique_node(e, f, "algebraic", name, 0 / 1, 0, 0);
+    then type_level(e, f, 2);
+}
+
+rule VarTypeAbsent(e: Expr, f: Integer, name: Text) strict {
+    label ru unofficial "ПРОБЕЛ ТИПА: имя переменной не объявлено, поэтому у узла нет типа; узлы, содержащие его, тоже типа не получают, и это молчание не заменяется догадкой";
+    when unique_node(e, f, "var", name, 0 / 1, 0, 0)
+        and (count all u: Text for nm: Text where var_typing(e, nm, u) and nm == name) == 0;
+    then type_absent(e, f);
+}
+
+// ── Сложение, вычитание, умножение: верхняя грань ──────────────────────────
+//
+// Максимум выражен двумя правилами, а не шестью парами имён: при p <= q берётся
+// q, при q <= p берётся p, и при p == q оба правила дают ОДНО И ТО ЖЕ значение,
+// поэтому противоречия не возникает. Сравнения стоят между ПАРАМЕТРАМИ правила —
+// сравнение над локально введённой конъюнктом величиной компилятор поднимает выше
+// конъюнктов, которые её связывают, и правило не срабатывает никогда (см.
+// 04-tridiagonal.law и 03-construct2.law).
+//
+// Рёбра к операндам МОНОТОННЫ: без них цикл «уровень зависит от уровня» не
+// стратифицируется (§110/§191).
+
+rule WidestOfLeftSmaller(e: Expr, f: Integer, tag: Text, a: Integer, b: Integer, p: Integer, q: Integer) strict {
+    label ru unofficial "add/sub/mul: тип узла — больший из уровней операндов; ветвь p <= q";
+    when binary(e, f, tag, a, b) and tag != "div"
+        and monotone(type_level(e, a, p)) and monotone(type_level(e, b, q)) and p <= q;
+    then type_level(e, f, q);
+}
+
+rule WidestOfRightSmaller(e: Expr, f: Integer, tag: Text, a: Integer, b: Integer, p: Integer, q: Integer) strict {
+    label ru unofficial "add/sub/mul: тип узла — больший из уровней операндов; ветвь q <= p";
+    when binary(e, f, tag, a, b) and tag != "div"
+        and monotone(type_level(e, a, p)) and monotone(type_level(e, b, q)) and q <= p;
+    then type_level(e, f, p);
+}
+
+// ── Деление: верхняя грань, но не ниже real ────────────────────────────────
+//
+// Три правила вместо таблицы: уровень 1 на обоих операндах даёт 2 (частное двух
+// целых не обязано быть целым), иначе работает максимум. Проверка исчерпывает
+// пары: (1,1) ловится третьим, всё остальное — первыми двумя.
+
+rule QuotientWidestLeft(e: Expr, f: Integer, a: Integer, b: Integer, p: Integer, q: Integer) strict {
+    label ru unofficial "div: максимум уровней, ветвь p <= q при q выше единицы";
+    when binary(e, f, "div", a, b)
+        and monotone(type_level(e, a, p)) and monotone(type_level(e, b, q)) and p <= q and q > 1;
+    then type_level(e, f, q);
+}
+
+rule QuotientWidestRight(e: Expr, f: Integer, a: Integer, b: Integer, p: Integer, q: Integer) strict {
+    label ru unofficial "div: максимум уровней, ветвь q <= p при p выше единицы";
+    when binary(e, f, "div", a, b)
+        and monotone(type_level(e, a, p)) and monotone(type_level(e, b, q)) and q <= p and p > 1;
+    then type_level(e, f, p);
+}
+
+rule QuotientOfIntegers(e: Expr, f: Integer, a: Integer, b: Integer, p: Integer, q: Integer) strict {
+    label ru unofficial "div: наименьшая верхняя грань двух целых есть real, а НЕ целое — частное двух целых не обязано быть целым, и объявлять его целым было бы ложью в общем случае";
+    when binary(e, f, "div", a, b)
+        and monotone(type_level(e, a, p)) and monotone(type_level(e, b, q)) and p <= 1 and q <= 1;
+    then type_level(e, f, 2);
+}
+
+// ── Унарные операции ───────────────────────────────────────────────────────
+//
+// Смена знака и возведение в целую неотрицательную степень СОХРАНЯЮТ тип: это
+// свойство операции, а не widening, и потерять его было бы ложью в другую
+// сторону. Остальные унарные виды объявлены вещественными функциями.
+
+rule NegationKeepsLevel(e: Expr, f: Integer, a: Integer, k: Integer) strict {
+    label ru unofficial "смена знака сохраняет тип операнда";
+    when unary(e, f, "neg", a) and monotone(type_level(e, a, k));
+    then type_level(e, f, k);
+}
+
+rule PowerKeepsBaseLevel(e: Expr, f: Integer, a: Integer, g: Integer, k: Integer) strict {
+    label ru unofficial "возведение в целую неотрицательную степень сохраняет тип основания; узел показателя — целая константа, и его real не участвует в результате";
+    when exponentiation(e, f, a, g) and monotone(type_level(e, a, k));
+    then type_level(e, f, k);
+}
+
+rule RealFunctionOfReal(e: Expr, f: Integer, tag: Text, a: Integer, k: Integer) strict {
+    label ru unofficial "вещественная функция (sin, cos, exp, ln, log, sqrt, atan, интеграл, производная) над некомплексным операндом даёт real";
+    when unary(e, f, tag, a) and tag != "neg" and monotone(type_level(e, a, k)) and k < 3;
+    then type_level(e, f, 2);
+}
+
+rule RealFunctionOfComplexRefused(e: Expr, f: Integer, tag: Text, a: Integer) strict {
+    label ru unofficial "ОТКАЗ TYPE_DOMAIN_MISMATCH: вещественная функция применена к комплексному операнду, и узел при этом типа НЕ получает";
+    when unary(e, f, tag, a) and tag != "neg" and monotone(type_level(e, a, 3));
+    then formula_error(e, f, "TYPE_DOMAIN_MISMATCH");
+}
+
+// ── Уровень назван словом ──────────────────────────────────────────────────
+//
+// ОДИН УРОВЕНЬ НА УЗЕЛ — НЕ СВОЙСТВО ДАННЫХ, А ПРОВЕРЯЕМОЕ УТВЕРЖДЕНИЕ, и это
+// находка, а не украшение. Реляция в этом языке мультимножественна: если две
+// разные таблицы дали узлу разные уровни, то ОБА факта выводимы, и читатель,
+// спросивший `type_of(e, f, "integer")`, получил бы истину — так же, как получил
+// бы истину, спросив "real".
+//
+// ПРОБА, КОТОРОЙ ЭТО ИЗМЕРЕНО (не рассуждение). Условие `tag != "neg"` в
+// вещественной функции убрано — то есть `neg` причислен к sin, cos, ln и
+// прочим. Ожидалось, что сценарий упадёт; он остался зелёным, и причина была не
+// в сценарии: `RealFunctionOfReal` требует `k < 3`, а при k = 1 не срабатывает
+// вовсе, то есть защищал СЛУЧАЙ КОМПЛЕКСНОГО операнда, а не разделение видов.
+// Второй пробой взят НЕКОМПЛЕКСНЫЙ операнд — `neg` от объявленной целой, — и
+// там узел получил уровни 1 и 2 ПРИ ЗЕЛЁНОМ документе. Агрегат видел ровно два
+// уровня; фильтр по параметру правила проверен отдельно (для листа счёт не равен
+// счёту узла), то есть дело не в фильтре.
+//
+// Поэтому единственность уровня объявлена ОТДЕЛЬНЫМ ФАКТОМ и поимённым отказом:
+// агрегат сравнивается с единицей (§190 — агрегат умеет сравнивать, но не
+// связывать переменную головы), а «более одного уровня» есть названная причина,
+// а не молчание читателя. Сценарий на `single_typed` написан ровно потому, что
+// первая его версия (assert на `type_of` в том же документе) дала NEITHER:
+// добавление второго запроса в один документ меняет вердикт.
+
+rule SingleTyped(e: Expr, f: Integer, k: Integer) strict {
+    label ru unofficial "у узла ровно один выведенный уровень типа";
+    when type_level(e, f, k) and (count all kk: Integer where type_level(e, f, kk)) == 1;
+    then single_typed(e, f);
+}
+
+rule AmbiguousLevelFound(e: Expr, f: Integer, k: Integer) strict {
+    label ru unofficial "ПРОБЕЛ ЕДИНСТВЕННОСТИ: у узла более одного выведенного уровня типа";
+    when type_level(e, f, k) and (count all kk: Integer where type_level(e, f, kk)) > 1;
+    then level_ambiguous(e, f);
+}
+
+rule AmbiguousLevelRefused(e: Expr, f: Integer) strict {
+    label ru unofficial "ОТКАЗ TYPE_AMBIGUOUS: узлу выведено более одного типа, и потому ни один из них не является ответом";
+    when level_ambiguous(e, f);
+    then formula_error(e, f, "TYPE_AMBIGUOUS");
+}
+
+rule LevelIsInteger(e: Expr, f: Integer) strict {
+    label ru unofficial "уровень 1 есть integer";
+    when type_level(e, f, 1);
+    then type_of(e, f, "integer");
+}
+
+rule LevelIsReal(e: Expr, f: Integer) strict {
+    label ru unofficial "уровень 2 есть real";
+    when type_level(e, f, 2);
+    then type_of(e, f, "real");
+}
+
+rule LevelIsComplex(e: Expr, f: Integer) strict {
+    label ru unofficial "уровень 3 есть complex";
+    when type_level(e, f, 3);
+    then type_of(e, f, "complex");
+}

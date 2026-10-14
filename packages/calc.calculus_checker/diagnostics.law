@@ -1,0 +1,210 @@
+language "law.core" version "0.2";
+package calc.calculus_checker version "0.1.0";
+namespace "urn:law:calc:calculus-checker";
+
+use self::{
+    Derivation,
+    active,
+    blocked_step,
+    budget_exhausted,
+    checked,
+    closed,
+    context_of,
+    derivation_error,
+    document,
+    earlier_error,
+    first_error,
+    line,
+    line_present,
+    local_match,
+    nodes_of,
+    problem,
+    required,
+    step_error,
+    step_problem,
+    unique_line,
+    variable,
+};
+
+// НАЗВАННЫЕ ОТКАЗЫ. Отсутствие строки ДО `closed` — ещё не предъявленные
+// данные; после `closed` — дефект. Та же конструкция, что у
+// `calc.proof_checker`: `not_known` только НАД завершённым производителем.
+
+rule NonpositiveSize(p: Derivation, n: Integer, goal: Integer, system: Text) strict {
+    label ru unofficial "дефект заголовка INVALID_SIZE";
+    when document(p, n, goal, system) and n <= 0;
+    then derivation_error(p, "INVALID_SIZE");
+}
+
+rule UnknownCalculus(p: Derivation, n: Integer, goal: Integer, system: Text) strict {
+    label ru unofficial "дефект заголовка UNKNOWN_CALCULUS";
+    when document(p, n, goal, system) and system != "calculus/1" and system != "calculus/2";
+    then derivation_error(p, "UNKNOWN_CALCULUS");
+}
+
+rule AmbiguousDocument(p: Derivation, n: Integer, goal: Integer, system: Text) strict {
+    label ru unofficial "дефект заголовка AMBIGUOUS_DOCUMENT";
+    when document(p, n, goal, system)
+        and (count all a: Integer for b: Integer, c: Text where document(p, a, b, c)) > 1;
+    then derivation_error(p, "AMBIGUOUS_DOCUMENT");
+}
+
+rule BudgetExhausted(p: Derivation, n: Integer, goal: Integer, system: Text) strict {
+    label ru unofficial "ОБЪЯВЛЕННЫЙ ОТКАЗ: строк больше 64; ход не проверяется, и это названный ответ, а не исчерпание ресурса";
+    when document(p, n, goal, system) and n > 64;
+    then budget_exhausted(p);
+}
+
+relation context_present(p: Derivation) kind institutional {
+    label ru unofficial "набор узлов и переменная предъявлены";
+}
+
+rule ContextPresent(p: Derivation, e: calc.expressions::Expr, x: Text) strict {
+    label ru unofficial "контекст существует независимо от его однозначности";
+    when nodes_of(p, e) and variable(p, x);
+    then context_present(p);
+}
+
+rule NoContext(p: Derivation) defeasible {
+    label ru unofficial "дефект NO_CONTEXT: не названы ни набор узлов, ни переменная";
+    when closed(p) and not_known(context_present(p));
+    then derivation_error(p, "NO_CONTEXT");
+}
+
+rule InvalidIndex(p: Derivation, i: Integer, expr: Integer, m: Text, j: Integer, k: Integer, u: Integer, dv: Integer) strict {
+    label ru unofficial "дефект строки INVALID_INDEX";
+    when line(p, i, expr, m, j, k, u, dv) and i <= 0;
+    then step_error(p, i, "INVALID_INDEX");
+}
+
+rule AmbiguousLine(p: Derivation, i: Integer, expr: Integer, m: Text, j: Integer, k: Integer, u: Integer, dv: Integer) strict {
+    label ru unofficial "дефект строки AMBIGUOUS_LINE";
+    when line(p, i, expr, m, j, k, u, dv)
+        and (count all g: Integer for mm: Text, a: Integer, b: Integer, c: Integer, d: Integer
+             where line(p, i, g, mm, a, b, c, d)) > 1;
+    then step_error(p, i, "AMBIGUOUS_LINE");
+}
+
+rule UnknownMethod(p: Derivation, i: Integer, expr: Integer, m: Text, j: Integer, k: Integer, u: Integer, dv: Integer) strict {
+    label ru unofficial "дефект строки UNKNOWN_METHOD: словарь методов закрыт и назван";
+    when line(p, i, expr, m, j, k, u, dv)
+        and m != "given" and m != "constant_rule" and m != "power_rule"
+        and m != "sum_rule" and m != "constant_multiple" and m != "product_rule"
+        and m != "quotient_rule" and m != "chain_rule"
+        and m != "derivative_sin" and m != "derivative_cos"
+        and m != "derivative_exp" and m != "derivative_ln"
+        and m != "antiderivative_power" and m != "table_antiderivative"
+        and m != "by_parts" and m != "fundamental_theorem"
+        and m != "algebra" and m != "identity";
+    then step_error(p, i, "UNKNOWN_METHOD");
+}
+
+rule FundamentalTheoremNotInV1(p: Derivation, i: Integer, expr: Integer, j: Integer, k: Integer, u: Integer, dv: Integer) strict {
+    label ru unofficial "METHOD_NOT_IN_V1: основная теорема названа словарём, но её форма в первой версии НЕ проверяется — граница названа, а не обойдена";
+    when line(p, i, expr, "fundamental_theorem", j, k, u, dv);
+    then step_error(p, i, "METHOD_NOT_IN_V1");
+}
+
+rule ExtraLine(
+    p: Derivation, i: Integer, expr: Integer, m: Text,
+    j: Integer, k: Integer, u: Integer, dv: Integer, n: Integer, goal: Integer,
+) strict {
+    label ru unofficial "строка стоит после объявленного конца";
+    when active(p, n, goal) and line(p, i, expr, m, j, k, u, dv) and i > n;
+    then step_error(p, i, "EXTRA_LINE");
+}
+
+rule ReferenceOrder(p: Derivation, i: Integer, j: Integer) strict {
+    label ru unofficial "основание обязано предшествовать выводу";
+    when required(p, i, j) and j >= i;
+    then step_error(p, i, "FORWARD_REFERENCE");
+}
+
+rule MissingReference(p: Derivation, i: Integer, j: Integer) defeasible {
+    label ru unofficial "указанная строка основания не предъявлена";
+    when required(p, i, j) and closed(p) and not_known(line_present(p, j));
+    then step_error(p, i, "MISSING_REFERENCE");
+}
+
+rule MissingFirst(p: Derivation, n: Integer, goal: Integer) defeasible {
+    label ru unofficial "завершённый ввод не содержит первой строки";
+    when active(p, n, goal) and closed(p) and not_known(line_present(p, 1));
+    then step_error(p, 1, "MISSING_LINE");
+}
+
+rule MissingSuccessor(p: Derivation, i: Integer, n: Integer, goal: Integer) defeasible {
+    label ru unofficial "после предъявленной строки пропущен следующий номер";
+    when active(p, n, goal) and closed(p) and line_present(p, i) and i > 0 and i < n
+        and not_known(line_present(p, i + 1));
+    then step_error(p, i + 1, "MISSING_LINE");
+}
+
+rule BadLineExpression(
+    p: Derivation, i: Integer, expr: Integer, m: Text,
+    j: Integer, k: Integer, u: Integer, dv: Integer, e: calc.expressions::Expr, x: Text,
+) defeasible {
+    label ru unofficial "выражение строки отсутствует либо некорректно";
+    when line(p, i, expr, m, j, k, u, dv) and context_of(p, e, x) and closed(p)
+        and not_known(calc.expressions::well_formed(e, expr));
+    then step_error(p, i, "INVALID_LINE_EXPRESSION");
+}
+
+rule RuleMismatch(
+    p: Derivation, i: Integer, expr: Integer, m: Text,
+    j: Integer, k: Integer, u: Integer, dv: Integer,
+) defeasible {
+    label ru unofficial "заявленное правило не соответствует предъявленным выражениям: форма перехода не совпала";
+    when unique_line(p, i, expr, m, j, k, u, dv) and closed(p) and m != "fundamental_theorem"
+        and not_known(local_match(p, i, expr));
+    then step_error(p, i, "RULE_MISMATCH");
+}
+
+rule BlockedByReference(
+    p: Derivation, i: Integer, expr: Integer, j: Integer, g: Integer, m: Text,
+    a: Integer, b: Integer, u: Integer, dv: Integer,
+) defeasible {
+    label ru unofficial "форма перехода правильна, но его основание не проверено";
+    when local_match(p, i, expr) and required(p, i, j)
+        and unique_line(p, j, g, m, a, b, u, dv) and closed(p) and not_known(checked(p, j, g));
+    then blocked_step(p, i, j);
+}
+
+rule StepProblem(p: Derivation, i: Integer, reason: Text) defeasible {
+    label ru unofficial "строка имеет первичный дефект. Чтение monotone: у step_error есть и defeasible-продюсеры, а strict-потребление их статуса в 0.1 недоступно (§111, LDC-E4103)";
+    when monotone(step_error(p, i, reason));
+    then step_problem(p, i);
+}
+
+rule ProblemFromStep(p: Derivation, i: Integer) defeasible {
+    label ru unofficial "дефект строки есть дефект хода";
+    when step_problem(p, i);
+    then problem(p);
+}
+
+rule ProblemFromDocument(p: Derivation, reason: Text) strict {
+    label ru unofficial "дефект заголовка есть дефект хода; чтение monotone по той же причине (§111)";
+    when monotone(derivation_error(p, reason));
+    then problem(p);
+}
+
+rule GoalMismatch(
+    p: Derivation, n: Integer, goal: Integer, last: Integer,
+    e: calc.expressions::Expr, x: Text,
+) defeasible {
+    label ru unofficial "последняя строка не совпала с заявленным итогом";
+    when active(p, n, goal) and closed(p) and context_of(p, e, x) and checked(p, n, last)
+        and not_known(calc.expressions::equivalent(e, last, goal));
+    then derivation_error(p, "GOAL_MISMATCH");
+}
+
+rule EarlierError(p: Derivation, i: Integer, j: Integer) defeasible {
+    label ru unofficial "существует более ранний первичный дефект";
+    when step_problem(p, i) and step_problem(p, j) and j < i;
+    then earlier_error(p, i);
+}
+
+rule FirstError(p: Derivation, i: Integer) defeasible {
+    label ru unofficial "первый первичный дефект по номеру строки";
+    when step_problem(p, i) and not_known(earlier_error(p, i));
+    then first_error(p, i);
+}

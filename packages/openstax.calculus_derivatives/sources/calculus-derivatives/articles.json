@@ -1,0 +1,47 @@
+{
+  "format": "law.source-divisions/0.1",
+  "editions": [
+    {
+      "document": "m53494.cnxml",
+      "unit": "cnxml_module",
+      "edition": "urn:openstax:clir:calculus-derivatives#M53494_MAIN",
+      "snapshotScope": "whole retained publisher module; selected rules/checkers/solver bridges formalized"
+    },
+    {
+      "document": "m53495.cnxml",
+      "unit": "cnxml_module",
+      "edition": "urn:openstax:clir:calculus-derivatives#M53495_MAIN",
+      "snapshotScope": "whole retained publisher module; selected rules/checkers/solver bridges formalized"
+    },
+    {
+      "document": "m53573.cnxml",
+      "unit": "cnxml_module",
+      "edition": "urn:openstax:clir:calculus-derivatives#M53573_MAIN",
+      "snapshotScope": "whole retained publisher module; selected rules/checkers/solver bridges formalized"
+    },
+    {
+      "document": "m53575.cnxml",
+      "unit": "cnxml_module",
+      "edition": "urn:openstax:clir:calculus-derivatives#M53575_MAIN",
+      "snapshotScope": "whole retained publisher module; selected rules/checkers/solver bridges formalized"
+    },
+    {
+      "document": "m53578.cnxml",
+      "unit": "cnxml_module",
+      "edition": "urn:openstax:clir:calculus-derivatives#M53578_MAIN",
+      "snapshotScope": "whole retained publisher module; selected rules/checkers/solver bridges formalized"
+    },
+    {
+      "document": "m53581.cnxml",
+      "unit": "cnxml_module",
+      "edition": "urn:openstax:clir:calculus-derivatives#M53581_MAIN",
+      "snapshotScope": "whole retained publisher module; selected rules/checkers/solver bridges formalized"
+    },
+    {
+      "document": "m53586.cnxml",
+      "unit": "cnxml_module",
+      "edition": "urn:openstax:clir:calculus-derivatives#M53586_MAIN",
+      "snapshotScope": "whole retained publisher module; selected rules/checkers/solver bridges formalized"
+    }
+  ]
+}

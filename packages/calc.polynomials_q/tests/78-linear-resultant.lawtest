@@ -1,0 +1,20 @@
+language "law.core" version "0.2";
+package calc.polynomials_q version "0.1.0";
+namespace "urn:law:calc:polynomials-q";
+
+test "результант пары линейных многочленов строится как точный детерминант" {
+ given {
+  assert "f1": degree_cap(2) { origin case_input; }
+  assert "f2": poly(entity_ref("urn:calc:pq:test:res:left"), 1) { origin case_input; }
+  assert "f3": term(entity_ref("urn:calc:pq:test:res:left"), 0, 1 / 1) { origin case_input; }
+  assert "f4": term(entity_ref("urn:calc:pq:test:res:left"), 1, 2 / 1) { origin case_input; }
+  assert "f5": poly(entity_ref("urn:calc:pq:test:res:right"), 1) { origin case_input; }
+  assert "f6": term(entity_ref("urn:calc:pq:test:res:right"), 0, 3 / 1) { origin case_input; }
+  assert "f7": term(entity_ref("urn:calc:pq:test:res:right"), 1, 5 / 1) { origin case_input; }
+ }
+ evaluate truth(resultant_value(entity_ref("urn:calc:pq:test:res:left"), entity_ref("urn:calc:pq:test:res:right"), 1 / 1));
+ expect truth_status == TRUE_ONLY;
+ evaluate truth(invariant_verified("LINEAR_RESULTANT", entity_ref("urn:calc:pq:test:res:left"), entity_ref("urn:calc:pq:test:res:right")));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+}

@@ -1,0 +1,76 @@
+language "law.core" version "0.2";
+package calc.expressions version "0.1.0";
+namespace "urn:law:calc:expressions";
+
+use self::{
+    Expr,
+    descends,
+    node,
+    reachable,
+    subtree_size,
+};
+
+
+
+
+// ДОСТИЖИМОСТЬ ПО ДЕРЕВУ: ПЕРВИЧНОЕ ОТСУТСТВУЮЩЕЕ ОТНОШЕНИЕ (цель §5).
+//
+// Три обязательства упираются в одно и то же отсутствие, и это отсутствие
+// первично:
+//
+//   1. α-эквивалентность — нужно считать связанные переменные ПОДДЕРЕВОМ;
+//   2. построение выражения-результата подстановки;
+//   3. проверка формы дерева по поддеревьям, а не по верхушке.
+//
+// Пока в пакете нет «n достижима из anc», ни одно из трёх не начинается. Область
+// действия связывания здесь выражена по ИМЕНИ (`bound_below`), а не по вхождению,
+// и потому «связанные переменные поддерева f» — не вопрос об имени, а вопрос о
+// вершинах.
+//
+// ПРАВИЛО ОДИНАКОВОЕ, КАК В calc.expression_substitution, И ЭТО СОЗНАТЕЛЬНО.
+// Там `descends` уже построен, с монотонными рёбрами, и он работает. Здесь то же
+// самое, потому что оба пакета ходят по каноническим деревьям calc.expressions.
+// Два определения НЕ объединены и существующий код НЕ переписан: это была бы
+// правка чужой работы ради косметики, а переход между пакетами в DSL всё равно
+// нужен. Объединение — отдельное решение, если оно вообще нужно, и оно не
+// требуется ни для одного из трёх обязательств.
+//
+// РЁБРА МОНОТОННЫ, И ЭТО СУТЬ. Замыкание достижимости транзитивно, и без
+// монотонного ребра цикл правил предикатных зависимостей не стратифицируется
+// (§110/§191). Ребро «от родителя к ребёнку» монотонно по построению: ребёнок
+// ниже родителя всегда, и обратного пути нет.
+
+rule DescendsSelf(e: Expr, n: Integer, tag: Text, name: Text, v: Rational, a: Integer, b: Integer) strict {
+    label en unofficial "каждый предъявленный узел достигает самого себя";
+    when node(e, n, tag, name, v, a, b);
+    then descends(e, n, n);
+}
+
+rule DescendsLeft(e: Expr, anc: Integer, tag: Text, name: Text, v: Rational, a: Integer, b: Integer, n: Integer) strict {
+    label en unofficial "достижимость через левого потомка";
+    when node(e, anc, tag, name, v, a, b) and monotone(descends(e, a, n));
+    then descends(e, anc, n);
+}
+
+rule DescendsRight(e: Expr, anc: Integer, tag: Text, name: Text, v: Rational, a: Integer, b: Integer, n: Integer) strict {
+    label en unofficial "достижимость через правого потомка";
+    when node(e, anc, tag, name, v, a, b) and monotone(descends(e, b, n));
+    then descends(e, anc, n);
+}
+
+// ЧТО ЭТО ДАЁТ СРАЗУ, БЕЗ ДОСТРОЕНИЯ АЛЬФА-ЭКВИВАЛЕНТНОСТИ. Поддерево — это
+// множество вершин, и его можно ПОСЧИТАТЬ, а не только назвать. Размер поддерева
+// отличается от размера выражения, и различие сразу видимо: у вершины с
+// двумя потомками поддерево содержит и их, и всё под ними.
+
+rule SubtreeCounted(e: Expr, anc: Integer, n: Integer, tag: Text, name: Text, v: Rational, a: Integer, b: Integer) strict {
+    label en unofficial "число вершин поддерева, достижимых из anc";
+    when descends(e, anc, n) and node(e, n, tag, name, v, a, b);
+    then subtree_size(e, anc, n);
+}
+
+rule SubtreeHas(e: Expr, anc: Integer, n: Integer, tag: Text, name: Text, v: Rational, a: Integer, b: Integer) strict {
+    label en unofficial "вершина n принадлежит поддереву anc — то есть anc достигает n";
+    when descends(e, anc, n) and node(e, n, tag, name, v, a, b);
+    then reachable(e, anc, n);
+}

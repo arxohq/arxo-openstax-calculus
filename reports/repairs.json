@@ -1,0 +1,36 @@
+{
+  "format": "arxo.calculus-delivery-repairs/1",
+  "sourceCommit": "79cc15239ccc60a898d7fb630b4621235261318d",
+  "repairs": [
+    {
+      "scope": "three OpenStax entry models",
+      "fromVersion": "0.1.0",
+      "toVersion": "0.1.1",
+      "change": "Expose an automatic native limit task and polynomial calculus construction, with explicit input/resource and uniqueness guards. Keep original IR and publisher bytes."
+    },
+    {
+      "diagnostic": "NON_EXECUTABLE_UNSTRATIFIED",
+      "scope": "new polynomial wrapper prototype",
+      "cause": "Gating the producer derivative_of/antiderivative construction on ready of the same calculator created a negative/status dependency cycle through defect/content_complete.",
+      "fix": "Request construction from structural polynomial_of; query ready only for consumer outputs. Re-lowered and linked natively; fixed numeric and boundary tests retain independent golds."
+    },
+    {
+      "scope": "new adapter syntax",
+      "fix": "Unary minus binds outside exponentiation; literal rational tokens are serialized exactly. No symbolic computation in adapter."
+    },
+    {
+      "scope": "new tests, not historical mathematical golds",
+      "fix": "Nonfinite kind uses declared plus_inf/dne, not guessed none. Explicit resource exhaustion diagnostic is SLOTS_EXCEED_CAP. Original historical expected mathematical answers were not changed."
+    }
+  ],
+  "open": [
+    {
+      "scope": "source reference oracle",
+      "status": "budget_refusal",
+      "record": "reports/addressed-differential.json",
+      "consumerImpact": "Published native CLI admits and executes all original 35 automatic-limit scenarios; no complete differential acceptance claimed."
+    }
+  ],
+  "corpus": "not_checked",
+  "releaseVerified": false
+}

@@ -1,0 +1,155 @@
+language "law.core" version "0.2";
+package calc.limit_solver version "0.1.0";
+namespace "urn:law:calc:limit-solver";
+
+use self::{
+    Task,
+    accepted,
+    derived,
+    limit_at,
+    need_derivative,
+    side_wanted,
+    sign_near,
+};
+
+// ПОИСК: РАУНДЫ, ВЕТВИ, БЮДЖЕТ (§5 DECISION-0198).
+//
+// Поиск детерминирован и не имеет очереди. Раунд r несёт свою функцию;
+// переход к раунду r + 1 совершает правило Лопиталя, и только когда
+// неопределённость 0/0 либо ∞/∞ ДОКАЗАНА установленными пределами частей.
+// Внутри одного раунда ветви развиваются ПАРАЛЛЕЛЬНО: законы о пределах,
+// замечательные пределы и переход Лопиталя — независимые правила над одним
+// узлом. Неудача одной ветви ничего не прерывает: она просто не порождает
+// головы, а прочие продолжают выводиться. Итог выбирается наверху из того,
+// что оказалось УСТАНОВЛЕНО, и порядок правил на выбор не влияет.
+//
+// БЮДЖЕТ — 4 раунда (CAP_LHOPITAL версии 0.1.0). Он ограничивает и порождение
+// узлов: вторая производная строится лишь под доказанной неопределённостью.
+//
+// УЗЕЛ ОТНОШЕНИЯ ПРОИЗВОДНЫХ получает адрес f * 64 + 304 — блок 48 … 63
+// («вспомогательные»), смещение 0. Столкновений нет по той же арифметике,
+// что описана в package.law.
+
+relation round_function(t: Task, e: calc.expressions::Expr, f: Integer, r: Integer) kind institutional {
+    label ru unofficial "узел f — функция раунда r";
+}
+
+relation indeterminate(t: Task, e: calc.expressions::Expr, f: Integer, sd: Text) kind institutional {
+    label ru unofficial "доказанная неопределённость 0/0 либо ∞/∞ с названной стороны";
+}
+
+pub relation lhopital_applied(
+        t: Task { label ru unofficial "задача"; },
+        e: calc.expressions::Expr { label ru unofficial "набор узлов"; },
+        f: Integer { label ru unofficial "узел"; },
+        r: Integer { label ru unofficial "раунд"; },
+        sd: Text { label ru unofficial "сторона"; }
+) kind institutional {
+    label ru unofficial "правило Лопиталя применено к узлу раунда r: все условия установлены";
+}
+
+pub relation condition_unmet(
+        t: Task { label ru unofficial "задача"; },
+        f: Integer { label ru unofficial "узел"; },
+        sd: Text { label ru unofficial "сторона"; },
+        condition: Text { label ru unofficial "условие"; }
+) kind institutional {
+    label ru unofficial "названное условие применимости НЕ установлено: DENOMINATOR_DERIVATIVE_NONZERO, RATIO_LIMIT";
+}
+
+rule RoundZero(t: Task, e: calc.expressions::Expr, f: Integer, x: Text, ap: Text, a: Rational, s: Text) strict {
+    label ru unofficial "исходная функция есть функция нулевого раунда (§5 DECISION-0198)";
+    when accepted(t, e, f, x, ap, a, s);
+    then round_function(t, e, f, 0);
+}
+
+rule IndeterminateZeroOverZero(t: Task, e: calc.expressions::Expr, f: Integer, u: Integer, v: Integer, sd: Text, r: Integer, qu: Rational, qv: Rational) strict {
+    label ru unofficial "неопределённость 0/0 доказана установленными пределами частей (§5 DECISION-0198)";
+    when monotone(round_function(t, e, f, r)) and monotone(calc.expressions::node(e, f, "div", "", 0 / 1, u, v))
+        and monotone(limit_at(t, e, u, sd, "rational", qu)) and monotone(limit_at(t, e, v, sd, "rational", qv))
+        and qu == 0 / 1 and qv == 0 / 1;
+    then indeterminate(t, e, f, sd);
+}
+
+rule IndeterminateInfinityOverInfinity(t: Task, e: calc.expressions::Expr, f: Integer, u: Integer, v: Integer, sd: Text, r: Integer, ku: Text, kv: Text, z1: Rational, z2: Rational) strict {
+    label ru unofficial "неопределённость ∞/∞ доказана независимо от знаков (§5 DECISION-0198)";
+    when monotone(round_function(t, e, f, r)) and monotone(calc.expressions::node(e, f, "div", "", 0 / 1, u, v))
+        and monotone(limit_at(t, e, u, sd, ku, z1)) and monotone(limit_at(t, e, v, sd, kv, z2))
+        and (ku == "plus_inf" or ku == "minus_inf") and (kv == "plus_inf" or kv == "minus_inf") and z1 == 0/1 and z2 == 0/1;
+    then indeterminate(t, e, f, sd);
+}
+
+rule LhopitalDemandNumerator(t: Task, e: calc.expressions::Expr, f: Integer, u: Integer, v: Integer, sd: Text, r: Integer) strict {
+    label ru unofficial "под доказанной неопределённостью требуется производная числителя (§5 DECISION-0198)";
+    when monotone(round_function(t, e, f, r)) and monotone(indeterminate(t, e, f, sd)) and monotone(calc.expressions::node(e, f, "div", "", 0 / 1, u, v)) and r < 4;
+    then need_derivative(t, e, u);
+}
+
+rule LhopitalDemandDenominator(t: Task, e: calc.expressions::Expr, f: Integer, u: Integer, v: Integer, sd: Text, r: Integer) strict {
+    label ru unofficial "под доказанной неопределённостью требуется производная знаменателя (§5 DECISION-0198)";
+    when monotone(round_function(t, e, f, r)) and monotone(indeterminate(t, e, f, sd)) and monotone(calc.expressions::node(e, f, "div", "", 0 / 1, u, v)) and r < 4;
+    then need_derivative(t, e, v);
+}
+
+rule LhopitalRatioNode(t: Task, e: calc.expressions::Expr, f: Integer, u: Integer, v: Integer, sd: Text, r: Integer) strict {
+    label ru unofficial "порождается узел отношения производных — его во входе не было (§5 DECISION-0198)";
+    when monotone(round_function(t, e, f, r)) and monotone(indeterminate(t, e, f, sd)) and monotone(calc.expressions::node(e, f, "div", "", 0 / 1, u, v)) and r < 4
+        and monotone(derived(t, e, u)) and monotone(derived(t, e, v));
+    then calc.expressions::node(e, f * 64 + 304, "div", "", 0 / 1, u * 64 + 256, v * 64 + 256);
+}
+
+rule LhopitalNextRound(t: Task, e: calc.expressions::Expr, f: Integer, u: Integer, v: Integer, sd: Text, r: Integer) strict {
+    label ru unofficial "отношение производных становится функцией следующего раунда (§5 DECISION-0198)";
+    when monotone(round_function(t, e, f, r)) and monotone(indeterminate(t, e, f, sd)) and monotone(calc.expressions::node(e, f, "div", "", 0 / 1, u, v)) and r < 4
+        and monotone(derived(t, e, u)) and monotone(derived(t, e, v));
+    then round_function(t, e, f * 64 + 304, r + 1);
+}
+
+rule LhopitalTransfer(t: Task, e: calc.expressions::Expr, f: Integer, u: Integer, v: Integer, sd: Text, r: Integer, kd: Text, q: Rational, sgn: Integer) strict {
+    label ru unofficial "правило Лопиталя переносит величину, когда установлены неопределённость, предел отношения производных и ненулевая производная знаменателя в окрестности (§5 DECISION-0198)";
+    when monotone(round_function(t, e, f, r)) and monotone(indeterminate(t, e, f, sd)) and monotone(calc.expressions::node(e, f, "div", "", 0 / 1, u, v)) and r < 4
+        and monotone(derived(t, e, u)) and monotone(derived(t, e, v))
+        and monotone(limit_at(t, e, f * 64 + 304, sd, kd, q))
+        and monotone(sign_near(t, e, v * 64 + 256, sd, sgn));
+    then limit_at(t, e, f, sd, kd, q);
+}
+
+rule LhopitalApplied(t: Task, e: calc.expressions::Expr, f: Integer, u: Integer, v: Integer, sd: Text, r: Integer, kd: Text, q: Rational, sgn: Integer) strict {
+    label ru unofficial "свидетельство применённого правила Лопиталя для хода (§5 DECISION-0198)";
+    when monotone(round_function(t, e, f, r)) and monotone(indeterminate(t, e, f, sd)) and monotone(calc.expressions::node(e, f, "div", "", 0 / 1, u, v)) and r < 4
+        and monotone(derived(t, e, u)) and monotone(derived(t, e, v))
+        and monotone(limit_at(t, e, f * 64 + 304, sd, kd, q))
+        and monotone(sign_near(t, e, v * 64 + 256, sd, sgn));
+    then lhopital_applied(t, e, f, r, sd);
+}
+
+// ── Замечательные пределы словаря ──────────────────────────────────────────
+//
+// Это НЕ таблица ответов на контрольные задачи, а две теоремы курса: они
+// нужны потому, что вывод (sin x)′ = cos x опирается на первую из них, и
+// доказывать sin x / x правилом Лопиталя значило бы ходить по кругу.
+// Обе формулировки закреплены в словаре openstax.calculus_limits.
+
+rule SpecialLimitSin(t: Task, e: calc.expressions::Expr, f: Integer, u: Integer, v: Integer, c: Integer, sd: Text, g: Integer, x: Text, s: Text) strict {
+    label ru unofficial "первый замечательный предел: sin x / x → 1 при x → 0 (§5 DECISION-0198)";
+    when accepted(t, e, g, x, "at", 0 / 1, s) and side_wanted(t, sd)
+        and monotone(calc.expressions::node(e, f, "div", "", 0 / 1, u, v))
+        and monotone(calc.expressions::node(e, u, "sin", "", 0 / 1, c, 0))
+        and monotone(calc.expressions::node(e, c, "var", x, 0 / 1, 0, 0))
+        and monotone(calc.expressions::node(e, v, "var", x, 0 / 1, 0, 0));
+    then limit_at(t, e, f, sd, "rational", 1 / 1);
+}
+
+rule SpecialLimitOneMinusCos(t: Task, e: calc.expressions::Expr, f: Integer, u: Integer, v: Integer, one: Integer, cs: Integer, c: Integer, base: Integer, ex: Integer, sd: Text, g: Integer, x: Text, s: Text) strict {
+    label ru unofficial "второй замечательный предел: (1 − cos x) / x² → 1/2 при x → 0 (§5 DECISION-0198)";
+    when accepted(t, e, g, x, "at", 0 / 1, s) and side_wanted(t, sd)
+        and monotone(calc.expressions::node(e, f, "div", "", 0 / 1, u, v))
+        and monotone(calc.expressions::node(e, u, "sub", "", 0 / 1, one, cs))
+        and monotone(calc.expressions::node(e, one, "const", "", 1 / 1, 0, 0))
+        and monotone(calc.expressions::node(e, cs, "cos", "", 0 / 1, c, 0))
+        and monotone(calc.expressions::node(e, c, "var", x, 0 / 1, 0, 0))
+        and monotone(calc.expressions::node(e, v, "pow", "", 0 / 1, base, ex))
+        and monotone(calc.expressions::node(e, base, "var", x, 0 / 1, 0, 0))
+        and monotone(calc.expressions::node(e, ex, "const", "", 2 / 1, 0, 0));
+    then limit_at(t, e, f, sd, "rational", 1 / 2);
+}

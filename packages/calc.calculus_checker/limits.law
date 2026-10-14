@@ -1,0 +1,1152 @@
+language "law.core" version "0.2";
+package calc.calculus_checker version "0.1.0";
+namespace "urn:law:calc:calculus-checker";
+
+use self::{
+    Derivation,
+    active,
+    checked,
+    closed,
+    context_of,
+    document,
+    line,
+    line_present,
+    local_match,
+    required,
+    step_error,
+    unique_line,
+};
+
+// DECISION-0197 §4: предел — поля строки, а не новый тег выражения.
+// Рекурсивные свидетельства положительны (§65/§103); отказы над ними.
+
+pub relation limit_line(p: Derivation { label ru unofficial "p"; }, i: Integer { label ru unofficial "i"; }, f: Integer { label ru unofficial "f"; }, m: Text { label ru unofficial "m"; }, j: Integer { label ru unofficial "j"; }, k: Integer { label ru unofficial "k"; }, l: Integer { label ru unofficial "l"; }, ap: Text { label ru unofficial "ap"; }, a: Rational { label ru unofficial "a"; }, s: Text { label ru unofficial "s"; }, vk: Text { label ru unofficial "vk"; }, value: Integer { label ru unofficial "value"; }) kind empirical {
+    label ru unofficial "строка предела: функция, метод, три основания, точка, сторона и значение";
+}
+
+pub relation lhopital_derivatives(p: Derivation { label ru unofficial "p"; }, i: Integer { label ru unofficial "i"; }, df: Integer { label ru unofficial "df"; }, dg: Integer { label ru unofficial "dg"; }) kind empirical {
+    label ru unofficial "два номера строк производных для Лопиталя, названные студентом";
+}
+
+pub relation nonzero_near(p: Derivation { label ru unofficial "p"; }, i: Integer { label ru unofficial "i"; }) kind empirical {
+    label ru unofficial "выбранное студентом условие: неполиномиальная производная знаменателя не обращается в ноль в окрестности";
+}
+
+pub relation limit_cancellation(p: Derivation { label ru unofficial "p"; }, i: Integer { label ru unofficial "i"; }, cancel: calc.polynomials_q::Cancellation { label ru unofficial "cancel"; }) kind empirical {
+    label ru unofficial "явный запрос сокращения, используемый этой строкой";
+}
+
+relation limit_node(e: calc.expressions::Expr, f: Integer, tag: Text, name: Text, v: Rational, aa: Integer, bb: Integer) kind institutional {
+    label ru unofficial "однозначный корректный узел, локальное представление unique_node без изменения expressions";
+}
+
+relation unique_limit(p: Derivation, i: Integer, f: Integer, m: Text, j: Integer, k: Integer, l: Integer, ap: Text, a: Rational, s: Text, vk: Text, value: Integer) kind institutional {
+    label ru unofficial "единственная строка предела внутри общего диапазона";
+}
+
+relation limit_shape(p: Derivation, i: Integer) kind institutional {
+    label ru unofficial "поля предела допустимы";
+}
+
+relation limit_position(p: Derivation, i: Integer) kind institutional {
+    label ru unofficial "точка и сторона допустимы";
+}
+
+relation limit_value_shape(p: Derivation, i: Integer) kind institutional {
+    label ru unofficial "значение имеет допустимый вид";
+}
+
+pub relation limit_result(p: Derivation { label ru unofficial "p"; }, i: Integer { label ru unofficial "i"; }, f: Integer { label ru unofficial "f"; }, ap: Text { label ru unofficial "ap"; }, a: Rational { label ru unofficial "a"; }, s: Text { label ru unofficial "s"; }, vk: Text { label ru unofficial "vk"; }, value: Integer { label ru unofficial "value"; }) kind institutional {
+    label ru unofficial "положительно установленный предел";
+}
+
+pub relation substituted(e: calc.expressions::Expr { label ru unofficial "e"; }, f: Integer { label ru unofficial "f"; }, value: Integer { label ru unofficial "value"; }, x: Text { label ru unofficial "x"; }, a: Rational { label ru unofficial "a"; }) kind institutional {
+    label ru unofficial "дерево value равно f с заменой var x на const a";
+}
+
+relation limit_operand(p: Derivation, i: Integer, j: Integer, gj: Integer, vj: Integer) kind institutional {
+    label ru unofficial "предшествующий конечный предел с той же точкой и стороной";
+}
+
+relation limit_pair(p: Derivation, i: Integer, j: Integer, gj: Integer, vkj: Text, vj: Integer) kind institutional {
+    label ru unofficial "предшествующий предел с той же точкой и стороной";
+}
+
+relation limit_method_match(p: Derivation, i: Integer) kind institutional {
+    label ru unofficial "выполнены условия предъявленного метода";
+}
+
+relation limit_known_method(p: Derivation, i: Integer) kind institutional {
+    label ru unofficial "имя метода принадлежит calculus/2";
+}
+
+relation lhopital_indeterminate(p: Derivation, i: Integer) kind institutional {
+    label ru unofficial "предъявлены установленные пределы 0/0 либо бесконечность/бесконечность";
+}
+
+pub relation derivative_origin(p: Derivation { label ru unofficial "p"; }, i: Integer { label ru unofficial "i"; }, f: Integer { label ru unofficial "f"; }, gj: Integer { label ru unofficial "gj"; }) kind institutional {
+    label ru unofficial "строка i устанавливает производную f исходной функции gj";
+}
+
+relation lhopital_derivative_pair(p: Derivation, i: Integer, df: Integer, dg: Integer, gj: Integer, gk: Integer) kind institutional {
+    label ru unofficial "производные обеих исходных функций установлены";
+}
+
+relation lhopital_ratio(p: Derivation, i: Integer, vk: Text, value: Integer) kind institutional {
+    label ru unofficial "предел отношения установленных производных";
+}
+
+relation lhopital_nonzero(p: Derivation, i: Integer) kind institutional {
+    label ru unofficial "условие ненулевой производной знаменателя установлено";
+}
+
+relation limit_same_value(e: calc.expressions::Expr, vkj: Text, vj: Integer, vkk: Text, vkkid: Integer) kind institutional {
+    label ru unofficial "равенство значений предела";
+}
+
+relation limit_different_value(e: calc.expressions::Expr, vkj: Text, vj: Integer, vkk: Text, vkkid: Integer) kind institutional {
+    label ru unofficial "доказанное различие конечных констант или видов бесконечности";
+}
+
+rule LimitNode(e: calc.expressions::Expr, tag: Text, name: Text, v: Rational, f: Integer, aa: Integer, bb: Integer) strict {
+    label ru unofficial "локальное однозначное чтение дерева (§4 DECISION-0197)";
+    when calc.expressions::node(e, f, tag, name, v, aa, bb) and calc.expressions::well_formed(e, f) and (count all m: Text for x: Text, c: Rational, j: Integer, k: Integer where calc.expressions::node(e, f, m, x, c, j, k)) == 1;
+    then limit_node(e, f, tag, name, v, aa, bb);
+}
+
+rule LimitLinePresent(p: Derivation, m: Text, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) strict {
+    label ru unofficial "номер предела участвует в общем счётчике (§4 DECISION-0197)";
+    when limit_line(p, i, f, m, j, k, l, ap, a, s, vk, value);
+    then line_present(p, i);
+}
+
+rule UniqueLimit(p: Derivation, m: Text, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, goal: Integer, n: Integer) strict {
+    label ru unofficial "номер обозначает одну строку одного из двух видов (§4 DECISION-0197)";
+    when limit_line(p, i, f, m, j, k, l, ap, a, s, vk, value) and document(p, n, goal, "calculus/2") and active(p, n, goal) and i > 0 and i <= n and (count all gj: Integer for tag: Text, aj: Integer, bj: Integer, uj: Integer, name: Text, c: Rational, x: Text, sys: Text, dv: Integer where limit_line(p, i, gj, tag, aj, bj, uj, name, c, x, sys, dv)) == 1 and (count all gj: Integer for tag: Text, aj: Integer, bj: Integer, uj: Integer, dj: Integer where line(p, i, gj, tag, aj, bj, uj, dj)) == 0;
+    then unique_limit(p, i, f, m, j, k, l, ap, a, s, vk, value);
+}
+
+rule LimitPositionatboth(p: Derivation, m: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) strict {
+    label ru unofficial "допустимые точка и сторона (§4 DECISION-0197)";
+    when unique_limit(p, i, f, m, j, k, l, "at", a, "both", vk, value);
+    then limit_position(p, i);
+}
+
+rule LimitPositionatleft(p: Derivation, m: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) strict {
+    label ru unofficial "допустимые точка и сторона (§4 DECISION-0197)";
+    when unique_limit(p, i, f, m, j, k, l, "at", a, "left", vk, value);
+    then limit_position(p, i);
+}
+
+rule LimitPositionatright(p: Derivation, m: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) strict {
+    label ru unofficial "допустимые точка и сторона (§4 DECISION-0197)";
+    when unique_limit(p, i, f, m, j, k, l, "at", a, "right", vk, value);
+    then limit_position(p, i);
+}
+
+rule LimitPositionplus_infboth(p: Derivation, m: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) strict {
+    label ru unofficial "допустимые точка и сторона (§4 DECISION-0197)";
+    when unique_limit(p, i, f, m, j, k, l, "plus_inf", a, "both", vk, value) and a == 0 / 1;
+    then limit_position(p, i);
+}
+
+rule LimitPositionminus_infboth(p: Derivation, m: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) strict {
+    label ru unofficial "допустимые точка и сторона (§4 DECISION-0197)";
+    when unique_limit(p, i, f, m, j, k, l, "minus_inf", a, "both", vk, value) and a == 0 / 1;
+    then limit_position(p, i);
+}
+
+rule LimitExpressionValue(p: Derivation, e: calc.expressions::Expr, m: Text, ap: Text, s: Text, x: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) strict {
+    label ru unofficial "конечное значение — корректное выражение (§4 DECISION-0197)";
+    when unique_limit(p, i, f, m, j, k, l, ap, a, s, "expr", value) and context_of(p, e, x) and calc.expressions::well_formed(e, value);
+    then limit_value_shape(p, i);
+}
+
+rule LimitValueplus_inf(p: Derivation, m: Text, ap: Text, s: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer) strict {
+    label ru unofficial "при специальном виде поле узла равно нулю (§4 DECISION-0197)";
+    when unique_limit(p, i, f, m, j, k, l, ap, a, s, "plus_inf", 0);
+    then limit_value_shape(p, i);
+}
+
+rule LimitValueminus_inf(p: Derivation, m: Text, ap: Text, s: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer) strict {
+    label ru unofficial "при специальном виде поле узла равно нулю (§4 DECISION-0197)";
+    when unique_limit(p, i, f, m, j, k, l, ap, a, s, "minus_inf", 0);
+    then limit_value_shape(p, i);
+}
+
+rule LimitValuedne(p: Derivation, m: Text, ap: Text, s: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer) strict {
+    label ru unofficial "при специальном виде поле узла равно нулю (§4 DECISION-0197)";
+    when unique_limit(p, i, f, m, j, k, l, ap, a, s, "dne", 0);
+    then limit_value_shape(p, i);
+}
+
+rule LimitShape(p: Derivation, e: calc.expressions::Expr, m: Text, ap: Text, s: Text, vk: Text, x: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) strict {
+    label ru unofficial "полная форма строки корректна (§4 DECISION-0197)";
+    when unique_limit(p, i, f, m, j, k, l, ap, a, s, vk, value) and limit_position(p, i) and limit_value_shape(p, i) and context_of(p, e, x) and calc.expressions::well_formed(e, f);
+    then limit_shape(p, i);
+}
+
+rule LimitRequiredj(p: Derivation, m: Text, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) strict {
+    label ru unofficial "основания предела входят в общую проверку ссылок (§4 DECISION-0197)";
+    when unique_limit(p, i, f, m, j, k, l, ap, a, s, vk, value) and j > 0;
+    then required(p, i, j);
+}
+
+rule LimitRequiredk(p: Derivation, m: Text, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) strict {
+    label ru unofficial "основания предела входят в общую проверку ссылок (§4 DECISION-0197)";
+    when unique_limit(p, i, f, m, j, k, l, ap, a, s, vk, value) and k > 0;
+    then required(p, i, k);
+}
+
+rule LimitRequiredl(p: Derivation, m: Text, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) strict {
+    label ru unofficial "основания предела входят в общую проверку ссылок (§4 DECISION-0197)";
+    when unique_limit(p, i, f, m, j, k, l, ap, a, s, vk, value) and l > 0;
+    then required(p, i, l);
+}
+
+rule LimitDerivativeRequireddf(p: Derivation, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, df: Integer, dg: Integer) strict {
+    label ru unofficial "производная является основанием строки (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "lhopital", j, k, l, ap, a, s, vk, value) and lhopital_derivatives(p, i, df, dg) and df > 0;
+    then required(p, i, df);
+}
+
+rule LimitDerivativeRequireddg(p: Derivation, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, df: Integer, dg: Integer) strict {
+    label ru unofficial "производная является основанием строки (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "lhopital", j, k, l, ap, a, s, vk, value) and lhopital_derivatives(p, i, df, dg) and dg > 0;
+    then required(p, i, dg);
+}
+
+rule LimitEstablished(p: Derivation, m: Text, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) strict {
+    label ru unofficial "метод установил предел в названной точке (§4 DECISION-0197)";
+    when unique_limit(p, i, f, m, j, k, l, ap, a, s, vk, value) and limit_shape(p, i) and monotone(limit_method_match(p, i));
+    then limit_result(p, i, f, ap, a, s, vk, value);
+}
+
+rule LimitChecked(p: Derivation, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, value: Integer) strict {
+    label ru unofficial "общий проверенный префикс включает пределы (§4 DECISION-0197)";
+    when monotone(limit_result(p, i, f, ap, a, s, vk, value));
+    then checked(p, i, f);
+}
+
+rule LimitLocalMatch(p: Derivation, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, value: Integer) strict {
+    label ru unofficial "проверенная форма предела (§4 DECISION-0197)";
+    when monotone(limit_result(p, i, f, ap, a, s, vk, value));
+    then local_match(p, i, f);
+}
+
+rule LimitPair(p: Derivation, m: Text, ap: Text, s: Text, vk: Text, vkj: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, gj: Integer, vj: Integer) strict {
+    label ru unofficial "первое основание совпадает по точке и стороне (§4 DECISION-0197)";
+    when unique_limit(p, i, f, m, j, k, l, ap, a, s, vk, value) and monotone(limit_result(p, j, gj, ap, a, s, vkj, vj)) and j > 0 and j < i;
+    then limit_pair(p, i, j, gj, vkj, vj);
+}
+
+rule LimitPairk(p: Derivation, m: Text, ap: Text, s: Text, vk: Text, vkj: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, gj: Integer, vj: Integer) strict {
+    label ru unofficial "предшествующее основание с той же точкой и стороной (§4 DECISION-0197)";
+    when unique_limit(p, i, f, m, j, k, l, ap, a, s, vk, value) and monotone(limit_result(p, k, gj, ap, a, s, vkj, vj)) and k > 0 and k < i;
+    then limit_pair(p, i, k, gj, vkj, vj);
+}
+
+rule LimitPairl(p: Derivation, m: Text, ap: Text, s: Text, vk: Text, vkj: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, gj: Integer, vj: Integer) strict {
+    label ru unofficial "предшествующее основание с той же точкой и стороной (§4 DECISION-0197)";
+    when unique_limit(p, i, f, m, j, k, l, ap, a, s, vk, value) and monotone(limit_result(p, l, gj, ap, a, s, vkj, vj)) and l > 0 and l < i;
+    then limit_pair(p, i, l, gj, vkj, vj);
+}
+
+rule LimitFiniteOperand(p: Derivation, i: Integer, j: Integer, gj: Integer, vj: Integer) strict {
+    label ru unofficial "конечный предел основания (§4 DECISION-0197)";
+    when monotone(limit_pair(p, i, j, gj, "expr", vj));
+    then limit_operand(p, i, j, gj, vj);
+}
+
+rule LimitKnownLimitGiven(p: Derivation, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) strict {
+    label ru unofficial "закрытый словарь методов (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "limit_given", j, k, l, ap, a, s, vk, value);
+    then limit_known_method(p, i);
+}
+
+rule LimitKnownLimitConstant(p: Derivation, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) strict {
+    label ru unofficial "закрытый словарь методов (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "limit_constant", j, k, l, ap, a, s, vk, value);
+    then limit_known_method(p, i);
+}
+
+rule LimitKnownLimitIdentity(p: Derivation, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) strict {
+    label ru unofficial "закрытый словарь методов (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "limit_identity", j, k, l, ap, a, s, vk, value);
+    then limit_known_method(p, i);
+}
+
+rule LimitKnownLimitSum(p: Derivation, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) strict {
+    label ru unofficial "закрытый словарь методов (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "limit_sum", j, k, l, ap, a, s, vk, value);
+    then limit_known_method(p, i);
+}
+
+rule LimitKnownLimitDifference(p: Derivation, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) strict {
+    label ru unofficial "закрытый словарь методов (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "limit_difference", j, k, l, ap, a, s, vk, value);
+    then limit_known_method(p, i);
+}
+
+rule LimitKnownLimitProduct(p: Derivation, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) strict {
+    label ru unofficial "закрытый словарь методов (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "limit_product", j, k, l, ap, a, s, vk, value);
+    then limit_known_method(p, i);
+}
+
+rule LimitKnownLimitConstantMultiple(p: Derivation, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) strict {
+    label ru unofficial "закрытый словарь методов (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "limit_constant_multiple", j, k, l, ap, a, s, vk, value);
+    then limit_known_method(p, i);
+}
+
+rule LimitKnownLimitPower(p: Derivation, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) strict {
+    label ru unofficial "закрытый словарь методов (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "limit_power", j, k, l, ap, a, s, vk, value);
+    then limit_known_method(p, i);
+}
+
+rule LimitKnownLimitQuotient(p: Derivation, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) strict {
+    label ru unofficial "закрытый словарь методов (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "limit_quotient", j, k, l, ap, a, s, vk, value);
+    then limit_known_method(p, i);
+}
+
+rule LimitKnownDirectSubstitution(p: Derivation, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) strict {
+    label ru unofficial "закрытый словарь методов (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "direct_substitution", j, k, l, ap, a, s, vk, value);
+    then limit_known_method(p, i);
+}
+
+rule LimitKnownFactorAndCancel(p: Derivation, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) strict {
+    label ru unofficial "закрытый словарь методов (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "factor_and_cancel", j, k, l, ap, a, s, vk, value);
+    then limit_known_method(p, i);
+}
+
+rule LimitKnownContinuity(p: Derivation, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) strict {
+    label ru unofficial "закрытый словарь методов (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "continuity", j, k, l, ap, a, s, vk, value);
+    then limit_known_method(p, i);
+}
+
+rule LimitKnownSpecialLimitSin(p: Derivation, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) strict {
+    label ru unofficial "закрытый словарь методов (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "special_limit_sin", j, k, l, ap, a, s, vk, value);
+    then limit_known_method(p, i);
+}
+
+rule LimitKnownSpecialLimitOneMinusCos(p: Derivation, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) strict {
+    label ru unofficial "закрытый словарь методов (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "special_limit_one_minus_cos", j, k, l, ap, a, s, vk, value);
+    then limit_known_method(p, i);
+}
+
+rule LimitKnownOneSidedAgree(p: Derivation, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) strict {
+    label ru unofficial "закрытый словарь методов (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "one_sided_agree", j, k, l, ap, a, s, vk, value);
+    then limit_known_method(p, i);
+}
+
+rule LimitKnownOneSidedDiffer(p: Derivation, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) strict {
+    label ru unofficial "закрытый словарь методов (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "one_sided_differ", j, k, l, ap, a, s, vk, value);
+    then limit_known_method(p, i);
+}
+
+rule LimitKnownLimitAtInfinityRational(p: Derivation, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) strict {
+    label ru unofficial "закрытый словарь методов (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "limit_at_infinity_rational", j, k, l, ap, a, s, vk, value);
+    then limit_known_method(p, i);
+}
+
+rule LimitKnownLhopital(p: Derivation, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) strict {
+    label ru unofficial "закрытый словарь методов (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "lhopital", j, k, l, ap, a, s, vk, value);
+    then limit_known_method(p, i);
+}
+
+rule LimitGiven(p: Derivation, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, value: Integer) strict {
+    label ru unofficial "предел предъявлен как посылка дела (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "limit_given", 0, 0, 0, ap, a, s, vk, value);
+    then limit_method_match(p, i);
+}
+
+rule LimitConstant(p: Derivation, e: calc.expressions::Expr, ap: Text, s: Text, x: Text, a: Rational, c: Rational, i: Integer, f: Integer, value: Integer) strict {
+    label ru unofficial "предел константы равен ей самой (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "limit_constant", 0, 0, 0, ap, a, s, "expr", value) and context_of(p, e, x) and limit_node(e, f, "const", "", c, 0, 0) and calc.expressions::equivalent(e, f, value);
+    then limit_method_match(p, i);
+}
+
+rule LimitIdentityAt(p: Derivation, e: calc.expressions::Expr, s: Text, x: Text, a: Rational, i: Integer, f: Integer, value: Integer) strict {
+    label ru unofficial "предел x в точке a равен a (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "limit_identity", 0, 0, 0, "at", a, s, "expr", value) and context_of(p, e, x) and limit_node(e, f, "var", x, 0 / 1, 0, 0) and limit_node(e, value, "const", "", a, 0, 0);
+    then limit_method_match(p, i);
+}
+
+rule LimitIdentityplus_inf(p: Derivation, e: calc.expressions::Expr, s: Text, x: Text, a: Rational, i: Integer, f: Integer) strict {
+    label ru unofficial "предел переменной на соответствующей бесконечности (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "limit_identity", 0, 0, 0, "plus_inf", a, s, "plus_inf", 0) and context_of(p, e, x) and limit_node(e, f, "var", x, 0 / 1, 0, 0);
+    then limit_method_match(p, i);
+}
+
+rule LimitIdentityminus_inf(p: Derivation, e: calc.expressions::Expr, s: Text, x: Text, a: Rational, i: Integer, f: Integer) strict {
+    label ru unofficial "предел переменной на соответствующей бесконечности (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "limit_identity", 0, 0, 0, "minus_inf", a, s, "minus_inf", 0) and context_of(p, e, x) and limit_node(e, f, "var", x, 0 / 1, 0, 0);
+    then limit_method_match(p, i);
+}
+
+rule Checklimit_sum(p: Derivation, e: calc.expressions::Expr, ap: Text, s: Text, x: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, value: Integer, gj: Integer, gk: Integer, vj: Integer, vkkid: Integer, aa: Integer, bb: Integer, cc: Integer, dd: Integer) strict {
+    label ru unofficial "закон пределов проверяет структуру функции и результата (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "limit_sum", j, k, 0, ap, a, s, "expr", value) and context_of(p, e, x) and monotone(limit_operand(p, i, j, gj, vj)) and monotone(limit_operand(p, i, k, gk, vkkid)) and limit_node(e, f, "add", "", 0 / 1, aa, bb) and calc.expressions::equivalent(e, aa, gj) and calc.expressions::equivalent(e, bb, gk) and limit_node(e, value, "add", "", 0 / 1, cc, dd) and calc.expressions::equivalent(e, cc, vj) and calc.expressions::equivalent(e, dd, vkkid);
+    then limit_method_match(p, i);
+}
+
+rule Checklimit_difference(p: Derivation, e: calc.expressions::Expr, ap: Text, s: Text, x: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, value: Integer, gj: Integer, gk: Integer, vj: Integer, vkkid: Integer, aa: Integer, bb: Integer, cc: Integer, dd: Integer) strict {
+    label ru unofficial "закон пределов проверяет структуру функции и результата (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "limit_difference", j, k, 0, ap, a, s, "expr", value) and context_of(p, e, x) and monotone(limit_operand(p, i, j, gj, vj)) and monotone(limit_operand(p, i, k, gk, vkkid)) and limit_node(e, f, "sub", "", 0 / 1, aa, bb) and calc.expressions::equivalent(e, aa, gj) and calc.expressions::equivalent(e, bb, gk) and limit_node(e, value, "sub", "", 0 / 1, cc, dd) and calc.expressions::equivalent(e, cc, vj) and calc.expressions::equivalent(e, dd, vkkid);
+    then limit_method_match(p, i);
+}
+
+rule Checklimit_product(p: Derivation, e: calc.expressions::Expr, ap: Text, s: Text, x: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, value: Integer, gj: Integer, gk: Integer, vj: Integer, vkkid: Integer, aa: Integer, bb: Integer, cc: Integer, dd: Integer) strict {
+    label ru unofficial "закон пределов проверяет структуру функции и результата (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "limit_product", j, k, 0, ap, a, s, "expr", value) and context_of(p, e, x) and monotone(limit_operand(p, i, j, gj, vj)) and monotone(limit_operand(p, i, k, gk, vkkid)) and limit_node(e, f, "mul", "", 0 / 1, aa, bb) and calc.expressions::equivalent(e, aa, gj) and calc.expressions::equivalent(e, bb, gk) and limit_node(e, value, "mul", "", 0 / 1, cc, dd) and calc.expressions::equivalent(e, cc, vj) and calc.expressions::equivalent(e, dd, vkkid);
+    then limit_method_match(p, i);
+}
+
+rule Checklimit_quotient(p: Derivation, e: calc.expressions::Expr, ap: Text, s: Text, x: Text, a: Rational, c: Rational, i: Integer, f: Integer, j: Integer, k: Integer, value: Integer, gj: Integer, gk: Integer, vj: Integer, vkkid: Integer, aa: Integer, bb: Integer, cc: Integer, dd: Integer) strict {
+    label ru unofficial "закон пределов проверяет структуру функции и результата (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "limit_quotient", j, k, 0, ap, a, s, "expr", value) and context_of(p, e, x) and monotone(limit_operand(p, i, j, gj, vj)) and monotone(limit_operand(p, i, k, gk, vkkid)) and limit_node(e, f, "div", "", 0 / 1, aa, bb) and calc.expressions::equivalent(e, aa, gj) and calc.expressions::equivalent(e, bb, gk) and limit_node(e, value, "div", "", 0 / 1, cc, dd) and calc.expressions::equivalent(e, cc, vj) and calc.expressions::equivalent(e, dd, vkkid) and limit_node(e, vkkid, "const", "", c, 0, 0) and c != 0 / 1;
+    then limit_method_match(p, i);
+}
+
+rule LimitConstantMultiple(p: Derivation, e: calc.expressions::Expr, ap: Text, s: Text, x: Text, a: Rational, c: Rational, i: Integer, f: Integer, j: Integer, value: Integer, gj: Integer, vj: Integer, aa: Integer, bb: Integer, cc: Integer, dd: Integer) strict {
+    label ru unofficial "сохранены постоянный множитель и предел второго множителя (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "limit_constant_multiple", j, 0, 0, ap, a, s, "expr", value) and context_of(p, e, x) and monotone(limit_operand(p, i, j, gj, vj)) and limit_node(e, f, "mul", "", 0 / 1, aa, bb) and limit_node(e, aa, "const", "", c, 0, 0) and calc.expressions::equivalent(e, bb, gj) and limit_node(e, value, "mul", "", 0 / 1, cc, dd) and calc.expressions::equivalent(e, aa, cc) and calc.expressions::equivalent(e, vj, dd);
+    then limit_method_match(p, i);
+}
+
+rule LimitPower(p: Derivation, e: calc.expressions::Expr, ap: Text, s: Text, x: Text, a: Rational, c: Rational, i: Integer, f: Integer, j: Integer, value: Integer, gj: Integer, vj: Integer, en: Integer, aa: Integer, cc: Integer, dd: Integer) strict {
+    label ru unofficial "степень — положительный целый показатель корректного дерева (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "limit_power", j, 0, 0, ap, a, s, "expr", value) and context_of(p, e, x) and monotone(limit_operand(p, i, j, gj, vj)) and limit_node(e, f, "pow", "", 0 / 1, aa, en) and limit_node(e, en, "const", "", c, 0, 0) and c > 0 / 1 and calc.expressions::equivalent(e, aa, gj) and limit_node(e, value, "pow", "", 0 / 1, cc, dd) and calc.expressions::equivalent(e, cc, vj) and calc.expressions::equivalent(e, dd, en);
+    then limit_method_match(p, i);
+}
+
+rule SubstituteVariable(p: Derivation, gk: Integer, e: calc.expressions::Expr, m: Text, s: Text, vk: Text, x: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, gj: Integer) strict {
+    label ru unofficial "заменить только названную переменную (§4 DECISION-0197)";
+    when context_of(p, e, x) and unique_limit(p, i, f, m, j, k, l, "at", a, s, vk, value) and limit_node(e, gj, "var", x, 0 / 1, 0, 0) and limit_node(e, gk, "const", "", a, 0, 0);
+    then substituted(e, gj, gk, x, a);
+}
+
+rule SubstituteConstant(p: Derivation, gk: Integer, e: calc.expressions::Expr, m: Text, s: Text, vk: Text, x: Text, a: Rational, c: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, gj: Integer) strict {
+    label ru unofficial "константа сохраняется (§4 DECISION-0197)";
+    when context_of(p, e, x) and unique_limit(p, i, f, m, j, k, l, "at", a, s, vk, value) and limit_node(e, gj, "const", "", c, 0, 0) and limit_node(e, gk, "const", "", c, 0, 0);
+    then substituted(e, gj, gk, x, a);
+}
+
+rule SubstituteOtherVariable(p: Derivation, gk: Integer, e: calc.expressions::Expr, m: Text, s: Text, vk: Text, x: Text, name: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, gj: Integer) strict {
+    label ru unofficial "чужая переменная сохраняется (§4 DECISION-0197)";
+    when context_of(p, e, x) and unique_limit(p, i, f, m, j, k, l, "at", a, s, vk, value) and limit_node(e, gj, "var", name, 0 / 1, 0, 0) and name != x and limit_node(e, gk, "var", name, 0 / 1, 0, 0);
+    then substituted(e, gj, gk, x, a);
+}
+
+rule Substituteneg(p: Derivation, e: calc.expressions::Expr, m: Text, s: Text, vk: Text, x: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, gj: Integer, gk: Integer, aa: Integer, cc: Integer) strict {
+    label ru unofficial "сохранить тег и порядок дочерних узлов (§4 DECISION-0197)";
+    when context_of(p, e, x) and unique_limit(p, i, f, m, j, k, l, "at", a, s, vk, value) and limit_node(e, gj, "neg", "", 0 / 1, aa, 0) and limit_node(e, gk, "neg", "", 0 / 1, cc, 0) and monotone(substituted(e, aa, cc, x, a));
+    then substituted(e, gj, gk, x, a);
+}
+
+rule Substitutesin(p: Derivation, e: calc.expressions::Expr, m: Text, s: Text, vk: Text, x: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, gj: Integer, gk: Integer, aa: Integer, cc: Integer) strict {
+    label ru unofficial "сохранить тег и порядок дочерних узлов (§4 DECISION-0197)";
+    when context_of(p, e, x) and unique_limit(p, i, f, m, j, k, l, "at", a, s, vk, value) and limit_node(e, gj, "sin", "", 0 / 1, aa, 0) and limit_node(e, gk, "sin", "", 0 / 1, cc, 0) and monotone(substituted(e, aa, cc, x, a));
+    then substituted(e, gj, gk, x, a);
+}
+
+rule Substitutecos(p: Derivation, e: calc.expressions::Expr, m: Text, s: Text, vk: Text, x: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, gj: Integer, gk: Integer, aa: Integer, cc: Integer) strict {
+    label ru unofficial "сохранить тег и порядок дочерних узлов (§4 DECISION-0197)";
+    when context_of(p, e, x) and unique_limit(p, i, f, m, j, k, l, "at", a, s, vk, value) and limit_node(e, gj, "cos", "", 0 / 1, aa, 0) and limit_node(e, gk, "cos", "", 0 / 1, cc, 0) and monotone(substituted(e, aa, cc, x, a));
+    then substituted(e, gj, gk, x, a);
+}
+
+rule Substituteexp(p: Derivation, e: calc.expressions::Expr, m: Text, s: Text, vk: Text, x: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, gj: Integer, gk: Integer, aa: Integer, cc: Integer) strict {
+    label ru unofficial "сохранить тег и порядок дочерних узлов (§4 DECISION-0197)";
+    when context_of(p, e, x) and unique_limit(p, i, f, m, j, k, l, "at", a, s, vk, value) and limit_node(e, gj, "exp", "", 0 / 1, aa, 0) and limit_node(e, gk, "exp", "", 0 / 1, cc, 0) and monotone(substituted(e, aa, cc, x, a));
+    then substituted(e, gj, gk, x, a);
+}
+
+rule Substituteln(p: Derivation, e: calc.expressions::Expr, m: Text, s: Text, vk: Text, x: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, gj: Integer, gk: Integer, aa: Integer, cc: Integer) strict {
+    label ru unofficial "сохранить тег и порядок дочерних узлов (§4 DECISION-0197)";
+    when context_of(p, e, x) and unique_limit(p, i, f, m, j, k, l, "at", a, s, vk, value) and limit_node(e, gj, "ln", "", 0 / 1, aa, 0) and limit_node(e, gk, "ln", "", 0 / 1, cc, 0) and monotone(substituted(e, aa, cc, x, a));
+    then substituted(e, gj, gk, x, a);
+}
+
+rule Substituteadd(p: Derivation, e: calc.expressions::Expr, m: Text, s: Text, vk: Text, x: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, gj: Integer, gk: Integer, aa: Integer, bb: Integer, cc: Integer, dd: Integer) strict {
+    label ru unofficial "сохранить тег и порядок дочерних узлов (§4 DECISION-0197)";
+    when context_of(p, e, x) and unique_limit(p, i, f, m, j, k, l, "at", a, s, vk, value) and limit_node(e, gj, "add", "", 0 / 1, aa, bb) and limit_node(e, gk, "add", "", 0 / 1, cc, dd) and monotone(substituted(e, aa, cc, x, a)) and monotone(substituted(e, bb, dd, x, a));
+    then substituted(e, gj, gk, x, a);
+}
+
+rule Substitutesub(p: Derivation, e: calc.expressions::Expr, m: Text, s: Text, vk: Text, x: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, gj: Integer, gk: Integer, aa: Integer, bb: Integer, cc: Integer, dd: Integer) strict {
+    label ru unofficial "сохранить тег и порядок дочерних узлов (§4 DECISION-0197)";
+    when context_of(p, e, x) and unique_limit(p, i, f, m, j, k, l, "at", a, s, vk, value) and limit_node(e, gj, "sub", "", 0 / 1, aa, bb) and limit_node(e, gk, "sub", "", 0 / 1, cc, dd) and monotone(substituted(e, aa, cc, x, a)) and monotone(substituted(e, bb, dd, x, a));
+    then substituted(e, gj, gk, x, a);
+}
+
+rule Substitutemul(p: Derivation, e: calc.expressions::Expr, m: Text, s: Text, vk: Text, x: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, gj: Integer, gk: Integer, aa: Integer, bb: Integer, cc: Integer, dd: Integer) strict {
+    label ru unofficial "сохранить тег и порядок дочерних узлов (§4 DECISION-0197)";
+    when context_of(p, e, x) and unique_limit(p, i, f, m, j, k, l, "at", a, s, vk, value) and limit_node(e, gj, "mul", "", 0 / 1, aa, bb) and limit_node(e, gk, "mul", "", 0 / 1, cc, dd) and monotone(substituted(e, aa, cc, x, a)) and monotone(substituted(e, bb, dd, x, a));
+    then substituted(e, gj, gk, x, a);
+}
+
+rule Substitutediv(p: Derivation, e: calc.expressions::Expr, m: Text, s: Text, vk: Text, x: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, gj: Integer, gk: Integer, aa: Integer, bb: Integer, cc: Integer, dd: Integer) strict {
+    label ru unofficial "сохранить тег и порядок дочерних узлов (§4 DECISION-0197)";
+    when context_of(p, e, x) and unique_limit(p, i, f, m, j, k, l, "at", a, s, vk, value) and limit_node(e, gj, "div", "", 0 / 1, aa, bb) and limit_node(e, gk, "div", "", 0 / 1, cc, dd) and monotone(substituted(e, aa, cc, x, a)) and monotone(substituted(e, bb, dd, x, a));
+    then substituted(e, gj, gk, x, a);
+}
+
+rule Substitutepow(p: Derivation, e: calc.expressions::Expr, m: Text, s: Text, vk: Text, x: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, gj: Integer, gk: Integer, aa: Integer, bb: Integer, cc: Integer, dd: Integer) strict {
+    label ru unofficial "сохранить тег и порядок дочерних узлов (§4 DECISION-0197)";
+    when context_of(p, e, x) and unique_limit(p, i, f, m, j, k, l, "at", a, s, vk, value) and limit_node(e, gj, "pow", "", 0 / 1, aa, bb) and limit_node(e, gk, "pow", "", 0 / 1, cc, dd) and monotone(substituted(e, aa, cc, x, a)) and monotone(substituted(e, bb, dd, x, a));
+    then substituted(e, gj, gk, x, a);
+}
+
+rule Continuitysin(p: Derivation, e: calc.expressions::Expr, s: Text, x: Text, a: Rational, i: Integer, f: Integer, value: Integer, aa: Integer) strict {
+    label ru unofficial "непрерывная элементарная функция, точная структурная подстановка (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "continuity", 0, 0, 0, "at", a, s, "expr", value) and context_of(p, e, x) and limit_node(e, f, "sin", "", 0 / 1, aa, 0) and continuous_tree(e, f, x, a) and substituted(e, f, value, x, a);
+    then limit_method_match(p, i);
+}
+
+rule Continuitycos(p: Derivation, e: calc.expressions::Expr, s: Text, x: Text, a: Rational, i: Integer, f: Integer, value: Integer, aa: Integer) strict {
+    label ru unofficial "непрерывная элементарная функция, точная структурная подстановка (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "continuity", 0, 0, 0, "at", a, s, "expr", value) and context_of(p, e, x) and limit_node(e, f, "cos", "", 0 / 1, aa, 0) and continuous_tree(e, f, x, a) and substituted(e, f, value, x, a);
+    then limit_method_match(p, i);
+}
+
+rule Continuityexp(p: Derivation, e: calc.expressions::Expr, s: Text, x: Text, a: Rational, i: Integer, f: Integer, value: Integer, aa: Integer) strict {
+    label ru unofficial "непрерывная элементарная функция, точная структурная подстановка (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "continuity", 0, 0, 0, "at", a, s, "expr", value) and context_of(p, e, x) and limit_node(e, f, "exp", "", 0 / 1, aa, 0) and continuous_tree(e, f, x, a) and substituted(e, f, value, x, a);
+    then limit_method_match(p, i);
+}
+
+rule Continuityln(p: Derivation, e: calc.expressions::Expr, s: Text, x: Text, a: Rational, i: Integer, f: Integer, value: Integer, aa: Integer) strict {
+    label ru unofficial "непрерывная элементарная функция, точная структурная подстановка (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "continuity", 0, 0, 0, "at", a, s, "expr", value) and context_of(p, e, x) and limit_node(e, f, "ln", "", 0 / 1, aa, 0) and continuous_tree(e, f, x, a) and substituted(e, f, value, x, a);
+    then limit_method_match(p, i);
+}
+
+rule Checkspecial_limit_sin(p: Derivation, e: calc.expressions::Expr, s: Text, x: Text, a: Rational, i: Integer, f: Integer, value: Integer, aa: Integer, bb: Integer, cc: Integer) strict {
+    label ru unofficial "специальный тригонометрический предел в нуле (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "special_limit_sin", 0, 0, 0, "at", a, s, "expr", value) and a == 0 / 1 and context_of(p, e, x) and limit_node(e, f, "div", "", 0 / 1, aa, bb) and limit_node(e, bb, "var", x, 0 / 1, 0, 0) and limit_node(e, value, "const", "", 1 / 1, 0, 0) and limit_node(e, aa, "sin", "", 0 / 1, cc, 0) and calc.expressions::equivalent(e, cc, bb);
+    then limit_method_match(p, i);
+}
+
+rule Checkspecial_limit_one_minus_cos(p: Derivation, e: calc.expressions::Expr, s: Text, x: Text, a: Rational, i: Integer, f: Integer, value: Integer, en: Integer, aa: Integer, bb: Integer, cc: Integer, dd: Integer) strict {
+    label ru unofficial "специальный тригонометрический предел в нуле (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "special_limit_one_minus_cos", 0, 0, 0, "at", a, s, "expr", value) and a == 0 / 1 and context_of(p, e, x) and limit_node(e, f, "div", "", 0 / 1, aa, bb) and limit_node(e, bb, "var", x, 0 / 1, 0, 0) and limit_node(e, value, "const", "", 0 / 1, 0, 0) and limit_node(e, aa, "sub", "", 0 / 1, cc, dd) and limit_node(e, cc, "const", "", 1 / 1, 0, 0) and limit_node(e, dd, "cos", "", 0 / 1, en, 0) and calc.expressions::equivalent(e, en, bb);
+    then limit_method_match(p, i);
+}
+
+rule LimitValuesEquivalent(p: Derivation, e: calc.expressions::Expr, x: Text, vj: Integer, vkkid: Integer) strict {
+    label ru unofficial "структурно равные конечные значения (§4 DECISION-0197)";
+    when context_of(p, e, x) and calc.expressions::equivalent(e, vj, vkkid);
+    then limit_same_value(e, "expr", vj, "expr", vkkid);
+}
+
+rule LimitValuesplus_inf(p: Derivation, e: calc.expressions::Expr, x: Text) strict {
+    label ru unofficial "совпадающие знаки бесконечности (§4 DECISION-0197)";
+    when context_of(p, e, x);
+    then limit_same_value(e, "plus_inf", 0, "plus_inf", 0);
+}
+
+rule LimitValuesminus_inf(p: Derivation, e: calc.expressions::Expr, x: Text) strict {
+    label ru unofficial "совпадающие знаки бесконечности (§4 DECISION-0197)";
+    when context_of(p, e, x);
+    then limit_same_value(e, "minus_inf", 0, "minus_inf", 0);
+}
+
+rule LimitConstantsDifferent(p: Derivation, e: calc.expressions::Expr, x: Text, av: Rational, bv: Rational, vj: Integer, vkkid: Integer) strict {
+    label ru unofficial "разные рациональные константы доказывают несовпадение (§4 DECISION-0197)";
+    when context_of(p, e, x) and limit_node(e, vj, "const", "", av, 0, 0) and limit_node(e, vkkid, "const", "", bv, 0, 0) and av != bv;
+    then limit_different_value(e, "expr", vj, "expr", vkkid);
+}
+
+rule LimitKindsDifferentplus_inf(p: Derivation, e: calc.expressions::Expr, x: Text) strict {
+    label ru unofficial "разные знаки бесконечности (§4 DECISION-0197)";
+    when context_of(p, e, x);
+    then limit_different_value(e, "plus_inf", 0, "minus_inf", 0);
+}
+
+rule LimitKindsDifferentminus_inf(p: Derivation, e: calc.expressions::Expr, x: Text) strict {
+    label ru unofficial "разные знаки бесконечности (§4 DECISION-0197)";
+    when context_of(p, e, x);
+    then limit_different_value(e, "minus_inf", 0, "plus_inf", 0);
+}
+
+rule LimitFiniteInfiniteplus_inf0(p: Derivation, e: calc.expressions::Expr, x: Text, vj: Integer) strict {
+    label ru unofficial "конечное значение отличается от бесконечности (§4 DECISION-0197)";
+    when context_of(p, e, x) and calc.expressions::well_formed(e, vj);
+    then limit_different_value(e, "expr", vj, "plus_inf", 0);
+}
+
+rule LimitFiniteInfiniteplus_inf1(p: Derivation, e: calc.expressions::Expr, x: Text, vj: Integer) strict {
+    label ru unofficial "конечное значение отличается от бесконечности (§4 DECISION-0197)";
+    when context_of(p, e, x) and calc.expressions::well_formed(e, vj);
+    then limit_different_value(e, "plus_inf", 0, "expr", vj);
+}
+
+rule LimitFiniteInfiniteminus_inf0(p: Derivation, e: calc.expressions::Expr, x: Text, vj: Integer) strict {
+    label ru unofficial "конечное значение отличается от бесконечности (§4 DECISION-0197)";
+    when context_of(p, e, x) and calc.expressions::well_formed(e, vj);
+    then limit_different_value(e, "expr", vj, "minus_inf", 0);
+}
+
+rule LimitFiniteInfiniteminus_inf1(p: Derivation, e: calc.expressions::Expr, x: Text, vj: Integer) strict {
+    label ru unofficial "конечное значение отличается от бесконечности (§4 DECISION-0197)";
+    when context_of(p, e, x) and calc.expressions::well_formed(e, vj);
+    then limit_different_value(e, "minus_inf", 0, "expr", vj);
+}
+
+rule Checkone_sided_agree(p: Derivation, e: calc.expressions::Expr, vk: Text, x: Text, vkj: Text, vkk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, value: Integer, gj: Integer, gk: Integer, vj: Integer, vkkid: Integer) strict {
+    label ru unofficial "сравнить левый и правый предел одной функции (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "one_sided_agree", j, k, 0, "at", a, "both", vk, value) and context_of(p, e, x) and monotone(limit_result(p, j, gj, "at", a, "left", vkj, vj)) and monotone(limit_result(p, k, gk, "at", a, "right", vkk, vkkid)) and j > 0 and j < i and k > 0 and k < i and calc.expressions::equivalent(e, f, gj) and calc.expressions::equivalent(e, f, gk) and limit_same_value(e, vkj, vj, vkk, vkkid) and limit_same_value(e, vk, value, vkj, vj);
+    then limit_method_match(p, i);
+}
+
+rule Checkone_sided_differ(p: Derivation, e: calc.expressions::Expr, vk: Text, x: Text, vkj: Text, vkk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, value: Integer, gj: Integer, gk: Integer, vj: Integer, vkkid: Integer) strict {
+    label ru unofficial "сравнить левый и правый предел одной функции (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "one_sided_differ", j, k, 0, "at", a, "both", vk, value) and context_of(p, e, x) and monotone(limit_result(p, j, gj, "at", a, "left", vkj, vj)) and monotone(limit_result(p, k, gk, "at", a, "right", vkk, vkkid)) and j > 0 and j < i and k > 0 and k < i and calc.expressions::equivalent(e, f, gj) and calc.expressions::equivalent(e, f, gk) and vk == "dne" and value == 0 and limit_different_value(e, vkj, vj, vkk, vkkid);
+    then limit_method_match(p, i);
+}
+
+rule LimitsPolynomialVariable(p: Derivation, e: calc.expressions::Expr, m: Text, ap: Text, s: Text, vk: Text, x: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) strict {
+    label ru unofficial "переиспользовать мост выражение → многочлен (§4 DECISION-0197)";
+    when limit_line(p, i, f, m, j, k, l, ap, a, s, vk, value) and context_of(p, e, x);
+    then calc.polynomials_q::polynomial_variable(e, x);
+}
+
+rule LimitAskPolynomialValue(p: Derivation, e: calc.expressions::Expr, s: Text, x: Text, a: Rational, i: Integer, f: Integer, value: Integer, pp: calc.polynomials_q::Poly) strict {
+    label ru unofficial "запрос Горнера для многочлена (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "direct_substitution", 0, 0, 0, "at", a, s, "expr", value) and context_of(p, e, x) and calc.polynomials_q::polynomial_of(e, f, x, pp);
+    then calc.polynomials_q::evaluation_request(pp, a);
+}
+
+rule LimitPolynomialValue(p: Derivation, e: calc.expressions::Expr, s: Text, x: Text, a: Rational, v: Rational, i: Integer, f: Integer, value: Integer, pp: calc.polynomials_q::Poly) strict {
+    label ru unofficial "прямая подстановка: значение многочлена (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "direct_substitution", 0, 0, 0, "at", a, s, "expr", value) and context_of(p, e, x) and calc.polynomials_q::polynomial_of(e, f, x, pp) and calc.polynomials_q::poly_value(pp, a, v) and limit_node(e, value, "const", "", v, 0, 0);
+    then limit_method_match(p, i);
+}
+
+rule LimitAskRationalValue(p: Derivation, e: calc.expressions::Expr, s: Text, x: Text, a: Rational, i: Integer, f: Integer, value: Integer, aa: Integer, bb: Integer, pn: calc.polynomials_q::Poly, pd: calc.polynomials_q::Poly) strict {
+    label ru unofficial "явный запрос значения дроби (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "direct_substitution", 0, 0, 0, "at", a, s, "expr", value) and context_of(p, e, x) and limit_node(e, f, "div", "", 0 / 1, aa, bb) and calc.polynomials_q::polynomial_of(e, aa, x, pn) and calc.polynomials_q::polynomial_of(e, bb, x, pd);
+    then calc.polynomials_q::rational_value_request(pn, pd, a);
+}
+
+rule LimitRationalValue(p: Derivation, e: calc.expressions::Expr, s: Text, x: Text, a: Rational, v: Rational, i: Integer, f: Integer, value: Integer, aa: Integer, bb: Integer, pn: calc.polynomials_q::Poly, pd: calc.polynomials_q::Poly) strict {
+    label ru unofficial "прямая подстановка: значение дроби (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "direct_substitution", 0, 0, 0, "at", a, s, "expr", value) and context_of(p, e, x) and limit_node(e, f, "div", "", 0 / 1, aa, bb) and calc.polynomials_q::polynomial_of(e, aa, x, pn) and calc.polynomials_q::polynomial_of(e, bb, x, pd) and calc.polynomials_q::rational_value(pn, pd, a, v) and limit_node(e, value, "const", "", v, 0, 0);
+    then limit_method_match(p, i);
+}
+
+rule LimitAskInfinity(p: Derivation, e: calc.expressions::Expr, ap: Text, s: Text, vk: Text, x: Text, a: Rational, i: Integer, f: Integer, value: Integer, aa: Integer, bb: Integer, pn: calc.polynomials_q::Poly, pd: calc.polynomials_q::Poly) strict {
+    label ru unofficial "явный запрос предела дроби по степеням (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "limit_at_infinity_rational", 0, 0, 0, ap, a, s, vk, value) and context_of(p, e, x) and limit_node(e, f, "div", "", 0 / 1, aa, bb) and calc.polynomials_q::polynomial_of(e, aa, x, pn) and calc.polynomials_q::polynomial_of(e, bb, x, pd);
+    then calc.polynomials_q::infinity_limit_request(pn, pd, ap);
+}
+
+rule LimitInfinityFinite(p: Derivation, e: calc.expressions::Expr, ap: Text, s: Text, vk: Text, x: Text, a: Rational, v: Rational, i: Integer, f: Integer, value: Integer, aa: Integer, bb: Integer, pn: calc.polynomials_q::Poly, pd: calc.polynomials_q::Poly) strict {
+    label ru unofficial "конечный ответ вычислителя предела (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "limit_at_infinity_rational", 0, 0, 0, ap, a, s, vk, value) and context_of(p, e, x) and limit_node(e, f, "div", "", 0 / 1, aa, bb) and calc.polynomials_q::polynomial_of(e, aa, x, pn) and calc.polynomials_q::polynomial_of(e, bb, x, pd) and vk == "expr" and calc.polynomials_q::rational_infinity_limit(pn, pd, ap, "rational", v) and limit_node(e, value, "const", "", v, 0, 0);
+    then limit_method_match(p, i);
+}
+
+rule LimitInfinityplus_inf(p: Derivation, e: calc.expressions::Expr, ap: Text, s: Text, vk: Text, x: Text, a: Rational, i: Integer, f: Integer, value: Integer, aa: Integer, bb: Integer, pn: calc.polynomials_q::Poly, pd: calc.polynomials_q::Poly) strict {
+    label ru unofficial "бесконечный ответ вычислителя предела (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "limit_at_infinity_rational", 0, 0, 0, ap, a, s, vk, value) and context_of(p, e, x) and limit_node(e, f, "div", "", 0 / 1, aa, bb) and calc.polynomials_q::polynomial_of(e, aa, x, pn) and calc.polynomials_q::polynomial_of(e, bb, x, pd) and vk == "plus_inf" and value == 0 and calc.polynomials_q::rational_infinity_limit(pn, pd, ap, "plus_inf", 0 / 1);
+    then limit_method_match(p, i);
+}
+
+rule LimitInfinityminus_inf(p: Derivation, e: calc.expressions::Expr, ap: Text, s: Text, vk: Text, x: Text, a: Rational, i: Integer, f: Integer, value: Integer, aa: Integer, bb: Integer, pn: calc.polynomials_q::Poly, pd: calc.polynomials_q::Poly) strict {
+    label ru unofficial "бесконечный ответ вычислителя предела (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "limit_at_infinity_rational", 0, 0, 0, ap, a, s, vk, value) and context_of(p, e, x) and limit_node(e, f, "div", "", 0 / 1, aa, bb) and calc.polynomials_q::polynomial_of(e, aa, x, pn) and calc.polynomials_q::polynomial_of(e, bb, x, pd) and vk == "minus_inf" and value == 0 and calc.polynomials_q::rational_infinity_limit(pn, pd, ap, "minus_inf", 0 / 1);
+    then limit_method_match(p, i);
+}
+
+rule LimitFactorCancel(p: Derivation, e: calc.expressions::Expr, s: Text, vk: Text, x: Text, vkj: Text, a: Rational, i: Integer, f: Integer, j: Integer, value: Integer, gj: Integer, vj: Integer, aa: Integer, bb: Integer, cc: Integer, dd: Integer, pn: calc.polynomials_q::Poly, pd: calc.polynomials_q::Poly, pp: calc.polynomials_q::Poly, pq: calc.polynomials_q::Poly, qn: calc.polynomials_q::Poly, qd: calc.polynomials_q::Poly, cancel: calc.polynomials_q::Cancellation) strict {
+    label ru unofficial "оба остатка нулевые, основание — предел сокращённой дроби (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "factor_and_cancel", j, 0, 0, "at", a, s, vk, value) and context_of(p, e, x) and limit_node(e, f, "div", "", 0 / 1, aa, bb) and calc.polynomials_q::polynomial_of(e, aa, x, pn) and calc.polynomials_q::polynomial_of(e, bb, x, pd) and limit_cancellation(p, i, cancel) and calc.polynomials_q::cancellation_request(cancel, pn, pd, a) and calc.polynomials_q::cancelled_ratio(cancel, qn, qd) and monotone(limit_pair(p, i, j, gj, vkj, vj)) and limit_node(e, gj, "div", "", 0 / 1, cc, dd) and calc.polynomials_q::polynomial_of(e, cc, x, pp) and calc.polynomials_q::polynomial_of(e, dd, x, pq) and calc.polynomials_q::polys_equal(qn, pp) and calc.polynomials_q::polys_equal(qd, pq) and limit_same_value(e, vk, value, vkj, vj);
+    then limit_method_match(p, i);
+}
+
+rule DerivativeOriginconstant_rule(p: Derivation, e: calc.expressions::Expr, x: Text, i: Integer, f: Integer, j: Integer, gj: Integer) strict {
+    label ru unofficial "происхождение проверенной производной от исходной функции (§4 DECISION-0197)";
+    when unique_line(p, i, f, "constant_rule", j, 0, 0, 0) and unique_line(p, j, gj, "given", 0, 0, 0, 0) and monotone(checked(p, i, f)) and monotone(checked(p, j, gj)) and context_of(p, e, x) and calc.expressions::well_formed(e, f) and calc.expressions::well_formed(e, gj) and j > 0 and j < i;
+    then derivative_origin(p, i, f, gj);
+}
+
+rule DerivativeOriginpower_rule(p: Derivation, e: calc.expressions::Expr, x: Text, i: Integer, f: Integer, j: Integer, gj: Integer) strict {
+    label ru unofficial "происхождение проверенной производной от исходной функции (§4 DECISION-0197)";
+    when unique_line(p, i, f, "power_rule", j, 0, 0, 0) and unique_line(p, j, gj, "given", 0, 0, 0, 0) and monotone(checked(p, i, f)) and monotone(checked(p, j, gj)) and context_of(p, e, x) and calc.expressions::well_formed(e, f) and calc.expressions::well_formed(e, gj) and j > 0 and j < i;
+    then derivative_origin(p, i, f, gj);
+}
+
+rule DerivativeOriginderivative_sin(p: Derivation, e: calc.expressions::Expr, x: Text, i: Integer, f: Integer, j: Integer, gj: Integer) strict {
+    label ru unofficial "происхождение проверенной производной от исходной функции (§4 DECISION-0197)";
+    when unique_line(p, i, f, "derivative_sin", j, 0, 0, 0) and unique_line(p, j, gj, "given", 0, 0, 0, 0) and monotone(checked(p, i, f)) and monotone(checked(p, j, gj)) and context_of(p, e, x) and calc.expressions::well_formed(e, f) and calc.expressions::well_formed(e, gj) and j > 0 and j < i;
+    then derivative_origin(p, i, f, gj);
+}
+
+rule DerivativeOriginderivative_cos(p: Derivation, e: calc.expressions::Expr, x: Text, i: Integer, f: Integer, j: Integer, gj: Integer) strict {
+    label ru unofficial "происхождение проверенной производной от исходной функции (§4 DECISION-0197)";
+    when unique_line(p, i, f, "derivative_cos", j, 0, 0, 0) and unique_line(p, j, gj, "given", 0, 0, 0, 0) and monotone(checked(p, i, f)) and monotone(checked(p, j, gj)) and context_of(p, e, x) and calc.expressions::well_formed(e, f) and calc.expressions::well_formed(e, gj) and j > 0 and j < i;
+    then derivative_origin(p, i, f, gj);
+}
+
+rule DerivativeOriginderivative_exp(p: Derivation, e: calc.expressions::Expr, x: Text, i: Integer, f: Integer, j: Integer, gj: Integer) strict {
+    label ru unofficial "происхождение проверенной производной от исходной функции (§4 DECISION-0197)";
+    when unique_line(p, i, f, "derivative_exp", j, 0, 0, 0) and unique_line(p, j, gj, "given", 0, 0, 0, 0) and monotone(checked(p, i, f)) and monotone(checked(p, j, gj)) and context_of(p, e, x) and calc.expressions::well_formed(e, f) and calc.expressions::well_formed(e, gj) and j > 0 and j < i;
+    then derivative_origin(p, i, f, gj);
+}
+
+rule DerivativeOriginderivative_ln(p: Derivation, e: calc.expressions::Expr, x: Text, i: Integer, f: Integer, j: Integer, gj: Integer) strict {
+    label ru unofficial "происхождение проверенной производной от исходной функции (§4 DECISION-0197)";
+    when unique_line(p, i, f, "derivative_ln", j, 0, 0, 0) and unique_line(p, j, gj, "given", 0, 0, 0, 0) and monotone(checked(p, i, f)) and monotone(checked(p, j, gj)) and context_of(p, e, x) and calc.expressions::well_formed(e, f) and calc.expressions::well_formed(e, gj) and j > 0 and j < i;
+    then derivative_origin(p, i, f, gj);
+}
+
+rule DerivativeOriginalgebra(p: Derivation, i: Integer, f: Integer, j: Integer, gj: Integer, gk: Integer) strict {
+    label ru unofficial "преобразование сохраняет исходник производной (§4 DECISION-0197)";
+    when unique_line(p, i, f, "algebra", j, 0, 0, 0) and monotone(checked(p, i, f)) and monotone(derivative_origin(p, j, gj, gk)) and j > 0 and j < i;
+    then derivative_origin(p, i, f, gk);
+}
+
+rule DerivativeOriginidentity(p: Derivation, i: Integer, f: Integer, j: Integer, gj: Integer, gk: Integer) strict {
+    label ru unofficial "преобразование сохраняет исходник производной (§4 DECISION-0197)";
+    when unique_line(p, i, f, "identity", j, 0, 0, 0) and monotone(checked(p, i, f)) and monotone(derivative_origin(p, j, gj, gk)) and j > 0 and j < i;
+    then derivative_origin(p, i, f, gk);
+}
+
+rule LhopitalZeroOverZero(p: Derivation, e: calc.expressions::Expr, ap: Text, s: Text, vk: Text, x: Text, vkj: Text, vkk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, gj: Integer, gk: Integer, vj: Integer, vkkid: Integer, aa: Integer, bb: Integer) strict {
+    label ru unofficial "неопределённость 0/0 из двух установленных пределов (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "lhopital", j, k, l, ap, a, s, vk, value) and context_of(p, e, x) and limit_node(e, f, "div", "", 0 / 1, aa, bb) and monotone(limit_pair(p, i, j, gj, vkj, vj)) and monotone(limit_pair(p, i, k, gk, vkk, vkkid)) and calc.expressions::equivalent(e, aa, gj) and calc.expressions::equivalent(e, bb, gk) and vkj == "expr" and vkk == "expr" and limit_node(e, vj, "const", "", 0 / 1, 0, 0) and limit_node(e, vkkid, "const", "", 0 / 1, 0, 0);
+    then lhopital_indeterminate(p, i);
+}
+
+rule LhopitalInfinityplus_infplus_inf(p: Derivation, e: calc.expressions::Expr, ap: Text, s: Text, vk: Text, x: Text, vkj: Text, vkk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, gj: Integer, gk: Integer, vj: Integer, vkkid: Integer, aa: Integer, bb: Integer) strict {
+    label ru unofficial "неопределённость ∞/∞ независимо от знаков (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "lhopital", j, k, l, ap, a, s, vk, value) and context_of(p, e, x) and limit_node(e, f, "div", "", 0 / 1, aa, bb) and monotone(limit_pair(p, i, j, gj, vkj, vj)) and monotone(limit_pair(p, i, k, gk, vkk, vkkid)) and calc.expressions::equivalent(e, aa, gj) and calc.expressions::equivalent(e, bb, gk) and vkj == "plus_inf" and vkk == "plus_inf";
+    then lhopital_indeterminate(p, i);
+}
+
+rule LhopitalInfinityplus_infminus_inf(p: Derivation, e: calc.expressions::Expr, ap: Text, s: Text, vk: Text, x: Text, vkj: Text, vkk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, gj: Integer, gk: Integer, vj: Integer, vkkid: Integer, aa: Integer, bb: Integer) strict {
+    label ru unofficial "неопределённость ∞/∞ независимо от знаков (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "lhopital", j, k, l, ap, a, s, vk, value) and context_of(p, e, x) and limit_node(e, f, "div", "", 0 / 1, aa, bb) and monotone(limit_pair(p, i, j, gj, vkj, vj)) and monotone(limit_pair(p, i, k, gk, vkk, vkkid)) and calc.expressions::equivalent(e, aa, gj) and calc.expressions::equivalent(e, bb, gk) and vkj == "plus_inf" and vkk == "minus_inf";
+    then lhopital_indeterminate(p, i);
+}
+
+rule LhopitalInfinityminus_infplus_inf(p: Derivation, e: calc.expressions::Expr, ap: Text, s: Text, vk: Text, x: Text, vkj: Text, vkk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, gj: Integer, gk: Integer, vj: Integer, vkkid: Integer, aa: Integer, bb: Integer) strict {
+    label ru unofficial "неопределённость ∞/∞ независимо от знаков (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "lhopital", j, k, l, ap, a, s, vk, value) and context_of(p, e, x) and limit_node(e, f, "div", "", 0 / 1, aa, bb) and monotone(limit_pair(p, i, j, gj, vkj, vj)) and monotone(limit_pair(p, i, k, gk, vkk, vkkid)) and calc.expressions::equivalent(e, aa, gj) and calc.expressions::equivalent(e, bb, gk) and vkj == "minus_inf" and vkk == "plus_inf";
+    then lhopital_indeterminate(p, i);
+}
+
+rule LhopitalInfinityminus_infminus_inf(p: Derivation, e: calc.expressions::Expr, ap: Text, s: Text, vk: Text, x: Text, vkj: Text, vkk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, gj: Integer, gk: Integer, vj: Integer, vkkid: Integer, aa: Integer, bb: Integer) strict {
+    label ru unofficial "неопределённость ∞/∞ независимо от знаков (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "lhopital", j, k, l, ap, a, s, vk, value) and context_of(p, e, x) and limit_node(e, f, "div", "", 0 / 1, aa, bb) and monotone(limit_pair(p, i, j, gj, vkj, vj)) and monotone(limit_pair(p, i, k, gk, vkk, vkkid)) and calc.expressions::equivalent(e, aa, gj) and calc.expressions::equivalent(e, bb, gk) and vkj == "minus_inf" and vkk == "minus_inf";
+    then lhopital_indeterminate(p, i);
+}
+
+rule LhopitalDerivativePair(p: Derivation, e: calc.expressions::Expr, ap: Text, s: Text, vk: Text, x: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, gj: Integer, gk: Integer, df: Integer, dg: Integer, aa: Integer, bb: Integer, cc: Integer, dd: Integer) strict {
+    label ru unofficial "обе производные установлены для исходных числителя и знаменателя (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "lhopital", j, k, l, ap, a, s, vk, value) and context_of(p, e, x) and limit_node(e, f, "div", "", 0 / 1, aa, bb) and lhopital_derivatives(p, i, df, dg) and df > 0 and dg > 0 and df < i and dg < i and (count all aj: Integer for bj: Integer where lhopital_derivatives(p, i, aj, bj)) == 1 and monotone(derivative_origin(p, df, gj, cc)) and monotone(derivative_origin(p, dg, gk, dd)) and calc.expressions::equivalent(e, aa, cc) and calc.expressions::equivalent(e, bb, dd);
+    then lhopital_derivative_pair(p, i, df, dg, gj, gk);
+}
+
+rule LhopitalRatioLimit(p: Derivation, e: calc.expressions::Expr, ap: Text, s: Text, vk: Text, x: Text, vkl: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, gj: Integer, gk: Integer, gl: Integer, vl: Integer, df: Integer, dg: Integer, aa: Integer, bb: Integer) strict {
+    label ru unofficial "основание устанавливает предел отношения именно этих производных (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "lhopital", j, k, l, ap, a, s, vk, value) and context_of(p, e, x) and monotone(lhopital_derivative_pair(p, i, df, dg, gj, gk)) and monotone(limit_pair(p, i, l, gl, vkl, vl)) and limit_node(e, gl, "div", "", 0 / 1, aa, bb) and calc.expressions::equivalent(e, aa, gj) and calc.expressions::equivalent(e, bb, gk) and vkl != "dne";
+    then lhopital_ratio(p, i, vkl, vl);
+}
+
+rule LhopitalAskNonzero(p: Derivation, tag: Text, aj: Integer, bj: Integer, uj: Integer, dj: Integer, e: calc.expressions::Expr, ap: Text, s: Text, vk: Text, x: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, gk: Integer, df: Integer, dg: Integer, pp: calc.polynomials_q::Poly) strict {
+    label ru unofficial "вычислить производную знаменателя в точке (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "lhopital", j, k, l, ap, a, s, vk, value) and context_of(p, e, x) and lhopital_derivatives(p, i, df, dg) and line(p, dg, gk, tag, aj, bj, uj, dj) and calc.polynomials_q::polynomial_of(e, gk, x, pp) and ap == "at";
+    then calc.polynomials_q::evaluation_request(pp, a);
+}
+
+rule LhopitalPolynomialNonzeroAt(p: Derivation, e: calc.expressions::Expr, ap: Text, s: Text, vk: Text, x: Text, a: Rational, v: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, gj: Integer, gk: Integer, df: Integer, dg: Integer, pp: calc.polynomials_q::Poly) strict {
+    label ru unofficial "ненулевое значение многочлена в точке (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "lhopital", j, k, l, ap, a, s, vk, value) and context_of(p, e, x) and monotone(lhopital_derivative_pair(p, i, df, dg, gj, gk)) and calc.polynomials_q::polynomial_of(e, gk, x, pp) and ap == "at" and calc.polynomials_q::poly_value(pp, a, v) and v != 0 / 1;
+    then lhopital_nonzero(p, i);
+}
+
+rule LhopitalPolynomialNonzeroplus_inf(p: Derivation, e: calc.expressions::Expr, ap: Text, s: Text, vk: Text, x: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, n: Integer, gj: Integer, gk: Integer, df: Integer, dg: Integer, pp: calc.polynomials_q::Poly) strict {
+    label ru unofficial "ненулевой многочлен не обращается в ноль достаточно далеко (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "lhopital", j, k, l, ap, a, s, vk, value) and context_of(p, e, x) and monotone(lhopital_derivative_pair(p, i, df, dg, gj, gk)) and calc.polynomials_q::polynomial_of(e, gk, x, pp) and ap == "plus_inf" and calc.polynomials_q::degree(pp, n);
+    then lhopital_nonzero(p, i);
+}
+
+rule LhopitalPolynomialNonzerominus_inf(p: Derivation, e: calc.expressions::Expr, ap: Text, s: Text, vk: Text, x: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, n: Integer, gj: Integer, gk: Integer, df: Integer, dg: Integer, pp: calc.polynomials_q::Poly) strict {
+    label ru unofficial "ненулевой многочлен не обращается в ноль достаточно далеко (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "lhopital", j, k, l, ap, a, s, vk, value) and context_of(p, e, x) and monotone(lhopital_derivative_pair(p, i, df, dg, gj, gk)) and calc.polynomials_q::polynomial_of(e, gk, x, pp) and ap == "minus_inf" and calc.polynomials_q::degree(pp, n);
+    then lhopital_nonzero(p, i);
+}
+
+rule LhopitalStudentNonzero(p: Derivation, e: calc.expressions::Expr, ap: Text, s: Text, vk: Text, x: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, gj: Integer, gk: Integer, df: Integer, dg: Integer) strict {
+    label ru unofficial "факт студента для неполиномиальной производной (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "lhopital", j, k, l, ap, a, s, vk, value) and context_of(p, e, x) and monotone(lhopital_derivative_pair(p, i, df, dg, gj, gk)) and calc.polynomials_q::not_polynomial(e, gk) and nonzero_near(p, i);
+    then lhopital_nonzero(p, i);
+}
+
+rule LhopitalMatch(p: Derivation, e: calc.expressions::Expr, ap: Text, s: Text, vk: Text, x: Text, vkl: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, gj: Integer, gk: Integer, vl: Integer, df: Integer, dg: Integer) strict {
+    label ru unofficial "все пять оснований и условие ненулевой производной проверены (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "lhopital", j, k, l, ap, a, s, vk, value) and context_of(p, e, x) and monotone(lhopital_indeterminate(p, i)) and monotone(lhopital_derivative_pair(p, i, df, dg, gj, gk)) and monotone(lhopital_ratio(p, i, vkl, vl)) and monotone(lhopital_nonzero(p, i)) and limit_same_value(e, vk, value, vkl, vl);
+    then limit_method_match(p, i);
+}
+
+rule LimitInvalidIndex(p: Derivation, m: Text, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) strict {
+    label ru unofficial "неположительный номер строки (§4 DECISION-0197)";
+    when limit_line(p, i, f, m, j, k, l, ap, a, s, vk, value) and i <= 0;
+    then step_error(p, i, "INVALID_INDEX");
+}
+
+rule LimitExtraLine(p: Derivation, m: Text, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, goal: Integer, n: Integer) strict {
+    label ru unofficial "строка после объявленного конца (§4 DECISION-0197)";
+    when limit_line(p, i, f, m, j, k, l, ap, a, s, vk, value) and active(p, n, goal) and i > n;
+    then step_error(p, i, "EXTRA_LINE");
+}
+
+rule LimitDuplicate(p: Derivation, m: Text, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) strict {
+    label ru unofficial "два предела с одним номером (§4 DECISION-0197)";
+    when limit_line(p, i, f, m, j, k, l, ap, a, s, vk, value) and (count all gj: Integer for tag: Text, aj: Integer, bj: Integer, uj: Integer, name: Text, c: Rational, x: Text, sys: Text, dv: Integer where limit_line(p, i, gj, tag, aj, bj, uj, name, c, x, sys, dv)) > 1;
+    then step_error(p, i, "AMBIGUOUS_LINE");
+}
+
+rule LimitMixedDuplicate(p: Derivation, m: Text, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) strict {
+    label ru unofficial "предел и производная заняли один номер (§4 DECISION-0197)";
+    when limit_line(p, i, f, m, j, k, l, ap, a, s, vk, value) and (count all gj: Integer for tag: Text, aj: Integer, bj: Integer, uj: Integer, dj: Integer where line(p, i, gj, tag, aj, bj, uj, dj)) > 0;
+    then step_error(p, i, "AMBIGUOUS_LINE");
+}
+
+rule LimitUnknownMethod(p: Derivation, m: Text, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) defeasible {
+    label ru unofficial "неизвестный метод предела (§4 DECISION-0197)";
+    when unique_limit(p, i, f, m, j, k, l, ap, a, s, vk, value) and closed(p) and not_known(limit_known_method(p, i));
+    then step_error(p, i, "UNKNOWN_METHOD");
+}
+
+rule LimitBadShape(p: Derivation, m: Text, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) defeasible {
+    label ru unofficial "недопустимые поля строки предела (§4 DECISION-0197)";
+    when unique_limit(p, i, f, m, j, k, l, ap, a, s, vk, value) and closed(p) and not_known(limit_shape(p, i));
+    then step_error(p, i, "INVALID_LIMIT_FIELDS");
+}
+
+relation lhopital_has_derivatives(p: Derivation, i: Integer) kind institutional {
+    label ru unofficial "наличие проверенного свидетельства derivatives";
+}
+
+rule LhopitalHasderivatives(p: Derivation, i: Integer, gj: Integer, gk: Integer, df: Integer, dg: Integer) strict {
+    label ru unofficial "проекция существования свидетельства (§4 DECISION-0197)";
+    when monotone(lhopital_derivative_pair(p, i, df, dg, gj, gk));
+    then lhopital_has_derivatives(p, i);
+}
+
+relation lhopital_has_ratio(p: Derivation, i: Integer) kind institutional {
+    label ru unofficial "наличие проверенного свидетельства ratio";
+}
+
+rule LhopitalHasratio(p: Derivation, vkl: Text, i: Integer, vl: Integer) strict {
+    label ru unofficial "проекция существования свидетельства (§4 DECISION-0197)";
+    when monotone(lhopital_ratio(p, i, vkl, vl));
+    then lhopital_has_ratio(p, i);
+}
+
+rule LhopitalErrorNOT_INDETERMINATE(p: Derivation, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) defeasible {
+    label ru unofficial "названо отсутствующее условие Лопиталя (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "lhopital", j, k, l, ap, a, s, vk, value) and closed(p) and not_known(lhopital_indeterminate(p, i));
+    then step_error(p, i, "NOT_INDETERMINATE");
+}
+
+rule LhopitalErrorDERIVATIVE_NOT_ESTABLISHED(p: Derivation, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) defeasible {
+    label ru unofficial "названо отсутствующее условие Лопиталя (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "lhopital", j, k, l, ap, a, s, vk, value) and closed(p) and monotone(lhopital_indeterminate(p, i)) and not_known(lhopital_has_derivatives(p, i));
+    then step_error(p, i, "DERIVATIVE_NOT_ESTABLISHED");
+}
+
+rule LhopitalErrorRATIO_LIMIT_NOT_ESTABLISHED(p: Derivation, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) defeasible {
+    label ru unofficial "названо отсутствующее условие Лопиталя (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "lhopital", j, k, l, ap, a, s, vk, value) and closed(p) and monotone(lhopital_indeterminate(p, i)) and lhopital_has_derivatives(p, i) and not_known(lhopital_has_ratio(p, i));
+    then step_error(p, i, "RATIO_LIMIT_NOT_ESTABLISHED");
+}
+
+rule LhopitalErrorNONZERO_NEAR_NOT_ESTABLISHED(p: Derivation, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) defeasible {
+    label ru unofficial "названо отсутствующее условие Лопиталя (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "lhopital", j, k, l, ap, a, s, vk, value) and closed(p) and monotone(lhopital_indeterminate(p, i)) and lhopital_has_derivatives(p, i) and lhopital_has_ratio(p, i) and not_known(lhopital_nonzero(p, i));
+    then step_error(p, i, "NONZERO_NEAR_NOT_ESTABLISHED");
+}
+
+relation quotient_nonzero_limit(p: Derivation, i: Integer) kind institutional {
+    label ru unofficial "предел знаменателя — ненулевая рациональная константа";
+}
+
+rule QuotientNonzeroLimit(p: Derivation, e: calc.expressions::Expr, ap: Text, s: Text, vk: Text, x: Text, a: Rational, c: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, gk: Integer, vkkid: Integer) strict {
+    label ru unofficial "ненулевой конечный предел знаменателя (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "limit_quotient", j, k, l, ap, a, s, vk, value) and context_of(p, e, x) and monotone(limit_operand(p, i, k, gk, vkkid)) and limit_node(e, vkkid, "const", "", c, 0, 0) and c != 0 / 1;
+    then quotient_nonzero_limit(p, i);
+}
+
+rule QuotientLimitError(p: Derivation, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) defeasible {
+    label ru unofficial "условие закона частного отсутствует (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "limit_quotient", j, k, l, ap, a, s, vk, value) and closed(p) and not_known(quotient_nonzero_limit(p, i));
+    then step_error(p, i, "DENOMINATOR_LIMIT_NOT_NONZERO");
+}
+
+rule LimitRuleMismatch(p: Derivation, m: Text, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) defeasible {
+    label ru unofficial "метод не установил предъявленный предел (§4 DECISION-0197)";
+    when unique_limit(p, i, f, m, j, k, l, ap, a, s, vk, value) and closed(p) and m != "lhopital" and m != "limit_quotient" and not_known(limit_method_match(p, i));
+    then step_error(p, i, "RULE_MISMATCH");
+}
+
+rule LhopitalResultMismatch(p: Derivation, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) defeasible {
+    label ru unofficial "результат отличается от предела отношения производных (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "lhopital", j, k, l, ap, a, s, vk, value) and closed(p) and monotone(lhopital_indeterminate(p, i)) and lhopital_has_derivatives(p, i) and lhopital_has_ratio(p, i) and monotone(lhopital_nonzero(p, i)) and not_known(limit_method_match(p, i));
+    then step_error(p, i, "RULE_MISMATCH");
+}
+
+rule QuotientResultMismatch(p: Derivation, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer) defeasible {
+    label ru unofficial "форма частного или его результата не совпала (§4 DECISION-0197)";
+    when unique_limit(p, i, f, "limit_quotient", j, k, l, ap, a, s, vk, value) and closed(p) and quotient_nonzero_limit(p, i) and not_known(limit_method_match(p, i));
+    then step_error(p, i, "RULE_MISMATCH");
+}
+
+rule LimitGivenInOldCalculus(p: Derivation, m: Text, ap: Text, s: Text, vk: Text, a: Rational, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, value: Integer, goal: Integer, n: Integer) strict {
+    label ru unofficial "пределы требуют нового словаря (§4 DECISION-0197)";
+    when limit_line(p, i, f, m, j, k, l, ap, a, s, vk, value) and document(p, n, goal, "calculus/1");
+    then step_error(p, i, "LIMIT_REQUIRES_CALCULUS_2");
+}
+
+// §4 DECISION-0197: сравнение канонов тоже требует ЯВНОГО запроса.
+// Запрос зависит от предъявленных дескрипторов, не от результата проверки.
+rule CancellationRequestsNumeratorComparison(
+ p: Derivation, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer,
+ ap: Text, a: Rational, s: Text, vk: Text, value: Integer,
+ gj: Integer, m: Text, aj: Integer, bj: Integer, uj: Integer,
+ apj: Text, ajpoint: Rational, sj: Text, vkj: Text, vj: Integer,
+ e: calc.expressions::Expr, x: Text, aa: Integer, bb: Integer,
+ cancel: calc.polynomials_q::Cancellation, factor: calc.polynomials_q::Poly,
+ dn: calc.polynomials_q::Division, dd: calc.polynomials_q::Division,
+ qn: calc.polynomials_q::Poly, rn: calc.polynomials_q::Poly,
+ qd: calc.polynomials_q::Poly, rd: calc.polynomials_q::Poly,
+ pp: calc.polynomials_q::Poly
+) strict {
+ label ru unofficial "запрос сличения числителей сокращённой дроби (§4 DECISION-0197)";
+ when limit_line(p, i, f, "factor_and_cancel", j, k, l, ap, a, s, vk, value)
+  and limit_line(p, j, gj, m, aj, bj, uj, apj, ajpoint, sj, vkj, vj)
+  and context_of(p, e, x) and limit_node(e, gj, "div", "", 0 / 1, aa, bb)
+  and limit_cancellation(p, i, cancel)
+  and calc.polynomials_q::cancellation_workspace(cancel, factor, dn, dd, qn, rn, qd, rd)
+  and calc.polynomials_q::polynomial_of(e, aa, x, pp);
+ then calc.polynomials_q::compare_request(qn, pp);
+}
+
+rule CancellationRequestsDenominatorComparison(
+ p: Derivation, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer,
+ ap: Text, a: Rational, s: Text, vk: Text, value: Integer,
+ gj: Integer, m: Text, aj: Integer, bj: Integer, uj: Integer,
+ apj: Text, ajpoint: Rational, sj: Text, vkj: Text, vj: Integer,
+ e: calc.expressions::Expr, x: Text, aa: Integer, bb: Integer,
+ cancel: calc.polynomials_q::Cancellation, factor: calc.polynomials_q::Poly,
+ dn: calc.polynomials_q::Division, dd: calc.polynomials_q::Division,
+ qn: calc.polynomials_q::Poly, rn: calc.polynomials_q::Poly,
+ qd: calc.polynomials_q::Poly, rd: calc.polynomials_q::Poly,
+ pp: calc.polynomials_q::Poly
+) strict {
+ label ru unofficial "запрос сличения знаменателей сокращённой дроби (§4 DECISION-0197)";
+ when limit_line(p, i, f, "factor_and_cancel", j, k, l, ap, a, s, vk, value)
+  and limit_line(p, j, gj, m, aj, bj, uj, apj, ajpoint, sj, vkj, vj)
+  and context_of(p, e, x) and limit_node(e, gj, "div", "", 0 / 1, aa, bb)
+  and limit_cancellation(p, i, cancel)
+  and calc.polynomials_q::cancellation_workspace(cancel, factor, dn, dd, qn, rn, qd, rd)
+  and calc.polynomials_q::polynomial_of(e, bb, x, pp);
+ then calc.polynomials_q::compare_request(qd, pp);
+}
+
+// §4 DECISION-0197: вычислительные отказы сохраняют собственное имя.
+rule LimitRationalComputationError(
+ p: Derivation, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer,
+ ap: Text, a: Rational, s: Text, vk: Text, value: Integer,
+ e: calc.expressions::Expr, x: Text, aa: Integer, bb: Integer,
+ pn: calc.polynomials_q::Poly, pd: calc.polynomials_q::Poly, reason: Text
+) strict {
+ label ru unofficial "названный отказ подстановки дроби (§4 DECISION-0197)";
+ when limit_line(p, i, f, "direct_substitution", j, k, l, ap, a, s, vk, value)
+  and context_of(p, e, x) and limit_node(e, f, "div", "", 0 / 1, aa, bb)
+  and calc.polynomials_q::polynomial_of(e, aa, x, pn)
+  and calc.polynomials_q::polynomial_of(e, bb, x, pd)
+  and calc.polynomials_q::rational_value_error(pn, pd, a, reason);
+ then step_error(p, i, reason);
+}
+rule LimitCancellationComputationError(
+ p: Derivation, i: Integer, cancel: calc.polynomials_q::Cancellation, reason: Text
+) strict {
+ label ru unofficial "названный отказ сокращения (§4 DECISION-0197)";
+ when limit_cancellation(p, i, cancel) and calc.polynomials_q::cancellation_error(cancel, reason);
+ then step_error(p, i, reason);
+}
+
+rule LimitInfinityComputationError(
+ p: Derivation, i: Integer, f: Integer, j: Integer, k: Integer, l: Integer,
+ ap: Text, a: Rational, s: Text, vk: Text, value: Integer,
+ e: calc.expressions::Expr, x: Text, aa: Integer, bb: Integer,
+ pn: calc.polynomials_q::Poly, pd: calc.polynomials_q::Poly, reason: Text
+) strict {
+ label ru unofficial "названный отказ предела дроби на бесконечности (§4 DECISION-0197)";
+ when limit_line(p, i, f, "limit_at_infinity_rational", j, k, l, ap, a, s, vk, value)
+  and context_of(p, e, x) and limit_node(e, f, "div", "", 0 / 1, aa, bb)
+  and calc.polynomials_q::polynomial_of(e, aa, x, pn)
+  and calc.polynomials_q::polynomial_of(e, bb, x, pd)
+  and calc.polynomials_q::infinity_limit_error(pn, pd, ap, reason);
+ then step_error(p, i, reason);
+}
+
+relation continuous_tree(e: calc.expressions::Expr, f: Integer, x: Text, a: Rational) kind institutional {
+ label ru unofficial "положительное свидетельство непрерывности дерева в рациональной точке";
+}
+rule ContinuousVariable(p: Derivation, e: calc.expressions::Expr, x: Text, a: Rational,
+ i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, s: Text, value: Integer, gj: Integer) strict {
+ label ru unofficial "переменная непрерывна (§4 DECISION-0197)";
+ when unique_limit(p, i, f, "continuity", j, k, l, "at", a, s, "expr", value)
+  and context_of(p, e, x) and limit_node(e, gj, "var", x, 0 / 1, 0, 0);
+ then continuous_tree(e, gj, x, a);
+}
+rule ContinuousConstant(p: Derivation, e: calc.expressions::Expr, x: Text, a: Rational,
+ i: Integer, f: Integer, j: Integer, k: Integer, l: Integer, s: Text, value: Integer, gj: Integer, c: Rational) strict {
+ label ru unofficial "константа непрерывна (§4 DECISION-0197)";
+ when unique_limit(p, i, f, "continuity", j, k, l, "at", a, s, "expr", value)
+  and context_of(p, e, x) and limit_node(e, gj, "const", "", c, 0, 0);
+ then continuous_tree(e, gj, x, a);
+}
+
+rule ContinuousTreesin(e: calc.expressions::Expr, f: Integer, x: Text, a: Rational, aa: Integer) strict {
+ label ru unofficial "композиция непрерывных функций sin (§4 DECISION-0197)";
+ when limit_node(e, f, "sin", "", 0 / 1, aa, 0) and monotone(continuous_tree(e, aa, x, a));
+ then continuous_tree(e, f, x, a);
+}
+
+rule ContinuousTreecos(e: calc.expressions::Expr, f: Integer, x: Text, a: Rational, aa: Integer) strict {
+ label ru unofficial "композиция непрерывных функций cos (§4 DECISION-0197)";
+ when limit_node(e, f, "cos", "", 0 / 1, aa, 0) and monotone(continuous_tree(e, aa, x, a));
+ then continuous_tree(e, f, x, a);
+}
+
+rule ContinuousTreeexp(e: calc.expressions::Expr, f: Integer, x: Text, a: Rational, aa: Integer) strict {
+ label ru unofficial "композиция непрерывных функций exp (§4 DECISION-0197)";
+ when limit_node(e, f, "exp", "", 0 / 1, aa, 0) and monotone(continuous_tree(e, aa, x, a));
+ then continuous_tree(e, f, x, a);
+}
+
+rule ContinuousTreeneg(e: calc.expressions::Expr, f: Integer, x: Text, a: Rational, aa: Integer) strict {
+ label ru unofficial "композиция непрерывных функций neg (§4 DECISION-0197)";
+ when limit_node(e, f, "neg", "", 0 / 1, aa, 0) and monotone(continuous_tree(e, aa, x, a));
+ then continuous_tree(e, f, x, a);
+}
+
+rule ContinuousTreeadd(e: calc.expressions::Expr, f: Integer, x: Text, a: Rational, aa: Integer, bb: Integer) strict {
+ label ru unofficial "арифметика непрерывных функций add (§4 DECISION-0197)";
+ when limit_node(e, f, "add", "", 0 / 1, aa, bb)
+  and monotone(continuous_tree(e, aa, x, a)) and monotone(continuous_tree(e, bb, x, a));
+ then continuous_tree(e, f, x, a);
+}
+
+rule ContinuousTreesub(e: calc.expressions::Expr, f: Integer, x: Text, a: Rational, aa: Integer, bb: Integer) strict {
+ label ru unofficial "арифметика непрерывных функций sub (§4 DECISION-0197)";
+ when limit_node(e, f, "sub", "", 0 / 1, aa, bb)
+  and monotone(continuous_tree(e, aa, x, a)) and monotone(continuous_tree(e, bb, x, a));
+ then continuous_tree(e, f, x, a);
+}
+
+rule ContinuousTreemul(e: calc.expressions::Expr, f: Integer, x: Text, a: Rational, aa: Integer, bb: Integer) strict {
+ label ru unofficial "арифметика непрерывных функций mul (§4 DECISION-0197)";
+ when limit_node(e, f, "mul", "", 0 / 1, aa, bb)
+  and monotone(continuous_tree(e, aa, x, a)) and monotone(continuous_tree(e, bb, x, a));
+ then continuous_tree(e, f, x, a);
+}
+
+rule ContinuousTreepow(e: calc.expressions::Expr, f: Integer, x: Text, a: Rational, aa: Integer, bb: Integer) strict {
+ label ru unofficial "арифметика непрерывных функций pow (§4 DECISION-0197)";
+ when limit_node(e, f, "pow", "", 0 / 1, aa, bb)
+  and monotone(continuous_tree(e, aa, x, a)) and monotone(continuous_tree(e, bb, x, a));
+ then continuous_tree(e, f, x, a);
+}
+
+rule ContinuousTreeLnVariable(e: calc.expressions::Expr, f: Integer, x: Text, a: Rational, aa: Integer) strict {
+ label ru unofficial "логарифм непрерывен при положительной точке (§4 DECISION-0197)";
+ when limit_node(e, f, "ln", "", 0 / 1, aa, 0) and limit_node(e, aa, "var", x, 0 / 1, 0, 0)
+  and monotone(continuous_tree(e, aa, x, a)) and a > 0 / 1;
+ then continuous_tree(e, f, x, a);
+}
+rule ContinuousTreeLnConstant(e: calc.expressions::Expr, f: Integer, x: Text, a: Rational, aa: Integer, c: Rational) strict {
+ label ru unofficial "логарифм положительной константы непрерывен (§4 DECISION-0197)";
+ when limit_node(e, f, "ln", "", 0 / 1, aa, 0) and limit_node(e, aa, "const", "", c, 0, 0)
+  and monotone(continuous_tree(e, aa, x, a)) and c > 0 / 1;
+ then continuous_tree(e, f, x, a);
+}
+
+// §4 DECISION-0197: происхождение сложной производной сверяется с given.
+rule DerivativeOriginsum_rule(p: Derivation, e: calc.expressions::Expr, x: Text,
+ i: Integer, f: Integer, j: Integer, k: Integer, pos: Integer, original: Integer,
+ gj: Integer, gk: Integer, fj: Integer, fk: Integer, aa: Integer, bb: Integer) strict {
+ label ru unofficial "исходник производной sum_rule совпадает с предъявленной функцией (§4 DECISION-0197)";
+ when unique_line(p, i, f, "sum_rule", j, k, 0, 0)
+  and monotone(checked(p, i, f)) and monotone(derivative_origin(p, j, gj, fj))
+  and monotone(derivative_origin(p, k, gk, fk))
+  and unique_line(p, pos, original, "given", 0, 0, 0, 0)
+  and monotone(checked(p, pos, original)) and pos < i and j < i and k < i
+  and context_of(p, e, x) and limit_node(e, original, "add", "", 0 / 1, aa, bb)
+  and calc.expressions::equivalent(e, aa, fj) and calc.expressions::equivalent(e, bb, fk);
+ then derivative_origin(p, i, f, original);
+}
+
+// §4 DECISION-0197: происхождение сложной производной сверяется с given.
+rule DerivativeOriginproduct_rule(p: Derivation, e: calc.expressions::Expr, x: Text,
+ i: Integer, f: Integer, j: Integer, k: Integer, pos: Integer, original: Integer,
+ gj: Integer, gk: Integer, fj: Integer, fk: Integer, aa: Integer, bb: Integer, u: Integer, dv: Integer) strict {
+ label ru unofficial "исходник производной product_rule совпадает с предъявленной функцией (§4 DECISION-0197)";
+ when unique_line(p, i, f, "product_rule", j, k, u, dv)
+  and monotone(checked(p, i, f)) and monotone(derivative_origin(p, j, gj, fj))
+  and monotone(derivative_origin(p, k, gk, fk))
+  and unique_line(p, pos, original, "given", 0, 0, 0, 0)
+  and monotone(checked(p, pos, original)) and pos < i and j < i and k < i
+  and context_of(p, e, x) and limit_node(e, original, "mul", "", 0 / 1, aa, bb)
+  and calc.expressions::equivalent(e, aa, fj) and calc.expressions::equivalent(e, bb, fk) and calc.expressions::equivalent(e, u, fj) and calc.expressions::equivalent(e, dv, fk);
+ then derivative_origin(p, i, f, original);
+}
+
+// §4 DECISION-0197: происхождение сложной производной сверяется с given.
+rule DerivativeOriginquotient_rule(p: Derivation, e: calc.expressions::Expr, x: Text,
+ i: Integer, f: Integer, j: Integer, k: Integer, pos: Integer, original: Integer,
+ gj: Integer, gk: Integer, fj: Integer, fk: Integer, aa: Integer, bb: Integer, u: Integer, dv: Integer) strict {
+ label ru unofficial "исходник производной quotient_rule совпадает с предъявленной функцией (§4 DECISION-0197)";
+ when unique_line(p, i, f, "quotient_rule", j, k, u, dv)
+  and monotone(checked(p, i, f)) and monotone(derivative_origin(p, j, gj, fj))
+  and monotone(derivative_origin(p, k, gk, fk))
+  and unique_line(p, pos, original, "given", 0, 0, 0, 0)
+  and monotone(checked(p, pos, original)) and pos < i and j < i and k < i
+  and context_of(p, e, x) and limit_node(e, original, "div", "", 0 / 1, aa, bb)
+  and calc.expressions::equivalent(e, aa, fj) and calc.expressions::equivalent(e, bb, fk) and calc.expressions::equivalent(e, u, fj) and calc.expressions::equivalent(e, dv, fk);
+ then derivative_origin(p, i, f, original);
+}
+
+rule DerivativeOriginConstantMultiple(p: Derivation, e: calc.expressions::Expr, x: Text,
+ i: Integer, f: Integer, j: Integer, pos: Integer, original: Integer,
+ gj: Integer, fj: Integer, aa: Integer, bb: Integer, cc: Integer, dd: Integer, c: Rational) strict {
+ label ru unofficial "исходник производной постоянного множителя совпадает с given (§4 DECISION-0197)";
+ when unique_line(p, i, f, "constant_multiple", j, 0, 0, 0)
+  and monotone(checked(p, i, f)) and monotone(derivative_origin(p, j, gj, fj))
+  and unique_line(p, pos, original, "given", 0, 0, 0, 0)
+  and monotone(checked(p, pos, original)) and pos < i and j < i
+  and context_of(p, e, x) and limit_node(e, original, "mul", "", 0 / 1, aa, bb)
+  and limit_node(e, f, "mul", "", 0 / 1, cc, dd)
+  and limit_node(e, aa, "const", "", c, 0, 0)
+  and calc.expressions::equivalent(e, aa, cc) and calc.expressions::equivalent(e, bb, fj);
+ then derivative_origin(p, i, f, original);
+}

@@ -1,0 +1,16 @@
+language "law.core" version "0.2";
+package calc.expressions version "0.1.0";
+namespace "urn:law:calc:expressions";
+
+// Значение предъявлено узлу, который не является константой.
+
+test "value-on-non-const" {
+ given {
+  assert "n1": node(entity_ref("urn:calc:ex:e1"), 1, "var", "x", 5 / 1, 0, 0) { origin case_input; }
+  assert "cl": closed(entity_ref("urn:calc:ex:e1")) { origin case_input; }
+ }
+ evaluate truth(formula_error(entity_ref("urn:calc:ex:e1"), 1, "VALUE_ON_NON_CONST"));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(ValueOnNonConstPositive);
+}

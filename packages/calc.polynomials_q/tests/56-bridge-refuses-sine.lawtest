@@ -1,0 +1,19 @@
+language "law.core" version "0.2";
+package calc.polynomials_q version "0.1.0";
+namespace "urn:law:calc:polynomials-q";
+
+// sin(x) многочленом НЕ является, и это выводится ПОЛОЖИТЕЛЬНОЙ головой, а не отсутствием факта.
+
+test "синус многочленом не является" {
+ given {
+  assert "f0": degree_cap(8) { origin case_input; }
+  assert "n1": calc.expressions::node(entity_ref("urn:calc:pq:e2"), 1, "var", "x", 0 / 1, 0, 0) { origin case_input; }
+  assert "n2": calc.expressions::node(entity_ref("urn:calc:pq:e2"), 2, "sin", "", 0 / 1, 1, 0) { origin case_input; }
+  assert "n3": calc.expressions::closed(entity_ref("urn:calc:pq:e2")) { origin case_input; }
+  assert "v": polynomial_variable(entity_ref("urn:calc:pq:e2"), "x") { origin case_input; }
+ }
+ evaluate truth(not_polynomial(entity_ref("urn:calc:pq:e2"), 2));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(BridgeSinIsNotPolynomial);
+}

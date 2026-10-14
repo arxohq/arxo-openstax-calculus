@@ -1,0 +1,20 @@
+language "law.core" version "0.2";
+package calc.polynomials_q version "0.1.0";
+namespace "urn:law:calc:polynomials-q";
+
+// Ожидания: школьная арифметика над ℚ, DECISION-0197 §4.
+test "бесконечность: случай 2" {
+ given {
+  assert "f0": degree_cap(12) { origin case_input; }
+  assert "f1": poly(entity_ref("urn:calc:limit:n"), 1) { origin case_input; }
+  assert "f2": term(entity_ref("urn:calc:limit:n"), 0, 1 / 1) { origin case_input; }
+  assert "f3": term(entity_ref("urn:calc:limit:n"), 1, 2 / 1) { origin case_input; }
+  assert "f4": poly(entity_ref("urn:calc:limit:d"), 1) { origin case_input; }
+  assert "f5": term(entity_ref("urn:calc:limit:d"), 0, 3 / 1) { origin case_input; }
+  assert "f6": term(entity_ref("urn:calc:limit:d"), 1, 4 / 1) { origin case_input; }
+  assert "f7": infinity_limit_request(entity_ref("urn:calc:limit:n"), entity_ref("urn:calc:limit:d"), "plus_inf") { origin case_input; }
+ }
+ evaluate truth(rational_infinity_limit(entity_ref("urn:calc:limit:n"), entity_ref("urn:calc:limit:d"), "plus_inf", "rational", 1 / 2));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+}

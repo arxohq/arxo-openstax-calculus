@@ -1,0 +1,256 @@
+language "law.core" version "0.2";
+package calc.polynomials_q version "0.1.0";
+namespace "urn:law:calc:polynomials-q";
+
+use self::{
+    Division,
+    Poly,
+    degree,
+    division,
+    division_binding,
+    division_defect,
+    evaluation_request,
+    leading,
+    poly,
+    poly_value,
+    ready,
+    term,
+    zero_polynomial,
+};
+
+// DECISION-0197 §1/§4: только явные запросы, точная арифметика над ℚ.
+// Значение в точке — Горнер; сокращение — существующее деление (§65/§103).
+
+pub relation rational_value_request(n: Poly, d: Poly, a: Rational) kind empirical {
+    label ru unofficial "запрос значения дроби многочленов в точке";
+}
+
+pub relation rational_value(n: Poly, d: Poly, a: Rational, v: Rational) kind institutional {
+    label ru unofficial "точное значение дроби многочленов";
+}
+
+pub relation rational_value_error(n: Poly, d: Poly, a: Rational, reason: Text) kind institutional {
+    label ru unofficial "названный отказ вычисления дроби";
+}
+
+rule RationalValueNumerator(n: Poly, d: Poly, a: Rational) strict {
+    label ru unofficial "подстановка по схеме Горнера (§4 DECISION-0197)";
+    when rational_value_request(n, d, a);
+    then evaluation_request(n, a);
+}
+
+rule RationalValueDenominator(n: Poly, d: Poly, a: Rational) strict {
+    label ru unofficial "подстановка по схеме Горнера (§4 DECISION-0197)";
+    when rational_value_request(n, d, a);
+    then evaluation_request(d, a);
+}
+
+rule RationalValue(n: Poly, d: Poly, a: Rational, vn: Rational, vd: Rational) strict {
+    label ru unofficial "деление значений при ненулевом знаменателе (§4 DECISION-0197)";
+    when rational_value_request(n, d, a) and poly_value(n, a, vn) and poly_value(d, a, vd) and vd != 0 / 1;
+    then rational_value(n, d, a, vn / vd);
+}
+
+rule RationalValueZeroDenominator(n: Poly, d: Poly, a: Rational) strict {
+    label ru unofficial "нулевой знаменатель — отказ, не молчание (§4 DECISION-0197)";
+    when rational_value_request(n, d, a) and poly_value(d, a, 0 / 1);
+    then rational_value_error(n, d, a, "ZERO_DENOMINATOR_AT_POINT");
+}
+
+pub entity Cancellation { label ru unofficial "запрос сокращения общего линейного множителя"; }
+
+pub relation cancellation_request(c: Cancellation, n: Poly, d: Poly, a: Rational) kind empirical {
+    label ru unofficial "запрос сокращения на x − a";
+}
+
+pub relation cancellation_workspace(c: Cancellation, factor: Poly, dn: Division, dd: Division, qn: Poly, rn: Poly, qd: Poly, rd: Poly) kind empirical {
+    label ru unofficial "выходные носители и два деления, явно названные делом";
+}
+
+pub relation cancelled_ratio(c: Cancellation, n: Poly, d: Poly) kind institutional {
+    label ru unofficial "два частных после точного сокращения";
+}
+
+pub relation cancellation_error(c: Cancellation, reason: Text) kind institutional {
+    label ru unofficial "отказ сокращения";
+}
+
+rule CancellationFactorShape(c: Cancellation, n: Poly, d: Poly, a: Rational, factor: Poly, dn: Division, dd: Division, qn: Poly, rn: Poly, qd: Poly, rd: Poly) strict {
+    label ru unofficial "связать запрос с существующим делением (§4 DECISION-0197)";
+    when cancellation_request(c, n, d, a) and cancellation_workspace(c, factor, dn, dd, qn, rn, qd, rd);
+    then poly(factor, 1);
+}
+
+rule CancellationFactorConstant(c: Cancellation, n: Poly, d: Poly, a: Rational, factor: Poly, dn: Division, dd: Division, qn: Poly, rn: Poly, qd: Poly, rd: Poly) strict {
+    label ru unofficial "связать запрос с существующим делением (§4 DECISION-0197)";
+    when cancellation_request(c, n, d, a) and cancellation_workspace(c, factor, dn, dd, qn, rn, qd, rd);
+    then term(factor, 0, 0 / 1 - a);
+}
+
+rule CancellationFactorLeading(c: Cancellation, n: Poly, d: Poly, a: Rational, factor: Poly, dn: Division, dd: Division, qn: Poly, rn: Poly, qd: Poly, rd: Poly) strict {
+    label ru unofficial "связать запрос с существующим делением (§4 DECISION-0197)";
+    when cancellation_request(c, n, d, a) and cancellation_workspace(c, factor, dn, dd, qn, rn, qd, rd);
+    then term(factor, 1, 1 / 1);
+}
+
+rule CancellationDivideNumerator(c: Cancellation, n: Poly, d: Poly, a: Rational, factor: Poly, dn: Division, dd: Division, qn: Poly, rn: Poly, qd: Poly, rd: Poly) strict {
+    label ru unofficial "связать запрос с существующим делением (§4 DECISION-0197)";
+    when cancellation_request(c, n, d, a) and cancellation_workspace(c, factor, dn, dd, qn, rn, qd, rd);
+    then division(dn, n, factor);
+}
+
+rule CancellationDivideDenominator(c: Cancellation, n: Poly, d: Poly, a: Rational, factor: Poly, dn: Division, dd: Division, qn: Poly, rn: Poly, qd: Poly, rd: Poly) strict {
+    label ru unofficial "связать запрос с существующим делением (§4 DECISION-0197)";
+    when cancellation_request(c, n, d, a) and cancellation_workspace(c, factor, dn, dd, qn, rn, qd, rd);
+    then division(dd, d, factor);
+}
+
+rule CancellationNumeratorQuotient(c: Cancellation, n: Poly, d: Poly, a: Rational, factor: Poly, dn: Division, dd: Division, qn: Poly, rn: Poly, qd: Poly, rd: Poly) strict {
+    label ru unofficial "связать запрос с существующим делением (§4 DECISION-0197)";
+    when cancellation_request(c, n, d, a) and cancellation_workspace(c, factor, dn, dd, qn, rn, qd, rd);
+    then division_binding(dn, "QUOTIENT", qn);
+}
+
+rule CancellationNumeratorRemainder(c: Cancellation, n: Poly, d: Poly, a: Rational, factor: Poly, dn: Division, dd: Division, qn: Poly, rn: Poly, qd: Poly, rd: Poly) strict {
+    label ru unofficial "связать запрос с существующим делением (§4 DECISION-0197)";
+    when cancellation_request(c, n, d, a) and cancellation_workspace(c, factor, dn, dd, qn, rn, qd, rd);
+    then division_binding(dn, "REMAINDER", rn);
+}
+
+rule CancellationDenominatorQuotient(c: Cancellation, n: Poly, d: Poly, a: Rational, factor: Poly, dn: Division, dd: Division, qn: Poly, rn: Poly, qd: Poly, rd: Poly) strict {
+    label ru unofficial "связать запрос с существующим делением (§4 DECISION-0197)";
+    when cancellation_request(c, n, d, a) and cancellation_workspace(c, factor, dn, dd, qn, rn, qd, rd);
+    then division_binding(dd, "QUOTIENT", qd);
+}
+
+rule CancellationDenominatorRemainder(c: Cancellation, n: Poly, d: Poly, a: Rational, factor: Poly, dn: Division, dd: Division, qn: Poly, rn: Poly, qd: Poly, rd: Poly) strict {
+    label ru unofficial "связать запрос с существующим делением (§4 DECISION-0197)";
+    when cancellation_request(c, n, d, a) and cancellation_workspace(c, factor, dn, dd, qn, rn, qd, rd);
+    then division_binding(dd, "REMAINDER", rd);
+}
+
+rule CancellationExact(nqn: Integer, nqd: Integer, nrn: Integer, nrd: Integer, c: Cancellation, n: Poly, d: Poly, a: Rational, factor: Poly, dn: Division, dd: Division, qn: Poly, rn: Poly, qd: Poly, rd: Poly) strict {
+    label ru unofficial "оба остатка равны нулю (§4 DECISION-0197)";
+    when cancellation_request(c, n, d, a) and cancellation_workspace(c, factor, dn, dd, qn, rn, qd, rd) and ready(qn, nqn) and ready(qd, nqd) and ready(rn, nrn) and ready(rd, nrd) and zero_polynomial(rn) and zero_polynomial(rd);
+    then cancelled_ratio(c, qn, qd);
+}
+
+rule CancellationRemainderNumerator(c: Cancellation, n: Poly, d: Poly, a: Rational, factor: Poly, dn: Division, dd: Division, qn: Poly, rn: Poly, qd: Poly, rd: Poly, degree_r: Integer) strict {
+    label ru unofficial "ненулевой остаток запрещает сокращение (§4 DECISION-0197)";
+    when cancellation_request(c, n, d, a) and cancellation_workspace(c, factor, dn, dd, qn, rn, qd, rd) and degree(rn, degree_r);
+    then cancellation_error(c, "NONZERO_REMAINDER");
+}
+
+rule CancellationRemainderDenominator(c: Cancellation, n: Poly, d: Poly, a: Rational, factor: Poly, dn: Division, dd: Division, qn: Poly, rn: Poly, qd: Poly, rd: Poly, degree_r: Integer) strict {
+    label ru unofficial "ненулевой остаток запрещает сокращение (§4 DECISION-0197)";
+    when cancellation_request(c, n, d, a) and cancellation_workspace(c, factor, dn, dd, qn, rn, qd, rd) and degree(rd, degree_r);
+    then cancellation_error(c, "NONZERO_REMAINDER");
+}
+
+rule CancellationDivisionNumerator(c: Cancellation, n: Poly, d: Poly, a: Rational, factor: Poly, dn: Division, dd: Division, qn: Poly, rn: Poly, qd: Poly, rd: Poly, reason: Text) strict {
+    label ru unofficial "перенести названный дефект деления (§4 DECISION-0197)";
+    when cancellation_request(c, n, d, a) and cancellation_workspace(c, factor, dn, dd, qn, rn, qd, rd) and division_defect(dn, reason);
+    then cancellation_error(c, reason);
+}
+
+rule CancellationDivisionDenominator(c: Cancellation, n: Poly, d: Poly, a: Rational, factor: Poly, dn: Division, dd: Division, qn: Poly, rn: Poly, qd: Poly, rd: Poly, reason: Text) strict {
+    label ru unofficial "перенести названный дефект деления (§4 DECISION-0197)";
+    when cancellation_request(c, n, d, a) and cancellation_workspace(c, factor, dn, dd, qn, rn, qd, rd) and division_defect(dd, reason);
+    then cancellation_error(c, reason);
+}
+
+pub relation infinity_limit_request(n: Poly, d: Poly, approach: Text) kind empirical {
+    label ru unofficial "запрос предела дроби на plus_inf либо minus_inf";
+}
+
+pub relation rational_infinity_limit(n: Poly, d: Poly, approach: Text, kind: Text, value: Rational) kind institutional {
+    label ru unofficial "точный конечный предел либо знак бесконечности; value ноль при бесконечности";
+}
+
+pub relation infinity_limit_error(n: Poly, d: Poly, approach: Text, reason: Text) kind institutional {
+    label ru unofficial "названный отказ предела дроби на бесконечности";
+}
+
+rule InfinityZeroNumeratorplus_inf(n: Poly, d: Poly, dd: Integer) strict {
+    label ru unofficial "нулевой числитель при ненулевом многочлене знаменателя (§4 DECISION-0197)";
+    when infinity_limit_request(n, d, "plus_inf") and zero_polynomial(n) and degree(d, dd);
+    then rational_infinity_limit(n, d, "plus_inf", "rational", 0 / 1);
+}
+
+rule InfinitySmallerplus_inf(n: Poly, d: Poly, nd: Integer, dd: Integer) strict {
+    label ru unofficial "степень числителя меньше (§4 DECISION-0197)";
+    when infinity_limit_request(n, d, "plus_inf") and degree(n, nd) and degree(d, dd) and nd < dd;
+    then rational_infinity_limit(n, d, "plus_inf", "rational", 0 / 1);
+}
+
+rule InfinityEqualplus_inf(n: Poly, d: Poly, nd: Integer, an: Rational, ad: Rational) strict {
+    label ru unofficial "степени равны: отношение старших коэффициентов (§4 DECISION-0197)";
+    when infinity_limit_request(n, d, "plus_inf") and degree(n, nd) and degree(d, nd) and leading(n, an) and leading(d, ad);
+    then rational_infinity_limit(n, d, "plus_inf", "rational", an / ad);
+}
+
+rule InfinityGreaterplus_infplus_inf(n: Poly, d: Poly, nd: Integer, dd: Integer, an: Rational, ad: Rational) strict {
+    label ru unofficial "знак старших коэффициентов при большей степени (§4 DECISION-0197)";
+    when infinity_limit_request(n, d, "plus_inf") and degree(n, nd) and degree(d, dd) and leading(n, an) and leading(d, ad) and nd > dd and an * ad > 0 / 1;
+    then rational_infinity_limit(n, d, "plus_inf", "plus_inf", 0 / 1);
+}
+
+rule InfinityGreaterplus_infminus_inf(n: Poly, d: Poly, nd: Integer, dd: Integer, an: Rational, ad: Rational) strict {
+    label ru unofficial "знак старших коэффициентов при большей степени (§4 DECISION-0197)";
+    when infinity_limit_request(n, d, "plus_inf") and degree(n, nd) and degree(d, dd) and leading(n, an) and leading(d, ad) and nd > dd and an * ad < 0 / 1;
+    then rational_infinity_limit(n, d, "plus_inf", "minus_inf", 0 / 1);
+}
+
+rule InfinityZeroNumeratorminus_inf(n: Poly, d: Poly, dd: Integer) strict {
+    label ru unofficial "нулевой числитель при ненулевом многочлене знаменателя (§4 DECISION-0197)";
+    when infinity_limit_request(n, d, "minus_inf") and zero_polynomial(n) and degree(d, dd);
+    then rational_infinity_limit(n, d, "minus_inf", "rational", 0 / 1);
+}
+
+rule InfinitySmallerminus_inf(n: Poly, d: Poly, nd: Integer, dd: Integer) strict {
+    label ru unofficial "степень числителя меньше (§4 DECISION-0197)";
+    when infinity_limit_request(n, d, "minus_inf") and degree(n, nd) and degree(d, dd) and nd < dd;
+    then rational_infinity_limit(n, d, "minus_inf", "rational", 0 / 1);
+}
+
+rule InfinityEqualminus_inf(n: Poly, d: Poly, nd: Integer, an: Rational, ad: Rational) strict {
+    label ru unofficial "степени равны: отношение старших коэффициентов (§4 DECISION-0197)";
+    when infinity_limit_request(n, d, "minus_inf") and degree(n, nd) and degree(d, nd) and leading(n, an) and leading(d, ad);
+    then rational_infinity_limit(n, d, "minus_inf", "rational", an / ad);
+}
+
+rule InfinityGreaterminus_infplus_inf0(n: Poly, d: Poly, nd: Integer, dd: Integer, an: Rational, ad: Rational) strict {
+    label ru unofficial "на минус бесконечности учитывается чётность разности степеней (§4 DECISION-0197)";
+    when infinity_limit_request(n, d, "minus_inf") and degree(n, nd) and degree(d, dd) and leading(n, an) and leading(d, ad) and nd > dd and (nd - dd) mod 2 == 0 and an * ad > 0 / 1;
+    then rational_infinity_limit(n, d, "minus_inf", "plus_inf", 0 / 1);
+}
+
+rule InfinityGreaterminus_infplus_inf1(n: Poly, d: Poly, nd: Integer, dd: Integer, an: Rational, ad: Rational) strict {
+    label ru unofficial "на минус бесконечности учитывается чётность разности степеней (§4 DECISION-0197)";
+    when infinity_limit_request(n, d, "minus_inf") and degree(n, nd) and degree(d, dd) and leading(n, an) and leading(d, ad) and nd > dd and (nd - dd) mod 2 == 1 and an * ad > 0 / 1;
+    then rational_infinity_limit(n, d, "minus_inf", "minus_inf", 0 / 1);
+}
+
+rule InfinityGreaterminus_infminus_inf0(n: Poly, d: Poly, nd: Integer, dd: Integer, an: Rational, ad: Rational) strict {
+    label ru unofficial "на минус бесконечности учитывается чётность разности степеней (§4 DECISION-0197)";
+    when infinity_limit_request(n, d, "minus_inf") and degree(n, nd) and degree(d, dd) and leading(n, an) and leading(d, ad) and nd > dd and (nd - dd) mod 2 == 0 and an * ad < 0 / 1;
+    then rational_infinity_limit(n, d, "minus_inf", "minus_inf", 0 / 1);
+}
+
+rule InfinityGreaterminus_infminus_inf1(n: Poly, d: Poly, nd: Integer, dd: Integer, an: Rational, ad: Rational) strict {
+    label ru unofficial "на минус бесконечности учитывается чётность разности степеней (§4 DECISION-0197)";
+    when infinity_limit_request(n, d, "minus_inf") and degree(n, nd) and degree(d, dd) and leading(n, an) and leading(d, ad) and nd > dd and (nd - dd) mod 2 == 1 and an * ad < 0 / 1;
+    then rational_infinity_limit(n, d, "minus_inf", "plus_inf", 0 / 1);
+}
+
+rule InfinityZeroDenominator(n: Poly, d: Poly, approach: Text) strict {
+    label ru unofficial "нулевой многочлен знаменателя (§4 DECISION-0197)";
+    when infinity_limit_request(n, d, approach) and zero_polynomial(d);
+    then infinity_limit_error(n, d, approach, "ZERO_DENOMINATOR_POLYNOMIAL");
+}
+
+rule InfinityUnknownApproach(n: Poly, d: Poly, approach: Text) strict {
+    label ru unofficial "неизвестное направление (§4 DECISION-0197)";
+    when infinity_limit_request(n, d, approach) and approach != "plus_inf" and approach != "minus_inf";
+    then infinity_limit_error(n, d, approach, "INVALID_INFINITY_APPROACH");
+}

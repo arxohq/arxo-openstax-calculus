@@ -1,0 +1,90 @@
+language "law.core" version "0.2";
+package calc.expressions version "0.1.0";
+namespace "urn:law:calc:expressions";
+
+// ОДНОЗНАЧНОСТЬ ТИПОВ: приёмка B02.01 требует её прямо.
+//
+// Узлы уже однозначны (AMBIGUOUS_NODE — два определения одного идентификатора).
+// Типы однозначны тогда, когда СРЕДА ТИПОВ согласована: одно имя — один тип, и
+// объявление входит в словарь. Оба нарушения названы своими кодами, потому что
+// «неизвестный тип» смешивал бы «среда грязная» с «словарь не знает».
+//
+// Отдельно — ПРОБЕЛ: имя без объявления. Он назван, а не заменён догадкой
+// «real по умолчанию»: значение по умолчанию сделало бы проверку типов
+// безусловно проходящей, то есть проверкой без содержания.
+
+test "one name declared two different ways is a conflict at every occurrence" {
+ given {
+  // Одно и то же имя x в двух узлах выражения, объявленное и целым, и
+  // вещественным. Отказ приходит в ОБА вхождения, потому что имя общее.
+  assert "n1": node(entity_ref("urn:calc:ex:e38"), 1, "var", "x", 0 / 1, 0, 0) { origin case_input; }
+  assert "n2": node(entity_ref("urn:calc:ex:e38"), 2, "var", "x", 0 / 1, 0, 0) { origin case_input; }
+  assert "n3": node(entity_ref("urn:calc:ex:e38"), 3, "add", "", 0 / 1, 1, 2) { origin case_input; }
+  assert "t1": var_typing(entity_ref("urn:calc:ex:e38"), "x", "integer") { origin case_input; }
+  assert "t2": var_typing(entity_ref("urn:calc:ex:e38"), "x", "real") { origin case_input; }
+  assert "cd": closed(entity_ref("urn:calc:ex:e38")) { origin case_input; }
+ }
+ evaluate truth(formula_error(entity_ref("urn:calc:ex:e38"), 2, "TYPE_CONFLICT"));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(TypingConflictAtVar);
+}
+
+test "a type outside the vocabulary is refused by name" {
+ given {
+  assert "n1": node(entity_ref("urn:calc:ex:e38b"), 1, "var", "v", 0 / 1, 0, 0) { origin case_input; }
+  assert "t1": var_typing(entity_ref("urn:calc:ex:e38b"), "v", "vector") { origin case_input; }
+  assert "cd": closed(entity_ref("urn:calc:ex:e38b")) { origin case_input; }
+ }
+ // "vector" — не неизвестный тег узла и не опечатка молчаливого толкования:
+ // объявление состояло, и этот словарь его не содержит.
+ evaluate truth(formula_error(entity_ref("urn:calc:ex:e38b"), 1, "TYPE_NOT_IN_VOCABULARY"));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(TypingNotInVocabulary);
+}
+
+test "a variable whose name was never declared has a named type gap" {
+ given {
+  assert "n1": node(entity_ref("urn:calc:ex:e38c"), 1, "var", "w", 0 / 1, 0, 0) { origin case_input; }
+  assert "n2": node(entity_ref("urn:calc:ex:e38c"), 2, "const", "", 3 / 1, 0, 0) { origin case_input; }
+  assert "n3": node(entity_ref("urn:calc:ex:e38c"), 3, "add", "", 0 / 1, 1, 2) { origin case_input; }
+  assert "cd": closed(entity_ref("urn:calc:ex:e38c")) { origin case_input; }
+ }
+ // Пробел назван, и — что важнее — он НЕ закрывается значением по умолчанию:
+ // узел 3 не получает типа, потому что один из его операндов типа не имеет.
+ evaluate truth(type_absent(entity_ref("urn:calc:ex:e38c"), 1));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(VarTypeAbsent);
+}
+
+test "a clean environment is stated positively" {
+ given {
+  assert "n1": node(entity_ref("urn:calc:ex:e38d"), 1, "var", "x", 0 / 1, 0, 0) { origin case_input; }
+  assert "t1": var_typing(entity_ref("urn:calc:ex:e38d"), "x", "real") { origin case_input; }
+  assert "cd": closed(entity_ref("urn:calc:ex:e38d")) { origin case_input; }
+ }
+ evaluate truth(vocabulary_ok(entity_ref("urn:calc:ex:e38d")));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(VocabularyOk);
+}
+
+test "a conflicted name leaves its occurrence without an answerable type" {
+ given {
+  assert "n1": node(entity_ref("urn:calc:ex:e38e"), 1, "var", "x", 0 / 1, 0, 0) { origin case_input; }
+  assert "t1": var_typing(entity_ref("urn:calc:ex:e38e"), "x", "integer") { origin case_input; }
+  assert "t2": var_typing(entity_ref("urn:calc:ex:e38e"), "x", "real") { origin case_input; }
+  assert "cd": closed(entity_ref("urn:calc:ex:e38e")) { origin case_input; }
+ }
+ // Реляция в этом языке мультимножественна, поэтому конфликт объявлений не
+ // ограничивается предупреждением: у узла ВЫВОДЯТСЯ ДВА уровня, и ни один из них
+ // не является ответом. Отказ TYPE_AMBIGUOUS — это про отсутствие единственного
+ // типа, а TYPE_CONFLICT — про противоречие в среде; первое не следует из
+ // второго автоматически, и это разные утверждения.
+ evaluate truth(formula_error(entity_ref("urn:calc:ex:e38e"), 1, "TYPE_AMBIGUOUS"));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(AmbiguousLevelRefused);
+}

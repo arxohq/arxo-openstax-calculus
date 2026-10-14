@@ -1,0 +1,173 @@
+[
+  {
+    "package": "openstax.calculus_limits",
+    "path": "packages/openstax.calculus_limits/sources/calculus-limits/m53489.cnxml",
+    "url": "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53489/index.cnxml",
+    "sha256": "sha256:96e89d1cd16c4be5a87a3d68d19f2552204ffc97f6316433ef35689187c5bf7f",
+    "size": 144155,
+    "publisherBytesMatch": true,
+    "checkedAt": "2026-10-14T17:21:22.463268+00:00"
+  },
+  {
+    "package": "openstax.calculus_limits",
+    "path": "packages/openstax.calculus_limits/sources/calculus-limits/m53491.cnxml",
+    "url": "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53491/index.cnxml",
+    "sha256": "sha256:662325358794c9abe700e4d19e696c801d9eddd4f6c45b918b6185baa9944374",
+    "size": 203095,
+    "publisherBytesMatch": true,
+    "checkedAt": "2026-10-14T17:21:22.431945+00:00"
+  },
+  {
+    "package": "openstax.calculus_limits",
+    "path": "packages/openstax.calculus_limits/sources/calculus-limits/m53492.cnxml",
+    "url": "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53492/index.cnxml",
+    "sha256": "sha256:57a6b5cf0d644a711ca113582a78a0d6270bfaebb40babddc8b080476a51bb53",
+    "size": 190699,
+    "publisherBytesMatch": true,
+    "checkedAt": "2026-10-14T17:21:22.458007+00:00"
+  },
+  {
+    "package": "openstax.calculus_limits",
+    "path": "packages/openstax.calculus_limits/sources/calculus-limits/m53493.cnxml",
+    "url": "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53493/index.cnxml",
+    "sha256": "sha256:e5e046f267dee46ca85a9cfc76847ff31ebb71a9205b5961e1152f2ea77bc666",
+    "size": 152035,
+    "publisherBytesMatch": true,
+    "checkedAt": "2026-10-14T17:21:22.507738+00:00"
+  },
+  {
+    "package": "openstax.calculus_limits",
+    "path": "packages/openstax.calculus_limits/sources/calculus-limits/m53596.cnxml",
+    "url": "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53596/index.cnxml",
+    "sha256": "sha256:c0c4d3593c446f99d0700befaf92e1c75d2ba2114feb9711c9075bfeec3c50da",
+    "size": 279974,
+    "publisherBytesMatch": true,
+    "checkedAt": "2026-10-14T17:21:23.188570+00:00"
+  },
+  {
+    "package": "openstax.calculus_limits",
+    "path": "packages/openstax.calculus_limits/sources/calculus-limits/m53619.cnxml",
+    "url": "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53619/index.cnxml",
+    "sha256": "sha256:47a9cdb551f68cdd646df68ff7da9b9226fcd1d896af5e203ceb85d170ef9ce4",
+    "size": 188388,
+    "publisherBytesMatch": true,
+    "checkedAt": "2026-10-14T17:21:23.204505+00:00"
+  },
+  {
+    "package": "openstax.calculus_derivatives",
+    "path": "packages/openstax.calculus_derivatives/sources/calculus-derivatives/m53494.cnxml",
+    "url": "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53494/index.cnxml",
+    "sha256": "sha256:bf52253dc77f810ec3d7b5af0c5b7efc811d7868887d42c0029ac4c9312faf36",
+    "size": 1667,
+    "publisherBytesMatch": true,
+    "checkedAt": "2026-10-14T17:21:22.959020+00:00"
+  },
+  {
+    "package": "openstax.calculus_derivatives",
+    "path": "packages/openstax.calculus_derivatives/sources/calculus-derivatives/m53495.cnxml",
+    "url": "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53495/index.cnxml",
+    "sha256": "sha256:d0668acbea9b24dfe647e4383e48b1b21c630f21b503883ef1e94eaa7406a4bf",
+    "size": 153928,
+    "publisherBytesMatch": true,
+    "checkedAt": "2026-10-14T17:21:23.192392+00:00"
+  },
+  {
+    "package": "openstax.calculus_derivatives",
+    "path": "packages/openstax.calculus_derivatives/sources/calculus-derivatives/m53573.cnxml",
+    "url": "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53573/index.cnxml",
+    "sha256": "sha256:d2247c767bd52283744dbb2641a7713d07d8af4a1e7455dcaf8cfb8ff0201bb0",
+    "size": 151955,
+    "publisherBytesMatch": true,
+    "checkedAt": "2026-10-14T17:21:23.762575+00:00"
+  },
+  {
+    "package": "openstax.calculus_derivatives",
+    "path": "packages/openstax.calculus_derivatives/sources/calculus-derivatives/m53575.cnxml",
+    "url": "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53575/index.cnxml",
+    "sha256": "sha256:3c3beba11831d0ffe0994cd1eeca05bb5d72519c3f9ff1f420ac0cadd80a931b",
+    "size": 179167,
+    "publisherBytesMatch": true,
+    "checkedAt": "2026-10-14T17:21:23.944769+00:00"
+  },
+  {
+    "package": "openstax.calculus_derivatives",
+    "path": "packages/openstax.calculus_derivatives/sources/calculus-derivatives/m53578.cnxml",
+    "url": "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53578/index.cnxml",
+    "sha256": "sha256:68d65321d8a387027ec0f236860f653000ea77100a7a59b057d0297a9a9c9c9f",
+    "size": 99480,
+    "publisherBytesMatch": true,
+    "checkedAt": "2026-10-14T17:21:23.813414+00:00"
+  },
+  {
+    "package": "openstax.calculus_derivatives",
+    "path": "packages/openstax.calculus_derivatives/sources/calculus-derivatives/m53581.cnxml",
+    "url": "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53581/index.cnxml",
+    "sha256": "sha256:f848070e09084722cee9c21879d33b1873118bc7ec600d4c7f2bcd1e07693219",
+    "size": 164893,
+    "publisherBytesMatch": true,
+    "checkedAt": "2026-10-14T17:21:23.887952+00:00"
+  },
+  {
+    "package": "openstax.calculus_derivatives",
+    "path": "packages/openstax.calculus_derivatives/sources/calculus-derivatives/m53586.cnxml",
+    "url": "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53586/index.cnxml",
+    "sha256": "sha256:6ac66df1d00f39513463ac330c27d2cfc16fe1a504c00191c20bad32c92cfbd5",
+    "size": 148353,
+    "publisherBytesMatch": true,
+    "checkedAt": "2026-10-14T17:21:24.478632+00:00"
+  },
+  {
+    "package": "openstax.calculus_integrals",
+    "path": "packages/openstax.calculus_integrals/sources/calculus-integrals/m53621.cnxml",
+    "url": "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53621/index.cnxml",
+    "sha256": "sha256:368612823e0e54e1f08bcdddcf0c9380d69ed13e6a3dea5075e01fef655a3eb1",
+    "size": 161550,
+    "publisherBytesMatch": true,
+    "checkedAt": "2026-10-14T17:21:24.519249+00:00"
+  },
+  {
+    "package": "openstax.calculus_integrals",
+    "path": "packages/openstax.calculus_integrals/sources/calculus-integrals/m53623.cnxml",
+    "url": "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53623/index.cnxml",
+    "sha256": "sha256:1691e917ed545efcd23fee144189cead4dc4e5c697b2549c4e6ffa951e89757d",
+    "size": 1892,
+    "publisherBytesMatch": true,
+    "checkedAt": "2026-10-14T17:21:24.523327+00:00"
+  },
+  {
+    "package": "openstax.calculus_integrals",
+    "path": "packages/openstax.calculus_integrals/sources/calculus-integrals/m53631.cnxml",
+    "url": "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53631/index.cnxml",
+    "sha256": "sha256:12ffeaa33f9f990dedc128214239abb7fbef92d13556990bb1c79a6ec0ed223e",
+    "size": 209273,
+    "publisherBytesMatch": true,
+    "checkedAt": "2026-10-14T17:21:24.679983+00:00"
+  },
+  {
+    "package": "openstax.calculus_integrals",
+    "path": "packages/openstax.calculus_integrals/sources/calculus-integrals/m53632.cnxml",
+    "url": "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53632/index.cnxml",
+    "sha256": "sha256:730f40d14f0ae8e84dca2c53116a1b044f6521b54e4a4b21f22a500825e33c7a",
+    "size": 159262,
+    "publisherBytesMatch": true,
+    "checkedAt": "2026-10-14T17:21:25.187134+00:00"
+  },
+  {
+    "package": "openstax.calculus_integrals",
+    "path": "packages/openstax.calculus_integrals/sources/calculus-integrals/m53633.cnxml",
+    "url": "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53633/index.cnxml",
+    "sha256": "sha256:a94ea4a8f62d8613744d11e9506517dcaf265286f13c5581479a31d5440e6722",
+    "size": 135519,
+    "publisherBytesMatch": true,
+    "checkedAt": "2026-10-14T17:21:25.193869+00:00"
+  },
+  {
+    "package": "openstax.calculus_integrals",
+    "path": "packages/openstax.calculus_integrals/sources/calculus-integrals/m53656.cnxml",
+    "url": "https://raw.githubusercontent.com/openstax/osbooks-calculus-bundle/8dbc2ce19e804924b2517b89ac72ee45be949d15/modules/m53656/index.cnxml",
+    "sha256": "sha256:1a5687db35d297d966b060133293c34c7167fe8abe1246de759273832fa9bf78",
+    "size": 137740,
+    "publisherBytesMatch": true,
+    "checkedAt": "2026-10-14T17:21:25.205827+00:00"
+  }
+]

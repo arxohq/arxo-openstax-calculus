@@ -1,0 +1,61 @@
+# Манифест §10 — маркер корня пакета (DECISION-0033).
+#
+# ВЫЧИСЛИТЕЛЬНЫЙ пакет (DECISION-0123): нормативного источника, юрисдикции и
+# правового статуса у него нет; каталожная секция `[metadata]` DECISION-0051
+# описывает АКТ и здесь намеренно отсутствует.
+[package]
+name = "calc.limit_solver"
+version = "0.1.0"
+language = "0.2"
+namespace = "urn:law:calc:limit-solver"
+
+[features]
+semanticLayer = "L3"
+
+[dependencies]
+"calc.expressions" = "0.1.0"
+
+[[tests]]
+family = "calc.limit_solver#authored"
+regression = false
+world = ["calc.limit_solver", "calc.expressions"]
+suites = [
+    "tests/01-rational-cancel.lawtest",
+    "tests/02-rational-double-root.lawtest",
+    "tests/03-infinity-plus.lawtest",
+    "tests/04-infinity-minus.lawtest",
+    "tests/05-one-sided-right.lawtest",
+    "tests/06-one-sided-left.lawtest",
+    "tests/07-two-sided-dne.lawtest",
+    "tests/08-special-sin.lawtest",
+    "tests/09-special-one-minus-cos.lawtest",
+    "tests/10-lhopital-exp.lawtest",
+    "tests/11-lhopital-ln.lawtest",
+    "tests/12-lhopital-twice.lawtest",
+    "tests/13-lhopital-infinity.lawtest",
+    "tests/14-sqrt-conjugate.lawtest",
+    "tests/15-oscillation-honest.lawtest",
+    "tests/16-sqrt-negative-domain.lawtest",
+    "tests/17-ln-right.lawtest",
+    "tests/18-ln-two-sided-domain.lawtest",
+    "tests/19-no-indeterminacy.lawtest",
+    "tests/20-lhopital-not-applied.lawtest",
+    "tests/21-lhopital-thrice.lawtest",
+    "tests/22-invalid-node-id.lawtest",
+    "tests/23-budget-inside.lawtest",
+    "tests/24-budget-exhausted.lawtest",
+    "tests/25-trace-derivative-node.lawtest",
+    "tests/26-trace-method-name.lawtest",
+    "tests/27-trace-lhopital-applied.lawtest",
+    "tests/28-trace-well-formed.lawtest",
+    "tests/29-condition-not-established.lawtest",
+    "tests/30-pole-shifted-both.lawtest",
+    "tests/31-pole-shifted-right.lawtest",
+    "tests/32-pole-double-root.lawtest",
+    "tests/33-leading-term-infinity.lawtest",
+    "tests/34-pole-shifted-left.lawtest",
+    "tests/35-pole-triple-root-honest.lawtest",
+]
+
+[authoring]
+local_imports = "explicit"

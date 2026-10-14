@@ -1,0 +1,14 @@
+{
+  "format": "arxo.openstax-calculus-runtime-pin/1",
+  "installation": "npm install -g @arxo/cli@0.2.5",
+  "tool": "0.2.5",
+  "latestObservedAt": "2026-10-14",
+  "semantics": "law.core/0.2.11",
+  "darwinArm64BinaryHash": "sha256:37e080cecef694a7e6ed71597d67e2d876622954927b47f402dc79509d1ccd20",
+  "node": ">=20",
+  "targets": [
+    "darwin-arm64",
+    "linux-x64"
+  ],
+  "releaseVerified": false
+}

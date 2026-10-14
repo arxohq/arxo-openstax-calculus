@@ -1,0 +1,215 @@
+// OpenStax Calculus, том 1 главы 4–5 и том 2 глава 3: СЛОВАРЬ первообразной,
+// определённого интеграла и интегрирования по частям.
+//
+// Та же граница, что у пакета производных: провенанс здесь, счёт — в
+// `calc.polynomials_q`, проверка предъявленного шага — в
+// `calc.calculus_checker`. Основная теорема закреплена и показывается, но её
+// ФОРМА в первой версии проверяющим не проверяется (`METHOD_NOT_IN_V1`) —
+// граница названа в DECISION-0196 §4, а не обойдена.
+//
+// ВЫБОР u И dv ARXO НЕ ДЕЛАЕТ НИКОГДА. Формула интегрирования по частям
+// закреплена фрагментом CI_INTEGRATION_BY_PARTS, но какое из двух разложений
+// брать — решает студент и предъявляет полями aux проверяющего (§2
+// DECISION-0154).
+
+language "law.core" version "0.2";
+package openstax.calculus_integrals version "0.1.1";
+namespace "urn:openstax:clir:calculus-integrals";
+
+import calc.expressions version "0.1.0";
+import calc.polynomials_q version "0.1.0";
+import calc.calculus_checker version "0.1.0";
+
+use self::{
+    CI_ANTIDERIVATIVE_DEFINITION,
+    CI_FTC_PART_TWO,
+    CI_GENERAL_FORM,
+    CI_INDEFINITE_PROPERTIES,
+    CI_INTEGRATION_BY_PARTS,
+    CI_NET_CHANGE,
+};
+
+@source(CI_ANTIDERIVATIVE_DEFINITION)
+pub entity IntegrationRule {
+    label en official "a rule of the textbook a student may cite as a step";
+    label ru unofficial "правило интегрирования из словаря учебника";
+}
+
+@source(CI_ANTIDERIVATIVE_DEFINITION)
+pub relation rule_method(
+        r: IntegrationRule { label ru unofficial "правило словаря"; },
+        method: Text { label ru unofficial "метод проверяющего"; }
+) kind empirical {
+    label ru unofficial "какому методу проверяющего соответствует это правило учебника";
+}
+
+@source(CI_ANTIDERIVATIVE_DEFINITION)
+pub relation rule_premise(
+        r: IntegrationRule { label ru unofficial "правило словаря"; },
+        position: Integer { label ru unofficial "номер посылки"; },
+        text: Text { label ru unofficial "условие применимости"; }
+) kind empirical {
+    label ru unofficial "условие применимости правила — для ПОКАЗА инструкции, без всякого дела";
+}
+
+@source(CI_ANTIDERIVATIVE_DEFINITION)
+pub relation rule_conclusion(
+        r: IntegrationRule { label ru unofficial "правило словаря"; },
+        text: Text { label ru unofficial "заключение"; }
+) kind empirical {
+    label ru unofficial "что правило даёт в заключении";
+}
+
+@source(CI_ANTIDERIVATIVE_DEFINITION)
+pub relation instruction_available(
+        r: IntegrationRule { label ru unofficial "правило словаря"; }
+) kind derived {
+    label ru unofficial "у правила есть показываемая инструкция: названы хотя бы одна посылка и заключение. ПОКАЗ НЕ ЕСТЬ ВЫПОЛНЕНИЕ";
+}
+
+@source(CI_ANTIDERIVATIVE_DEFINITION)
+pub relation step_justified_by(
+        p: calc.calculus_checker::Derivation { label ru unofficial "ход"; },
+        i: Integer { label ru unofficial "строка"; },
+        r: IntegrationRule { label ru unofficial "правило словаря"; }
+) kind derived {
+    label ru unofficial "проверенный шаг обоснован НАЗВАННЫМ правилом учебника: потребитель обосновывает, вычислитель подтверждает";
+}
+
+@source(CI_ANTIDERIVATIVE_DEFINITION)
+rule InstructionAvailable(r: IntegrationRule, position: Integer, premise: Text, conclusion: Text) strict {
+    label ru unofficial "инструкция показывается из описания правила и без всякого дела; ни одного заключения о предъявленном ходе она не даёт";
+    when rule_premise(r, position, premise) and rule_conclusion(r, conclusion);
+    then instruction_available(r);
+}
+
+@source(CI_GENERAL_FORM)
+rule AntiderivativePowerJustifies(
+    p: calc.calculus_checker::Derivation,
+    i: Integer,
+    r: IntegrationRule,
+    expr: Integer,
+    j: Integer,
+    k: Integer,
+    u: Integer,
+    dv: Integer,
+) strict {
+    label ru unofficial "§4.10 General Form of an Antiderivative: первообразная степени есть x^(n+1)/(n+1)";
+    when monotone(calc.calculus_checker::step_valid(p, i))
+        and calc.calculus_checker::line(p, i, expr, "antiderivative_power", j, k, u, dv)
+        and rule_method(r, "antiderivative_power");
+    then step_justified_by(p, i, r);
+}
+
+@source(CI_INDEFINITE_PROPERTIES)
+rule TableAntiderivativeJustifies(
+    p: calc.calculus_checker::Derivation,
+    i: Integer,
+    r: IntegrationRule,
+    expr: Integer,
+    j: Integer,
+    k: Integer,
+    u: Integer,
+    dv: Integer,
+) strict {
+    label ru unofficial "§4.10 Properties of Indefinite Integrals: табличная первообразная элементарной функции";
+    when monotone(calc.calculus_checker::step_valid(p, i))
+        and calc.calculus_checker::line(p, i, expr, "table_antiderivative", j, k, u, dv)
+        and rule_method(r, "table_antiderivative");
+    then step_justified_by(p, i, r);
+}
+
+@source(CI_INTEGRATION_BY_PARTS)
+rule ByPartsJustifies(
+    p: calc.calculus_checker::Derivation,
+    i: Integer,
+    r: IntegrationRule,
+    expr: Integer,
+    j: Integer,
+    k: Integer,
+    u: Integer,
+    dv: Integer,
+) strict {
+    label ru unofficial "§3.1 (том 2) Integration by Parts: ∫u dv = u·v − ∫v du; выбор u и dv делает студент";
+    when monotone(calc.calculus_checker::step_valid(p, i))
+        and calc.calculus_checker::line(p, i, expr, "by_parts", j, k, u, dv)
+        and rule_method(r, "by_parts");
+    then step_justified_by(p, i, r);
+}
+
+// ГРАНИЦА. §5.3 FTC Part 2 закреплён, но метод `fundamental_theorem`
+// проверяющего в первой версии формы не проверяет (`METHOD_NOT_IN_V1`),
+// поэтому связующего правила у фрагмента НЕТ: оно не могло бы сработать
+// никогда, а мёртвое правило есть молчаливая потеря, а не покрытие.
+// Причина записана в package-info.json и в матрице покрытия.
+
+// ── Теорема о чистом изменении: якорь вычислителя над ℚ ────────────────────
+//
+// §5.4 даёт РАВЕНСТВО, которое Arxo считает сам: ∫ₐᵇ F′(x) dx = F(b) − F(a).
+// Класс замкнут (многочлены над ℚ), канон тотален, и значение выводит
+// `calc.polynomials_q`. Поэтому фрагмент не граница, а обоснование расчёта:
+// вычислитель подтверждает, словарь называет норму, по которой это законно.
+
+@source(CI_NET_CHANGE)
+pub relation definite_integral_justified(
+        p: calc.polynomials_q::Poly { label ru unofficial "подынтегральный многочлен"; },
+        lo: Rational { label ru unofficial "нижний предел"; },
+        hi: Rational { label ru unofficial "верхний предел"; },
+        v: Rational { label ru unofficial "значение интеграла"; }
+) kind derived {
+    label ru unofficial "значение определённого интеграла обосновано теоремой о чистом изменении §5.4";
+}
+
+@source(CI_NET_CHANGE)
+rule NetChangeJustifiesDefiniteIntegral(
+    p: calc.polynomials_q::Poly,
+    lo: Rational,
+    hi: Rational,
+    v: Rational,
+) strict {
+    label ru unofficial "§5.4 Net Change Theorem: ∫ₐᵇ F′ = F(b) − F(a); посчитанное вычислителем над ℚ значение обосновано именно этой нормой";
+    when calc.polynomials_q::definite_integral(p, lo, hi, v);
+    then definite_integral_justified(p, lo, hi, v);
+}
+
+// ── FTC Part 2: условия Ньютона–Лейбница названы, шаг принят границей ────────
+//
+// §5.3 ставит ДВА условия: f непрерывна на [a, b] и F — первообразная f;
+// заключение — ∫ₐᵇ f = F(b) − F(a). Условия входят в словарь как посылка
+// инструкции (ПОКАЗ, не выполнение) — тем же порядком, что у прочих правил.
+// Сам шаг проверяющий в v1 не проверяет: метод `fundamental_theorem`
+// отвечает `METHOD_NOT_IN_V1`, и связка со `step_valid` была бы мёртвым
+// правилом (аудит: снято как молчаливая потеря). Вместо неё — принимающая
+// ветвь: предъявленный шаг по основной теореме, отказанный проверяющим
+// именно этой причиной, принимается ЯВНО — как названная граница, а не как
+// вычисление. Значение многочлена над ℚ этим правилом не считается: его
+// считает `calc.polynomials_q`, а норму называет §5.4 выше.
+
+@source(CI_FTC_PART_TWO)
+pub relation ftc2_boundary_accepted(
+        p: calc.calculus_checker::Derivation { label ru unofficial "ход"; },
+        i: Integer { label ru unofficial "строка"; },
+        r: IntegrationRule { label ru unofficial "правило словаря"; }
+) kind derived {
+    label en official "§5.3, FTC Part 2 accepted as a stated boundary: the presented fundamental-theorem step is named by the dictionary, its form is not verified in v1, and no computation is claimed";
+    label ru unofficial "§5.3, FTC часть 2 принята названной границей: предъявленный шаг по основной теореме назван словарём, форма его в v1 не проверяется, и никакого вычисления не заявляется";
+}
+
+@source(CI_FTC_PART_TWO)
+rule Ftc2BoundaryAccepted(
+    p: calc.calculus_checker::Derivation,
+    i: Integer,
+    r: IntegrationRule,
+    expr: Integer,
+    j: Integer,
+    k: Integer,
+    u: Integer,
+    dv: Integer,
+) strict {
+    label en official "§5.3, Newton–Leibniz conditions (f continuous on [a, b], F an antiderivative of f) are the dictionary instruction; a fundamental-theorem step refused by the checker with METHOD_NOT_IN_V1 is accepted explicitly as that boundary";
+    label ru unofficial "§5.3, условия Ньютона–Лейбница (f непрерывна на [a, b], F — первообразная f) суть инструкция словаря; шаг по основной теореме, отказанный проверяющим с METHOD_NOT_IN_V1, принимается явно — именно этой границей";
+    when monotone(calc.calculus_checker::step_error(p, i, "METHOD_NOT_IN_V1"))
+        and calc.calculus_checker::line(p, i, expr, "fundamental_theorem", j, k, u, dv)
+        and rule_method(r, "fundamental_theorem");
+    then ftc2_boundary_accepted(p, i, r);
+}

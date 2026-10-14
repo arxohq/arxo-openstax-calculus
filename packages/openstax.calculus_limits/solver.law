@@ -1,0 +1,16 @@
+language "law.core" version "0.2";
+package openstax.calculus_limits version "0.1.1";
+namespace "urn:openstax:clir:calculus-limits";
+
+import calc.limit_solver version "0.1.0";
+use self::{
+    CL_LHOPITAL_ZERO,
+    CL_LIMIT_DEFINITION,
+};
+pub relation automatic_limit_task(t: calc.limit_solver::Task) kind empirical { label en unofficial "explicitly request the bounded automatic limit model"; }
+pub relation automatic_limit_result(t: calc.limit_solver::Task, outcome: Text, kind: Text, value: Rational) kind institutional { label en unofficial "native automatic result; only FINITE carries a finite rational value"; }
+pub relation automatic_lhopital_step(t: calc.limit_solver::Task, round: Integer, side: Text) kind institutional { label en unofficial "a native automatic LHopital transformation with established applicability conditions"; }
+@source(CL_LIMIT_DEFINITION)
+pub rule AutomaticLimitResult(t: calc.limit_solver::Task, outcome: Text, kind: Text, value: Rational) strict { label en unofficial "expose the bounded solver outcome without inventing a value for unsupported inputs"; when automatic_limit_task(t) and calc.limit_solver::solver_result(t, outcome, kind, value); then automatic_limit_result(t, outcome, kind, value); }
+@source(CL_LHOPITAL_ZERO)
+pub rule AutomaticLHopitalStep(t: calc.limit_solver::Task, e: calc.expressions::Expr, node: Integer, round: Integer, side: Text) strict { label en unofficial "expose established native LHopital steps for source inspection"; when automatic_limit_task(t) and calc.limit_solver::lhopital_applied(t, e, node, round, side); then automatic_lhopital_step(t, round, side); }

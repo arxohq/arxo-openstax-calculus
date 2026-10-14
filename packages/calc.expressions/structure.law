@@ -1,0 +1,295 @@
+language "law.core" version "0.2";
+package calc.expressions version "0.1.0";
+namespace "urn:law:calc:expressions";
+
+use self::{
+    Expr,
+    binary,
+    budget_exhausted,
+    context_present,
+    equivalent,
+    exponent_ok,
+    exponent_slot,
+    exponentiation,
+    integral_exponent,
+    node,
+    node_present,
+    size,
+    size_slot,
+    unary,
+    unique_node,
+    well_formed,
+    within_budget,
+};
+
+// ФОРМА И РАВЕНСТВО. Ни одного переписывания: `equivalent` сравнивает
+// СТРУКТУРУ, а `well_formed` лишь удостоверяет конечность и арность.
+//
+// Рекурсивная компонента здесь одна — `well_formed` и `equivalent` читают
+// себя через `monotone(...)` (§65/§103). Агрегаты (размер, единственность)
+// стоят ВЫШЕ неё: размер считается по `node_present`, который зависит только
+// от предъявленных фактов, и обратного ребра в компоненту нет.
+
+rule ContextPresent(e: Expr, f: Integer, tag: Text, name: Text, v: Rational, a: Integer, b: Integer) strict {
+    label ru unofficial "набор существует, если предъявлен хотя бы один узел";
+    when node(e, f, tag, name, v, a, b);
+    then context_present(e);
+}
+
+rule NodePresent(e: Expr, f: Integer, tag: Text, name: Text, v: Rational, a: Integer, b: Integer) strict {
+    label ru unofficial "зарегистрировать предъявленный идентификатор узла";
+    when node(e, f, tag, name, v, a, b);
+    then node_present(e, f);
+}
+
+rule UniqueNode(e: Expr, f: Integer, tag: Text, name: Text, v: Rational, a: Integer, b: Integer) strict {
+    label ru unofficial "определение положительного идентификатора узла единственно";
+    when node(e, f, tag, name, v, a, b) and f > 0
+        and (count all t: Text for s: Text, w: Rational, l: Integer, r: Integer where node(e, f, t, s, w, l, r)) == 1;
+    then unique_node(e, f, tag, name, v, a, b);
+}
+
+// ── Размер и объявленная граница ───────────────────────────────────────────
+//
+// Граница — ЯВНАЯ КОНСТАНТА исходника, как 10006 знаков периода у
+// `calc.long_division`: дело её не выбирает и умолчанием не пользуется.
+// Превышение не молчит и не усекается — оно называется отказом.
+
+rule SizeSlotStart(e: Expr) strict {
+    label ru unofficial "нулевой размер допустим";
+    when context_present(e);
+    then size_slot(e, 0);
+}
+
+rule SizeSlotStep(e: Expr, n: Integer) strict {
+    label ru unofficial "следующий допустимый размер, пока не достигнута объявленная граница 256";
+    when monotone(size_slot(e, n)) and n < 256;
+    then size_slot(e, n + 1);
+}
+
+rule Size(e: Expr, n: Integer) strict {
+    label ru unofficial "размер набора — число различных предъявленных узлов; значение СВЯЗЫВАЕТСЯ цепочкой, агрегат только сверяется (§190)";
+    when size_slot(e, n) and (count distinct f: Integer where node_present(e, f)) == n;
+    then size(e, n);
+}
+
+rule WithinBudget(e: Expr) strict {
+    label ru unofficial "не более 256 узлов в одном наборе";
+    when context_present(e) and (count distinct f: Integer where node_present(e, f)) <= 256;
+    then within_budget(e);
+}
+
+rule BudgetExhausted(e: Expr) strict {
+    label ru unofficial "ОТКАЗ BUDGET_EXHAUSTED: узлов больше объявленной границы, разбор не ведётся";
+    when context_present(e) and (count distinct f: Integer where node_present(e, f)) > 256;
+    then budget_exhausted(e);
+}
+
+// ── Арность по тегу ────────────────────────────────────────────────────────
+
+rule UnaryNeg(e: Expr, f: Integer, a: Integer) strict {
+    label ru unofficial "смена знака — узел с одним дочерним";
+    when unique_node(e, f, "neg", "", 0 / 1, a, 0);
+    then unary(e, f, "neg", a);
+}
+
+rule UnarySin(e: Expr, f: Integer, a: Integer) strict {
+    label ru unofficial "синус — узел с одним дочерним";
+    when unique_node(e, f, "sin", "", 0 / 1, a, 0);
+    then unary(e, f, "sin", a);
+}
+
+rule UnaryCos(e: Expr, f: Integer, a: Integer) strict {
+    label ru unofficial "косинус — узел с одним дочерним";
+    when unique_node(e, f, "cos", "", 0 / 1, a, 0);
+    then unary(e, f, "cos", a);
+}
+
+rule UnaryExp(e: Expr, f: Integer, a: Integer) strict {
+    label ru unofficial "показательная функция — узел с одним дочерним";
+    when unique_node(e, f, "exp", "", 0 / 1, a, 0);
+    then unary(e, f, "exp", a);
+}
+
+rule UnarySqrt(e: Expr, f: Integer, a: Integer) strict {
+    label ru unofficial "арифметический квадратный корень — узел с одним дочерним (DECISION-0198 §2: аддитивное расширение словаря видов)";
+    when unique_node(e, f, "sqrt", "", 0 / 1, a, 0);
+    then unary(e, f, "sqrt", a);
+}
+
+rule UnaryLn(e: Expr, f: Integer, a: Integer) strict {
+    label ru unofficial "натуральный логарифм — узел с одним дочерним";
+    when unique_node(e, f, "ln", "", 0 / 1, a, 0);
+    then unary(e, f, "ln", a);
+}
+
+rule UnaryLog(e: Expr, f: Integer, a: Integer) strict {
+    label ru unofficial "натуральный логарифм в записи результата интегрирования — узел с одним дочерним; математическая эквивалентность с ln здесь намеренно не выводится";
+    when unique_node(e, f, "log", "", 0 / 1, a, 0);
+    then unary(e, f, "log", a);
+}
+
+rule UnaryAtan(e: Expr, f: Integer, a: Integer) strict {
+    label ru unofficial "арктангенс — узел с одним дочерним";
+    when unique_node(e, f, "atan", "", 0 / 1, a, 0);
+    then unary(e, f, "atan", a);
+}
+
+rule BinaryAdd(e: Expr, f: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "сумма — узел с двумя дочерними";
+    when unique_node(e, f, "add", "", 0 / 1, a, b);
+    then binary(e, f, "add", a, b);
+}
+
+rule BinarySub(e: Expr, f: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "разность — узел с двумя дочерними";
+    when unique_node(e, f, "sub", "", 0 / 1, a, b);
+    then binary(e, f, "sub", a, b);
+}
+
+rule BinaryMul(e: Expr, f: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "произведение — узел с двумя дочерними";
+    when unique_node(e, f, "mul", "", 0 / 1, a, b);
+    then binary(e, f, "mul", a, b);
+}
+
+rule BinaryDiv(e: Expr, f: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "частное — узел с двумя дочерними";
+    when unique_node(e, f, "div", "", 0 / 1, a, b);
+    then binary(e, f, "div", a, b);
+}
+
+rule ExponentiationNode(e: Expr, f: Integer, a: Integer, g: Integer) strict {
+    label ru unofficial "степень: основание и отдельный узел показателя";
+    when unique_node(e, f, "pow", "", 0 / 1, a, g);
+    then exponentiation(e, f, a, g);
+}
+
+// ── Целость показателя доказывается положительно ───────────────────────────
+
+rule ExponentSlotStart(e: Expr) strict {
+    label ru unofficial "нулевой показатель допустим";
+    when context_present(e);
+    then exponent_slot(e, 0);
+}
+
+rule ExponentSlotStep(e: Expr, k: Integer) strict {
+    label ru unofficial "следующий допустимый показатель, пока не достигнута объявленная граница 32";
+    when monotone(exponent_slot(e, k)) and k < 32;
+    then exponent_slot(e, k + 1);
+}
+
+rule IntegralExponent(e: Expr, g: Integer, k: Integer, v: Rational) strict {
+    label ru unofficial "показатель цел и неотрицателен: значение константы СРАВНЕНО с целым из цепочки. Сравнение отдельным конъюнктом, а не образцом в аргументе: `k / 1` на месте аргумента — вычисляемый терм, и решать его относительно k движок не обязан (§190)";
+    when unique_node(e, g, "const", "", v, 0, 0) and exponent_slot(e, k) and v == k / 1;
+    then integral_exponent(e, g, k);
+}
+
+rule ExponentOk(e: Expr, g: Integer, k: Integer) strict {
+    label ru unofficial "показатель годен";
+    when integral_exponent(e, g, k);
+    then exponent_ok(e, g);
+}
+
+// ── Корректность формы ─────────────────────────────────────────────────────
+
+rule ConstWellFormed(e: Expr, f: Integer, v: Rational) strict {
+    label ru unofficial "константа: значение есть, имени и дочерних нет";
+    when within_budget(e) and unique_node(e, f, "const", "", v, 0, 0);
+    then well_formed(e, f);
+}
+
+rule VarWellFormed(e: Expr, f: Integer, name: Text) strict {
+    label ru unofficial "переменная: непустое имя, значения и дочерних нет";
+    when within_budget(e) and unique_node(e, f, "var", name, 0 / 1, 0, 0) and name != "";
+    then well_formed(e, f);
+}
+
+rule AlgebraicWellFormed(e: Expr, f: Integer, name: Text) strict {
+    label ru unofficial "алгебраическая константа — непрозрачный, но непустой стабильный дескриптор; её математическая валидность принадлежит calc.algebraic_numbers";
+    when within_budget(e) and unique_node(e, f, "algebraic", name, 0 / 1, 0, 0) and name != "";
+    then well_formed(e, f);
+}
+
+rule UnaryWellFormed(e: Expr, f: Integer, tag: Text, a: Integer) strict {
+    label ru unofficial "унарный узел корректен, когда корректен его единственный дочерний; циклический граф без основания не выводится";
+    when within_budget(e) and unary(e, f, tag, a) and monotone(well_formed(e, a));
+    then well_formed(e, f);
+}
+
+rule BinaryWellFormed(e: Expr, f: Integer, tag: Text, a: Integer, b: Integer) strict {
+    label ru unofficial "бинарный узел корректен, когда корректны оба дочерних";
+    when within_budget(e) and binary(e, f, tag, a, b) and monotone(well_formed(e, a)) and monotone(well_formed(e, b));
+    then well_formed(e, f);
+}
+
+rule ExponentiationWellFormed(e: Expr, f: Integer, a: Integer, g: Integer) strict {
+    label ru unofficial "степень корректна при корректном основании и целом неотрицательном показателе";
+    when within_budget(e) and exponentiation(e, f, a, g) and monotone(well_formed(e, a)) and exponent_ok(e, g);
+    then well_formed(e, f);
+}
+
+// ── Структурное равенство ──────────────────────────────────────────────────
+
+rule ConstsEquivalent(e: Expr, f: Integer, g: Integer, v: Rational) strict {
+    label ru unofficial "константы равны по значению";
+    when unique_node(e, f, "const", "", v, 0, 0) and unique_node(e, g, "const", "", v, 0, 0)
+        and well_formed(e, f) and well_formed(e, g);
+    then equivalent(e, f, g);
+}
+
+rule VarsEquivalent(e: Expr, f: Integer, g: Integer, name: Text) strict {
+    label ru unofficial "переменные равны по имени; сравнение точное, без приведения регистра";
+    when unique_node(e, f, "var", name, 0 / 1, 0, 0) and unique_node(e, g, "var", name, 0 / 1, 0, 0)
+        and well_formed(e, f) and well_formed(e, g);
+    then equivalent(e, f, g);
+}
+
+rule AlgebraicsEquivalent(e: Expr, f: Integer, g: Integer, name: Text) strict {
+    label ru unofficial "два листа равны структурно лишь при буквально одинаковом дескрипторе; математическое сравнение различных представлений здесь не подменяется";
+    when unique_node(e, f, "algebraic", name, 0 / 1, 0, 0) and unique_node(e, g, "algebraic", name, 0 / 1, 0, 0)
+        and well_formed(e, f) and well_formed(e, g);
+    then equivalent(e, f, g);
+}
+
+rule UnariesEquivalent(e: Expr, f: Integer, g: Integer, tag: Text, a: Integer, c: Integer) strict {
+    label ru unofficial "унарные узлы равны при одном теге и равных дочерних";
+    when unary(e, f, tag, a) and unary(e, g, tag, c)
+        and well_formed(e, f) and well_formed(e, g) and monotone(equivalent(e, a, c));
+    then equivalent(e, f, g);
+}
+
+rule BinariesEquivalent(
+    e: Expr,
+    f: Integer,
+    g: Integer,
+    tag: Text,
+    a: Integer,
+    b: Integer,
+    c: Integer,
+    d: Integer,
+) strict {
+    label ru unofficial "бинарные узлы равны при одном теге и равных соответствующих частях; ПОРЯДОК существен";
+    when binary(e, f, tag, a, b) and binary(e, g, tag, c, d)
+        and well_formed(e, f) and well_formed(e, g)
+        and monotone(equivalent(e, a, c)) and monotone(equivalent(e, b, d));
+    then equivalent(e, f, g);
+}
+
+rule ExponentiationsEquivalent(
+    e: Expr,
+    f: Integer,
+    g: Integer,
+    a: Integer,
+    c: Integer,
+    x: Integer,
+    y: Integer,
+    k: Integer,
+) strict {
+    label ru unofficial "степени равны при равных основаниях и одном показателе";
+    when exponentiation(e, f, a, x) and exponentiation(e, g, c, y)
+        and well_formed(e, f) and well_formed(e, g)
+        and integral_exponent(e, x, k) and integral_exponent(e, y, k)
+        and monotone(equivalent(e, a, c));
+    then equivalent(e, f, g);
+}

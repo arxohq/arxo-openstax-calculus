@@ -1,0 +1,872 @@
+language "law.core" version "0.2";
+package calc.limit_solver version "0.1.0";
+namespace "urn:law:calc:limit-solver";
+
+use self::{
+    Task,
+    accepted,
+    derived,
+    need_derivative,
+    task_variable,
+};
+
+// СТРУКТУРНОЕ ВЫЧИСЛЕНИЕ ПРЕДЕЛА (§4 DECISION-0198).
+//
+// Предел считается по дереву снизу вверх законами о пределах: сумма,
+// разность, произведение, частное, степень, непрерывность элементарных
+// функций в ИЗВЕСТНЫХ точках и арифметика бесконечностей. Значение —
+// РАЦИОНАЛЬНОЕ число либо знак бесконечности; типа Real в языке нет и
+// численного приближения здесь тоже нет (§2 DECISION-0154).
+//
+// СТОРОНА ВХОДИТ В ЗАПРОС. У конечной точки считаются обе односторонних
+// величины только для двустороннего запроса; ответ появляется при их совпадении: именно
+// так различие сторон становится доказательством несуществования, а не
+// молчанием. При стремлении к бесконечности сторона одна — `both`.
+//
+// ЧЕГО ЗДЕСЬ НЕТ. Неопределённости 0/0, ∞/∞, 0·∞, ∞−∞ правилами этого файла
+// НЕ разрешаются: ни одно правило на них не срабатывает, и молчание здесь —
+// вход для правила Лопиталя и сокращения, а не ответ.
+
+relation side_wanted(t: Task, sd: Text) kind institutional {
+    label ru unofficial "сторона, для которой считается величина";
+}
+
+pub relation limit_at(
+        t: Task { label ru unofficial "задача"; },
+        e: calc.expressions::Expr { label ru unofficial "набор узлов"; },
+        f: Integer { label ru unofficial "узел"; },
+        sd: Text { label ru unofficial "сторона"; },
+        kind: Text { label ru unofficial "вид величины"; },
+        q: Rational { label ru unofficial "значение"; }
+) kind institutional {
+    label ru unofficial "односторонняя величина предела: rational со значением q либо plus_inf/minus_inf с нулём";
+}
+
+relation sign_near(t: Task, e: calc.expressions::Expr, f: Integer, sd: Text, sgn: Integer) kind institutional {
+    label ru unofficial "знак функции в проколотой окрестности с названной стороны: 1 либо −1";
+}
+
+relation power_step(t: Task, q: Rational, k: Integer, v: Rational) kind institutional {
+    label ru unofficial "ограниченное возведение рационального основания в целую степень (§65/§103)";
+}
+
+relation power_wanted(t: Task, q: Rational, nv: Rational) kind institutional {
+    label ru unofficial "запрошенная степень основания";
+}
+
+rule SideAt(t: Task, e: calc.expressions::Expr, f: Integer, x: Text, a: Rational, s: Text) strict {
+    label ru unofficial "левая сторона нужна при запросе слева либо с обеих сторон (§4 DECISION-0198)";
+    when accepted(t, e, f, x, "at", a, s) and (s == "left" or s == "both");
+    then side_wanted(t, "left");
+}
+
+rule SideAtRight(t: Task, e: calc.expressions::Expr, f: Integer, x: Text, a: Rational, s: Text) strict {
+    label ru unofficial "правая сторона нужна при запросе справа либо с обеих сторон (§4 DECISION-0198)";
+    when accepted(t, e, f, x, "at", a, s) and (s == "right" or s == "both");
+    then side_wanted(t, "right");
+}
+
+rule SidePlusInf(t: Task, e: calc.expressions::Expr, f: Integer, x: Text, a: Rational, s: Text) strict {
+    label ru unofficial "у бесконечности сторона одна (§4 DECISION-0198)";
+    when accepted(t, e, f, x, "plus_inf", a, s);
+    then side_wanted(t, "both");
+}
+
+rule SideMinusInf(t: Task, e: calc.expressions::Expr, f: Integer, x: Text, a: Rational, s: Text) strict {
+    label ru unofficial "у бесконечности сторона одна (§4 DECISION-0198)";
+    when accepted(t, e, f, x, "minus_inf", a, s);
+    then side_wanted(t, "both");
+}
+
+// ── Листья ─────────────────────────────────────────────────────────────────
+
+rule LimitConst(t: Task, e: calc.expressions::Expr, f: Integer, v: Rational, sd: Text) strict {
+    label ru unofficial "предел константы есть она сама (§4 DECISION-0198)";
+    when side_wanted(t, sd) and monotone(calc.expressions::node(e, f, "const", "", v, 0, 0));
+    then limit_at(t, e, f, sd, "rational", v);
+}
+
+rule LimitVariableAt(t: Task, e: calc.expressions::Expr, f: Integer, g: Integer, x: Text, a: Rational, s: Text, sd: Text) strict {
+    label ru unofficial "предел переменной в конечной точке есть сама точка (§4 DECISION-0198)";
+    when accepted(t, e, g, x, "at", a, s) and side_wanted(t, sd) and monotone(calc.expressions::node(e, f, "var", x, 0 / 1, 0, 0));
+    then limit_at(t, e, f, sd, "rational", a);
+}
+
+rule LimitVariablePlusInf(t: Task, e: calc.expressions::Expr, f: Integer, g: Integer, x: Text, a: Rational, s: Text) strict {
+    label ru unofficial "переменная растёт вместе с аргументом (§4 DECISION-0198)";
+    when accepted(t, e, g, x, "plus_inf", a, s) and monotone(calc.expressions::node(e, f, "var", x, 0 / 1, 0, 0));
+    then limit_at(t, e, f, "both", "plus_inf", 0 / 1);
+}
+
+rule LimitVariableMinusInf(t: Task, e: calc.expressions::Expr, f: Integer, g: Integer, x: Text, a: Rational, s: Text) strict {
+    label ru unofficial "переменная убывает вместе с аргументом (§4 DECISION-0198)";
+    when accepted(t, e, g, x, "minus_inf", a, s) and monotone(calc.expressions::node(e, f, "var", x, 0 / 1, 0, 0));
+    then limit_at(t, e, f, "both", "minus_inf", 0 / 1);
+}
+
+// ── Смена знака ────────────────────────────────────────────────────────────
+
+rule LimitNegRational(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, sd: Text, q: Rational) strict {
+    label ru unofficial "знак меняет и конечную величину (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "neg", "", 0 / 1, a, 0)) and monotone(limit_at(t, e, a, sd, "rational", q));
+    then limit_at(t, e, f, sd, "rational", (0 / 1) - q);
+}
+
+rule LimitNegPlus(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, sd: Text, z1: Rational) strict {
+    label ru unofficial "знак меняет и бесконечность (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "neg", "", 0 / 1, a, 0)) and monotone(limit_at(t, e, a, sd, "plus_inf", z1)) and z1 == 0/1;
+    then limit_at(t, e, f, sd, "minus_inf", 0 / 1);
+}
+
+rule LimitNegMinus(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, sd: Text, z1: Rational) strict {
+    label ru unofficial "знак меняет и бесконечность (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "neg", "", 0 / 1, a, 0)) and monotone(limit_at(t, e, a, sd, "minus_inf", z1)) and z1 == 0/1;
+    then limit_at(t, e, f, sd, "plus_inf", 0 / 1);
+}
+
+// ── Сумма и разность ───────────────────────────────────────────────────────
+
+rule LimitAddRational(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, qa: Rational, qb: Rational) strict {
+    label ru unofficial "закон о пределе суммы (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "add", "", 0 / 1, a, b)) and monotone(limit_at(t, e, a, sd, "rational", qa)) and monotone(limit_at(t, e, b, sd, "rational", qb));
+    then limit_at(t, e, f, sd, "rational", qa + qb);
+}
+
+rule LimitSubRational(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, qa: Rational, qb: Rational) strict {
+    label ru unofficial "закон о пределе разности (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "sub", "", 0 / 1, a, b)) and monotone(limit_at(t, e, a, sd, "rational", qa)) and monotone(limit_at(t, e, b, sd, "rational", qb));
+    then limit_at(t, e, f, sd, "rational", qa - qb);
+}
+
+rule LimitAddFiniteInfinity(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, kd: Text, qa: Rational, z1: Rational) strict {
+    label ru unofficial "конечное слагаемое бесконечность не меняет (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "add", "", 0 / 1, a, b)) and monotone(limit_at(t, e, a, sd, "rational", qa)) and monotone(limit_at(t, e, b, sd, kd, z1)) and (kd == "plus_inf" or kd == "minus_inf") and z1 == 0/1;
+    then limit_at(t, e, f, sd, kd, 0 / 1);
+}
+
+rule LimitAddInfinityFinite(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, kd: Text, qb: Rational, z1: Rational) strict {
+    label ru unofficial "конечное слагаемое бесконечность не меняет (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "add", "", 0 / 1, a, b)) and monotone(limit_at(t, e, a, sd, kd, z1)) and monotone(limit_at(t, e, b, sd, "rational", qb)) and (kd == "plus_inf" or kd == "minus_inf") and z1 == 0/1;
+    then limit_at(t, e, f, sd, kd, 0 / 1);
+}
+
+rule LimitAddSameInfinity(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, kd: Text, z1: Rational, z2: Rational) strict {
+    label ru unofficial "одинаковые бесконечности складываются; ∞ − ∞ здесь молчит (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "add", "", 0 / 1, a, b)) and monotone(limit_at(t, e, a, sd, kd, z1)) and monotone(limit_at(t, e, b, sd, kd, z2)) and (kd == "plus_inf" or kd == "minus_inf") and z1 == 0/1 and z2 == 0/1;
+    then limit_at(t, e, f, sd, kd, 0 / 1);
+}
+
+rule LimitSubFiniteInfinityPlus(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, qa: Rational, z1: Rational) strict {
+    label ru unofficial "конечное минус плюс бесконечность (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "sub", "", 0 / 1, a, b)) and monotone(limit_at(t, e, a, sd, "rational", qa)) and monotone(limit_at(t, e, b, sd, "plus_inf", z1)) and z1 == 0/1;
+    then limit_at(t, e, f, sd, "minus_inf", 0 / 1);
+}
+
+rule LimitSubFiniteInfinityMinus(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, qa: Rational, z1: Rational) strict {
+    label ru unofficial "конечное минус минус бесконечность (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "sub", "", 0 / 1, a, b)) and monotone(limit_at(t, e, a, sd, "rational", qa)) and monotone(limit_at(t, e, b, sd, "minus_inf", z1)) and z1 == 0/1;
+    then limit_at(t, e, f, sd, "plus_inf", 0 / 1);
+}
+
+rule LimitSubInfinityFinite(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, kd: Text, qb: Rational, z1: Rational) strict {
+    label ru unofficial "бесконечность минус конечное (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "sub", "", 0 / 1, a, b)) and monotone(limit_at(t, e, a, sd, kd, z1)) and monotone(limit_at(t, e, b, sd, "rational", qb)) and (kd == "plus_inf" or kd == "minus_inf") and z1 == 0/1;
+    then limit_at(t, e, f, sd, kd, 0 / 1);
+}
+
+// ── Произведение ───────────────────────────────────────────────────────────
+
+rule LimitMulRational(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, qa: Rational, qb: Rational) strict {
+    label ru unofficial "закон о пределе произведения (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "mul", "", 0 / 1, a, b)) and monotone(limit_at(t, e, a, sd, "rational", qa)) and monotone(limit_at(t, e, b, sd, "rational", qb));
+    then limit_at(t, e, f, sd, "rational", qa * qb);
+}
+
+rule LimitMulPositiveInfinityRight(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, kd: Text, qa: Rational, z1: Rational) strict {
+    label ru unofficial "положительный конечный множитель сохраняет знак бесконечности; 0·∞ молчит (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "mul", "", 0 / 1, a, b)) and monotone(limit_at(t, e, a, sd, "rational", qa)) and monotone(limit_at(t, e, b, sd, kd, z1)) and qa > 0 / 1 and (kd == "plus_inf" or kd == "minus_inf") and z1 == 0/1;
+    then limit_at(t, e, f, sd, kd, 0 / 1);
+}
+
+rule LimitMulNegativeInfinityRightPlus(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, qa: Rational, z1: Rational) strict {
+    label ru unofficial "отрицательный конечный множитель переворачивает знак (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "mul", "", 0 / 1, a, b)) and monotone(limit_at(t, e, a, sd, "rational", qa)) and monotone(limit_at(t, e, b, sd, "plus_inf", z1)) and qa < 0 / 1 and z1 == 0/1;
+    then limit_at(t, e, f, sd, "minus_inf", 0 / 1);
+}
+
+rule LimitMulNegativeInfinityRightMinus(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, qa: Rational, z1: Rational) strict {
+    label ru unofficial "отрицательный конечный множитель переворачивает знак (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "mul", "", 0 / 1, a, b)) and monotone(limit_at(t, e, a, sd, "rational", qa)) and monotone(limit_at(t, e, b, sd, "minus_inf", z1)) and qa < 0 / 1 and z1 == 0/1;
+    then limit_at(t, e, f, sd, "plus_inf", 0 / 1);
+}
+
+rule LimitMulInfinityLeftPositive(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, kd: Text, qb: Rational, z1: Rational) strict {
+    label ru unofficial "положительный конечный множитель сохраняет знак бесконечности (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "mul", "", 0 / 1, a, b)) and monotone(limit_at(t, e, a, sd, kd, z1)) and monotone(limit_at(t, e, b, sd, "rational", qb)) and qb > 0 / 1 and (kd == "plus_inf" or kd == "minus_inf") and z1 == 0/1;
+    then limit_at(t, e, f, sd, kd, 0 / 1);
+}
+
+rule LimitMulInfinityLeftNegativePlus(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, qb: Rational, z1: Rational) strict {
+    label ru unofficial "отрицательный конечный множитель переворачивает знак (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "mul", "", 0 / 1, a, b)) and monotone(limit_at(t, e, a, sd, "plus_inf", z1)) and monotone(limit_at(t, e, b, sd, "rational", qb)) and qb < 0 / 1 and z1 == 0/1;
+    then limit_at(t, e, f, sd, "minus_inf", 0 / 1);
+}
+
+rule LimitMulInfinityLeftNegativeMinus(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, qb: Rational, z1: Rational) strict {
+    label ru unofficial "отрицательный конечный множитель переворачивает знак (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "mul", "", 0 / 1, a, b)) and monotone(limit_at(t, e, a, sd, "minus_inf", z1)) and monotone(limit_at(t, e, b, sd, "rational", qb)) and qb < 0 / 1 and z1 == 0/1;
+    then limit_at(t, e, f, sd, "plus_inf", 0 / 1);
+}
+
+rule LimitMulInfinitySame(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, kd: Text, z1: Rational, z2: Rational) strict {
+    label ru unofficial "произведение одинаковых бесконечностей положительно (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "mul", "", 0 / 1, a, b)) and monotone(limit_at(t, e, a, sd, kd, z1)) and monotone(limit_at(t, e, b, sd, kd, z2)) and (kd == "plus_inf" or kd == "minus_inf") and z1 == 0/1 and z2 == 0/1;
+    then limit_at(t, e, f, sd, "plus_inf", 0 / 1);
+}
+
+rule LimitMulInfinityOppositePM(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, z1: Rational, z2: Rational) strict {
+    label ru unofficial "произведение разных бесконечностей отрицательно (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "mul", "", 0 / 1, a, b)) and monotone(limit_at(t, e, a, sd, "plus_inf", z1)) and monotone(limit_at(t, e, b, sd, "minus_inf", z2)) and z1 == 0/1 and z2 == 0/1;
+    then limit_at(t, e, f, sd, "minus_inf", 0 / 1);
+}
+
+rule LimitMulInfinityOppositeMP(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, z1: Rational, z2: Rational) strict {
+    label ru unofficial "произведение разных бесконечностей отрицательно (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "mul", "", 0 / 1, a, b)) and monotone(limit_at(t, e, a, sd, "minus_inf", z1)) and monotone(limit_at(t, e, b, sd, "plus_inf", z2)) and z1 == 0/1 and z2 == 0/1;
+    then limit_at(t, e, f, sd, "minus_inf", 0 / 1);
+}
+
+// ── Частное ────────────────────────────────────────────────────────────────
+
+rule LimitDivRational(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, qa: Rational, qb: Rational) strict {
+    label ru unofficial "закон о пределе частного при ненулевом пределе знаменателя (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "div", "", 0 / 1, a, b)) and monotone(limit_at(t, e, a, sd, "rational", qa)) and monotone(limit_at(t, e, b, sd, "rational", qb)) and qb != 0 / 1;
+    then limit_at(t, e, f, sd, "rational", qa / qb);
+}
+
+rule LimitDivFiniteOverInfinity(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, kd: Text, qa: Rational, z1: Rational) strict {
+    label ru unofficial "конечное, делённое на бесконечность, стремится к нулю (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "div", "", 0 / 1, a, b)) and monotone(limit_at(t, e, a, sd, "rational", qa)) and monotone(limit_at(t, e, b, sd, kd, z1)) and (kd == "plus_inf" or kd == "minus_inf") and z1 == 0/1;
+    then limit_at(t, e, f, sd, "rational", 0 / 1);
+}
+
+rule LimitDivInfinityOverFinitePositive(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, kd: Text, qb: Rational, z1: Rational) strict {
+    label ru unofficial "бесконечность, делённая на положительное конечное (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "div", "", 0 / 1, a, b)) and monotone(limit_at(t, e, a, sd, kd, z1)) and monotone(limit_at(t, e, b, sd, "rational", qb)) and qb > 0 / 1 and (kd == "plus_inf" or kd == "minus_inf") and z1 == 0/1;
+    then limit_at(t, e, f, sd, kd, 0 / 1);
+}
+
+rule LimitDivInfinityOverFiniteNegativePlus(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, qb: Rational, z1: Rational) strict {
+    label ru unofficial "бесконечность, делённая на отрицательное конечное (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "div", "", 0 / 1, a, b)) and monotone(limit_at(t, e, a, sd, "plus_inf", z1)) and monotone(limit_at(t, e, b, sd, "rational", qb)) and qb < 0 / 1 and z1 == 0/1;
+    then limit_at(t, e, f, sd, "minus_inf", 0 / 1);
+}
+
+rule LimitDivInfinityOverFiniteNegativeMinus(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, qb: Rational, z1: Rational) strict {
+    label ru unofficial "бесконечность, делённая на отрицательное конечное (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "div", "", 0 / 1, a, b)) and monotone(limit_at(t, e, a, sd, "minus_inf", z1)) and monotone(limit_at(t, e, b, sd, "rational", qb)) and qb < 0 / 1 and z1 == 0/1;
+    then limit_at(t, e, f, sd, "plus_inf", 0 / 1);
+}
+
+// Ненулевое конечное, делённое на стремящийся к нулю знаменатель: величина
+// бесконечна, а ЗНАК берётся из знака знаменателя в окрестности с этой
+// стороны. Без доказанного знака правило молчит — это и есть разбор `1/x`.
+
+rule LimitDivOverZeroPositive(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, qa: Rational, sgn: Integer, z1: Rational) strict {
+    label ru unofficial "знак частного при нулевом знаменателе: положительное на положительный (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "div", "", 0 / 1, a, b)) and monotone(limit_at(t, e, a, sd, "rational", qa)) and monotone(limit_at(t, e, b, sd, "rational", z1)) and qa > 0 / 1 and monotone(sign_near(t, e, b, sd, sgn)) and sgn == 1 and z1 == 0/1;
+    then limit_at(t, e, f, sd, "plus_inf", 0 / 1);
+}
+
+rule LimitDivOverZeroPositiveNegative(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, qa: Rational, sgn: Integer, z1: Rational) strict {
+    label ru unofficial "знак частного при нулевом знаменателе: положительное на отрицательный (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "div", "", 0 / 1, a, b)) and monotone(limit_at(t, e, a, sd, "rational", qa)) and monotone(limit_at(t, e, b, sd, "rational", z1)) and qa > 0 / 1 and monotone(sign_near(t, e, b, sd, sgn)) and sgn == 0 - 1 and z1 == 0/1;
+    then limit_at(t, e, f, sd, "minus_inf", 0 / 1);
+}
+
+rule LimitDivOverZeroNegativePositive(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, qa: Rational, sgn: Integer, z1: Rational) strict {
+    label ru unofficial "знак частного при нулевом знаменателе: отрицательное на положительный (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "div", "", 0 / 1, a, b)) and monotone(limit_at(t, e, a, sd, "rational", qa)) and monotone(limit_at(t, e, b, sd, "rational", z1)) and qa < 0 / 1 and monotone(sign_near(t, e, b, sd, sgn)) and sgn == 1 and z1 == 0/1;
+    then limit_at(t, e, f, sd, "minus_inf", 0 / 1);
+}
+
+rule LimitDivOverZeroNegativeNegative(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, qa: Rational, sgn: Integer, z1: Rational) strict {
+    label ru unofficial "знак частного при нулевом знаменателе: отрицательное на отрицательный (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "div", "", 0 / 1, a, b)) and monotone(limit_at(t, e, a, sd, "rational", qa)) and monotone(limit_at(t, e, b, sd, "rational", z1)) and qa < 0 / 1 and monotone(sign_near(t, e, b, sd, sgn)) and sgn == 0 - 1 and z1 == 0/1;
+    then limit_at(t, e, f, sd, "plus_inf", 0 / 1);
+}
+
+// ── Степень с целым неотрицательным показателем ────────────────────────────
+//
+// Возведение рационального основания в степень — ограниченная монотонная
+// рекурсия по показателю (§65/§103). Показатель читается из узла `const`,
+// его целость уже удостоверена формой `pow` у calc.expressions.
+
+rule PowerWanted(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, g: Integer, sd: Text, q: Rational, nv: Rational) strict {
+    label ru unofficial "запрос степени основания с известным конечным пределом (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "pow", "", 0 / 1, a, g)) and monotone(limit_at(t, e, a, sd, "rational", q)) and monotone(calc.expressions::node(e, g, "const", "", nv, 0, 0));
+    then power_wanted(t, q, nv);
+}
+
+rule PowerStart(t: Task, q: Rational, nv: Rational) strict {
+    label ru unofficial "нулевая степень равна единице (§4 DECISION-0198)";
+    when monotone(power_wanted(t, q, nv));
+    then power_step(t, q, 0, 1 / 1);
+}
+
+rule PowerStep(t: Task, q: Rational, nv: Rational, k: Integer, v: Rational) strict {
+    label ru unofficial "следующая степень до запрошенного показателя (§4 DECISION-0198)";
+    when monotone(power_step(t, q, k, v)) and monotone(power_wanted(t, q, nv)) and k / 1 < nv and k < 32;
+    then power_step(t, q, k + 1, v * q);
+}
+
+rule LimitPowRational(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, g: Integer, sd: Text, q: Rational, nv: Rational, k: Integer, v: Rational) strict {
+    label ru unofficial "предел степени есть степень предела (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "pow", "", 0 / 1, a, g)) and monotone(limit_at(t, e, a, sd, "rational", q)) and monotone(calc.expressions::node(e, g, "const", "", nv, 0, 0)) and monotone(power_step(t, q, k, v)) and k / 1 == nv;
+    then limit_at(t, e, f, sd, "rational", v);
+}
+
+rule LimitPowPlusInfinity(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, g: Integer, sd: Text, nv: Rational, z1: Rational) strict {
+    label ru unofficial "положительная степень плюс бесконечности (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "pow", "", 0 / 1, a, g)) and monotone(limit_at(t, e, a, sd, "plus_inf", z1)) and monotone(calc.expressions::node(e, g, "const", "", nv, 0, 0)) and nv >= 1 / 1 and z1 == 0/1;
+    then limit_at(t, e, f, sd, "plus_inf", 0 / 1);
+}
+
+rule LimitPowMinusInfinityEven(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, g: Integer, sd: Text, nv: Rational, k: Integer, z1: Rational) strict {
+    label ru unofficial "чётная степень минус бесконечности положительна (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "pow", "", 0 / 1, a, g)) and monotone(limit_at(t, e, a, sd, "minus_inf", z1)) and monotone(calc.expressions::node(e, g, "const", "", nv, 0, 0)) and nv >= 1 / 1 and monotone(exponent_parity(t, nv, k)) and k == 0 and z1 == 0/1;
+    then limit_at(t, e, f, sd, "plus_inf", 0 / 1);
+}
+
+rule LimitPowMinusInfinityOdd(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, g: Integer, sd: Text, nv: Rational, k: Integer, z1: Rational) strict {
+    label ru unofficial "нечётная степень минус бесконечности отрицательна (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "pow", "", 0 / 1, a, g)) and monotone(limit_at(t, e, a, sd, "minus_inf", z1)) and monotone(calc.expressions::node(e, g, "const", "", nv, 0, 0)) and nv >= 1 / 1 and monotone(exponent_parity(t, nv, k)) and k == 1 and z1 == 0/1;
+    then limit_at(t, e, f, sd, "minus_inf", 0 / 1);
+}
+
+relation exponent_index(t: Task, nv: Rational, k: Integer) kind institutional {
+    label ru unofficial "целое значение показателя, найденное ограниченной цепочкой (§65/§103)";
+}
+
+relation exponent_parity(t: Task, nv: Rational, r: Integer) kind institutional {
+    label ru unofficial "чётность показателя: 0 либо 1";
+}
+
+rule ExponentIndexStart(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, g: Integer, nv: Rational, x: Text, ap: Text, pt: Rational, s: Text, root: Integer) strict {
+    label ru unofficial "нулевой показатель допустим (§4 DECISION-0198)";
+    when accepted(t, e, root, x, ap, pt, s) and monotone(calc.expressions::node(e, f, "pow", "", 0 / 1, a, g)) and monotone(calc.expressions::node(e, g, "const", "", nv, 0, 0));
+    then exponent_index(t, nv, 0);
+}
+
+rule ExponentIndexStep(t: Task, nv: Rational, k: Integer) strict {
+    label ru unofficial "следующий показатель до объявленной границы 32 (§4 DECISION-0198)";
+    when monotone(exponent_index(t, nv, k)) and k / 1 < nv and k < 32;
+    then exponent_index(t, nv, k + 1);
+}
+
+rule ExponentParity(t: Task, nv: Rational, k: Integer) strict {
+    label ru unofficial "чётность найденного показателя (§4 DECISION-0198)";
+    when monotone(exponent_index(t, nv, k)) and k / 1 == nv;
+    then exponent_parity(t, nv, k mod 2);
+}
+
+// ── Непрерывность элементарных функций в известных точках ──────────────────
+//
+// Значение sin, cos, exp и ln в произвольной рациональной точке рационально
+// НЕ бывает, и типа Real в языке нет. Поэтому установлены ровно те точки,
+// где значение принадлежит ℚ: sin 0 = 0, cos 0 = 1, e⁰ = 1, ln 1 = 0, —
+// плюс поведение показательной и логарифма на бесконечности. Прочие точки
+// не угадываются: правило молчит, и наверху это станет UNSUPPORTED_FORM.
+
+rule LimitSinZero(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, sd: Text, z1: Rational) strict {
+    label ru unofficial "sin непрерывен, и sin 0 = 0 (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "sin", "", 0 / 1, a, 0)) and monotone(limit_at(t, e, a, sd, "rational", z1)) and z1 == 0/1;
+    then limit_at(t, e, f, sd, "rational", 0 / 1);
+}
+
+rule LimitCosZero(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, sd: Text, z1: Rational) strict {
+    label ru unofficial "cos непрерывен, и cos 0 = 1 (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "cos", "", 0 / 1, a, 0)) and monotone(limit_at(t, e, a, sd, "rational", z1)) and z1 == 0/1;
+    then limit_at(t, e, f, sd, "rational", 1 / 1);
+}
+
+rule LimitExpZero(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, sd: Text, z1: Rational) strict {
+    label ru unofficial "показательная непрерывна, и e⁰ = 1 (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "exp", "", 0 / 1, a, 0)) and monotone(limit_at(t, e, a, sd, "rational", z1)) and z1 == 0/1;
+    then limit_at(t, e, f, sd, "rational", 1 / 1);
+}
+
+rule LimitExpPlusInfinity(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, sd: Text, z1: Rational) strict {
+    label ru unofficial "показательная растёт неограниченно (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "exp", "", 0 / 1, a, 0)) and monotone(limit_at(t, e, a, sd, "plus_inf", z1)) and z1 == 0/1;
+    then limit_at(t, e, f, sd, "plus_inf", 0 / 1);
+}
+
+rule LimitExpMinusInfinity(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, sd: Text, z1: Rational) strict {
+    label ru unofficial "показательная стремится к нулю на минус бесконечности (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "exp", "", 0 / 1, a, 0)) and monotone(limit_at(t, e, a, sd, "minus_inf", z1)) and z1 == 0/1;
+    then limit_at(t, e, f, sd, "rational", 0 / 1);
+}
+
+rule LimitLnOne(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, sd: Text, z1: Rational) strict {
+    label ru unofficial "логарифм непрерывен на положительной полуоси, и ln 1 = 0 (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "ln", "", 0 / 1, a, 0)) and monotone(limit_at(t, e, a, sd, "rational", z1)) and z1 == 1/1;
+    then limit_at(t, e, f, sd, "rational", 0 / 1);
+}
+
+rule LimitLnPlusInfinity(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, sd: Text, z1: Rational) strict {
+    label ru unofficial "логарифм растёт неограниченно (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "ln", "", 0 / 1, a, 0)) and monotone(limit_at(t, e, a, sd, "plus_inf", z1)) and z1 == 0/1;
+    then limit_at(t, e, f, sd, "plus_inf", 0 / 1);
+}
+
+rule LimitLnZeroFromPositive(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, sd: Text, sgn: Integer, z1: Rational) strict {
+    label ru unofficial "логарифм уходит в минус бесконечность при положительном стремлении к нулю (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "ln", "", 0 / 1, a, 0)) and monotone(limit_at(t, e, a, sd, "rational", z1)) and monotone(sign_near(t, e, a, sd, sgn)) and sgn == 1 and z1 == 0/1;
+    then limit_at(t, e, f, sd, "minus_inf", 0 / 1);
+}
+
+// ── Знак в проколотой окрестности ──────────────────────────────────────────
+//
+// Знак нужен там, где величина предела равна нулю, а поведение около точки
+// решает исход: `1/x` при x → 0 и логарифм у нуля. Разбор структурный и
+// заведомо неполный — где он молчит, наверху появляется неустановленное
+// условие, а не выдуманный ответ.
+
+rule SignFromNonzeroLimit(t: Task, e: calc.expressions::Expr, f: Integer, sd: Text, q: Rational) strict {
+    label ru unofficial "ненулевой предел сам называет знак в окрестности (§4 DECISION-0198)";
+    when monotone(limit_at(t, e, f, sd, "rational", q)) and q > 0 / 1;
+    then sign_near(t, e, f, sd, 1);
+}
+
+rule SignFromNonzeroLimitNegative(t: Task, e: calc.expressions::Expr, f: Integer, sd: Text, q: Rational) strict {
+    label ru unofficial "ненулевой предел сам называет знак в окрестности (§4 DECISION-0198)";
+    when monotone(limit_at(t, e, f, sd, "rational", q)) and q < 0 / 1;
+    then sign_near(t, e, f, sd, 0 - 1);
+}
+
+rule SignFromPlusInfinity(t: Task, e: calc.expressions::Expr, f: Integer, sd: Text, z1: Rational) strict {
+    label ru unofficial "уходящая в плюс бесконечность функция положительна около точки (§4 DECISION-0198)";
+    when monotone(limit_at(t, e, f, sd, "plus_inf", z1)) and z1 == 0/1;
+    then sign_near(t, e, f, sd, 1);
+}
+
+rule SignFromMinusInfinity(t: Task, e: calc.expressions::Expr, f: Integer, sd: Text, z1: Rational) strict {
+    label ru unofficial "уходящая в минус бесконечность функция отрицательна около точки (§4 DECISION-0198)";
+    when monotone(limit_at(t, e, f, sd, "minus_inf", z1)) and z1 == 0/1;
+    then sign_near(t, e, f, sd, 0 - 1);
+}
+
+rule SignVariableRight(t: Task, e: calc.expressions::Expr, f: Integer, g: Integer, x: Text, a: Rational, s: Text) strict {
+    label ru unofficial "справа от точки переменная больше точки (§4 DECISION-0198)";
+    when accepted(t, e, g, x, "at", a, s) and monotone(calc.expressions::node(e, f, "var", x, 0 / 1, 0, 0)) and a == 0 / 1 and side_wanted(t, "right");
+    then sign_near(t, e, f, "right", 1);
+}
+
+rule SignVariableLeft(t: Task, e: calc.expressions::Expr, f: Integer, g: Integer, x: Text, a: Rational, s: Text) strict {
+    label ru unofficial "слева от точки переменная меньше точки (§4 DECISION-0198)";
+    when accepted(t, e, g, x, "at", a, s) and monotone(calc.expressions::node(e, f, "var", x, 0 / 1, 0, 0)) and a == 0 / 1 and side_wanted(t, "left");
+    then sign_near(t, e, f, "left", 0 - 1);
+}
+
+rule SignNegFlipPositive(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, sd: Text, sgn: Integer) strict {
+    label ru unofficial "смена знака переворачивает знак окрестности (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "neg", "", 0 / 1, a, 0)) and monotone(sign_near(t, e, a, sd, sgn));
+    then sign_near(t, e, f, sd, 0 - sgn);
+}
+
+rule SignProduct(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, sa: Integer, sb: Integer) strict {
+    label ru unofficial "знак произведения есть произведение знаков (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "mul", "", 0 / 1, a, b)) and monotone(sign_near(t, e, a, sd, sa)) and monotone(sign_near(t, e, b, sd, sb));
+    then sign_near(t, e, f, sd, sa * sb);
+}
+
+rule SignQuotient(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, sa: Integer, sb: Integer) strict {
+    label ru unofficial "знак частного есть произведение знаков (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "div", "", 0 / 1, a, b)) and monotone(sign_near(t, e, a, sd, sa)) and monotone(sign_near(t, e, b, sd, sb));
+    then sign_near(t, e, f, sd, sa * sb);
+}
+
+rule SignPowerEven(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, g: Integer, sd: Text, nv: Rational, sa: Integer, r: Integer) strict {
+    label ru unofficial "чётная степень положительна (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "pow", "", 0 / 1, a, g)) and monotone(calc.expressions::node(e, g, "const", "", nv, 0, 0)) and monotone(sign_near(t, e, a, sd, sa)) and monotone(exponent_parity(t, nv, r)) and r == 0 and nv >= 1 / 1;
+    then sign_near(t, e, f, sd, 1);
+}
+
+rule SignPowerOdd(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, g: Integer, sd: Text, nv: Rational, sa: Integer, r: Integer) strict {
+    label ru unofficial "нечётная степень сохраняет знак основания (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "pow", "", 0 / 1, a, g)) and monotone(calc.expressions::node(e, g, "const", "", nv, 0, 0)) and monotone(sign_near(t, e, a, sd, sa)) and monotone(exponent_parity(t, nv, r)) and r == 1 and nv >= 1 / 1;
+    then sign_near(t, e, f, sd, sa);
+}
+
+rule SignVariablePositivePoint(t: Task, e: calc.expressions::Expr, f: Integer, g: Integer, x: Text, a: Rational, s: Text, sd: Text) strict {
+    label ru unofficial "около положительной точки переменная положительна с обеих сторон (§4 DECISION-0198)";
+    when accepted(t, e, g, x, "at", a, s) and side_wanted(t, sd) and monotone(calc.expressions::node(e, f, "var", x, 0 / 1, 0, 0)) and a > 0 / 1;
+    then sign_near(t, e, f, sd, 1);
+}
+
+rule SignVariableNegativePoint(t: Task, e: calc.expressions::Expr, f: Integer, g: Integer, x: Text, a: Rational, s: Text, sd: Text) strict {
+    label ru unofficial "около отрицательной точки переменная отрицательна с обеих сторон (§4 DECISION-0198)";
+    when accepted(t, e, g, x, "at", a, s) and side_wanted(t, sd) and monotone(calc.expressions::node(e, f, "var", x, 0 / 1, 0, 0)) and a < 0 / 1;
+    then sign_near(t, e, f, sd, 0 - 1);
+}
+
+rule SignVariablePlusInfinity(t: Task, e: calc.expressions::Expr, f: Integer, g: Integer, x: Text, a: Rational, s: Text) strict {
+    label ru unofficial "на плюс бесконечности переменная положительна (§4 DECISION-0198)";
+    when accepted(t, e, g, x, "plus_inf", a, s) and monotone(calc.expressions::node(e, f, "var", x, 0 / 1, 0, 0));
+    then sign_near(t, e, f, "both", 1);
+}
+
+rule SignVariableMinusInfinity(t: Task, e: calc.expressions::Expr, f: Integer, g: Integer, x: Text, a: Rational, s: Text) strict {
+    label ru unofficial "на минус бесконечности переменная отрицательна (§4 DECISION-0198)";
+    when accepted(t, e, g, x, "minus_inf", a, s) and monotone(calc.expressions::node(e, f, "var", x, 0 / 1, 0, 0));
+    then sign_near(t, e, f, "both", 0 - 1);
+}
+
+// ── Полюс c/0 в сдвинутой точке: знак через производную ────────────────────
+//
+// SignVariableRight/Left называют знак самой переменной лишь в точке 0.
+// Знаменатель полюса предъявлен раскрытым многочленом (цепочка add/mul/pow),
+// и правила SignAddSame/SignSubZero* его не разбирают: знак структурно не
+// виден при любом a ≠ 0. Знак даёт первая ненулевая производная в точке:
+// p(x) = m·(x−a) + o(x−a) при m = p′(a) ≠ 0 меняет знак вместе с (x − a),
+// а при p′(a) = 0 и p′′(a) ≠ 0 сохраняет знак p′′(a) с обеих сторон.
+// Производную строят существующие правила derive.law; спрос на неё —
+// положительное следствие установленного полюса, а не отрицание вида «знак
+// не установлен». Корень кратности три и выше честно молчит.
+
+relation pole_zero(t: Task, e: calc.expressions::Expr, f: Integer, u: Integer, v: Integer, sd: Text) kind institutional {
+    label ru unofficial "установленный полюс: числитель конечен и ненулевой, знаменатель стремится к нулю";
+}
+
+relation pole_double(t: Task, e: calc.expressions::Expr, f: Integer, v: Integer, dv: Integer) kind institutional {
+    label ru unofficial "у полюса погасла первая производная знаменателя; dv — её узел";
+}
+
+rule PoleZero(t: Task, e: calc.expressions::Expr, f: Integer, u: Integer, v: Integer, x: Text, ap: Text, pt: Rational, s: Text, sd: Text, qa: Rational, qv: Rational) strict {
+    label ru unofficial "полюс c/0 установлен пределами частей (§4 DECISION-0198)";
+    when accepted(t, e, f, x, ap, pt, s) and monotone(calc.expressions::node(e, f, "div", "", 0 / 1, u, v)) and side_wanted(t, sd) and monotone(limit_at(t, e, u, sd, "rational", qa)) and qa != 0 / 1 and monotone(limit_at(t, e, v, sd, "rational", qv)) and qv == 0 / 1;
+    then pole_zero(t, e, f, u, v, sd);
+}
+
+rule PoleDerivativeDemand(t: Task, e: calc.expressions::Expr, f: Integer, u: Integer, v: Integer, sd: Text) strict {
+    label ru unofficial "знак знаменателя полюса требует его производной (§4 DECISION-0198)";
+    when monotone(pole_zero(t, e, f, u, v, sd));
+    then need_derivative(t, e, v);
+}
+
+rule PoleSignRightPositive(t: Task, e: calc.expressions::Expr, f: Integer, u: Integer, v: Integer, x: Text, pt: Rational, s: Text, m: Rational) strict {
+    label ru unofficial "справа знак знаменателя полюса совпадает со знаком первой производной (§4 DECISION-0198)";
+    when monotone(pole_zero(t, e, f, u, v, "right")) and accepted(t, e, f, x, "at", pt, s) and monotone(derived(t, e, v)) and monotone(limit_at(t, e, v * 64 + 256, "right", "rational", m)) and m > 0 / 1;
+    then sign_near(t, e, v, "right", 1);
+}
+
+rule PoleSignRightNegative(t: Task, e: calc.expressions::Expr, f: Integer, u: Integer, v: Integer, x: Text, pt: Rational, s: Text, m: Rational) strict {
+    label ru unofficial "справа знак знаменателя полюса совпадает со знаком первой производной (§4 DECISION-0198)";
+    when monotone(pole_zero(t, e, f, u, v, "right")) and accepted(t, e, f, x, "at", pt, s) and monotone(derived(t, e, v)) and monotone(limit_at(t, e, v * 64 + 256, "right", "rational", m)) and m < 0 / 1;
+    then sign_near(t, e, v, "right", 0 - 1);
+}
+
+rule PoleSignLeftPositive(t: Task, e: calc.expressions::Expr, f: Integer, u: Integer, v: Integer, x: Text, pt: Rational, s: Text, m: Rational) strict {
+    label ru unofficial "слева знак знаменателя полюса противоположен знаку первой производной (§4 DECISION-0198)";
+    when monotone(pole_zero(t, e, f, u, v, "left")) and accepted(t, e, f, x, "at", pt, s) and monotone(derived(t, e, v)) and monotone(limit_at(t, e, v * 64 + 256, "left", "rational", m)) and m > 0 / 1;
+    then sign_near(t, e, v, "left", 0 - 1);
+}
+
+rule PoleSignLeftNegative(t: Task, e: calc.expressions::Expr, f: Integer, u: Integer, v: Integer, x: Text, pt: Rational, s: Text, m: Rational) strict {
+    label ru unofficial "слева знак знаменателя полюса противоположен знаку первой производной (§4 DECISION-0198)";
+    when monotone(pole_zero(t, e, f, u, v, "left")) and accepted(t, e, f, x, "at", pt, s) and monotone(derived(t, e, v)) and monotone(limit_at(t, e, v * 64 + 256, "left", "rational", m)) and m < 0 / 1;
+    then sign_near(t, e, v, "left", 1);
+}
+
+rule PoleDoubleAddress(t: Task, e: calc.expressions::Expr, f: Integer, u: Integer, v: Integer, x: Text, pt: Rational, s: Text, sd: Text, z: Rational) strict {
+    label ru unofficial "первая производная знаменателя полюса погасла: нужен второй порядок (§4 DECISION-0198)";
+    when monotone(pole_zero(t, e, f, u, v, sd)) and accepted(t, e, f, x, "at", pt, s) and monotone(derived(t, e, v)) and monotone(limit_at(t, e, v * 64 + 256, sd, "rational", z)) and z == 0 / 1;
+    then pole_double(t, e, f, v, v * 64 + 256);
+}
+
+rule PoleSecondDemand(t: Task, e: calc.expressions::Expr, f: Integer, v: Integer, dv: Integer) strict {
+    label ru unofficial "вторая производная знаменателя строится по установленному погасанию первой (§4 DECISION-0198)";
+    when monotone(pole_double(t, e, f, v, dv));
+    then need_derivative(t, e, dv);
+}
+
+rule PoleSignDoublePositive(t: Task, e: calc.expressions::Expr, f: Integer, v: Integer, dv: Integer, x: Text, pt: Rational, s: Text, sd: Text, m2: Rational) strict {
+    label ru unofficial "погасание первого порядка: знак обеих сторон совпадает со знаком второй производной (§4 DECISION-0198)";
+    when monotone(pole_double(t, e, f, v, dv)) and accepted(t, e, f, x, "at", pt, s) and side_wanted(t, sd) and monotone(derived(t, e, dv)) and monotone(limit_at(t, e, dv * 64 + 256, sd, "rational", m2)) and m2 > 0 / 1;
+    then sign_near(t, e, v, sd, 1);
+}
+
+rule PoleSignDoubleNegative(t: Task, e: calc.expressions::Expr, f: Integer, v: Integer, dv: Integer, x: Text, pt: Rational, s: Text, sd: Text, m2: Rational) strict {
+    label ru unofficial "погасание первого порядка: знак обеих сторон совпадает со знаком второй производной (§4 DECISION-0198)";
+    when monotone(pole_double(t, e, f, v, dv)) and accepted(t, e, f, x, "at", pt, s) and side_wanted(t, sd) and monotone(derived(t, e, dv)) and monotone(limit_at(t, e, dv * 64 + 256, sd, "rational", m2)) and m2 < 0 / 1;
+    then sign_near(t, e, v, sd, 0 - 1);
+}
+
+// ── Тождественный ноль ─────────────────────────────────────────────────────
+//
+// `0 · x²` — не неопределённость 0 · ∞, а тождественно нулевая функция:
+// множитель есть КОНСТАНТА ноль, а не величина, стремящаяся к нулю. Разница
+// важна ровно там, где появляются производные: правило произведения всегда
+// порождает слагаемое с производной константы, и без этого различения предел
+// любой производной на бесконечности оставался бы неустановленным.
+//
+// Свойство СТРУКТУРНОЕ и положительное: оно доказывается по дереву, а не
+// получается из того, что предел оказался нулём.
+
+relation identically_zero(t: Task, e: calc.expressions::Expr, f: Integer) kind institutional {
+    label ru unofficial "поддерево есть тождественно нулевая функция на своей области";
+}
+
+rule ZeroConst(t: Task, e: calc.expressions::Expr, f: Integer, sd: Text) strict {
+    label ru unofficial "константа ноль тождественно нулевая (§4 DECISION-0198)";
+    when side_wanted(t, sd) and monotone(calc.expressions::node(e, f, "const", "", 0 / 1, 0, 0));
+    then identically_zero(t, e, f);
+}
+
+rule ZeroNeg(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer) strict {
+    label ru unofficial "смена знака тождественного нуля (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "neg", "", 0 / 1, a, 0)) and monotone(identically_zero(t, e, a));
+    then identically_zero(t, e, f);
+}
+
+rule ZeroMulLeft(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "произведение с тождественно нулевым множителем (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "mul", "", 0 / 1, a, b)) and monotone(identically_zero(t, e, a));
+    then identically_zero(t, e, f);
+}
+
+rule ZeroMulRight(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "произведение с тождественно нулевым множителем (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "mul", "", 0 / 1, a, b)) and monotone(identically_zero(t, e, b));
+    then identically_zero(t, e, f);
+}
+
+rule ZeroAdd(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "сумма двух тождественных нулей (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "add", "", 0 / 1, a, b)) and monotone(identically_zero(t, e, a)) and monotone(identically_zero(t, e, b));
+    then identically_zero(t, e, f);
+}
+
+rule ZeroSub(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer) strict {
+    label ru unofficial "разность двух тождественных нулей (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "sub", "", 0 / 1, a, b)) and monotone(identically_zero(t, e, a)) and monotone(identically_zero(t, e, b));
+    then identically_zero(t, e, f);
+}
+
+rule ZeroPow(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, g: Integer, nv: Rational) strict {
+    label ru unofficial "положительная степень тождественного нуля (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "pow", "", 0 / 1, a, g)) and monotone(calc.expressions::node(e, g, "const", "", nv, 0, 0)) and monotone(identically_zero(t, e, a)) and nv >= 1 / 1;
+    then identically_zero(t, e, f);
+}
+
+rule LimitIdenticallyZero(t: Task, e: calc.expressions::Expr, f: Integer, sd: Text) strict {
+    label ru unofficial "предел тождественно нулевой функции равен нулю в любой точке (§4 DECISION-0198)";
+    when side_wanted(t, sd) and monotone(identically_zero(t, e, f));
+    then limit_at(t, e, f, sd, "rational", 0 / 1);
+}
+
+rule LimitPowZeroExponent(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, g: Integer, sd: Text) strict {
+    label ru unofficial "нулевая степень есть постоянная единица на своей области: предел равен единице в любой точке (§4 DECISION-0198)";
+    when side_wanted(t, sd) and monotone(calc.expressions::node(e, f, "pow", "", 0 / 1, a, g)) and monotone(calc.expressions::node(e, g, "const", "", 0 / 1, 0, 0));
+    then limit_at(t, e, f, sd, "rational", 1 / 1);
+}
+
+// Знак суммы и разности. Общего правила нет: у двух слагаемых разных знаков
+// он не определяется структурой. Установлены два случая, которые реально
+// возникают после дифференцирования: слагаемое-тождественный ноль (правило
+// произведения всегда его порождает) и совпадающие знаки обоих слагаемых.
+
+rule SignAddZeroLeft(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, sb: Integer) strict {
+    label ru unofficial "тождественно нулевое слагаемое знака не меняет (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "add", "", 0 / 1, a, b)) and monotone(identically_zero(t, e, a)) and monotone(sign_near(t, e, b, sd, sb));
+    then sign_near(t, e, f, sd, sb);
+}
+
+rule SignAddZeroRight(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, sa: Integer) strict {
+    label ru unofficial "тождественно нулевое слагаемое знака не меняет (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "add", "", 0 / 1, a, b)) and monotone(identically_zero(t, e, b)) and monotone(sign_near(t, e, a, sd, sa));
+    then sign_near(t, e, f, sd, sa);
+}
+
+rule SignSubZeroRight(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, sa: Integer) strict {
+    label ru unofficial "вычитание тождественного нуля знака не меняет (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "sub", "", 0 / 1, a, b)) and monotone(identically_zero(t, e, b)) and monotone(sign_near(t, e, a, sd, sa));
+    then sign_near(t, e, f, sd, sa);
+}
+
+rule SignSubZeroLeft(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, sb: Integer) strict {
+    label ru unofficial "вычитание из тождественного нуля переворачивает знак (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "sub", "", 0 / 1, a, b)) and monotone(identically_zero(t, e, a)) and monotone(sign_near(t, e, b, sd, sb));
+    then sign_near(t, e, f, sd, 0 - sb);
+}
+
+rule SignAddSame(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, sa: Integer, sb: Integer) strict {
+    label ru unofficial "сумма слагаемых одного знака сохраняет этот знак (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "add", "", 0 / 1, a, b)) and monotone(sign_near(t, e, a, sd, sa)) and monotone(sign_near(t, e, b, sd, sb)) and sa == sb;
+    then sign_near(t, e, f, sd, sa);
+}
+
+// ── Старший член многочлена на бесконечности ───────────────────────────────
+//
+// Сумма слагаемых, уходящих в РАЗНЫЕ бесконечности (∞ − ∞ вида −x³ + 3x),
+// правилами LimitAdd* не разбирается: ни одно из них не срабатывает, и
+// многочлен на бесконечности честно молчит. Для МНОГОЧЛЕНА исход решает
+// старший член: слагаемое строго большей степени поглощает остальные.
+// Степень выводится структурно снизу вверх; у немоночленных узлов
+// (div, sin, cos, exp, ln, sqrt) степени НЕТ, и правило на них молчит.
+// Сторона здесь одна («both»): узел со степенью получает бесконечную величину
+// только на бесконечности, в конечной точке его предел всегда конечен.
+
+relation poly_degree(t: Task, e: calc.expressions::Expr, f: Integer, d: Integer) kind institutional {
+    label ru unofficial "степень узла как многочлена от переменной задачи; отсутствие факта — не многочлен";
+}
+
+rule PolyDegreeConst(t: Task, e: calc.expressions::Expr, f: Integer, v: Rational, sd: Text) strict {
+    label ru unofficial "константа — многочлен нулевой степени (§4 DECISION-0198)";
+    when side_wanted(t, sd) and monotone(calc.expressions::node(e, f, "const", "", v, 0, 0));
+    then poly_degree(t, e, f, 0);
+}
+
+rule PolyDegreeVariable(t: Task, e: calc.expressions::Expr, f: Integer, x: Text) strict {
+    label ru unofficial "переменная задачи — многочлен первой степени (§4 DECISION-0198)";
+    when task_variable(t, x) and monotone(calc.expressions::node(e, f, "var", x, 0 / 1, 0, 0));
+    then poly_degree(t, e, f, 1);
+}
+
+rule PolyDegreeOtherVariable(t: Task, e: calc.expressions::Expr, f: Integer, y: Text, x: Text) strict {
+    label ru unofficial "посторонняя переменная — константа нулевой степени (§4 DECISION-0198)";
+    when task_variable(t, x) and monotone(calc.expressions::node(e, f, "var", y, 0 / 1, 0, 0)) and y != x;
+    then poly_degree(t, e, f, 0);
+}
+
+rule PolyDegreeNeg(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, d: Integer) strict {
+    label ru unofficial "смена знака степени не меняет (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "neg", "", 0 / 1, a, 0)) and monotone(poly_degree(t, e, a, d));
+    then poly_degree(t, e, f, d);
+}
+
+rule PolyDegreeAddLeft(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, da: Integer, db: Integer) strict {
+    label ru unofficial "степень суммы есть наибольшая из степеней (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "add", "", 0 / 1, a, b)) and monotone(poly_degree(t, e, a, da)) and monotone(poly_degree(t, e, b, db)) and da >= db;
+    then poly_degree(t, e, f, da);
+}
+
+rule PolyDegreeAddRight(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, da: Integer, db: Integer) strict {
+    label ru unofficial "степень суммы есть наибольшая из степеней (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "add", "", 0 / 1, a, b)) and monotone(poly_degree(t, e, a, da)) and monotone(poly_degree(t, e, b, db)) and db > da;
+    then poly_degree(t, e, f, db);
+}
+
+rule PolyDegreeSubLeft(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, da: Integer, db: Integer) strict {
+    label ru unofficial "степень разности есть наибольшая из степеней (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "sub", "", 0 / 1, a, b)) and monotone(poly_degree(t, e, a, da)) and monotone(poly_degree(t, e, b, db)) and da >= db;
+    then poly_degree(t, e, f, da);
+}
+
+rule PolyDegreeSubRight(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, da: Integer, db: Integer) strict {
+    label ru unofficial "степень разности есть наибольшая из степеней (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "sub", "", 0 / 1, a, b)) and monotone(poly_degree(t, e, a, da)) and monotone(poly_degree(t, e, b, db)) and db > da;
+    then poly_degree(t, e, f, db);
+}
+
+rule PolyDegreeMul(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, da: Integer, db: Integer) strict {
+    label ru unofficial "степень произведения есть сумма степеней (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "mul", "", 0 / 1, a, b)) and monotone(poly_degree(t, e, a, da)) and monotone(poly_degree(t, e, b, db));
+    then poly_degree(t, e, f, da + db);
+}
+
+rule PolyDegreePow(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, g: Integer, nv: Rational, d: Integer, k: Integer) strict {
+    label ru unofficial "степень целой неотрицательной степени есть произведение степеней; цепочка exponent_index содержит все k до показателя, точное выбирает равенство (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "pow", "", 0 / 1, a, g)) and monotone(calc.expressions::node(e, g, "const", "", nv, 0, 0)) and monotone(poly_degree(t, e, a, d)) and monotone(exponent_index(t, nv, k)) and k / 1 == nv;
+    then poly_degree(t, e, f, d * k);
+}
+
+rule DomAddLeft(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, kd: Text, da: Integer, db: Integer, z: Rational) strict {
+    label ru unofficial "на бесконечности сумма следует за старшим слагаемым слева (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "add", "", 0 / 1, a, b)) and monotone(poly_degree(t, e, a, da)) and monotone(poly_degree(t, e, b, db)) and da > db and monotone(limit_at(t, e, a, sd, kd, z)) and (kd == "plus_inf" or kd == "minus_inf") and z == 0 / 1;
+    then limit_at(t, e, f, sd, kd, 0 / 1);
+}
+
+rule DomAddRight(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, kd: Text, da: Integer, db: Integer, z: Rational) strict {
+    label ru unofficial "на бесконечности сумма следует за старшим слагаемым справа (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "add", "", 0 / 1, a, b)) and monotone(poly_degree(t, e, a, da)) and monotone(poly_degree(t, e, b, db)) and db > da and monotone(limit_at(t, e, b, sd, kd, z)) and (kd == "plus_inf" or kd == "minus_inf") and z == 0 / 1;
+    then limit_at(t, e, f, sd, kd, 0 / 1);
+}
+
+rule DomSubLeft(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, kd: Text, da: Integer, db: Integer, z: Rational) strict {
+    label ru unofficial "на бесконечности разность следует за старшим уменьшаемым (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "sub", "", 0 / 1, a, b)) and monotone(poly_degree(t, e, a, da)) and monotone(poly_degree(t, e, b, db)) and da > db and monotone(limit_at(t, e, a, sd, kd, z)) and (kd == "plus_inf" or kd == "minus_inf") and z == 0 / 1;
+    then limit_at(t, e, f, sd, kd, 0 / 1);
+}
+
+rule DomSubRightPlus(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, da: Integer, db: Integer, z: Rational) strict {
+    label ru unofficial "на бесконечности разность со старшим вычитаемым меняет знак (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "sub", "", 0 / 1, a, b)) and monotone(poly_degree(t, e, a, da)) and monotone(poly_degree(t, e, b, db)) and db > da and monotone(limit_at(t, e, b, sd, "plus_inf", z)) and z == 0 / 1;
+    then limit_at(t, e, f, sd, "minus_inf", 0 / 1);
+}
+
+rule DomSubRightMinus(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, b: Integer, sd: Text, da: Integer, db: Integer, z: Rational) strict {
+    label ru unofficial "на бесконечности разность со старшим вычитаемым меняет знак (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "sub", "", 0 / 1, a, b)) and monotone(poly_degree(t, e, a, da)) and monotone(poly_degree(t, e, b, db)) and db > da and monotone(limit_at(t, e, b, sd, "minus_inf", z)) and z == 0 / 1;
+    then limit_at(t, e, f, sd, "plus_inf", 0 / 1);
+}
+
+// ── Квадратный корень ──────────────────────────────────────────────────────
+//
+// Предел корня равен корню предела, когда подкоренное положительно около
+// точки и ИЗВЛЕЧЕНИЕ ТОЧНОЕ. Точность обязательна: типа Real в языке нет, и
+// √2 здесь не значение, а неподдержанная форма. Кандидаты перебираются по
+// ОБЪЯВЛЕННОЙ решётке — числитель и знаменатель не больше восьми
+// (CAP_ROOT = 8 версии 0.1.0): это граница пакета, а не умолчание дела.
+
+relation root_index(t: Task, k: Integer) kind institutional {
+    label ru unofficial "допустимое целое 0 … 8 решётки кандидатов (§65/§103)";
+}
+
+relation root_candidate(t: Task, q: Rational, r: Rational) kind institutional {
+    label ru unofficial "точный неотрицательный корень: r·r = q";
+}
+
+rule RootIndexStart(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, sd: Text, q: Rational) strict {
+    label ru unofficial "решётка нужна только корню с положительным рациональным пределом подкоренного (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "sqrt", "", 0 / 1, a, 0))
+        and monotone(limit_at(t, e, a, sd, "rational", q)) and q > 0 / 1;
+    then root_index(t, 0);
+}
+
+rule RootIndexStep(t: Task, k: Integer) strict {
+    label ru unofficial "следующий кандидат до объявленной границы 8 (§4 DECISION-0198)";
+    when monotone(root_index(t, k)) and k < 8;
+    then root_index(t, k + 1);
+}
+
+rule RootCandidate(t: Task, n: Integer, d: Integer) strict {
+    label ru unofficial "пара числитель/знаменатель даёт точный корень своего квадрата (§4 DECISION-0198)";
+    when monotone(root_index(t, n)) and monotone(root_index(t, d)) and d > 0;
+    then root_candidate(t, (n * n) / (d * d), n / d);
+}
+
+rule LimitSqrtPositive(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, sd: Text, q: Rational, r: Rational) strict {
+    label ru unofficial "корень непрерывен там, где подкоренное положительно; извлечение точное (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "sqrt", "", 0 / 1, a, 0)) and monotone(limit_at(t, e, a, sd, "rational", q)) and q > 0 / 1 and monotone(root_candidate(t, q, r));
+    then limit_at(t, e, f, sd, "rational", r);
+}
+
+rule LimitSqrtZeroFromPositive(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, sd: Text, sgn: Integer, z1: Rational) strict {
+    label ru unofficial "корень стремится к нулю при положительном стремлении подкоренного к нулю (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "sqrt", "", 0 / 1, a, 0)) and monotone(limit_at(t, e, a, sd, "rational", z1)) and z1 == 0 / 1 and monotone(sign_near(t, e, a, sd, sgn)) and sgn == 1;
+    then limit_at(t, e, f, sd, "rational", 0 / 1);
+}
+
+rule LimitSqrtPlusInfinity(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, sd: Text, z1: Rational) strict {
+    label ru unofficial "корень растёт неограниченно вместе с подкоренным (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "sqrt", "", 0 / 1, a, 0)) and monotone(limit_at(t, e, a, sd, "plus_inf", z1)) and z1 == 0 / 1;
+    then limit_at(t, e, f, sd, "plus_inf", 0 / 1);
+}
+
+rule SignSqrt(t: Task, e: calc.expressions::Expr, f: Integer, a: Integer, sd: Text, q: Rational) strict {
+    label ru unofficial "корень положителен там, где подкоренное положительно (§4 DECISION-0198)";
+    when monotone(calc.expressions::node(e, f, "sqrt", "", 0 / 1, a, 0)) and monotone(limit_at(t, e, a, sd, "rational", q)) and q > 0 / 1;
+    then sign_near(t, e, f, sd, 1);
+}

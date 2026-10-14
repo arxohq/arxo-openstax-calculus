@@ -1,0 +1,23 @@
+language "law.core" version "0.2";
+package openstax.calculus_integrals version "0.1.1";
+namespace "urn:openstax:clir:calculus-integrals";
+
+// §5.4 Net Change Theorem: ∫ₐᵇ F′ = F(b) − F(a). Значение считает вычислитель
+// над ℚ, а норма, по которой это законно, названа фрагментом источника.
+
+test "значение интеграла обосновано теоремой о чистом изменении" {
+    given {
+        assert "cap": calc.polynomials_q::degree_cap(8) { origin case_input; }
+        assert "p1": calc.polynomials_q::poly(entity_ref("urn:case:ci:p"), 1) { origin case_input; }
+        assert "p2": calc.polynomials_q::term(entity_ref("urn:case:ci:p"), 0, 0 / 1) { origin case_input; }
+        assert "p3": calc.polynomials_q::term(entity_ref("urn:case:ci:p"), 1, 2 / 1) { origin case_input; }
+        assert "p4": calc.polynomials_q::antiderivative_of(entity_ref("urn:case:ci:f"), entity_ref("urn:case:ci:p")) { origin case_input; }
+        assert "p5": calc.polynomials_q::definite_integral_request(entity_ref("urn:case:ci:p"), entity_ref("urn:case:ci:f"), 1 / 2, 3 / 2) { origin case_input; }
+    }
+
+    evaluate truth(definite_integral_justified(entity_ref("urn:case:ci:p"), 1 / 2, 3 / 2, 2 / 1));
+
+    expect truth_status == TRUE_ONLY;
+    expect evaluation_status == COMPUTED;
+    expect applied(NetChangeJustifiesDefiniteIntegral);
+}

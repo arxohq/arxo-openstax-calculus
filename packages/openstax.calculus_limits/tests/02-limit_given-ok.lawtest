@@ -1,0 +1,23 @@
+language "law.core" version "0.2";
+package openstax.calculus_limits version "0.1.1";
+namespace "urn:openstax:clir:calculus-limits";
+
+// CL_LIMIT_DEFINITION: живой ход, без подстановки step_valid фактом дела.
+test "фрагмент CL_LIMIT_DEFINITION: limit_given" {
+ given {
+  assert "f0": calc.calculus_checker::document(entity_ref("urn:calc:limits:p"), 1, 1, "calculus/2") { origin case_input; }
+  assert "f1": calc.calculus_checker::nodes_of(entity_ref("urn:calc:limits:p"), entity_ref("urn:calc:limits:e")) { origin case_input; }
+  assert "f2": calc.calculus_checker::variable(entity_ref("urn:calc:limits:p"), "x") { origin case_input; }
+  assert "f3": calc.calculus_checker::closed(entity_ref("urn:calc:limits:p")) { origin case_input; }
+  assert "f4": calc.expressions::closed(entity_ref("urn:calc:limits:e")) { origin case_input; }
+  assert "f5": calc.expressions::node(entity_ref("urn:calc:limits:e"), 1, "var", "x", 0 / 1, 0, 0) { origin case_input; }
+  assert "f6": calc.expressions::node(entity_ref("urn:calc:limits:e"), 2, "const", "", 2 / 1, 0, 0) { origin case_input; }
+  assert "f7": calc.expressions::node(entity_ref("urn:calc:limits:e"), 3, "const", "", 3 / 1, 0, 0) { origin case_input; }
+  assert "f8": calc.calculus_checker::limit_line(entity_ref("urn:calc:limits:p"), 1, 1, "limit_given", 0, 0, 0, "at", 2 / 1, "both", "expr", 2) { origin case_input; }
+  assert "f9": rule_method(entity_ref("urn:openstax:limits:rule"), "limit_given") { origin case_input; }
+ }
+ evaluate truth(step_justified_by(entity_ref("urn:calc:limits:p"), 1, entity_ref("urn:openstax:limits:rule")));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(JustifyLimitGiven0);
+}

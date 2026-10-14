@@ -1,0 +1,96 @@
+{
+  "dependencyEdges": [
+    {
+      "features": [],
+      "from": "calc.calculus_checker",
+      "requested": "0.1.0",
+      "resolved": "0.1.0",
+      "to": "calc.expressions"
+    },
+    {
+      "features": [],
+      "from": "calc.calculus_checker",
+      "requested": "0.1.0",
+      "resolved": "0.1.0",
+      "to": "calc.polynomials_q"
+    },
+    {
+      "features": [],
+      "from": "calc.polynomials_q",
+      "requested": "0.1.0",
+      "resolved": "0.1.0",
+      "to": "calc.expressions"
+    },
+    {
+      "features": [],
+      "from": "openstax.calculus_derivatives",
+      "requested": "0.1.0",
+      "resolved": "0.1.0",
+      "to": "calc.calculus_checker"
+    },
+    {
+      "features": [],
+      "from": "openstax.calculus_derivatives",
+      "requested": "0.1.0",
+      "resolved": "0.1.0",
+      "to": "calc.expressions"
+    },
+    {
+      "features": [],
+      "from": "openstax.calculus_derivatives",
+      "requested": "0.1.0",
+      "resolved": "0.1.0",
+      "to": "calc.polynomials_q"
+    }
+  ],
+  "languageSemantics": "law.core/0.2.11",
+  "lockVersion": "0.4",
+  "packages": [
+    {
+      "artifactHash": "sha256:b75365247b72ff3fe18032690ea518992e2927d3057939ddfe6b169b26d74d16",
+      "features": [
+        "core-executable"
+      ],
+      "name": "calc.calculus_checker",
+      "namespace": "urn:law:calc:calculus-checker",
+      "registryId": "law-dsl-dev",
+      "resolverUri": "registry://law-dsl-dev/calc.calculus_checker/0.1.0",
+      "sourceHash": "sha256:b992a66941d1a4bb1cee638b46ccdfc986dfbb4b35f27c2632cf7feec7bff851",
+      "version": "0.1.0"
+    },
+    {
+      "artifactHash": "sha256:67a032a96c983e724e0af4781fc287617140741319ebe2e55ac54ca35467a265",
+      "features": [
+        "core-executable"
+      ],
+      "name": "calc.expressions",
+      "namespace": "urn:law:calc:expressions",
+      "registryId": "law-dsl-dev",
+      "resolverUri": "registry://law-dsl-dev/calc.expressions/0.1.0",
+      "sourceHash": "sha256:74c1509e127265dada5267e722fe5ffd05aea45c9f1c2552ee2c94ae5a5e3720",
+      "version": "0.1.0"
+    },
+    {
+      "artifactHash": "sha256:0445837b7789d2e5cfbf981b8906abaab92e9bd4c48cdd1d6919f71852a3e943",
+      "features": [
+        "core-executable"
+      ],
+      "name": "calc.polynomials_q",
+      "namespace": "urn:law:calc:polynomials-q",
+      "registryId": "law-dsl-dev",
+      "resolverUri": "registry://law-dsl-dev/calc.polynomials_q/0.1.0",
+      "sourceHash": "sha256:68afec602db9985a3c5f70dd64cf0568fc11f769714cd7af35ca3f8b3fbe649c",
+      "version": "0.1.0"
+    }
+  ],
+  "resolutionHash": "sha256:2cfe1fdd07e872fba7d8ef79a2014704ea0050c9f8981cd2411954aa4ac7a640",
+  "resources": [],
+  "root": {
+    "artifactHash": "sha256:210a95a19dd394e50185483747ab2dd6e7aa997dd90bdbd4f42a22778e76b174",
+    "name": "openstax.calculus_derivatives",
+    "namespace": "urn:openstax:clir:calculus-derivatives",
+    "sourceHash": "sha256:94827ebc4ea77054174ba017d7638342c3ee2ae4ac6fc876317fdac7f6d67660",
+    "version": "0.1.1"
+  },
+  "semanticLayer": "L3"
+}

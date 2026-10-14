@@ -1,0 +1,44 @@
+[package]
+name = "openstax.calculus_integrals"
+version = "0.1.1"
+language = "0.2"
+namespace = "urn:openstax:clir:calculus-integrals"
+
+[dependencies]
+"calc.expressions" = "0.1.0"
+"calc.polynomials_q" = "0.1.0"
+"calc.calculus_checker" = "0.1.0"
+
+[features]
+semanticLayer = "L3"
+
+# Каталожная метадата (DECISION-0051; docs/PACKAGE-METADATA.ru.md).
+[metadata]
+act = "openstax-calculus-integrals"
+title = "OpenStax Calculus, том 1 главы 4–5 и том 2 глава 3: первообразная и её общий вид, определённый интеграл, основная теорема, формулы интегрирования и интегрирование по частям"
+primarySource = "M53631"
+jurisdiction = "none"
+instrument = "treatise"
+sourceFidelity = "pinned_official_bytes"
+issuer = "OpenStax, Rice University — Calculus Volumes 1–2 (osbooks-calculus-bundle, commit 8dbc2ce)"
+legalStatus = "doctrine"
+verifiedAgainstSource = false
+# Лицензия CC BY-NC-SA 4.0 — см. шапку sources.law.
+
+# Сценарии пакета (DECISION-0127): мир — потребитель, затем зависимости.
+[[tests]]
+family = "openstax_calculus_integrals"
+suites = [
+  "tests/solver-inputs.lawtest",
+  "tests/01-instruction-without-a-case.lawtest",
+  "tests/02-step-justified-by-integration-by-parts.lawtest",
+  "tests/03-antiderivative-power.lawtest",
+  "tests/04-table-antiderivative.lawtest",
+  "tests/05-net-change.lawtest",
+  "tests/06-ftc-part-two-boundary.lawtest",
+  "tests/07-table-antiderivative-sin.lawtest",
+]
+world = ["openstax.calculus_integrals", "calc.calculus_checker", "calc.polynomials_q", "calc.expressions"]
+
+[authoring]
+local_imports = "explicit"

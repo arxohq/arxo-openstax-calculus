@@ -1,0 +1,26 @@
+language "law.core" version "0.2";
+package calc.polynomials_q version "0.1.0";
+namespace "urn:law:calc:polynomials-q";
+
+// (1/6 x² + 1/3 x + 1/2)(x + 1): свободный член 1/2, старший 1/6.
+
+test "произведение многочленов с дробными коэффициентами" {
+ given {
+  assert "f0": degree_cap(8) { origin case_input; }
+  assert "f1": poly(entity_ref("urn:calc:pq:f"), 2) { origin case_input; }
+  assert "f2": term(entity_ref("urn:calc:pq:f"), 0, 1 / 2) { origin case_input; }
+  assert "f3": term(entity_ref("urn:calc:pq:f"), 1, 1 / 3) { origin case_input; }
+  assert "f4": term(entity_ref("urn:calc:pq:f"), 2, 1 / 6) { origin case_input; }
+  assert "f5": poly(entity_ref("urn:calc:pq:g"), 1) { origin case_input; }
+  assert "f6": term(entity_ref("urn:calc:pq:g"), 0, 1 / 1) { origin case_input; }
+  assert "f7": term(entity_ref("urn:calc:pq:g"), 1, 1 / 1) { origin case_input; }
+  assert "f8": product_of(entity_ref("urn:calc:pq:p"), entity_ref("urn:calc:pq:f"), entity_ref("urn:calc:pq:g")) { origin case_input; }
+ }
+ evaluate truth(coeff(entity_ref("urn:calc:pq:p"), 0, 1 / 2));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ evaluate truth(coeff(entity_ref("urn:calc:pq:p"), 1, 5 / 6));
+ expect truth_status == TRUE_ONLY;
+ evaluate truth(coeff(entity_ref("urn:calc:pq:p"), 3, 1 / 6));
+ expect truth_status == TRUE_ONLY;
+}

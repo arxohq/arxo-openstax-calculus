@@ -1,0 +1,76 @@
+language "law.core" version "0.2";
+package calc.expressions version "0.1.0";
+namespace "urn:law:calc:expressions";
+
+// ССЫЛОЧНАЯ ЦЕЛОСТНОСТЬ СТРУКТУРНЫХ ВИДОВ (scope B02.01).
+//
+// Дефект самого среза 10-structured.law: `required_child` питается только видами
+// `unary`, `binary`, `exponentiation`, поэтому комплексный узел, чей мнимый
+// потомок — номер 7, которого в наборе нет, проходил как корректный. Сценарий
+// ниже закрывает это.
+
+// (a) НЕПРЕДЪЯВЛЕННЫЙ ПОТОМОК КОМПЛЕКСНОГО УЗЛА — ЭТО ДЕФЕКТ ССЫЛКИ, а не
+// молчание. Пока части предъявлены, дефекта нет.
+test "a complex node whose imaginary part is absent is a missing child" {
+ given {
+  assert "n1": node(entity_ref("urn:calc:ex:e44"), 1, "complex", "", 0 / 1, 2, 7) { origin case_input; }
+  assert "n2": node(entity_ref("urn:calc:ex:e44"), 2, "const", "", 2 / 1, 0, 0) { origin case_input; }
+  assert "cd": closed(entity_ref("urn:calc:ex:e44")) { origin case_input; }
+ }
+ evaluate truth(formula_error(entity_ref("urn:calc:ex:e44"), 1, "MISSING_CHILD"));
+ expect truth_status == TRUE_ONLY;
+
+ // разобранные части при этом есть — отсутствие узла не мешает чтению полей
+ evaluate truth(complex_real(entity_ref("urn:calc:ex:e44"), 1, 2));
+ expect truth_status == TRUE_ONLY;
+ evaluate truth(complex_imag(entity_ref("urn:calc:ex:e44"), 1, 7));
+ expect truth_status == TRUE_ONLY;
+}
+
+test "a complex node whose parts are all present has no missing child" {
+ given {
+  assert "n1": node(entity_ref("urn:calc:ex:e45"), 1, "complex", "", 0 / 1, 2, 3) { origin case_input; }
+  assert "n2": node(entity_ref("urn:calc:ex:e45"), 2, "const", "", 2 / 1, 0, 0) { origin case_input; }
+  assert "n3": node(entity_ref("urn:calc:ex:e45"), 3, "const", "", 3 / 1, 0, 0) { origin case_input; }
+  assert "cd": closed(entity_ref("urn:calc:ex:e45")) { origin case_input; }
+ }
+ evaluate truth(complex_node(entity_ref("urn:calc:ex:e45"), 1));
+ expect truth_status == TRUE_ONLY;
+ evaluate truth(formula_error(entity_ref("urn:calc:ex:e45"), 1, "MISSING_CHILD"));
+ expect truth_status == NEITHER;
+}
+
+// (b) ХВОСТ ЦЕПОЧКИ — ИСКЛЮЧЕНИЕ, И ОНО ПО-НАСТОЯЩЕМУ. Нулевой хвост
+// означает конец списка, и последний элемент матрицы не должен за это
+// наказываться. Положительный хвост, наоборот, ссылается на узел.
+test "a null element-chain tail is the end of the chain, not a missing child" {
+ given {
+  assert "n1": node(entity_ref("urn:calc:ex:e46"), 1, "matrix", "", 0 / 1, 2, 3) { origin case_input; }
+  assert "n2": node(entity_ref("urn:calc:ex:e46"), 2, "dims", "1", 1 / 1, 0, 0) { origin case_input; }
+  assert "n3": node(entity_ref("urn:calc:ex:e46"), 3, "entry", "", 0 / 1, 4, 0) { origin case_input; }
+  assert "n4": node(entity_ref("urn:calc:ex:e46"), 4, "const", "", 7 / 1, 0, 0) { origin case_input; }
+  assert "cd": closed(entity_ref("urn:calc:ex:e46")) { origin case_input; }
+ }
+ evaluate truth(entry_chain_ends(entity_ref("urn:calc:ex:e46"), 3));
+ expect truth_status == TRUE_ONLY;
+ evaluate truth(formula_error(entity_ref("urn:calc:ex:e46"), 3, "MISSING_CHILD"));
+ expect truth_status == NEITHER;
+ evaluate truth(formula_error(entity_ref("urn:calc:ex:e46"), 1, "MISSING_CHILD"));
+ expect truth_status == NEITHER;
+}
+
+test "a positive element-chain tail that is absent is a missing child" {
+ given {
+  assert "n1": node(entity_ref("urn:calc:ex:e47"), 1, "matrix", "", 0 / 1, 2, 3) { origin case_input; }
+  assert "n2": node(entity_ref("urn:calc:ex:e47"), 2, "dims", "2", 2 / 1, 0, 0) { origin case_input; }
+  assert "n3": node(entity_ref("urn:calc:ex:e47"), 3, "entry", "", 0 / 1, 4, 9) { origin case_input; }
+  assert "n4": node(entity_ref("urn:calc:ex:e47"), 4, "const", "", 7 / 1, 0, 0) { origin case_input; }
+  assert "cd": closed(entity_ref("urn:calc:ex:e47")) { origin case_input; }
+ }
+ evaluate truth(formula_error(entity_ref("urn:calc:ex:e47"), 3, "MISSING_CHILD"));
+ expect truth_status == TRUE_ONLY;
+
+ // и конец цепочки здесь НЕ объявлен: хвост есть и он непустой
+ evaluate truth(entry_chain_ends(entity_ref("urn:calc:ex:e47"), 3));
+ expect truth_status == NEITHER;
+}

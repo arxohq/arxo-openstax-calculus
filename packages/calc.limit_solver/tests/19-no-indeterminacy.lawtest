@@ -1,0 +1,25 @@
+language "law.core" version "0.2";
+package calc.limit_solver version "0.1.0";
+namespace "urn:law:calc:limit-solver";
+
+// Приёмка §8: у определённого частного неопределённости нет, и правило Лопиталя к нему НЕ применяется — свидетельство lhopital_applied не выводится.
+// Запись задачи: lim x->1 x/(x+1)
+// Дело предъявляет ТОЛЬКО её: ни метода, ни ответа, ни производных.
+test "Лопиталь без неопределённости не применяется" {
+ given {
+  assert "in1": task_nodes(entity_ref("urn:law:calc:limit-solver#task"), entity_ref("urn:law:calc:limit-solver#nodes")) { origin case_input; }
+  assert "in2": task_function(entity_ref("urn:law:calc:limit-solver#task"), 4) { origin case_input; }
+  assert "in3": task_variable(entity_ref("urn:law:calc:limit-solver#task"), "x") { origin case_input; }
+  assert "in4": task_approach(entity_ref("urn:law:calc:limit-solver#task"), "at") { origin case_input; }
+  assert "in5": task_point(entity_ref("urn:law:calc:limit-solver#task"), 1 / 1) { origin case_input; }
+  assert "in6": task_side(entity_ref("urn:law:calc:limit-solver#task"), "both") { origin case_input; }
+  assert "in7": input_node(entity_ref("urn:law:calc:limit-solver#task"), 1, "var", "x", 0 / 1, 0, 0) { origin case_input; }
+  assert "in8": input_node(entity_ref("urn:law:calc:limit-solver#task"), 2, "const", "", 1 / 1, 0, 0) { origin case_input; }
+  assert "in9": input_node(entity_ref("urn:law:calc:limit-solver#task"), 3, "add", "", 0 / 1, 1, 2) { origin case_input; }
+  assert "in10": input_node(entity_ref("urn:law:calc:limit-solver#task"), 4, "div", "", 0 / 1, 1, 3) { origin case_input; }
+  assert "in11": task_closed(entity_ref("urn:law:calc:limit-solver#task")) { origin case_input; }
+ }
+ evaluate truth(solver_result(entity_ref("urn:law:calc:limit-solver#task"), "FINITE", "rational", 1 / 2));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+}

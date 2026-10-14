@@ -1,0 +1,90 @@
+[
+  {
+    "name": "calc.expressions",
+    "version": "0.1.0",
+    "namespace": "urn:law:calc:expressions",
+    "path": "packages/calc.expressions",
+    "sourcePath": "packs/primitives/mathematics-and-logic/expressions",
+    "dependencies": {},
+    "role": "dependency"
+  },
+  {
+    "name": "calc.limit_solver",
+    "version": "0.1.0",
+    "namespace": "urn:law:calc:limit-solver",
+    "path": "packages/calc.limit_solver",
+    "sourcePath": "packs/primitives/mathematics-and-logic/limit-solver",
+    "dependencies": {
+      "calc.expressions": "0.1.0"
+    },
+    "role": "dependency"
+  },
+  {
+    "name": "calc.polynomials_q",
+    "version": "0.1.0",
+    "namespace": "urn:law:calc:polynomials-q",
+    "path": "packages/calc.polynomials_q",
+    "sourcePath": "packs/primitives/mathematics-and-logic/polynomials-q",
+    "dependencies": {
+      "calc.expressions": "0.1.0"
+    },
+    "role": "dependency",
+    "originalVersion": "0.1.0"
+  },
+  {
+    "name": "calc.calculus_checker",
+    "version": "0.1.0",
+    "namespace": "urn:law:calc:calculus-checker",
+    "path": "packages/calc.calculus_checker",
+    "sourcePath": "packs/primitives/mathematics-and-logic/calculus-checker",
+    "dependencies": {
+      "calc.expressions": "0.1.0",
+      "calc.polynomials_q": "0.1.0"
+    },
+    "role": "dependency",
+    "originalVersion": "0.1.0"
+  },
+  {
+    "name": "openstax.calculus_limits",
+    "version": "0.1.1",
+    "namespace": "urn:openstax:clir:calculus-limits",
+    "path": "packages/openstax.calculus_limits",
+    "sourcePath": "corpus/laws/org/openstax/calculus-limits",
+    "dependencies": {
+      "calc.expressions": "0.1.0",
+      "calc.polynomials_q": "0.1.0",
+      "calc.calculus_checker": "0.1.0",
+      "calc.limit_solver": "0.1.0"
+    },
+    "role": "entry",
+    "originalVersion": "0.1.0"
+  },
+  {
+    "name": "openstax.calculus_derivatives",
+    "version": "0.1.1",
+    "namespace": "urn:openstax:clir:calculus-derivatives",
+    "path": "packages/openstax.calculus_derivatives",
+    "sourcePath": "corpus/laws/org/openstax/calculus-derivatives",
+    "dependencies": {
+      "calc.expressions": "0.1.0",
+      "calc.polynomials_q": "0.1.0",
+      "calc.calculus_checker": "0.1.0"
+    },
+    "role": "entry",
+    "originalVersion": "0.1.0"
+  },
+  {
+    "name": "openstax.calculus_integrals",
+    "version": "0.1.1",
+    "namespace": "urn:openstax:clir:calculus-integrals",
+    "path": "packages/openstax.calculus_integrals",
+    "sourcePath": "corpus/laws/org/openstax/calculus-integrals",
+    "dependencies": {
+      "calc.expressions": "0.1.0",
+      "calc.polynomials_q": "0.1.0",
+      "calc.calculus_checker": "0.1.0"
+    },
+    "role": "entry",
+    "originalVersion": "0.1.0"
+  }
+]

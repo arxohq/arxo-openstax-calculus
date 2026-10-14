@@ -1,0 +1,22 @@
+language "law.core" version "0.2";
+package calc.polynomials_q version "0.1.0";
+namespace "urn:law:calc:polynomials-q";
+
+// (2/3)·(x³ − 1): коэффициенты точны, десятичных приближений не возникает.
+
+test "умножение на дробный скаляр" {
+ given {
+  assert "f0": degree_cap(8) { origin case_input; }
+  assert "f1": poly(entity_ref("urn:calc:pq:f"), 3) { origin case_input; }
+  assert "f2": term(entity_ref("urn:calc:pq:f"), 0, -1 / 1) { origin case_input; }
+  assert "f3": term(entity_ref("urn:calc:pq:f"), 1, 0 / 1) { origin case_input; }
+  assert "f4": term(entity_ref("urn:calc:pq:f"), 2, 0 / 1) { origin case_input; }
+  assert "f5": term(entity_ref("urn:calc:pq:f"), 3, 1 / 1) { origin case_input; }
+  assert "f6": scaled_of(entity_ref("urn:calc:pq:t"), entity_ref("urn:calc:pq:f"), 2 / 3) { origin case_input; }
+ }
+ evaluate truth(coeff(entity_ref("urn:calc:pq:t"), 3, 2 / 3));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ evaluate truth(coeff(entity_ref("urn:calc:pq:t"), 0, -2 / 3));
+ expect truth_status == TRUE_ONLY;
+}

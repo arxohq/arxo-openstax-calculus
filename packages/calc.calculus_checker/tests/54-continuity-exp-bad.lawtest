@@ -1,0 +1,29 @@
+language "law.core" version "0.2";
+package calc.calculus_checker version "0.1.0";
+namespace "urn:law:calc:calculus-checker";
+
+// DECISION-0197 §4: ожидания из закона и условий применимости.
+test "непрерывность exp: отказ" {
+ given {
+  assert "f0": document(entity_ref("urn:calc:limits:p"), 1, 4, "calculus/2") { origin case_input; }
+  assert "f1": nodes_of(entity_ref("urn:calc:limits:p"), entity_ref("urn:calc:limits:e")) { origin case_input; }
+  assert "f2": variable(entity_ref("urn:calc:limits:p"), "x") { origin case_input; }
+  assert "f3": closed(entity_ref("urn:calc:limits:p")) { origin case_input; }
+  assert "f4": calc.expressions::closed(entity_ref("urn:calc:limits:e")) { origin case_input; }
+  assert "f5": calc.expressions::node(entity_ref("urn:calc:limits:e"), 1, "var", "x", 0 / 1, 0, 0) { origin case_input; }
+  assert "f6": calc.expressions::node(entity_ref("urn:calc:limits:e"), 2, "const", "", 2 / 1, 0, 0) { origin case_input; }
+  assert "f7": calc.expressions::node(entity_ref("urn:calc:limits:e"), 3, "const", "", 3 / 1, 0, 0) { origin case_input; }
+  assert "f8": calc.expressions::node(entity_ref("urn:calc:limits:e"), 4, "exp", "", 0 / 1, 1, 0) { origin case_input; }
+  assert "f9": calc.expressions::node(entity_ref("urn:calc:limits:e"), 5, "exp", "", 0 / 1, 3, 0) { origin case_input; }
+  assert "f10": limit_line(entity_ref("urn:calc:limits:p"), 1, 4, "continuity", 0, 0, 0, "at", 2 / 1, "both", "expr", 5) { origin case_input; }
+ }
+ evaluate truth(derivation_valid(entity_ref("urn:calc:limits:p")));
+ expect truth_status == NEITHER;
+ expect evaluation_status == COMPUTED;
+ evaluate truth(first_error(entity_ref("urn:calc:limits:p"), 1));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ evaluate truth(step_error(entity_ref("urn:calc:limits:p"), 1, "RULE_MISMATCH"));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+}

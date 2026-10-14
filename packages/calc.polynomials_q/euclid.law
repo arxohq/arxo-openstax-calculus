@@ -1,0 +1,445 @@
+language "law.core" version "0.2";
+package calc.polynomials_q version "0.1.0";
+namespace "urn:law:calc:polynomials-q";
+
+use self::{
+    Division,
+    Poly,
+    degree,
+    difference_of,
+    division,
+    division_binding,
+    leading,
+    monic,
+    product_of,
+    raw,
+    slot,
+    usable,
+    zero_polynomial,
+};
+
+// РАСШИРЕННЫЙ АЛГОРИТМ ЕВКЛИДА: НОД и коэффициенты Безу.
+//
+//   r₀ = f,  r₁ = g,  r_{i−1} = q_i · r_i + r_{i+1}
+//   u₀ = 1,  u₁ = 0,  u_{i+1} = u_{i−1} − q_i · u_i
+//   v₀ = 0,  v₁ = 1,  v_{i+1} = v_{i−1} − q_i · v_i
+//   инвариант: r_i = u_i · f + v_i · g
+//
+// НОД — последний ненулевой остаток, приведённый делением на свой старший
+// коэффициент; коэффициенты Безу берутся с того же индекса и нормируются тем
+// же множителем.
+//
+// ВТОРОЙ КОПИИ АРИФМЕТИКИ ЗДЕСЬ НЕТ. Деления выполняет `division.law`,
+// произведения и разности — общая арифметика пакета: этот модуль только
+// СВЯЗЫВАЕТ объявленные делом дескрипторы своими же построениями
+// (`product_of`, `difference_of` — эмпирические головы, и пишутся они ИЗ
+// ЭМПИРИЧЕСКИХ фактов, иначе `slots` и `usable` втянулись бы в компоненту
+// `raw`, а у `usable` свои агрегаты).
+//
+// ДЛИНА ЦЕПОЧКИ — ресурсный контракт дела. Алгоритм Евклида завершается за
+// конечное число шагов, но СКОЛЬКО их — вопрос входа, и объявляет его дело
+// (`euclid_length`). Цепочка короче нужной означает НЕЗАВЕРШЁННОСТЬ:
+// последний остаток ненулевой, `chain_terminated` не выводится, и НОД не
+// объявляется.
+//
+// ПОСЛЕДНИЙ НЕНУЛЕВОЙ ОСТАТОК ищется положительной цепочкой `zero_tail`, а не
+// агрегатом: агрегат стоял бы над `raw`, а НОД в `raw` и пишется.
+
+entity Euclid { label ru unofficial "один расширенный алгоритм Евклида"; }
+
+pub relation euclid(ec: Euclid, f: Poly, g: Poly) kind empirical {
+    label ru unofficial "предъявлен расширенный алгоритм Евклида для пары многочленов";
+}
+
+pub relation euclid_length(ec: Euclid, steps: Integer) kind empirical {
+    label ru unofficial "ресурсный контракт: число шагов деления в цепочке";
+}
+
+pub relation euclid_remainder(ec: Euclid, i: Integer, p: Poly) kind empirical {
+    label ru unofficial "остаток r_i цепочки, i = 0 … steps + 1; r₀ = f и r₁ = g предъявлены делом, остальные — выходные дескрипторы делений";
+}
+
+pub relation euclid_division(ec: Euclid, i: Integer, dv: Division) kind empirical {
+    label ru unofficial "i-е деление цепочки: r_(i−1) на r_i";
+}
+
+pub relation euclid_u(ec: Euclid, i: Integer, p: Poly) kind empirical {
+    label ru unofficial "дескриптор коэффициента u_i";
+}
+
+pub relation euclid_v(ec: Euclid, i: Integer, p: Poly) kind empirical {
+    label ru unofficial "дескриптор коэффициента v_i";
+}
+
+pub relation euclid_qu(ec: Euclid, i: Integer, p: Poly) kind empirical {
+    label ru unofficial "дескриптор произведения q_i · u_i";
+}
+
+pub relation euclid_qv(ec: Euclid, i: Integer, p: Poly) kind empirical {
+    label ru unofficial "дескриптор произведения q_i · v_i";
+}
+
+pub relation euclid_gcd(ec: Euclid, d: Poly) kind empirical {
+    label ru unofficial "дескриптор приведённого НОД";
+}
+
+pub relation euclid_bezout(ec: Euclid, part: Text, p: Poly) kind empirical {
+    label ru unofficial "дескрипторы приведённых коэффициентов Безу: U либо V";
+}
+
+// ── Выводы ─────────────────────────────────────────────────────────────────
+
+relation eindex(ec: Euclid, i: Integer) kind institutional {
+    label ru unofficial "допустимый индекс цепочки: 0 … steps + 1";
+}
+
+relation nonzero_remainder(ec: Euclid, i: Integer) kind institutional {
+    label ru unofficial "остаток с этим индексом ненулевой — у него есть степень";
+}
+
+relation zero_tail(ec: Euclid, i: Integer) kind institutional {
+    label ru unofficial "остатки с индексами от конца цепочки до i включительно нулевые";
+}
+
+pub relation gcd_index(ec: Euclid, i: Integer) kind institutional {
+    label ru unofficial "индекс последнего ненулевого остатка — он и есть НОД с точностью до множителя";
+}
+
+pub relation chain_terminated(ec: Euclid) kind institutional {
+    label ru unofficial "цепочка дошла до нулевого остатка: алгоритм завершён в объявленной длине";
+}
+
+pub relation chain_unfinished(ec: Euclid) kind institutional {
+    label ru unofficial "последний остаток цепочки ненулевой: объявленной длины НЕ ХВАТИЛО. Это незавершённость, а не отсутствие НОД";
+}
+
+pub relation gcd_verified_monic(ec: Euclid) kind institutional {
+    label ru unofficial "НОД приведён: его старший коэффициент равен единице";
+}
+
+// ── Домен индексов ─────────────────────────────────────────────────────────
+
+rule EindexStart(ec: Euclid, f: Poly, g: Poly, steps: Integer) strict {
+    label ru unofficial "цепочка начинается с нулевого индекса";
+    when euclid(ec, f, g) and euclid_length(ec, steps) and steps >= 1;
+    then eindex(ec, 0);
+}
+
+rule EindexStep(ec: Euclid, i: Integer, steps: Integer) strict {
+    label ru unofficial "следующий индекс, пока не пройдена объявленная длина плюс один";
+    when monotone(eindex(ec, i)) and euclid_length(ec, steps) and i < steps + 1;
+    then eindex(ec, i + 1);
+}
+
+// ── Связывание цепочки: эмпирические головы из эмпирических фактов ─────────
+
+rule ChainDivision(
+    ec: Euclid,
+    f: Poly,
+    g: Poly,
+    prev: Poly,
+    cur: Poly,
+    dv: Division,
+    i: Integer,
+    j: Integer,
+) strict {
+    label ru unofficial "i-е деление делит предыдущий остаток на текущий";
+    when euclid(ec, f, g) and euclid_division(ec, i, dv)
+        and euclid_remainder(ec, i, cur) and euclid_remainder(ec, j, prev) and j == i - 1;
+    then division(dv, prev, cur);
+}
+
+rule ChainRemainderBinding(
+    ec: Euclid,
+    f: Poly,
+    g: Poly,
+    next: Poly,
+    dv: Division,
+    i: Integer,
+    j: Integer,
+) strict {
+    label ru unofficial "остаток i-го деления становится следующим членом цепочки";
+    when euclid(ec, f, g) and euclid_division(ec, i, dv)
+        and euclid_remainder(ec, j, next) and j == i + 1;
+    then division_binding(dv, "REMAINDER", next);
+}
+
+rule BezoutProductU(
+    ec: Euclid,
+    f: Poly,
+    g: Poly,
+    q: Poly,
+    u: Poly,
+    p: Poly,
+    dv: Division,
+    i: Integer,
+) strict {
+    label ru unofficial "произведение q_i · u_i считается ОБЩЕЙ арифметикой пакета";
+    when euclid(ec, f, g) and euclid_division(ec, i, dv) and division_binding(dv, "QUOTIENT", q)
+        and euclid_u(ec, i, u) and euclid_qu(ec, i, p);
+    then product_of(p, q, u);
+}
+
+rule BezoutProductV(
+    ec: Euclid,
+    f: Poly,
+    g: Poly,
+    q: Poly,
+    v: Poly,
+    p: Poly,
+    dv: Division,
+    i: Integer,
+) strict {
+    label ru unofficial "то же для v_i";
+    when euclid(ec, f, g) and euclid_division(ec, i, dv) and division_binding(dv, "QUOTIENT", q)
+        and euclid_v(ec, i, v) and euclid_qv(ec, i, p);
+    then product_of(p, q, v);
+}
+
+rule BezoutRecurrenceU(
+    ec: Euclid,
+    f: Poly,
+    g: Poly,
+    prev: Poly,
+    next: Poly,
+    p: Poly,
+    i: Integer,
+    j: Integer,
+    k: Integer,
+) strict {
+    label ru unofficial "u_(i+1) = u_(i−1) − q_i · u_i — разностью общей арифметики";
+    when euclid(ec, f, g) and euclid_qu(ec, i, p)
+        and euclid_u(ec, j, prev) and j == i - 1 and euclid_u(ec, k, next) and k == i + 1;
+    then difference_of(next, prev, p);
+}
+
+rule BezoutRecurrenceV(
+    ec: Euclid,
+    f: Poly,
+    g: Poly,
+    prev: Poly,
+    next: Poly,
+    p: Poly,
+    i: Integer,
+    j: Integer,
+    k: Integer,
+) strict {
+    label ru unofficial "v_(i+1) = v_(i−1) − q_i · v_i";
+    when euclid(ec, f, g) and euclid_qv(ec, i, p)
+        and euclid_v(ec, j, prev) and j == i - 1 and euclid_v(ec, k, next) and k == i + 1;
+    then difference_of(next, prev, p);
+}
+
+// ── Основание рекурсии Безу ────────────────────────────────────────────────
+
+rule BezoutBaseUZero(ec: Euclid, f: Poly, g: Poly, p: Poly, k: Integer, n: Integer) strict {
+    label ru unofficial "u₀ = 1";
+    when euclid(ec, f, g) and euclid_u(ec, 0, p) and monotone(usable(p, n))
+        and monotone(slot(p, k)) and k == 0;
+    then raw(p, 0, 1 / 1);
+}
+
+rule BezoutBaseUZeroPad(ec: Euclid, f: Poly, g: Poly, p: Poly, k: Integer, n: Integer) strict {
+    label ru unofficial "остальные места u₀ нулевые";
+    when euclid(ec, f, g) and euclid_u(ec, 0, p) and monotone(usable(p, n))
+        and monotone(slot(p, k)) and k > 0;
+    then raw(p, k, 0 / 1);
+}
+
+rule BezoutBaseUOne(ec: Euclid, f: Poly, g: Poly, p: Poly, k: Integer, n: Integer) strict {
+    label ru unofficial "u₁ = 0";
+    when euclid(ec, f, g) and euclid_u(ec, 1, p) and monotone(usable(p, n)) and monotone(slot(p, k));
+    then raw(p, k, 0 / 1);
+}
+
+rule BezoutBaseVZero(ec: Euclid, f: Poly, g: Poly, p: Poly, k: Integer, n: Integer) strict {
+    label ru unofficial "v₀ = 0";
+    when euclid(ec, f, g) and euclid_v(ec, 0, p) and monotone(usable(p, n)) and monotone(slot(p, k));
+    then raw(p, k, 0 / 1);
+}
+
+rule BezoutBaseVOne(ec: Euclid, f: Poly, g: Poly, p: Poly, k: Integer, n: Integer) strict {
+    label ru unofficial "v₁ = 1";
+    when euclid(ec, f, g) and euclid_v(ec, 1, p) and monotone(usable(p, n))
+        and monotone(slot(p, k)) and k == 0;
+    then raw(p, 0, 1 / 1);
+}
+
+rule BezoutBaseVOnePad(ec: Euclid, f: Poly, g: Poly, p: Poly, k: Integer, n: Integer) strict {
+    label ru unofficial "остальные места v₁ нулевые";
+    when euclid(ec, f, g) and euclid_v(ec, 1, p) and monotone(usable(p, n))
+        and monotone(slot(p, k)) and k > 0;
+    then raw(p, k, 0 / 1);
+}
+
+// ── Последний ненулевой остаток ────────────────────────────────────────────
+
+rule NonzeroRemainder(ec: Euclid, p: Poly, i: Integer, d: Integer) strict {
+    label ru unofficial "остаток ненулевой: у него есть степень";
+    when euclid_remainder(ec, i, p) and monotone(degree(p, d));
+    then nonzero_remainder(ec, i);
+}
+
+rule ZeroTailStart(ec: Euclid, f: Poly, g: Poly, steps: Integer) strict {
+    label ru unofficial "за концом цепочки нулевых остатков ещё не просмотрено. Это ЛИШЬ ЧАСОВОЙ: сам по себе он не делает последний остаток нулевым, поэтому НОД объявляется только у ЗАВЕРШЁННОЙ цепочки";
+    when euclid(ec, f, g) and euclid_length(ec, steps) and steps >= 1;
+    then zero_tail(ec, steps + 2);
+}
+
+rule ZeroTailStep(ec: Euclid, p: Poly, i: Integer, i2: Integer) strict {
+    label ru unofficial "следующий вниз остаток тоже нулевой";
+    when monotone(zero_tail(ec, i2)) and monotone(eindex(ec, i)) and i2 == i + 1
+        and euclid_remainder(ec, i, p) and monotone(zero_polynomial(p));
+    then zero_tail(ec, i);
+}
+
+rule GcdIndex(ec: Euclid, i: Integer, i2: Integer) strict {
+    label ru unofficial "индекс НОД — первый сверху ненулевой остаток ЗАВЕРШЁННОЙ цепочки";
+    when monotone(chain_terminated(ec))
+        and monotone(zero_tail(ec, i2)) and i2 == i + 1 and monotone(eindex(ec, i))
+        and monotone(nonzero_remainder(ec, i));
+    then gcd_index(ec, i);
+}
+
+rule ChainTerminated(ec: Euclid, f: Poly, g: Poly, p: Poly, steps: Integer, last: Integer) strict {
+    label ru unofficial "цепочка дошла до нулевого остатка в объявленной длине";
+    when euclid(ec, f, g) and euclid_length(ec, steps) and last == steps + 1
+        and euclid_remainder(ec, last, p) and monotone(zero_polynomial(p));
+    then chain_terminated(ec);
+}
+
+rule ChainUnfinished(
+    ec: Euclid,
+    f: Poly,
+    g: Poly,
+    p: Poly,
+    steps: Integer,
+    last: Integer,
+    d: Integer,
+) strict {
+    label ru unofficial "последний остаток ненулевой: объявленной длины не хватило. Это НЕЗАВЕРШЁННОСТЬ, а не отсутствие НОД";
+    when euclid(ec, f, g) and euclid_length(ec, steps) and last == steps + 1
+        and euclid_remainder(ec, last, p) and degree(p, d);
+    then chain_unfinished(ec);
+}
+
+// ── НОД и коэффициенты Безу: приведение к моническому виду ────────────────
+
+rule GcdCoefficients(
+    ec: Euclid,
+    f: Poly,
+    g: Poly,
+    r: Poly,
+    d: Poly,
+    i: Integer,
+    k: Integer,
+    nd: Integer,
+    v: Rational,
+    lead_r: Rational,
+) strict {
+    label ru unofficial "НОД — последний ненулевой остаток, делённый на свой старший коэффициент";
+    when euclid(ec, f, g) and monotone(gcd_index(ec, i)) and euclid_remainder(ec, i, r)
+        and euclid_gcd(ec, d) and monotone(usable(d, nd)) and monotone(leading(r, lead_r))
+        and monotone(raw(r, k, v)) and k <= nd;
+    then raw(d, k, v / lead_r);
+}
+
+rule GcdPadding(
+    ec: Euclid,
+    f: Poly,
+    g: Poly,
+    r: Poly,
+    d: Poly,
+    i: Integer,
+    k: Integer,
+    nd: Integer,
+    nr: Integer,
+) strict {
+    label ru unofficial "места НОД выше остатка нулевые";
+    when euclid(ec, f, g) and monotone(gcd_index(ec, i)) and euclid_remainder(ec, i, r)
+        and euclid_gcd(ec, d) and monotone(usable(d, nd)) and monotone(usable(r, nr))
+        and monotone(slot(d, k)) and k > nr;
+    then raw(d, k, 0 / 1);
+}
+
+rule BezoutUCoefficients(
+    ec: Euclid,
+    f: Poly,
+    g: Poly,
+    r: Poly,
+    u: Poly,
+    p: Poly,
+    i: Integer,
+    k: Integer,
+    np: Integer,
+    v: Rational,
+    lead_r: Rational,
+) strict {
+    label ru unofficial "коэффициент Безу u берётся с того же индекса и нормируется тем же множителем";
+    when euclid(ec, f, g) and monotone(gcd_index(ec, i)) and euclid_remainder(ec, i, r)
+        and euclid_u(ec, i, u) and euclid_bezout(ec, "U", p) and monotone(usable(p, np))
+        and monotone(leading(r, lead_r)) and monotone(raw(u, k, v)) and k <= np;
+    then raw(p, k, v / lead_r);
+}
+
+rule BezoutUPadding(
+    ec: Euclid,
+    f: Poly,
+    g: Poly,
+    u: Poly,
+    p: Poly,
+    i: Integer,
+    k: Integer,
+    np: Integer,
+    nu: Integer,
+) strict {
+    label ru unofficial "места u выше исходного нулевые";
+    when euclid(ec, f, g) and monotone(gcd_index(ec, i)) and euclid_u(ec, i, u)
+        and euclid_bezout(ec, "U", p) and monotone(usable(p, np)) and monotone(usable(u, nu))
+        and monotone(slot(p, k)) and k > nu;
+    then raw(p, k, 0 / 1);
+}
+
+rule BezoutVCoefficients(
+    ec: Euclid,
+    f: Poly,
+    g: Poly,
+    r: Poly,
+    v_poly: Poly,
+    p: Poly,
+    i: Integer,
+    k: Integer,
+    np: Integer,
+    v: Rational,
+    lead_r: Rational,
+) strict {
+    label ru unofficial "коэффициент Безу v — так же";
+    when euclid(ec, f, g) and monotone(gcd_index(ec, i)) and euclid_remainder(ec, i, r)
+        and euclid_v(ec, i, v_poly) and euclid_bezout(ec, "V", p) and monotone(usable(p, np))
+        and monotone(leading(r, lead_r)) and monotone(raw(v_poly, k, v)) and k <= np;
+    then raw(p, k, v / lead_r);
+}
+
+rule BezoutVPadding(
+    ec: Euclid,
+    f: Poly,
+    g: Poly,
+    v_poly: Poly,
+    p: Poly,
+    i: Integer,
+    k: Integer,
+    np: Integer,
+    nv: Integer,
+) strict {
+    label ru unofficial "места v выше исходного нулевые";
+    when euclid(ec, f, g) and monotone(gcd_index(ec, i)) and euclid_v(ec, i, v_poly)
+        and euclid_bezout(ec, "V", p) and monotone(usable(p, np)) and monotone(usable(v_poly, nv))
+        and monotone(slot(p, k)) and k > nv;
+    then raw(p, k, 0 / 1);
+}
+
+rule GcdMonic(ec: Euclid, d: Poly) strict {
+    label ru unofficial "приведённость НОД — не заявление, а проверка его старшего коэффициента";
+    when euclid_gcd(ec, d) and monic(d);
+    then gcd_verified_monic(ec);
+}

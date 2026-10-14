@@ -1,0 +1,57 @@
+language "law.core" version "0.2";
+package calc.expressions version "0.1.0";
+namespace "urn:law:calc:expressions";
+
+// ТИПЫ И ОБЛАСТЬ ОПРЕДЕЛЕНИЯ: вещественная функция над комплексным операндом.
+//
+// Здесь проверяется не арифметика, а ГРАНИЦА словаря. Функции sin, cos, exp,
+// ln, log, sqrt, atan, интеграл и производная объявлены вещественными, и
+// комплексный операнд для них — не «неизвестный тип», а названный отказ. Узел при
+// этом типа НЕ получает: отсутствие остаётся отсутствием, и верхний узел
+// выражения тоже остаётся без типа.
+//
+// Пара сценариев (комплексный и целый операнд) различает модуль тем, что
+// проверяет: правило, забывшее про `k < 3`, дало бы обоим одинаковый ответ.
+
+test "a real function of a complex operand is refused by name" {
+ given {
+  assert "n1": node(entity_ref("urn:calc:ex:e37"), 1, "var", "z", 0 / 1, 0, 0) { origin case_input; }
+  assert "n2": node(entity_ref("urn:calc:ex:e37"), 2, "sqrt", "", 0 / 1, 1, 0) { origin case_input; }
+  assert "t1": var_typing(entity_ref("urn:calc:ex:e37"), "z", "complex") { origin case_input; }
+  assert "cd": closed(entity_ref("urn:calc:ex:e37")) { origin case_input; }
+ }
+ evaluate truth(formula_error(entity_ref("urn:calc:ex:e37"), 2, "TYPE_DOMAIN_MISMATCH"));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(RealFunctionOfComplexRefused);
+}
+
+test "the same function of a declared integer is real" {
+ given {
+  assert "n1": node(entity_ref("urn:calc:ex:e37b"), 1, "var", "n", 0 / 1, 0, 0) { origin case_input; }
+  assert "n2": node(entity_ref("urn:calc:ex:e37b"), 2, "sqrt", "", 0 / 1, 1, 0) { origin case_input; }
+  assert "t1": var_typing(entity_ref("urn:calc:ex:e37b"), "n", "integer") { origin case_input; }
+  assert "cd": closed(entity_ref("urn:calc:ex:e37b")) { origin case_input; }
+ }
+ evaluate truth(type_of(entity_ref("urn:calc:ex:e37b"), 2, "real"));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(LevelIsReal);
+ expect applied(RealFunctionOfReal);
+}
+
+test "an integral of a complex-valued function is refused as well" {
+ given {
+  assert "n1": node(entity_ref("urn:calc:ex:e37c"), 1, "var", "z", 0 / 1, 0, 0) { origin case_input; }
+  assert "n2": node(entity_ref("urn:calc:ex:e37c"), 2, "integral", "x", 0 / 1, 1, 0) { origin case_input; }
+  assert "t1": var_typing(entity_ref("urn:calc:ex:e37c"), "z", "complex") { origin case_input; }
+  assert "cd": closed(entity_ref("urn:calc:ex:e37c")) { origin case_input; }
+ }
+ // Интеграл и производная (08-operators.law) — те же вещественные виды, и
+ // отказ у них тот же: они попадают в `unary`, а этот слой отделяет их от `neg`
+ // одним неравенством тега.
+ evaluate truth(formula_error(entity_ref("urn:calc:ex:e37c"), 2, "TYPE_DOMAIN_MISMATCH"));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(RealFunctionOfComplexRefused);
+}

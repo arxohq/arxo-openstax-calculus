@@ -1,0 +1,21 @@
+language "law.core" version "0.2";
+package calc.calculus_checker version "0.1.0";
+namespace "urn:law:calc:calculus-checker";
+
+// RULE_MISMATCH приходит из DEFEASIBLE-правила. Пока StepProblem был strict над monotone, first_error молчал на самом частом классе дефектов — и 28 зелёных сценариев этого не ловили, потому что first_error не спрашивал никто.
+
+test "первая ошибка названа при поражаемой причине" {
+ given {
+  assert "d": document(entity_ref("urn:calc:cc:d1"), 1, 1, "calculus/1") { origin case_input; }
+  assert "ctx": nodes_of(entity_ref("urn:calc:cc:d1"), entity_ref("urn:calc:cc:e1")) { origin case_input; }
+  assert "var": variable(entity_ref("urn:calc:cc:d1"), "x") { origin case_input; }
+  assert "n1": calc.expressions::node(entity_ref("urn:calc:cc:e1"), 1, "var", "x", 0 / 1, 0, 0) { origin case_input; }
+  assert "l1": line(entity_ref("urn:calc:cc:d1"), 1, 1, "power_rule", 0, 0, 0, 0) { origin case_input; }
+  assert "clx": calc.expressions::closed(entity_ref("urn:calc:cc:e1")) { origin case_input; }
+  assert "clp": closed(entity_ref("urn:calc:cc:d1")) { origin case_input; }
+ }
+ evaluate truth(first_error(entity_ref("urn:calc:cc:d1"), 1));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(FirstError);
+}

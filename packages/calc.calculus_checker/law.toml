@@ -1,0 +1,130 @@
+# Манифест §10 — маркер корня пакета (DECISION-0033).
+#
+# ВЫЧИСЛИТЕЛЬНЫЙ пакет (DECISION-0123): нормативного источника, юрисдикции и
+# правового статуса у него нет; каталожная секция `[metadata]` DECISION-0051
+# описывает АКТ и здесь намеренно отсутствует.
+[package]
+name = "calc.calculus_checker"
+version = "0.1.0"
+language = "0.2"
+namespace = "urn:law:calc:calculus-checker"
+
+[features]
+semanticLayer = "L3"
+
+[dependencies]
+"calc.expressions" = "0.1.0"
+"calc.polynomials_q" = "0.1.0"
+
+[[tests]]
+family = "calc.calculus_checker#authored"
+regression = false
+world = ["calc.calculus_checker", "calc.polynomials_q", "calc.expressions"]
+suites = [
+    "tests/100-old-calculus.lawtest",
+    "tests/101-cancel-nonzero-remainder.lawtest",
+    "tests/97-invalid-index.lawtest",
+    "tests/98-extra-line.lawtest",
+    "tests/99-duplicate-limit.lawtest",
+    "tests/89-substitution-zero-denominator.lawtest",
+    "tests/90-infinity-zero-denominator.lawtest",
+    "tests/91-nested-substitution-True.lawtest",
+    "tests/92-nested-substitution-False.lawtest",
+    "tests/93-ln-domain.lawtest",
+    "tests/94-lhopital-polynomial-True.lawtest",
+    "tests/95-lhopital-polynomial-False.lawtest",
+    "tests/96-lhopital-side-mismatch.lawtest",
+    "tests/31-limit_given-ok.lawtest",
+    "tests/32-limit_given-bad.lawtest",
+    "tests/33-limit_constant-ok.lawtest",
+    "tests/34-limit_constant-bad.lawtest",
+    "tests/35-limit_identity-ok.lawtest",
+    "tests/36-limit_identity-bad.lawtest",
+    "tests/37-limit_sum-ok.lawtest",
+    "tests/38-limit_sum-bad.lawtest",
+    "tests/39-limit_difference-ok.lawtest",
+    "tests/40-limit_difference-bad.lawtest",
+    "tests/41-limit_product-ok.lawtest",
+    "tests/42-limit_product-bad.lawtest",
+    "tests/43-limit_quotient-ok.lawtest",
+    "tests/44-limit_quotient-bad.lawtest",
+    "tests/45-limit_constant_multiple-ok.lawtest",
+    "tests/46-limit_constant_multiple-bad.lawtest",
+    "tests/47-limit_power-ok.lawtest",
+    "tests/48-limit_power-bad.lawtest",
+    "tests/49-continuity-sin-ok.lawtest",
+    "tests/50-continuity-sin-bad.lawtest",
+    "tests/51-continuity-cos-ok.lawtest",
+    "tests/52-continuity-cos-bad.lawtest",
+    "tests/53-continuity-exp-ok.lawtest",
+    "tests/54-continuity-exp-bad.lawtest",
+    "tests/55-continuity-ln-ok.lawtest",
+    "tests/56-continuity-ln-bad.lawtest",
+    "tests/57-special_limit_sin-ok.lawtest",
+    "tests/58-special_limit_sin-bad.lawtest",
+    "tests/59-special_limit_one_minus_cos-ok.lawtest",
+    "tests/60-special_limit_one_minus_cos-bad.lawtest",
+    "tests/61-one_sided_agree-ok.lawtest",
+    "tests/62-one_sided_agree-bad.lawtest",
+    "tests/63-one_sided_differ-ok.lawtest",
+    "tests/64-one_sided_differ-bad.lawtest",
+    "tests/65-substitution-poly-ok.lawtest",
+    "tests/66-substitution-poly-bad.lawtest",
+    "tests/67-substitution-ratio-ok.lawtest",
+    "tests/68-substitution-ratio-bad.lawtest",
+    "tests/69-infinity-rational-ok.lawtest",
+    "tests/70-infinity-rational-bad.lawtest",
+    "tests/71-factor-cancel-ok.lawtest",
+    "tests/72-factor-cancel-bad.lawtest",
+    "tests/73-lhopital-zero.lawtest",
+    "tests/74-lhopital-infinity.lawtest",
+    "tests/75-lhopital-nested.lawtest",
+    "tests/76-lhopital-not-indeterminate.lawtest",
+    "tests/77-lhopital-bad-derivative.lawtest",
+    "tests/78-lhopital-bad-ratio.lawtest",
+    "tests/79-lhopital-no-nonzero.lawtest",
+    "tests/80-lhopital-wrong-result.lawtest",
+    "tests/81-limit-diagnostic-unknown.lawtest",
+    "tests/82-limit-diagnostic-fields.lawtest",
+    "tests/83-limit-diagnostic-mixed-duplicate.lawtest",
+    "tests/84-limit-diagnostic-forward.lawtest",
+    "tests/85-limit-diagnostic-quotient-zero.lawtest",
+    "tests/86-limit-diagnostic-missing.lawtest",
+    "tests/87-mixed-budget-64.lawtest",
+    "tests/88-mixed-budget-65.lawtest",
+    "tests/01-given.lawtest",
+    "tests/02-power-rule.lawtest",
+    "tests/03-power-rule-wrong-factor.lawtest",
+    "tests/04-derivative-sin.lawtest",
+    "tests/05-derivative-sin-wrong.lawtest",
+    "tests/06-unknown-method.lawtest",
+    "tests/07-missing-reference.lawtest",
+    "tests/08-budget-exhausted.lawtest",
+    "tests/09-fundamental-theorem-boundary.lawtest",
+    "tests/10-constant-rule.lawtest",
+    "tests/11-constant-rule-wrong.lawtest",
+    "tests/12-sum-rule.lawtest",
+    "tests/13-sum-rule-wrong.lawtest",
+    "tests/14-constant-multiple.lawtest",
+    "tests/15-product-rule.lawtest",
+    "tests/16-product-rule-swapped-factors.lawtest",
+    "tests/17-quotient-rule.lawtest",
+    "tests/18-chain-rule.lawtest",
+    "tests/19-derivative-cos.lawtest",
+    "tests/20-derivative-exp.lawtest",
+    "tests/21-derivative-ln.lawtest",
+    "tests/22-antiderivative-power.lawtest",
+    "tests/23-table-antiderivative.lawtest",
+    "tests/24-by-parts.lawtest",
+    "tests/25-by-parts-swapped.lawtest",
+    "tests/26-algebra-equal.lawtest",
+    "tests/27-algebra-unequal.lawtest",
+    "tests/28-identity.lawtest",
+    "tests/29-first-error-strict-cause.lawtest",
+    "tests/30-first-error-defeasible-cause.lawtest",
+    "tests/102-table-antiderivative-sin.lawtest",
+    "tests/103-table-antiderivative-sin-wrong.lawtest",
+]
+
+[authoring]
+local_imports = "explicit"

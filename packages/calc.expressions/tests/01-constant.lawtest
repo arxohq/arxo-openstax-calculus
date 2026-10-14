@@ -1,0 +1,16 @@
+language "law.core" version "0.2";
+package calc.expressions version "0.1.0";
+namespace "urn:law:calc:expressions";
+
+// Константа 5 — корректный узел: значение есть, имени и дочерних нет.
+
+test "константа корректна" {
+ given {
+  assert "e1": node(entity_ref("urn:calc:ex:e1"), 1, "const", "", 5 / 1, 0, 0) { origin case_input; }
+  assert "e2": closed(entity_ref("urn:calc:ex:e1")) { origin case_input; }
+ }
+ evaluate truth(well_formed(entity_ref("urn:calc:ex:e1"), 1));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(ConstWellFormed);
+}

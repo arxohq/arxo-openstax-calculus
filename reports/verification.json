@@ -1,0 +1,27 @@
+{
+  "format": "arxo.calculus-consumer-verification/1",
+  "state": "candidate_prepared",
+  "published": false,
+  "cli": "@arxo/cli@0.2.5",
+  "node": "20+",
+  "semantics": "law.core/0.2.11",
+  "sourceCommit": "79cc15239ccc60a898d7fb630b4621235261318d",
+  "models": 7,
+  "entryModels": 3,
+  "capturedTasks": 29,
+  "capturedQuestions": 97,
+  "checks": {
+    "nativeLowerAndLink": "all seven passed",
+    "publisherBytes": "19/19 exact immutable bytes passed",
+    "selectedCases": "reports/targeted-package-checks.json",
+    "depth": "three publisher models, all 19 retained modules; four technical dependencies not_measured on this axis",
+    "oracle": "22 identical full canonical documents; separate replay-budget refusal, remaining reference cases not_checked",
+    "invalidExpression": "x^33: no coefficients, solved/zero NEITHER; EXPRESSION_NOT_ESTABLISHED",
+    "nativeReadme": "limit, derivative, integral and inspect all passed",
+    "depthRegressions": "existing CNXML unit/hash/edition regressions passed"
+  },
+  "anonymousConsumer": "pending",
+  "linuxCI": "pending",
+  "releaseVerified": false,
+  "corpus": "not_checked"
+}

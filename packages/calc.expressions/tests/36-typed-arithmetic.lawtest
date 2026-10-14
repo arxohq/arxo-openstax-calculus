@@ -1,0 +1,121 @@
+language "law.core" version "0.2";
+package calc.expressions version "0.1.0";
+namespace "urn:law:calc:expressions";
+
+// ТИПИЗИРОВАННЫЕ ПЕРЕМЕННЫЕ: арифметика типов (scope B02.01).
+//
+// Словарь триады: integer < real < complex. Тип узла — верхняя грань типов
+// операндов, потому что верхняя грань единственная не лжёт: `x + 1` при
+// объявленном `x : integer` сузить до целого здесь не на чем, и сужение было бы
+// утверждением, иногда ложным.
+//
+// Пара сценариев построена так, чтобы различались между собой по СОДЕРЖАНИЮ, а
+// не по числу: сложение двух целых даёт целое, а деление тех же двух целых даёт
+// real. Правило, забывшее исключение для деления, сломало бы второй сценарий и
+// не тронуло бы первый.
+
+test "a sum of two declared integers is an integer" {
+ given {
+  assert "n1": node(entity_ref("urn:calc:ex:e36"), 1, "var", "x", 0 / 1, 0, 0) { origin case_input; }
+  assert "n2": node(entity_ref("urn:calc:ex:e36"), 2, "var", "y", 0 / 1, 0, 0) { origin case_input; }
+  assert "n3": node(entity_ref("urn:calc:ex:e36"), 3, "add", "", 0 / 1, 1, 2) { origin case_input; }
+  assert "t1": var_typing(entity_ref("urn:calc:ex:e36"), "x", "integer") { origin case_input; }
+  assert "t2": var_typing(entity_ref("urn:calc:ex:e36"), "y", "integer") { origin case_input; }
+  assert "cd": closed(entity_ref("urn:calc:ex:e36")) { origin case_input; }
+ }
+ evaluate truth(type_of(entity_ref("urn:calc:ex:e36"), 3, "integer"));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(LevelIsInteger);
+ expect applied(WidestOfLeftSmaller);
+}
+
+test "the quotient of the same two integers is real, not integer" {
+ given {
+  assert "n1": node(entity_ref("urn:calc:ex:e36b"), 1, "var", "x", 0 / 1, 0, 0) { origin case_input; }
+  assert "n2": node(entity_ref("urn:calc:ex:e36b"), 2, "var", "y", 0 / 1, 0, 0) { origin case_input; }
+  assert "n3": node(entity_ref("urn:calc:ex:e36b"), 3, "div", "", 0 / 1, 1, 2) { origin case_input; }
+  assert "t1": var_typing(entity_ref("urn:calc:ex:e36b"), "x", "integer") { origin case_input; }
+  assert "t2": var_typing(entity_ref("urn:calc:ex:e36b"), "y", "integer") { origin case_input; }
+  assert "cd": closed(entity_ref("urn:calc:ex:e36b")) { origin case_input; }
+ }
+ // Частное двух целых не обязано быть целым: наименьшая верхняя грань 1 и 1
+ // есть 2, и это единственное исключение из максимума.
+ evaluate truth(type_of(entity_ref("urn:calc:ex:e36b"), 3, "real"));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(LevelIsReal);
+ expect applied(QuotientOfIntegers);
+}
+
+test "a declared complex variable keeps its type through negation and integer powers" {
+ given {
+  assert "n1": node(entity_ref("urn:calc:ex:e36c"), 1, "var", "z", 0 / 1, 0, 0) { origin case_input; }
+  assert "n2": node(entity_ref("urn:calc:ex:e36c"), 2, "neg", "", 0 / 1, 1, 0) { origin case_input; }
+  assert "n3": node(entity_ref("urn:calc:ex:e36c"), 3, "const", "", 2 / 1, 0, 0) { origin case_input; }
+  assert "n4": node(entity_ref("urn:calc:ex:e36c"), 4, "pow", "", 0 / 1, 2, 3) { origin case_input; }
+  assert "t1": var_typing(entity_ref("urn:calc:ex:e36c"), "z", "complex") { origin case_input; }
+  assert "cd": closed(entity_ref("urn:calc:ex:e36c")) { origin case_input; }
+ }
+ // Смена знака и целая степень СОХРАНЯЮТ тип операнда. Если бы они были
+ // причислены к вещественным функциям, оба узла стали бы real, и сценарий упал
+ // бы именно здесь.
+ evaluate truth(type_of(entity_ref("urn:calc:ex:e36c"), 4, "complex"));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(LevelIsComplex);
+ expect applied(PowerKeepsBaseLevel);
+}
+
+test "a constant is typed real even when its value is an integer" {
+ given {
+  assert "n1": node(entity_ref("urn:calc:ex:e36d"), 1, "const", "", 2 / 1, 0, 0) { origin case_input; }
+  assert "cd": closed(entity_ref("urn:calc:ex:e36d")) { origin case_input; }
+ }
+ // ГРАНИЦА МЕРЫ, а не свойство: целочисленность константы здесь не
+ // определяется, потому что слот значения объявлен Rational. Константа типизируется
+ // ВЕРХНЕЙ ГРАНИЦЕЙ, поэтому объявлять её целой было бы правдой только иногда.
+ evaluate truth(type_of(entity_ref("urn:calc:ex:e36d"), 1, "real"));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(LevelIsReal);
+ expect applied(ConstLevelReal);
+}
+
+test "negation of an integer is an integer, which is what separates it from a real function" {
+ given {
+  assert "n1": node(entity_ref("urn:calc:ex:e36e"), 1, "var", "n", 0 / 1, 0, 0) { origin case_input; }
+  assert "n2": node(entity_ref("urn:calc:ex:e36e"), 2, "neg", "", 0 / 1, 1, 0) { origin case_input; }
+  assert "t1": var_typing(entity_ref("urn:calc:ex:e36e"), "n", "integer") { origin case_input; }
+  assert "cd": closed(entity_ref("urn:calc:ex:e36e")) { origin case_input; }
+ }
+ // Смена знака СОХРАНЯЕТ тип, а вещественные функции — нет. Если бы `neg` был
+ // причислен к вещественным, узел получил бы ДВА уровня (1 от сохранения и 2 от
+ // функции), и тип стал бы неоднозначным. Этот сценарий написан после того, как
+ // ПРОБА с убранным `tag != "neg"` показала, что случай с комплексным операндом
+ // её не ловит: там спасает условие `k < 3`, а здесь ловит только разделение видов.
+ evaluate truth(type_of(entity_ref("urn:calc:ex:e36e"), 2, "integer"));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(LevelIsInteger);
+ expect applied(NegationKeepsLevel);
+}
+
+test "the type of a node is unique, and uniqueness is checked rather than assumed" {
+ given {
+  // Тот же случай, отдельный документ: добавление второго запроса в один
+  // документ меняет вердикт на NEITHER (см. 32-alpha-equality и запись в журнале),
+  // поэтому единственность проверяется отдельным документом, а не вторым
+  // утверждением в том же.
+  assert "n1": node(entity_ref("urn:calc:ex:e36f"), 1, "var", "n", 0 / 1, 0, 0) { origin case_input; }
+  assert "n2": node(entity_ref("urn:calc:ex:e36f"), 2, "neg", "", 0 / 1, 1, 0) { origin case_input; }
+  assert "t1": var_typing(entity_ref("urn:calc:ex:e36f"), "n", "integer") { origin case_input; }
+  assert "cd": closed(entity_ref("urn:calc:ex:e36f")) { origin case_input; }
+ }
+ // Реляция мультимножественна: без этой проверки узел, получивший два уровня от
+ // двух разных правил, отвечал бы истиной на ЛЮБОЙ вопрос о его типе.
+ evaluate truth(single_typed(entity_ref("urn:calc:ex:e36f"), 2));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(SingleTyped);
+}

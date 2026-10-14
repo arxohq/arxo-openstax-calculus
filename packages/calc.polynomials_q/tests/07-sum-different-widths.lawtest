@@ -1,0 +1,28 @@
+language "law.core" version "0.2";
+package calc.polynomials_q version "0.1.0";
+namespace "urn:law:calc:polynomials-q";
+
+// (x³ − 1) + (x + 1) = x³ + x: узкое слагаемое дополняется нулями ПОЛОЖИТЕЛЬНО, сравнением `k > slots`, а не отсутствием факта.
+
+test "сумма многочленов разной ширины" {
+ given {
+  assert "f0": degree_cap(8) { origin case_input; }
+  assert "f1": poly(entity_ref("urn:calc:pq:f"), 3) { origin case_input; }
+  assert "f2": term(entity_ref("urn:calc:pq:f"), 0, -1 / 1) { origin case_input; }
+  assert "f3": term(entity_ref("urn:calc:pq:f"), 1, 0 / 1) { origin case_input; }
+  assert "f4": term(entity_ref("urn:calc:pq:f"), 2, 0 / 1) { origin case_input; }
+  assert "f5": term(entity_ref("urn:calc:pq:f"), 3, 1 / 1) { origin case_input; }
+  assert "f6": poly(entity_ref("urn:calc:pq:g"), 1) { origin case_input; }
+  assert "f7": term(entity_ref("urn:calc:pq:g"), 0, 1 / 1) { origin case_input; }
+  assert "f8": term(entity_ref("urn:calc:pq:g"), 1, 1 / 1) { origin case_input; }
+  assert "f9": sum_of(entity_ref("urn:calc:pq:s"), entity_ref("urn:calc:pq:f"), entity_ref("urn:calc:pq:g")) { origin case_input; }
+ }
+ evaluate truth(coeff(entity_ref("urn:calc:pq:s"), 0, 0 / 1));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(PaddedBeyond);
+ evaluate truth(coeff(entity_ref("urn:calc:pq:s"), 1, 1 / 1));
+ expect truth_status == TRUE_ONLY;
+ evaluate truth(coeff(entity_ref("urn:calc:pq:s"), 3, 1 / 1));
+ expect truth_status == TRUE_ONLY;
+}

@@ -1,0 +1,44 @@
+language "law.core" version "0.2";
+package calc.expressions version "0.1.0";
+namespace "urn:law:calc:expressions";
+
+// ИНТЕГРАЛ, ПРОИЗВОДНАЯ И РЕШЕНИЕ О ФОРМАТЕ МАТРИЦЫ (scope B02.01).
+//
+// Каталог называет интегралы, производные, матрицы, комплексные и кусочные
+// выражения. Первые два помещаются в форму узла (тег, имя, значение, левый
+// потомок, правый потомок) и становятся видами первого класса.
+//
+// Тест про матрицу РАНЬШЕ утверждал отказ MATRIX_NODE_UNSUPPORTED: формат не
+// был решён, и отказ был честен. Формат решён (10-structured.law), отказ
+// УДАЛЁН, и тест переписан на разобранный узел. Оставить его было бы утверждением
+// в одном мире, что вид узла и не представлен, и представлен.
+
+test "an integral is a well-formed unary node whose name carries the variable" {
+ given {
+  assert "n1": node(entity_ref("urn:calc:ex:e35"), 1, "integral", "x", 0 / 1, 2, 0) { origin case_input; }
+  assert "n2": node(entity_ref("urn:calc:ex:e35"), 2, "var", "x", 0 / 1, 0, 0) { origin case_input; }
+  assert "cd": closed(entity_ref("urn:calc:ex:e35")) { origin case_input; }
+ }
+ evaluate truth(well_formed(entity_ref("urn:calc:ex:e35"), 1));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(UnaryIntegral);
+}
+
+test "a matrix node is no longer refused, and is not an unknown tag either" {
+ given {
+  assert "n1": node(entity_ref("urn:calc:ex:e35b"), 1, "matrix", "", 0 / 1, 2, 2) { origin case_input; }
+  assert "n2": node(entity_ref("urn:calc:ex:e35b"), 2, "dims", "2", 2 / 1, 0, 0) { origin case_input; }
+  assert "cd": closed(entity_ref("urn:calc:ex:e35b")) { origin case_input; }
+ }
+ evaluate truth(matrix_node(entity_ref("urn:calc:ex:e35b"), 1));
+ expect truth_status == TRUE_ONLY;
+
+ // прежний отказ снят, и это видно явно: не «другой код», а отсутствие кода
+ evaluate truth(formula_error(entity_ref("urn:calc:ex:e35b"), 1, "MATRIX_NODE_UNSUPPORTED"));
+ expect truth_status == NEITHER;
+
+ // и вид узла не выпал из словаря вместе с отказом
+ evaluate truth(formula_error(entity_ref("urn:calc:ex:e35b"), 1, "UNKNOWN_TAG"));
+ expect truth_status == NEITHER;
+}

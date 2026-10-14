@@ -1,0 +1,14 @@
+language "law.core" version "0.2";
+package calc.expressions version "0.1.0";
+namespace "urn:law:calc:expressions";
+
+test "арктангенс имеет унарную структурную форму" {
+ given {
+  assert "f1": node(entity_ref("urn:calc:expr:atan"), 1, "const", "", 1 / 1, 0, 0) { origin case_input; }
+  assert "f2": node(entity_ref("urn:calc:expr:atan"), 2, "atan", "", 0 / 1, 1, 0) { origin case_input; }
+  assert "f3": closed(entity_ref("urn:calc:expr:atan")) { origin case_input; }
+ }
+ evaluate truth(well_formed(entity_ref("urn:calc:expr:atan"), 2));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+}

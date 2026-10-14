@@ -1,0 +1,4796 @@
+[
+  {
+    "contentHash": "sha256:b75365247b72ff3fe18032690ea518992e2927d3057939ddfe6b169b26d74d16",
+    "exportEntityTypes": [
+      "Derivation"
+    ],
+    "exportKinds": {
+      "Derivation": "type_decl",
+      "blocked_step": "symbol_decl",
+      "budget_exhausted": "symbol_decl",
+      "closed": "symbol_decl",
+      "derivation_error": "symbol_decl",
+      "derivation_valid": "symbol_decl",
+      "derivative_origin": "symbol_decl",
+      "document": "symbol_decl",
+      "first_error": "symbol_decl",
+      "lhopital_derivatives": "symbol_decl",
+      "limit_cancellation": "symbol_decl",
+      "limit_line": "symbol_decl",
+      "limit_result": "symbol_decl",
+      "line": "symbol_decl",
+      "nodes_of": "symbol_decl",
+      "nonzero_near": "symbol_decl",
+      "step_error": "symbol_decl",
+      "step_valid": "symbol_decl",
+      "substituted": "symbol_decl",
+      "variable": "symbol_decl"
+    },
+    "exportRelationLabels": {
+      "blocked_step": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "форма перехода правильна, но его основание не проверено"
+        }
+      ],
+      "budget_exhausted": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "ОБЪЯВЛЕННЫЙ ОТКАЗ: строк больше 64, ход не проверяется"
+        }
+      ],
+      "closed": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "ввод строк завершён: отсутствие строки после этого — дефект"
+        }
+      ],
+      "derivation_error": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "дефект заголовка или итога: INVALID_SIZE, UNKNOWN_CALCULUS, AMBIGUOUS_DOCUMENT, MISSING_DOCUMENT, NO_CONTEXT, GOAL_MISMATCH"
+        }
+      ],
+      "derivation_valid": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "весь завершённый ход проверен, последняя строка совпала с заявленным итогом"
+        }
+      ],
+      "derivative_origin": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "строка i устанавливает производную f исходной функции gj"
+        }
+      ],
+      "document": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "заголовок хода: число строк, ожидаемый итог и версия словаря"
+        }
+      ],
+      "first_error": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "первый первичный дефект по номеру строки"
+        }
+      ],
+      "lhopital_derivatives": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "два номера строк производных для Лопиталя, названные студентом"
+        }
+      ],
+      "limit_cancellation": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "явный запрос сокращения, используемый этой строкой"
+        }
+      ],
+      "limit_line": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "строка предела: функция, метод, три основания, точка, сторона и значение"
+        }
+      ],
+      "limit_result": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "положительно установленный предел"
+        }
+      ],
+      "line": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "предъявленная строка хода"
+        }
+      ],
+      "nodes_of": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "набор узлов, в котором разрешаются все выражения этого хода"
+        }
+      ],
+      "nonzero_near": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "выбранное студентом условие: неполиномиальная производная знаменателя не обращается в ноль в окрестности"
+        }
+      ],
+      "step_error": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "первичный дефект строки: INVALID_INDEX, AMBIGUOUS_LINE, UNKNOWN_METHOD, EXTRA_LINE, FORWARD_REFERENCE, INVALID_REFERENCE, MISSING_REFERENCE, MISSING_LINE, INVALID_LINE_EXPRESSION, RULE_MISMATCH, METHOD_NOT_IN_V1"
+        }
+      ],
+      "step_valid": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "строка проверена и не содержит собственной ошибки"
+        }
+      ],
+      "substituted": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "дерево value равно f с заменой var x на const a"
+        }
+      ],
+      "variable": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "переменная, по которой ведётся дифференцирование или интегрирование"
+        }
+      ]
+    },
+    "exportRelationParameterNames": {
+      "blocked_step": [
+        "p",
+        "i",
+        "j"
+      ],
+      "budget_exhausted": [
+        "p"
+      ],
+      "closed": [
+        "p"
+      ],
+      "derivation_error": [
+        "p",
+        "reason"
+      ],
+      "derivation_valid": [
+        "p"
+      ],
+      "derivative_origin": [
+        "p",
+        "i",
+        "f",
+        "gj"
+      ],
+      "document": [
+        "p",
+        "size",
+        "target",
+        "calculus"
+      ],
+      "first_error": [
+        "p",
+        "i"
+      ],
+      "lhopital_derivatives": [
+        "p",
+        "i",
+        "df",
+        "dg"
+      ],
+      "limit_cancellation": [
+        "p",
+        "i",
+        "cancel"
+      ],
+      "limit_line": [
+        "p",
+        "i",
+        "f",
+        "m",
+        "j",
+        "k",
+        "l",
+        "ap",
+        "a",
+        "s",
+        "vk",
+        "value"
+      ],
+      "limit_result": [
+        "p",
+        "i",
+        "f",
+        "ap",
+        "a",
+        "s",
+        "vk",
+        "value"
+      ],
+      "line": [
+        "p",
+        "i",
+        "expr",
+        "method",
+        "ground_j",
+        "ground_k",
+        "aux_u",
+        "aux_dv"
+      ],
+      "nodes_of": [
+        "p",
+        "e"
+      ],
+      "nonzero_near": [
+        "p",
+        "i"
+      ],
+      "step_error": [
+        "p",
+        "i",
+        "reason"
+      ],
+      "step_valid": [
+        "p",
+        "i"
+      ],
+      "substituted": [
+        "e",
+        "f",
+        "value",
+        "x",
+        "a"
+      ],
+      "variable": [
+        "p",
+        "x"
+      ]
+    },
+    "exportRelationParameters": {
+      "blocked_step": [
+        {
+          "name": "urn:law:calc:calculus-checker#Derivation"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "budget_exhausted": [
+        {
+          "name": "urn:law:calc:calculus-checker#Derivation"
+        }
+      ],
+      "closed": [
+        {
+          "name": "urn:law:calc:calculus-checker#Derivation"
+        }
+      ],
+      "derivation_error": [
+        {
+          "name": "urn:law:calc:calculus-checker#Derivation"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "derivation_valid": [
+        {
+          "name": "urn:law:calc:calculus-checker#Derivation"
+        }
+      ],
+      "derivative_origin": [
+        {
+          "name": "urn:law:calc:calculus-checker#Derivation"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "document": [
+        {
+          "name": "urn:law:calc:calculus-checker#Derivation"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "first_error": [
+        {
+          "name": "urn:law:calc:calculus-checker#Derivation"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "lhopital_derivatives": [
+        {
+          "name": "urn:law:calc:calculus-checker#Derivation"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "limit_cancellation": [
+        {
+          "name": "urn:law:calc:calculus-checker#Derivation"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "calc.polynomials_q#Cancellation"
+        }
+      ],
+      "limit_line": [
+        {
+          "name": "urn:law:calc:calculus-checker#Derivation"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "limit_result": [
+        {
+          "name": "urn:law:calc:calculus-checker#Derivation"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "line": [
+        {
+          "name": "urn:law:calc:calculus-checker#Derivation"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "nodes_of": [
+        {
+          "name": "urn:law:calc:calculus-checker#Derivation"
+        },
+        {
+          "name": "calc.expressions#Expr"
+        }
+      ],
+      "nonzero_near": [
+        {
+          "name": "urn:law:calc:calculus-checker#Derivation"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "step_error": [
+        {
+          "name": "urn:law:calc:calculus-checker#Derivation"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "step_valid": [
+        {
+          "name": "urn:law:calc:calculus-checker#Derivation"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "substituted": [
+        {
+          "name": "calc.expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        }
+      ],
+      "variable": [
+        {
+          "name": "urn:law:calc:calculus-checker#Derivation"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ]
+    },
+    "exports": [
+      "Derivation",
+      "blocked_step",
+      "budget_exhausted",
+      "closed",
+      "derivation_error",
+      "derivation_valid",
+      "derivative_origin",
+      "document",
+      "first_error",
+      "lhopital_derivatives",
+      "limit_cancellation",
+      "limit_line",
+      "limit_result",
+      "line",
+      "nodes_of",
+      "nonzero_near",
+      "step_error",
+      "step_valid",
+      "substituted",
+      "variable"
+    ],
+    "features": [
+      "core-executable"
+    ],
+    "package": {
+      "name": "calc.calculus_checker",
+      "namespace": "urn:law:calc:calculus-checker",
+      "semanticHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "version": "0.1.0"
+    }
+  },
+  {
+    "contentHash": "sha256:67a032a96c983e724e0af4781fc287617140741319ebe2e55ac54ca35467a265",
+    "exportEntityTypes": [
+      "Expr"
+    ],
+    "exportKinds": {
+      "Expr": "type_decl",
+      "alpha_candidate": "symbol_decl",
+      "alpha_eq": "symbol_decl",
+      "alpha_equal": "symbol_decl",
+      "alpha_equiv": "symbol_decl",
+      "alpha_error": "symbol_decl",
+      "alpha_pair": "symbol_decl",
+      "binder_declared": "symbol_decl",
+      "binder_in": "symbol_decl",
+      "binder_name": "symbol_decl",
+      "bound_at": "symbol_decl",
+      "bound_by": "symbol_decl",
+      "budget_exhausted": "symbol_decl",
+      "closed": "symbol_decl",
+      "descends": "symbol_decl",
+      "equivalent": "symbol_decl",
+      "formula_error": "symbol_decl",
+      "free_at": "symbol_decl",
+      "free_in": "symbol_decl",
+      "known_tag": "symbol_decl",
+      "level_ambiguous": "symbol_decl",
+      "node": "symbol_decl",
+      "node_uses": "symbol_decl",
+      "reachable": "symbol_decl",
+      "single_typed": "symbol_decl",
+      "size": "symbol_decl",
+      "substitution_capture": "symbol_decl",
+      "substitution_fresh": "symbol_decl",
+      "substitution_into": "symbol_decl",
+      "substitution_ok": "symbol_decl",
+      "subtree_size": "symbol_decl",
+      "type_absent": "symbol_decl",
+      "type_of": "symbol_decl",
+      "typing_conflict": "symbol_decl",
+      "var_typing": "symbol_decl",
+      "vocabulary_ok": "symbol_decl",
+      "well_formed": "symbol_decl"
+    },
+    "exportRelationLabels": {
+      "alpha_candidate": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "случай предъявляет два поддерева-кандидата на α-соответствие"
+        }
+      ],
+      "alpha_eq": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "узлы x и y совпадают по α-равенству внутри пары поддеревьев-кандидатов f и g"
+        }
+      ],
+      "alpha_equal": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "поддеревья f и g равны с точностью до переименования связанных имён, при предъявленном и проверенном соответствии"
+        }
+      ],
+      "alpha_equiv": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "поддеревья соответствуют взаимно однозначным переименованием связанных имён без затрагивания свободных"
+        }
+      ],
+      "alpha_error": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "названная причина, по которой соответствие или равенство не состоялось: ALPHA_COUNT_MISMATCH, ALPHA_NOT_INJECTIVE, ALPHA_FREE_TOUCHED, ALPHA_SHAPE_MISMATCH, ALPHA_FREE_NAME_MISMATCH, ALPHA_OLD_NAME_TOUCHED"
+        }
+      ],
+      "alpha_pair": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "случай ПРЕДЛАГАЕТ: узел bf в f соответствует узлу bg в g, имена z и z2"
+        }
+      ],
+      "binder_declared": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "узел f объявлен связывающим имя name"
+        }
+      ],
+      "binder_in": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "связанное имя принадлежит поддереву f"
+        }
+      ],
+      "binder_name": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "установленное имя, связываемое узлом"
+        }
+      ],
+      "bound_at": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "вхождение имени в этом узле связано"
+        }
+      ],
+      "bound_by": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "вхождение имени z в узле x связано ИМЕННО связывающим узлом bf, а не каким-то другим"
+        }
+      ],
+      "budget_exhausted": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "ОБЪЯВЛЕННЫЙ ОТКАЗ: узлов больше 256, разбор не ведётся"
+        }
+      ],
+      "closed": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "ввод узлов завершён: отсутствие узла после этого — дефект, а не ожидание данных"
+        }
+      ],
+      "descends": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "n — это anc сам или транзитивный потомок anc в e"
+        }
+      ],
+      "equivalent": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "СТРУКТУРНОЕ равенство поддеревьев с любыми идентификаторами; нормализации и упрощения нет"
+        }
+      ],
+      "formula_error": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "названный дефект узла: INVALID_NODE_ID, AMBIGUOUS_NODE, UNKNOWN_TAG, EXTRA_CHILD, MISSING_CHILD, EMPTY_VARIABLE_NAME, EMPTY_ALGEBRAIC_NAME, NAME_ON_COMPOUND, VALUE_ON_NON_CONST, EXPONENT_NOT_CONSTANT, FRACTIONAL_EXPONENT, NEGATIVE_EXPONENT, NODE_NOT_WELL_FORMED"
+        }
+      ],
+      "free_at": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "вхождение имени в этом узле свободно"
+        }
+      ],
+      "free_in": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "имя свободно в поддереве f"
+        }
+      ],
+      "known_tag": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "вид узла входит в объявленный словарь — положительный факт, из которого выводится UNKNOWN_TAG, а не наоборот"
+        }
+      ],
+      "level_ambiguous": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "ПРОБЕЛ ЕДИНСТВЕННОСТИ: у узла более одного выведенного уровня типа, и ни один из них не является ответом"
+        }
+      ],
+      "node": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "структура узла выражения; неиспользуемые поля пусты либо равны нулю"
+        }
+      ],
+      "node_uses": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "узел f использует имя (лист-переменная либо аргумент)"
+        }
+      ],
+      "reachable": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "вершина n принадлежит поддереву anc"
+        }
+      ],
+      "single_typed": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "у узла ровно один выведенный уровень типа — реляция мультимножественна, поэтому единственность проверяется, а не предполагается"
+        }
+      ],
+      "size": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "размер предъявленного DAG: число различных идентификаторов узлов"
+        }
+      ],
+      "substitution_capture": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "подстановка захватила бы связываемое выше имя и отвергнута поимённо"
+        }
+      ],
+      "substitution_fresh": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "имя, объявленное свежим для этого узла подстановки"
+        }
+      ],
+      "substitution_into": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "подставляемый узел образа"
+        }
+      ],
+      "substitution_ok": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "подстановка выполнена без захвата"
+        }
+      ],
+      "subtree_size": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "n — вершина поддерева anc, предъявленная как достижимая"
+        }
+      ],
+      "type_absent": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "ПРОБЕЛ ТИПА: имя переменной не объявлено, поэтому у узла нет типа — и у узлов выше тоже нет"
+        }
+      ],
+      "type_of": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "тип узла поимённо — тот же выведенный уровень, названный словом. Отсутствие уровня есть отсутствие типа, и оно НЕ подставляется догадкой"
+        }
+      ],
+      "typing_conflict": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "имя объявлено по меньшей мере двумя разными типами, а t — один из них"
+        }
+      ],
+      "var_typing": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "дело объявляет тип СВОБОДНОЙ переменной по имени; объявление относится ко всем вхождениям этого имени"
+        }
+      ],
+      "vocabulary_ok": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "СРЕДА ЧИСТА: каждое объявленное имя входит в словарь integer, real, complex"
+        }
+      ],
+      "well_formed": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "конечная корректная структура узла и всего его поддерева"
+        }
+      ]
+    },
+    "exportRelationParameterNames": {
+      "alpha_candidate": [
+        "e",
+        "f",
+        "g"
+      ],
+      "alpha_eq": [
+        "e",
+        "f",
+        "g",
+        "x",
+        "y"
+      ],
+      "alpha_equal": [
+        "e",
+        "f",
+        "g"
+      ],
+      "alpha_equiv": [
+        "e",
+        "f",
+        "g"
+      ],
+      "alpha_error": [
+        "e",
+        "f",
+        "g",
+        "reason"
+      ],
+      "alpha_pair": [
+        "e",
+        "f",
+        "g",
+        "bf",
+        "bg",
+        "z",
+        "z2"
+      ],
+      "binder_declared": [
+        "e",
+        "f",
+        "name"
+      ],
+      "binder_in": [
+        "e",
+        "f",
+        "bf",
+        "z"
+      ],
+      "binder_name": [
+        "e",
+        "f",
+        "name"
+      ],
+      "bound_at": [
+        "e",
+        "f",
+        "name"
+      ],
+      "bound_by": [
+        "e",
+        "bf",
+        "x",
+        "z"
+      ],
+      "budget_exhausted": [
+        "e"
+      ],
+      "closed": [
+        "e"
+      ],
+      "descends": [
+        "e",
+        "anc",
+        "n"
+      ],
+      "equivalent": [
+        "e",
+        "f",
+        "g"
+      ],
+      "formula_error": [
+        "e",
+        "f",
+        "reason"
+      ],
+      "free_at": [
+        "e",
+        "f",
+        "name"
+      ],
+      "free_in": [
+        "e",
+        "f",
+        "z"
+      ],
+      "known_tag": [
+        "e",
+        "f",
+        "tag"
+      ],
+      "level_ambiguous": [
+        "e",
+        "f"
+      ],
+      "node": [
+        "e",
+        "f",
+        "tag",
+        "name",
+        "value",
+        "left",
+        "right"
+      ],
+      "node_uses": [
+        "e",
+        "f",
+        "name"
+      ],
+      "reachable": [
+        "e",
+        "anc",
+        "n"
+      ],
+      "single_typed": [
+        "e",
+        "f"
+      ],
+      "size": [
+        "e",
+        "n"
+      ],
+      "substitution_capture": [
+        "e",
+        "f",
+        "name",
+        "g"
+      ],
+      "substitution_fresh": [
+        "e",
+        "f",
+        "name",
+        "fresh"
+      ],
+      "substitution_into": [
+        "e",
+        "f",
+        "g"
+      ],
+      "substitution_ok": [
+        "e",
+        "f",
+        "name",
+        "g"
+      ],
+      "subtree_size": [
+        "e",
+        "anc",
+        "n"
+      ],
+      "type_absent": [
+        "e",
+        "f"
+      ],
+      "type_of": [
+        "e",
+        "f",
+        "t"
+      ],
+      "typing_conflict": [
+        "e",
+        "name",
+        "t"
+      ],
+      "var_typing": [
+        "e",
+        "name",
+        "t"
+      ],
+      "vocabulary_ok": [
+        "e"
+      ],
+      "well_formed": [
+        "e",
+        "f"
+      ]
+    },
+    "exportRelationParameters": {
+      "alpha_candidate": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "alpha_eq": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "alpha_equal": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "alpha_equiv": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "alpha_error": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "alpha_pair": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "binder_declared": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "binder_in": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "binder_name": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "bound_at": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "bound_by": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "budget_exhausted": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        }
+      ],
+      "closed": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        }
+      ],
+      "descends": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "equivalent": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "formula_error": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "free_at": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "free_in": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "known_tag": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "level_ambiguous": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "node": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "node_uses": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "reachable": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "single_typed": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "size": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "substitution_capture": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "substitution_fresh": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "substitution_into": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "substitution_ok": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "subtree_size": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "type_absent": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "type_of": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "typing_conflict": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "var_typing": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "vocabulary_ok": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        }
+      ],
+      "well_formed": [
+        {
+          "name": "urn:law:calc:expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ]
+    },
+    "exports": [
+      "Expr",
+      "alpha_candidate",
+      "alpha_eq",
+      "alpha_equal",
+      "alpha_equiv",
+      "alpha_error",
+      "alpha_pair",
+      "binder_declared",
+      "binder_in",
+      "binder_name",
+      "bound_at",
+      "bound_by",
+      "budget_exhausted",
+      "closed",
+      "descends",
+      "equivalent",
+      "formula_error",
+      "free_at",
+      "free_in",
+      "known_tag",
+      "level_ambiguous",
+      "node",
+      "node_uses",
+      "reachable",
+      "single_typed",
+      "size",
+      "substitution_capture",
+      "substitution_fresh",
+      "substitution_into",
+      "substitution_ok",
+      "subtree_size",
+      "type_absent",
+      "type_of",
+      "typing_conflict",
+      "var_typing",
+      "vocabulary_ok",
+      "well_formed"
+    ],
+    "features": [
+      "core-executable"
+    ],
+    "package": {
+      "name": "calc.expressions",
+      "namespace": "urn:law:calc:expressions",
+      "semanticHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "version": "0.1.0"
+    }
+  },
+  {
+    "contentHash": "sha256:fccff8c3ddc6ad47df65058381698306871e3e395f79ea7877b3eeeab10e4790",
+    "exportEntityTypes": [
+      "Task"
+    ],
+    "exportKinds": {
+      "Task": "type_decl",
+      "accepted": "symbol_decl",
+      "ambiguous_limit": "symbol_decl",
+      "condition_unmet": "symbol_decl",
+      "derivative_method": "symbol_decl",
+      "derived": "symbol_decl",
+      "input_error": "symbol_decl",
+      "input_node": "symbol_decl",
+      "lhopital_applied": "symbol_decl",
+      "limit_at": "symbol_decl",
+      "need_derivative": "symbol_decl",
+      "solver_finite_value": "symbol_decl",
+      "solver_outcome": "symbol_decl",
+      "solver_result": "symbol_decl",
+      "task_approach": "symbol_decl",
+      "task_closed": "symbol_decl",
+      "task_function": "symbol_decl",
+      "task_nodes": "symbol_decl",
+      "task_point": "symbol_decl",
+      "task_side": "symbol_decl",
+      "task_variable": "symbol_decl"
+    },
+    "exportRelationLabels": {
+      "accepted": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "принятая задача: разобранный и согласованный вход"
+        }
+      ],
+      "ambiguous_limit": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "ДЕФЕКТ: для одного узла и стороны выведены разные величины — правила противоречат друг другу"
+        }
+      ],
+      "condition_unmet": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "названное условие применимости НЕ установлено: DENOMINATOR_DERIVATIVE_NONZERO, RATIO_LIMIT"
+        }
+      ],
+      "derivative_method": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "правило курса, которым построена производная узла: имя для строки хода"
+        }
+      ],
+      "derived": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "производная поддерева построена; её корень — узел f * 64 + 256"
+        }
+      ],
+      "input_error": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "названный дефект ввода: AMBIGUOUS_TASK, MISSING_FIELD, INVALID_APPROACH, INVALID_SIDE, NODE_ID_OUT_OF_RANGE, FUNCTION_NOT_WELL_FORMED"
+        }
+      ],
+      "input_node": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "предъявленный делом узел выражения задачи"
+        }
+      ],
+      "lhopital_applied": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "правило Лопиталя применено к узлу раунда r: все условия установлены"
+        }
+      ],
+      "limit_at": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "односторонняя величина предела: rational со значением q либо plus_inf/minus_inf с нулём"
+        }
+      ],
+      "need_derivative": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "производная поддерева требуется выбранным методом"
+        }
+      ],
+      "solver_finite_value": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "установленное конечное значение предела"
+        }
+      ],
+      "solver_outcome": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "имя исхода без значения: то, что читает инструмент первым"
+        }
+      ],
+      "solver_result": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "исход решения: FINITE, PLUS_INFINITY, MINUS_INFINITY, DOES_NOT_EXIST, CONDITIONS_NOT_ESTABLISHED, UNSUPPORTED_FORM, BUDGET_EXHAUSTED, INVALID_INPUT"
+        }
+      ],
+      "task_approach": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "at, plus_inf либо minus_inf"
+        }
+      ],
+      "task_closed": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "ввод задачи завершён: неполнота после этого — дефект, а не ожидание данных"
+        }
+      ],
+      "task_function": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "корень предъявленного выражения под знаком предела"
+        }
+      ],
+      "task_nodes": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "набор узлов, в котором разрешаются идентификаторы задачи"
+        }
+      ],
+      "task_point": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "точка приближения; при бесконечности 0/1"
+        }
+      ],
+      "task_side": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "both, left либо right; при бесконечности both"
+        }
+      ],
+      "task_variable": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "переменная, по которой берётся предел"
+        }
+      ]
+    },
+    "exportRelationParameterNames": {
+      "accepted": [
+        "t",
+        "e",
+        "f",
+        "x",
+        "ap",
+        "a",
+        "s"
+      ],
+      "ambiguous_limit": [
+        "t",
+        "f",
+        "sd"
+      ],
+      "condition_unmet": [
+        "t",
+        "f",
+        "sd",
+        "condition"
+      ],
+      "derivative_method": [
+        "t",
+        "e",
+        "f",
+        "method"
+      ],
+      "derived": [
+        "t",
+        "e",
+        "f"
+      ],
+      "input_error": [
+        "t",
+        "reason"
+      ],
+      "input_node": [
+        "t",
+        "f",
+        "tag",
+        "name",
+        "value",
+        "left",
+        "right"
+      ],
+      "lhopital_applied": [
+        "t",
+        "e",
+        "f",
+        "r",
+        "sd"
+      ],
+      "limit_at": [
+        "t",
+        "e",
+        "f",
+        "sd",
+        "kind",
+        "q"
+      ],
+      "need_derivative": [
+        "t",
+        "e",
+        "f"
+      ],
+      "solver_finite_value": [
+        "t",
+        "q"
+      ],
+      "solver_outcome": [
+        "t",
+        "outcome"
+      ],
+      "solver_result": [
+        "t",
+        "outcome",
+        "kind",
+        "q"
+      ],
+      "task_approach": [
+        "t",
+        "ap"
+      ],
+      "task_closed": [
+        "t"
+      ],
+      "task_function": [
+        "t",
+        "f"
+      ],
+      "task_nodes": [
+        "t",
+        "e"
+      ],
+      "task_point": [
+        "t",
+        "a"
+      ],
+      "task_side": [
+        "t",
+        "s"
+      ],
+      "task_variable": [
+        "t",
+        "x"
+      ]
+    },
+    "exportRelationParameters": {
+      "accepted": [
+        {
+          "name": "urn:law:calc:limit-solver#Task"
+        },
+        {
+          "name": "calc.expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "ambiguous_limit": [
+        {
+          "name": "urn:law:calc:limit-solver#Task"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "condition_unmet": [
+        {
+          "name": "urn:law:calc:limit-solver#Task"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "derivative_method": [
+        {
+          "name": "urn:law:calc:limit-solver#Task"
+        },
+        {
+          "name": "calc.expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "derived": [
+        {
+          "name": "urn:law:calc:limit-solver#Task"
+        },
+        {
+          "name": "calc.expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "input_error": [
+        {
+          "name": "urn:law:calc:limit-solver#Task"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "input_node": [
+        {
+          "name": "urn:law:calc:limit-solver#Task"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "lhopital_applied": [
+        {
+          "name": "urn:law:calc:limit-solver#Task"
+        },
+        {
+          "name": "calc.expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "limit_at": [
+        {
+          "name": "urn:law:calc:limit-solver#Task"
+        },
+        {
+          "name": "calc.expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        }
+      ],
+      "need_derivative": [
+        {
+          "name": "urn:law:calc:limit-solver#Task"
+        },
+        {
+          "name": "calc.expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "solver_finite_value": [
+        {
+          "name": "urn:law:calc:limit-solver#Task"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        }
+      ],
+      "solver_outcome": [
+        {
+          "name": "urn:law:calc:limit-solver#Task"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "solver_result": [
+        {
+          "name": "urn:law:calc:limit-solver#Task"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        }
+      ],
+      "task_approach": [
+        {
+          "name": "urn:law:calc:limit-solver#Task"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "task_closed": [
+        {
+          "name": "urn:law:calc:limit-solver#Task"
+        }
+      ],
+      "task_function": [
+        {
+          "name": "urn:law:calc:limit-solver#Task"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "task_nodes": [
+        {
+          "name": "urn:law:calc:limit-solver#Task"
+        },
+        {
+          "name": "calc.expressions#Expr"
+        }
+      ],
+      "task_point": [
+        {
+          "name": "urn:law:calc:limit-solver#Task"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        }
+      ],
+      "task_side": [
+        {
+          "name": "urn:law:calc:limit-solver#Task"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "task_variable": [
+        {
+          "name": "urn:law:calc:limit-solver#Task"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ]
+    },
+    "exports": [
+      "Task",
+      "accepted",
+      "ambiguous_limit",
+      "condition_unmet",
+      "derivative_method",
+      "derived",
+      "input_error",
+      "input_node",
+      "lhopital_applied",
+      "limit_at",
+      "need_derivative",
+      "solver_finite_value",
+      "solver_outcome",
+      "solver_result",
+      "task_approach",
+      "task_closed",
+      "task_function",
+      "task_nodes",
+      "task_point",
+      "task_side",
+      "task_variable"
+    ],
+    "features": [
+      "core-executable"
+    ],
+    "package": {
+      "name": "calc.limit_solver",
+      "namespace": "urn:law:calc:limit-solver",
+      "semanticHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "version": "0.1.0"
+    }
+  },
+  {
+    "contentHash": "sha256:0445837b7789d2e5cfbf981b8906abaab92e9bd4c48cdd1d6919f71852a3e943",
+    "exportEntityTypes": [
+      "Cancellation",
+      "Division",
+      "Poly"
+    ],
+    "exportKinds": {
+      "Cancellation": "type_decl",
+      "Division": "type_decl",
+      "Poly": "type_decl",
+      "antiderivative_of": "symbol_decl",
+      "antiderivative_with_constant": "symbol_decl",
+      "cancellation_error": "symbol_decl",
+      "cancellation_request": "symbol_decl",
+      "cancellation_workspace": "symbol_decl",
+      "cancelled_ratio": "symbol_decl",
+      "chain_terminated": "symbol_decl",
+      "chain_unfinished": "symbol_decl",
+      "claimed_identity": "symbol_decl",
+      "coeff": "symbol_decl",
+      "coeff_mismatch": "symbol_decl",
+      "compare_request": "symbol_decl",
+      "content_complete": "symbol_decl",
+      "content_defect": "symbol_decl",
+      "defect": "symbol_decl",
+      "definite_integral": "symbol_decl",
+      "definite_integral_request": "symbol_decl",
+      "degree": "symbol_decl",
+      "degree_cap": "symbol_decl",
+      "degree_mismatch": "symbol_decl",
+      "derivative_of": "symbol_decl",
+      "difference_of": "symbol_decl",
+      "discriminant_value": "symbol_decl",
+      "division": "symbol_decl",
+      "division_binding": "symbol_decl",
+      "division_defect": "symbol_decl",
+      "division_done": "symbol_decl",
+      "division_kind": "symbol_decl",
+      "division_sizes": "symbol_decl",
+      "euclid": "symbol_decl",
+      "euclid_bezout": "symbol_decl",
+      "euclid_division": "symbol_decl",
+      "euclid_gcd": "symbol_decl",
+      "euclid_length": "symbol_decl",
+      "euclid_qu": "symbol_decl",
+      "euclid_qv": "symbol_decl",
+      "euclid_remainder": "symbol_decl",
+      "euclid_u": "symbol_decl",
+      "euclid_v": "symbol_decl",
+      "evaluation_request": "symbol_decl",
+      "gcd_index": "symbol_decl",
+      "gcd_verified_monic": "symbol_decl",
+      "identity_fails": "symbol_decl",
+      "identity_holds": "symbol_decl",
+      "infinity_limit_error": "symbol_decl",
+      "infinity_limit_request": "symbol_decl",
+      "invariant_verified": "symbol_decl",
+      "leading": "symbol_decl",
+      "monic": "symbol_decl",
+      "monomial_of": "symbol_decl",
+      "node_polynomial": "symbol_decl",
+      "not_polynomial": "symbol_decl",
+      "poly": "symbol_decl",
+      "poly_value": "symbol_decl",
+      "polynomial_of": "symbol_decl",
+      "polynomial_variable": "symbol_decl",
+      "polys_differ": "symbol_decl",
+      "polys_equal": "symbol_decl",
+      "produced": "symbol_decl",
+      "product_of": "symbol_decl",
+      "quotient_coefficient": "symbol_decl",
+      "rational_infinity_limit": "symbol_decl",
+      "rational_value": "symbol_decl",
+      "rational_value_error": "symbol_decl",
+      "rational_value_request": "symbol_decl",
+      "raw": "symbol_decl",
+      "ready": "symbol_decl",
+      "rem_at": "symbol_decl",
+      "remainder_smaller": "symbol_decl",
+      "resultant_value": "symbol_decl",
+      "root": "symbol_decl",
+      "scaled_of": "symbol_decl",
+      "slot": "symbol_decl",
+      "slots": "symbol_decl",
+      "sum_of": "symbol_decl",
+      "tainted": "symbol_decl",
+      "term": "symbol_decl",
+      "usable": "symbol_decl",
+      "zero_polynomial": "symbol_decl"
+    },
+    "exportRelationLabels": {
+      "antiderivative_of": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "многочлен t определён как первообразная a с НУЛЕВОЙ константой — ноль выбран явно, а не подразумевается"
+        }
+      ],
+      "antiderivative_with_constant": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "первообразная a с предъявленной делом константой интегрирования"
+        }
+      ],
+      "cancellation_error": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "отказ сокращения"
+        }
+      ],
+      "cancellation_request": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "запрос сокращения на x − a"
+        }
+      ],
+      "cancellation_workspace": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "выходные носители и два деления, явно названные делом"
+        }
+      ],
+      "cancelled_ratio": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "два частных после точного сокращения"
+        }
+      ],
+      "chain_terminated": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "цепочка дошла до нулевого остатка: алгоритм завершён в объявленной длине"
+        }
+      ],
+      "chain_unfinished": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "последний остаток цепочки ненулевой: объявленной длины НЕ ХВАТИЛО. Это незавершённость, а не отсутствие НОД"
+        }
+      ],
+      "claimed_identity": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "предъявленное тождество: обе стороны построены делом как вычисляемые многочлены"
+        }
+      ],
+      "coeff": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "КАНОНИЧЕСКИЙ коэффициент: raw, обрезанный по настоящей степени"
+        }
+      ],
+      "coeff_mismatch": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "место расхождения канонических коэффициентов"
+        }
+      ],
+      "compare_request": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "дело просит сличить два многочлена"
+        }
+      ],
+      "content_complete": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "содержимое получено по всем местам"
+        }
+      ],
+      "content_defect": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "итоговый дефект содержимого: CONFLICTING_COEFFICIENT, CONTENT_INCOMPLETE"
+        }
+      ],
+      "defect": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "входной дефект: NO_RESOURCE_CONTRACT, AMBIGUOUS_RESOURCE_CONTRACT, NEGATIVE_CAP, SLOTS_EXCEED_CAP, NEGATIVE_SLOTS, AMBIGUOUS_DEFINITION, INDEX_OUT_OF_RANGE, CONTRADICTORY_TERM, INCOMPLETE_INPUT, TERM_WITHOUT_SHAPE, UNDEFINED_OPERAND"
+        }
+      ],
+      "definite_integral": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "значение определённого интеграла: F(hi) − F(lo)"
+        }
+      ],
+      "definite_integral_request": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "дело просит определённый интеграл p от lo до hi через названную первообразную f"
+        }
+      ],
+      "degree": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "степень: наибольшее место с ненулевым коэффициентом. У нулевого многочлена НЕ выводится"
+        }
+      ],
+      "degree_cap": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "ресурсный контракт дела: наибольшее допустимое число мест у многочлена. Умолчания нет (§2 DECISION-0123)"
+        }
+      ],
+      "degree_mismatch": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "степени различны"
+        }
+      ],
+      "derivative_of": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "многочлен d определён как производная многочлена a"
+        }
+      ],
+      "difference_of": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "многочлен d определён как a − b"
+        }
+      ],
+      "discriminant_value": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "дискриминант многочлена в поддержанном вычисленном классе"
+        }
+      ],
+      "division": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "предъявлено деление f на g с остатком"
+        }
+      ],
+      "division_binding": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "выходной дескриптор: QUOTIENT либо REMAINDER"
+        }
+      ],
+      "division_defect": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "деление отклонено: DIVISION_BY_ZERO_POLYNOMIAL, DIVIDEND_NOT_READY, DIVISOR_NOT_READY, AMBIGUOUS_DIVISION, UNKNOWN_PART, AMBIGUOUS_BINDING, QUOTIENT_TOO_NARROW, REMAINDER_TOO_NARROW"
+        }
+      ],
+      "division_done": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "длинный ход завершён на снимке s"
+        }
+      ],
+      "division_kind": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "род деления: PROPER — обычный длинный ход, TRIVIAL — делимое меньше делителя либо нулевое"
+        }
+      ],
+      "division_sizes": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "степени делимого и делителя и число шагов длинного деления: deg f − deg g + 1"
+        }
+      ],
+      "euclid": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "предъявлен расширенный алгоритм Евклида для пары многочленов"
+        }
+      ],
+      "euclid_bezout": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "дескрипторы приведённых коэффициентов Безу: U либо V"
+        }
+      ],
+      "euclid_division": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "i-е деление цепочки: r_(i−1) на r_i"
+        }
+      ],
+      "euclid_gcd": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "дескриптор приведённого НОД"
+        }
+      ],
+      "euclid_length": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "ресурсный контракт: число шагов деления в цепочке"
+        }
+      ],
+      "euclid_qu": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "дескриптор произведения q_i · u_i"
+        }
+      ],
+      "euclid_qv": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "дескриптор произведения q_i · v_i"
+        }
+      ],
+      "euclid_remainder": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "остаток r_i цепочки, i = 0 … steps + 1; r₀ = f и r₁ = g предъявлены делом, остальные — выходные дескрипторы делений"
+        }
+      ],
+      "euclid_u": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "дескриптор коэффициента u_i"
+        }
+      ],
+      "euclid_v": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "дескриптор коэффициента v_i"
+        }
+      ],
+      "evaluation_request": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "дело просит вычислить значение многочлена в точке x"
+        }
+      ],
+      "gcd_index": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "индекс последнего ненулевого остатка — он и есть НОД с точностью до множителя"
+        }
+      ],
+      "gcd_verified_monic": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "НОД приведён: его старший коэффициент равен единице"
+        }
+      ],
+      "identity_fails": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "предъявленное тождество опровергнуто"
+        }
+      ],
+      "identity_holds": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "предъявленное тождество выполнено"
+        }
+      ],
+      "infinity_limit_error": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "названный отказ предела дроби на бесконечности"
+        }
+      ],
+      "infinity_limit_request": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "запрос предела дроби на plus_inf либо minus_inf"
+        }
+      ],
+      "invariant_verified": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "формула низкоразмерного инварианта проверена по каноническим коэффициентам"
+        }
+      ],
+      "leading": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "старший коэффициент — по определению ненулевой"
+        }
+      ],
+      "monic": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "многочлен приведённый: старший коэффициент равен единице"
+        }
+      ],
+      "monomial_of": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "многочлен m определён как одночлен c · x^e"
+        }
+      ],
+      "node_polynomial": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "носитель результата для узла: имя сущности называет ДЕЛО, форму и содержимое считает пакет"
+        }
+      ],
+      "not_polynomial": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "поддерево многочленом по названной переменной НЕ является; выводится ПОЛОЖИТЕЛЬНО, а не отсутствием головы"
+        }
+      ],
+      "poly": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "предъявленный многочлен с местами 0 … slots (ПЛОТНО: нулевые коэффициенты предъявляются явно)"
+        }
+      ],
+      "poly_value": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "значение многочлена в точке x"
+        }
+      ],
+      "polynomial_of": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "поддерево узла f прочитано как многочлен p по переменной x"
+        }
+      ],
+      "polynomial_variable": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "переменная, по которой выражение читается как многочлен"
+        }
+      ],
+      "polys_differ": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "многочлены различны: степень либо хотя бы одно место"
+        }
+      ],
+      "polys_equal": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "многочлены равны: один канон"
+        }
+      ],
+      "produced": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "выходной дескриптор: многочлен строится другим модулем этого пакета (частное, остаток, НОД, коэффициенты Безу), форму объявляет дело"
+        }
+      ],
+      "product_of": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "многочлен p определён как a · b"
+        }
+      ],
+      "quotient_coefficient": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "коэффициент частного при x^e — старший коэффициент остатка, делённый на старший коэффициент делителя"
+        }
+      ],
+      "rational_infinity_limit": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "точный конечный предел либо знак бесконечности; value ноль при бесконечности"
+        }
+      ],
+      "rational_value": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "точное значение дроби многочленов"
+        }
+      ],
+      "rational_value_error": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "названный отказ вычисления дроби"
+        }
+      ],
+      "rational_value_request": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "запрос значения дроби многочленов в точке"
+        }
+      ],
+      "raw": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "действующий коэффициент по месту k (может быть нулевым старшим)"
+        }
+      ],
+      "ready": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "многочлен вычислен целиком и годен к чтению"
+        }
+      ],
+      "rem_at": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "коэффициент текущего остатка по месту k в снимке s"
+        }
+      ],
+      "remainder_smaller": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "степень остатка строго меньше степени делителя — вторая половина утверждения о делении с остатком"
+        }
+      ],
+      "resultant_value": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "результант пары многочленов в поддержанном вычисленном классе"
+        }
+      ],
+      "root": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "предъявленная точка оказалась корнем"
+        }
+      ],
+      "scaled_of": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "многочлен t определён как c · a"
+        }
+      ],
+      "slot": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "допустимый индекс коэффициента ЭТОГО многочлена: 0 … slots"
+        }
+      ],
+      "slots": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "число мест минус одно: индексы коэффициентов 0 … n"
+        }
+      ],
+      "sum_of": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "многочлен s определён как a + b"
+        }
+      ],
+      "tainted": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "многочлен заражён входным дефектом"
+        }
+      ],
+      "term": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "предъявленный коэффициент при x^k; значение — терм p / q (§58, E-0020)"
+        }
+      ],
+      "usable": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "многочлен годен к вычислению: места однозначны, в пределах ресурсного контракта, входных дефектов нет"
+        }
+      ],
+      "zero_polynomial": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "нулевой многочлен: ни одного ненулевого коэффициента. Степени у него нет"
+        }
+      ]
+    },
+    "exportRelationParameterNames": {
+      "antiderivative_of": [
+        "t",
+        "a"
+      ],
+      "antiderivative_with_constant": [
+        "t",
+        "a",
+        "c"
+      ],
+      "cancellation_error": [
+        "c",
+        "reason"
+      ],
+      "cancellation_request": [
+        "c",
+        "n",
+        "d",
+        "a"
+      ],
+      "cancellation_workspace": [
+        "c",
+        "factor",
+        "dn",
+        "dd",
+        "qn",
+        "rn",
+        "qd",
+        "rd"
+      ],
+      "cancelled_ratio": [
+        "c",
+        "n",
+        "d"
+      ],
+      "chain_terminated": [
+        "ec"
+      ],
+      "chain_unfinished": [
+        "ec"
+      ],
+      "claimed_identity": [
+        "name",
+        "a",
+        "b"
+      ],
+      "coeff": [
+        "p",
+        "k",
+        "v"
+      ],
+      "coeff_mismatch": [
+        "a",
+        "b",
+        "k"
+      ],
+      "compare_request": [
+        "a",
+        "b"
+      ],
+      "content_complete": [
+        "p"
+      ],
+      "content_defect": [
+        "p",
+        "reason"
+      ],
+      "defect": [
+        "p",
+        "reason"
+      ],
+      "definite_integral": [
+        "p",
+        "lo",
+        "hi",
+        "v"
+      ],
+      "definite_integral_request": [
+        "p",
+        "f",
+        "lo",
+        "hi"
+      ],
+      "degree": [
+        "p",
+        "d"
+      ],
+      "degree_cap": [
+        "cap"
+      ],
+      "degree_mismatch": [
+        "a",
+        "b"
+      ],
+      "derivative_of": [
+        "d",
+        "a"
+      ],
+      "difference_of": [
+        "d",
+        "a",
+        "b"
+      ],
+      "discriminant_value": [
+        "p",
+        "value"
+      ],
+      "division": [
+        "dv",
+        "f",
+        "g"
+      ],
+      "division_binding": [
+        "dv",
+        "part",
+        "p"
+      ],
+      "division_defect": [
+        "dv",
+        "reason"
+      ],
+      "division_done": [
+        "dv",
+        "s"
+      ],
+      "division_kind": [
+        "dv",
+        "kind"
+      ],
+      "division_sizes": [
+        "dv",
+        "df",
+        "dg",
+        "steps"
+      ],
+      "euclid": [
+        "ec",
+        "f",
+        "g"
+      ],
+      "euclid_bezout": [
+        "ec",
+        "part",
+        "p"
+      ],
+      "euclid_division": [
+        "ec",
+        "i",
+        "dv"
+      ],
+      "euclid_gcd": [
+        "ec",
+        "d"
+      ],
+      "euclid_length": [
+        "ec",
+        "steps"
+      ],
+      "euclid_qu": [
+        "ec",
+        "i",
+        "p"
+      ],
+      "euclid_qv": [
+        "ec",
+        "i",
+        "p"
+      ],
+      "euclid_remainder": [
+        "ec",
+        "i",
+        "p"
+      ],
+      "euclid_u": [
+        "ec",
+        "i",
+        "p"
+      ],
+      "euclid_v": [
+        "ec",
+        "i",
+        "p"
+      ],
+      "evaluation_request": [
+        "p",
+        "x"
+      ],
+      "gcd_index": [
+        "ec",
+        "i"
+      ],
+      "gcd_verified_monic": [
+        "ec"
+      ],
+      "identity_fails": [
+        "name"
+      ],
+      "identity_holds": [
+        "name"
+      ],
+      "infinity_limit_error": [
+        "n",
+        "d",
+        "approach",
+        "reason"
+      ],
+      "infinity_limit_request": [
+        "n",
+        "d",
+        "approach"
+      ],
+      "invariant_verified": [
+        "kind",
+        "left",
+        "right"
+      ],
+      "leading": [
+        "p",
+        "v"
+      ],
+      "monic": [
+        "p"
+      ],
+      "monomial_of": [
+        "m",
+        "e",
+        "c"
+      ],
+      "node_polynomial": [
+        "e",
+        "f",
+        "p"
+      ],
+      "not_polynomial": [
+        "e",
+        "f"
+      ],
+      "poly": [
+        "p",
+        "slots"
+      ],
+      "poly_value": [
+        "p",
+        "x",
+        "v"
+      ],
+      "polynomial_of": [
+        "e",
+        "f",
+        "x",
+        "p"
+      ],
+      "polynomial_variable": [
+        "e",
+        "x"
+      ],
+      "polys_differ": [
+        "a",
+        "b"
+      ],
+      "polys_equal": [
+        "a",
+        "b"
+      ],
+      "produced": [
+        "p",
+        "slots"
+      ],
+      "product_of": [
+        "p",
+        "a",
+        "b"
+      ],
+      "quotient_coefficient": [
+        "dv",
+        "e",
+        "v"
+      ],
+      "rational_infinity_limit": [
+        "n",
+        "d",
+        "approach",
+        "kind",
+        "value"
+      ],
+      "rational_value": [
+        "n",
+        "d",
+        "a",
+        "v"
+      ],
+      "rational_value_error": [
+        "n",
+        "d",
+        "a",
+        "reason"
+      ],
+      "rational_value_request": [
+        "n",
+        "d",
+        "a"
+      ],
+      "raw": [
+        "p",
+        "k",
+        "v"
+      ],
+      "ready": [
+        "p",
+        "n"
+      ],
+      "rem_at": [
+        "dv",
+        "s",
+        "k",
+        "v"
+      ],
+      "remainder_smaller": [
+        "dv"
+      ],
+      "resultant_value": [
+        "left",
+        "right",
+        "value"
+      ],
+      "root": [
+        "p",
+        "x"
+      ],
+      "scaled_of": [
+        "t",
+        "a",
+        "c"
+      ],
+      "slot": [
+        "p",
+        "k"
+      ],
+      "slots": [
+        "p",
+        "n"
+      ],
+      "sum_of": [
+        "s",
+        "a",
+        "b"
+      ],
+      "tainted": [
+        "p"
+      ],
+      "term": [
+        "p",
+        "k",
+        "v"
+      ],
+      "usable": [
+        "p",
+        "n"
+      ],
+      "zero_polynomial": [
+        "p"
+      ]
+    },
+    "exportRelationParameters": {
+      "antiderivative_of": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        }
+      ],
+      "antiderivative_with_constant": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        }
+      ],
+      "cancellation_error": [
+        {
+          "name": "urn:law:calc:polynomials-q#Cancellation"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "cancellation_request": [
+        {
+          "name": "urn:law:calc:polynomials-q#Cancellation"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        }
+      ],
+      "cancellation_workspace": [
+        {
+          "name": "urn:law:calc:polynomials-q#Cancellation"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Division"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Division"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        }
+      ],
+      "cancelled_ratio": [
+        {
+          "name": "urn:law:calc:polynomials-q#Cancellation"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        }
+      ],
+      "chain_terminated": [
+        {
+          "name": "urn:law:calc:polynomials-q#Euclid"
+        }
+      ],
+      "chain_unfinished": [
+        {
+          "name": "urn:law:calc:polynomials-q#Euclid"
+        }
+      ],
+      "claimed_identity": [
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        }
+      ],
+      "coeff": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        }
+      ],
+      "coeff_mismatch": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "compare_request": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        }
+      ],
+      "content_complete": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        }
+      ],
+      "content_defect": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "defect": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "definite_integral": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        }
+      ],
+      "definite_integral_request": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        }
+      ],
+      "degree": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "degree_cap": [
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "degree_mismatch": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        }
+      ],
+      "derivative_of": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        }
+      ],
+      "difference_of": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        }
+      ],
+      "discriminant_value": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        }
+      ],
+      "division": [
+        {
+          "name": "urn:law:calc:polynomials-q#Division"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        }
+      ],
+      "division_binding": [
+        {
+          "name": "urn:law:calc:polynomials-q#Division"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        }
+      ],
+      "division_defect": [
+        {
+          "name": "urn:law:calc:polynomials-q#Division"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "division_done": [
+        {
+          "name": "urn:law:calc:polynomials-q#Division"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "division_kind": [
+        {
+          "name": "urn:law:calc:polynomials-q#Division"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "division_sizes": [
+        {
+          "name": "urn:law:calc:polynomials-q#Division"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "euclid": [
+        {
+          "name": "urn:law:calc:polynomials-q#Euclid"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        }
+      ],
+      "euclid_bezout": [
+        {
+          "name": "urn:law:calc:polynomials-q#Euclid"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        }
+      ],
+      "euclid_division": [
+        {
+          "name": "urn:law:calc:polynomials-q#Euclid"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Division"
+        }
+      ],
+      "euclid_gcd": [
+        {
+          "name": "urn:law:calc:polynomials-q#Euclid"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        }
+      ],
+      "euclid_length": [
+        {
+          "name": "urn:law:calc:polynomials-q#Euclid"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "euclid_qu": [
+        {
+          "name": "urn:law:calc:polynomials-q#Euclid"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        }
+      ],
+      "euclid_qv": [
+        {
+          "name": "urn:law:calc:polynomials-q#Euclid"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        }
+      ],
+      "euclid_remainder": [
+        {
+          "name": "urn:law:calc:polynomials-q#Euclid"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        }
+      ],
+      "euclid_u": [
+        {
+          "name": "urn:law:calc:polynomials-q#Euclid"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        }
+      ],
+      "euclid_v": [
+        {
+          "name": "urn:law:calc:polynomials-q#Euclid"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        }
+      ],
+      "evaluation_request": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        }
+      ],
+      "gcd_index": [
+        {
+          "name": "urn:law:calc:polynomials-q#Euclid"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "gcd_verified_monic": [
+        {
+          "name": "urn:law:calc:polynomials-q#Euclid"
+        }
+      ],
+      "identity_fails": [
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "identity_holds": [
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "infinity_limit_error": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "infinity_limit_request": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "invariant_verified": [
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        }
+      ],
+      "leading": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        }
+      ],
+      "monic": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        }
+      ],
+      "monomial_of": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        }
+      ],
+      "node_polynomial": [
+        {
+          "name": "calc.expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        }
+      ],
+      "not_polynomial": [
+        {
+          "name": "calc.expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "poly": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "poly_value": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        }
+      ],
+      "polynomial_of": [
+        {
+          "name": "calc.expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        }
+      ],
+      "polynomial_variable": [
+        {
+          "name": "calc.expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "polys_differ": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        }
+      ],
+      "polys_equal": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        }
+      ],
+      "produced": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "product_of": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        }
+      ],
+      "quotient_coefficient": [
+        {
+          "name": "urn:law:calc:polynomials-q#Division"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        }
+      ],
+      "rational_infinity_limit": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        }
+      ],
+      "rational_value": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        }
+      ],
+      "rational_value_error": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "rational_value_request": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        }
+      ],
+      "raw": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        }
+      ],
+      "ready": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "rem_at": [
+        {
+          "name": "urn:law:calc:polynomials-q#Division"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        }
+      ],
+      "remainder_smaller": [
+        {
+          "name": "urn:law:calc:polynomials-q#Division"
+        }
+      ],
+      "resultant_value": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        }
+      ],
+      "root": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        }
+      ],
+      "scaled_of": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        }
+      ],
+      "slot": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "slots": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "sum_of": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        }
+      ],
+      "tainted": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        }
+      ],
+      "term": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        }
+      ],
+      "usable": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        }
+      ],
+      "zero_polynomial": [
+        {
+          "name": "urn:law:calc:polynomials-q#Poly"
+        }
+      ]
+    },
+    "exports": [
+      "Cancellation",
+      "Division",
+      "Poly",
+      "antiderivative_of",
+      "antiderivative_with_constant",
+      "cancellation_error",
+      "cancellation_request",
+      "cancellation_workspace",
+      "cancelled_ratio",
+      "chain_terminated",
+      "chain_unfinished",
+      "claimed_identity",
+      "coeff",
+      "coeff_mismatch",
+      "compare_request",
+      "content_complete",
+      "content_defect",
+      "defect",
+      "definite_integral",
+      "definite_integral_request",
+      "degree",
+      "degree_cap",
+      "degree_mismatch",
+      "derivative_of",
+      "difference_of",
+      "discriminant_value",
+      "division",
+      "division_binding",
+      "division_defect",
+      "division_done",
+      "division_kind",
+      "division_sizes",
+      "euclid",
+      "euclid_bezout",
+      "euclid_division",
+      "euclid_gcd",
+      "euclid_length",
+      "euclid_qu",
+      "euclid_qv",
+      "euclid_remainder",
+      "euclid_u",
+      "euclid_v",
+      "evaluation_request",
+      "gcd_index",
+      "gcd_verified_monic",
+      "identity_fails",
+      "identity_holds",
+      "infinity_limit_error",
+      "infinity_limit_request",
+      "invariant_verified",
+      "leading",
+      "monic",
+      "monomial_of",
+      "node_polynomial",
+      "not_polynomial",
+      "poly",
+      "poly_value",
+      "polynomial_of",
+      "polynomial_variable",
+      "polys_differ",
+      "polys_equal",
+      "produced",
+      "product_of",
+      "quotient_coefficient",
+      "rational_infinity_limit",
+      "rational_value",
+      "rational_value_error",
+      "rational_value_request",
+      "raw",
+      "ready",
+      "rem_at",
+      "remainder_smaller",
+      "resultant_value",
+      "root",
+      "scaled_of",
+      "slot",
+      "slots",
+      "sum_of",
+      "tainted",
+      "term",
+      "usable",
+      "zero_polynomial"
+    ],
+    "features": [
+      "core-executable"
+    ],
+    "package": {
+      "name": "calc.polynomials_q",
+      "namespace": "urn:law:calc:polynomials-q",
+      "semanticHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "version": "0.1.0"
+    }
+  },
+  {
+    "contentHash": "sha256:210a95a19dd394e50185483747ab2dd6e7aa997dd90bdbd4f42a22778e76b174",
+    "exportEntityTypes": [
+      "DifferentiationRule",
+      "PolynomialTask"
+    ],
+    "exportKinds": {
+      "ComputedCoefficient": "rule",
+      "ComputedZero": "rule",
+      "DifferentiationRule": "type_decl",
+      "PolynomialSolved": "rule",
+      "PolynomialTask": "type_decl",
+      "RequestDerivative": "rule",
+      "computed_coefficient": "symbol_decl",
+      "computed_zero_polynomial": "symbol_decl",
+      "instruction_available": "symbol_decl",
+      "polynomial_problem": "symbol_decl",
+      "polynomial_solved": "symbol_decl",
+      "polynomial_task": "symbol_decl",
+      "rule_conclusion": "symbol_decl",
+      "rule_method": "symbol_decl",
+      "rule_premise": "symbol_decl",
+      "step_justified_by": "symbol_decl"
+    },
+    "exportRelationLabels": {
+      "computed_coefficient": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "native computed coefficient; canonical coefficients through the nonzero degree, including internal zero coefficients"
+        }
+      ],
+      "computed_zero_polynomial": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "the complete output is exactly the zero polynomial"
+        }
+      ],
+      "instruction_available": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "у правила есть показываемая инструкция: названы хотя бы одна посылка и заключение. ПОКАЗ НЕ ЕСТЬ ВЫПОЛНЕНИЕ"
+        }
+      ],
+      "polynomial_problem": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "an explicit input or supported-class boundary"
+        }
+      ],
+      "polynomial_solved": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "the requested result polynomial is complete"
+        }
+      ],
+      "polynomial_task": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "input expression, variable and result carrier; no answer coefficients supplied"
+        }
+      ],
+      "rule_conclusion": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "что правило даёт в заключении"
+        }
+      ],
+      "rule_method": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "какому методу проверяющего соответствует это правило учебника"
+        }
+      ],
+      "rule_premise": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "условие применимости правила — для ПОКАЗА инструкции, без всякого дела"
+        }
+      ],
+      "step_justified_by": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "проверенный шаг обоснован НАЗВАННЫМ правилом учебника: потребитель обосновывает, вычислитель подтверждает"
+        }
+      ]
+    },
+    "exportRelationParameterNames": {
+      "computed_coefficient": [
+        "t",
+        "exponent",
+        "coefficient"
+      ],
+      "computed_zero_polynomial": [
+        "t"
+      ],
+      "instruction_available": [
+        "r"
+      ],
+      "polynomial_problem": [
+        "t",
+        "reason"
+      ],
+      "polynomial_solved": [
+        "t"
+      ],
+      "polynomial_task": [
+        "t",
+        "e",
+        "node",
+        "variable",
+        "result"
+      ],
+      "rule_conclusion": [
+        "r",
+        "text"
+      ],
+      "rule_method": [
+        "r",
+        "method"
+      ],
+      "rule_premise": [
+        "r",
+        "position",
+        "text"
+      ],
+      "step_justified_by": [
+        "p",
+        "i",
+        "r"
+      ]
+    },
+    "exportRelationParameters": {
+      "computed_coefficient": [
+        {
+          "name": "urn:openstax:clir:calculus-derivatives#PolynomialTask"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        }
+      ],
+      "computed_zero_polynomial": [
+        {
+          "name": "urn:openstax:clir:calculus-derivatives#PolynomialTask"
+        }
+      ],
+      "instruction_available": [
+        {
+          "name": "urn:openstax:clir:calculus-derivatives#DifferentiationRule"
+        }
+      ],
+      "polynomial_problem": [
+        {
+          "name": "urn:openstax:clir:calculus-derivatives#PolynomialTask"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "polynomial_solved": [
+        {
+          "name": "urn:openstax:clir:calculus-derivatives#PolynomialTask"
+        }
+      ],
+      "polynomial_task": [
+        {
+          "name": "urn:openstax:clir:calculus-derivatives#PolynomialTask"
+        },
+        {
+          "name": "calc.expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "calc.polynomials_q#Poly"
+        }
+      ],
+      "rule_conclusion": [
+        {
+          "name": "urn:openstax:clir:calculus-derivatives#DifferentiationRule"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "rule_method": [
+        {
+          "name": "urn:openstax:clir:calculus-derivatives#DifferentiationRule"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "rule_premise": [
+        {
+          "name": "urn:openstax:clir:calculus-derivatives#DifferentiationRule"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "step_justified_by": [
+        {
+          "name": "calc.calculus_checker#Derivation"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:openstax:clir:calculus-derivatives#DifferentiationRule"
+        }
+      ]
+    },
+    "exports": [
+      "ComputedCoefficient",
+      "ComputedZero",
+      "DifferentiationRule",
+      "PolynomialSolved",
+      "PolynomialTask",
+      "RequestDerivative",
+      "computed_coefficient",
+      "computed_zero_polynomial",
+      "instruction_available",
+      "polynomial_problem",
+      "polynomial_solved",
+      "polynomial_task",
+      "rule_conclusion",
+      "rule_method",
+      "rule_premise",
+      "step_justified_by"
+    ],
+    "features": [
+      "core-executable"
+    ],
+    "package": {
+      "name": "openstax.calculus_derivatives",
+      "namespace": "urn:openstax:clir:calculus-derivatives",
+      "semanticHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "version": "0.1.1"
+    }
+  },
+  {
+    "contentHash": "sha256:6cdf0274b3fa28c1ddfe6667d8208ec60185854be4afb996ed267e77cee959a2",
+    "exportEntityTypes": [
+      "IntegrationRule",
+      "PolynomialTask"
+    ],
+    "exportKinds": {
+      "ComputedCoefficient": "rule",
+      "ComputedZero": "rule",
+      "DefiniteIntegralComputed": "rule",
+      "IntegrationRule": "type_decl",
+      "PolynomialSolved": "rule",
+      "PolynomialTask": "type_decl",
+      "RequestAntiderivative": "rule",
+      "RequestDefiniteIntegral": "rule",
+      "computed_coefficient": "symbol_decl",
+      "computed_integral": "symbol_decl",
+      "computed_zero_polynomial": "symbol_decl",
+      "definite_integral_justified": "symbol_decl",
+      "ftc2_boundary_accepted": "symbol_decl",
+      "instruction_available": "symbol_decl",
+      "integration_bounds": "symbol_decl",
+      "integration_constant": "symbol_decl",
+      "polynomial_problem": "symbol_decl",
+      "polynomial_solved": "symbol_decl",
+      "polynomial_task": "symbol_decl",
+      "rule_conclusion": "symbol_decl",
+      "rule_method": "symbol_decl",
+      "rule_premise": "symbol_decl",
+      "step_justified_by": "symbol_decl"
+    },
+    "exportRelationLabels": {
+      "computed_coefficient": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "native computed coefficient; canonical coefficients through the nonzero degree, including internal zero coefficients"
+        }
+      ],
+      "computed_integral": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "exact native definite integral over rational endpoints"
+        }
+      ],
+      "computed_zero_polynomial": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "the complete output is exactly the zero polynomial"
+        }
+      ],
+      "definite_integral_justified": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "значение определённого интеграла обосновано теоремой о чистом изменении §5.4"
+        }
+      ],
+      "ftc2_boundary_accepted": [
+        {
+          "language": "en",
+          "status": "official",
+          "text": "§5.3, FTC Part 2 accepted as a stated boundary: the presented fundamental-theorem step is named by the dictionary, its form is not verified in v1, and no computation is claimed"
+        },
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "§5.3, FTC часть 2 принята названной границей: предъявленный шаг по основной теореме назван словарём, форма его в v1 не проверяется, и никакого вычисления не заявляется"
+        }
+      ],
+      "instruction_available": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "у правила есть показываемая инструкция: названы хотя бы одна посылка и заключение. ПОКАЗ НЕ ЕСТЬ ВЫПОЛНЕНИЕ"
+        }
+      ],
+      "integration_bounds": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "explicit definite-integral endpoints"
+        }
+      ],
+      "integration_constant": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "explicit constant for the chosen antiderivative"
+        }
+      ],
+      "polynomial_problem": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "an explicit input or supported-class boundary"
+        }
+      ],
+      "polynomial_solved": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "the requested result polynomial is complete"
+        }
+      ],
+      "polynomial_task": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "input expression, variable and result carrier; no answer coefficients supplied"
+        }
+      ],
+      "rule_conclusion": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "что правило даёт в заключении"
+        }
+      ],
+      "rule_method": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "какому методу проверяющего соответствует это правило учебника"
+        }
+      ],
+      "rule_premise": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "условие применимости правила — для ПОКАЗА инструкции, без всякого дела"
+        }
+      ],
+      "step_justified_by": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "проверенный шаг обоснован НАЗВАННЫМ правилом учебника: потребитель обосновывает, вычислитель подтверждает"
+        }
+      ]
+    },
+    "exportRelationParameterNames": {
+      "computed_coefficient": [
+        "t",
+        "exponent",
+        "coefficient"
+      ],
+      "computed_integral": [
+        "t",
+        "value"
+      ],
+      "computed_zero_polynomial": [
+        "t"
+      ],
+      "definite_integral_justified": [
+        "p",
+        "lo",
+        "hi",
+        "v"
+      ],
+      "ftc2_boundary_accepted": [
+        "p",
+        "i",
+        "r"
+      ],
+      "instruction_available": [
+        "r"
+      ],
+      "integration_bounds": [
+        "t",
+        "lo",
+        "hi"
+      ],
+      "integration_constant": [
+        "t",
+        "c"
+      ],
+      "polynomial_problem": [
+        "t",
+        "reason"
+      ],
+      "polynomial_solved": [
+        "t"
+      ],
+      "polynomial_task": [
+        "t",
+        "e",
+        "node",
+        "variable",
+        "result"
+      ],
+      "rule_conclusion": [
+        "r",
+        "text"
+      ],
+      "rule_method": [
+        "r",
+        "method"
+      ],
+      "rule_premise": [
+        "r",
+        "position",
+        "text"
+      ],
+      "step_justified_by": [
+        "p",
+        "i",
+        "r"
+      ]
+    },
+    "exportRelationParameters": {
+      "computed_coefficient": [
+        {
+          "name": "urn:openstax:clir:calculus-integrals#PolynomialTask"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        }
+      ],
+      "computed_integral": [
+        {
+          "name": "urn:openstax:clir:calculus-integrals#PolynomialTask"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        }
+      ],
+      "computed_zero_polynomial": [
+        {
+          "name": "urn:openstax:clir:calculus-integrals#PolynomialTask"
+        }
+      ],
+      "definite_integral_justified": [
+        {
+          "name": "calc.polynomials_q#Poly"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        }
+      ],
+      "ftc2_boundary_accepted": [
+        {
+          "name": "calc.calculus_checker#Derivation"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:openstax:clir:calculus-integrals#IntegrationRule"
+        }
+      ],
+      "instruction_available": [
+        {
+          "name": "urn:openstax:clir:calculus-integrals#IntegrationRule"
+        }
+      ],
+      "integration_bounds": [
+        {
+          "name": "urn:openstax:clir:calculus-integrals#PolynomialTask"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        }
+      ],
+      "integration_constant": [
+        {
+          "name": "urn:openstax:clir:calculus-integrals#PolynomialTask"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        }
+      ],
+      "polynomial_problem": [
+        {
+          "name": "urn:openstax:clir:calculus-integrals#PolynomialTask"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "polynomial_solved": [
+        {
+          "name": "urn:openstax:clir:calculus-integrals#PolynomialTask"
+        }
+      ],
+      "polynomial_task": [
+        {
+          "name": "urn:openstax:clir:calculus-integrals#PolynomialTask"
+        },
+        {
+          "name": "calc.expressions#Expr"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "calc.polynomials_q#Poly"
+        }
+      ],
+      "rule_conclusion": [
+        {
+          "name": "urn:openstax:clir:calculus-integrals#IntegrationRule"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "rule_method": [
+        {
+          "name": "urn:openstax:clir:calculus-integrals#IntegrationRule"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "rule_premise": [
+        {
+          "name": "urn:openstax:clir:calculus-integrals#IntegrationRule"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "step_justified_by": [
+        {
+          "name": "calc.calculus_checker#Derivation"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:openstax:clir:calculus-integrals#IntegrationRule"
+        }
+      ]
+    },
+    "exports": [
+      "ComputedCoefficient",
+      "ComputedZero",
+      "DefiniteIntegralComputed",
+      "IntegrationRule",
+      "PolynomialSolved",
+      "PolynomialTask",
+      "RequestAntiderivative",
+      "RequestDefiniteIntegral",
+      "computed_coefficient",
+      "computed_integral",
+      "computed_zero_polynomial",
+      "definite_integral_justified",
+      "ftc2_boundary_accepted",
+      "instruction_available",
+      "integration_bounds",
+      "integration_constant",
+      "polynomial_problem",
+      "polynomial_solved",
+      "polynomial_task",
+      "rule_conclusion",
+      "rule_method",
+      "rule_premise",
+      "step_justified_by"
+    ],
+    "features": [
+      "core-executable"
+    ],
+    "package": {
+      "name": "openstax.calculus_integrals",
+      "namespace": "urn:openstax:clir:calculus-integrals",
+      "semanticHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "version": "0.1.1"
+    }
+  },
+  {
+    "contentHash": "sha256:1e4e9da74639d625261337c15b4355c43c749337acab9df49d2591bdafe975b1",
+    "exportEntityTypes": [
+      "LimitRule"
+    ],
+    "exportKinds": {
+      "AutomaticLHopitalStep": "rule",
+      "AutomaticLimitResult": "rule",
+      "LimitRule": "type_decl",
+      "automatic_lhopital_step": "symbol_decl",
+      "automatic_limit_result": "symbol_decl",
+      "automatic_limit_task": "symbol_decl",
+      "epsilon_delta_certificate": "symbol_decl",
+      "instruction_available": "symbol_decl",
+      "rule_conclusion": "symbol_decl",
+      "rule_method": "symbol_decl",
+      "rule_premise": "symbol_decl",
+      "step_justified_by": "symbol_decl"
+    },
+    "exportRelationLabels": {
+      "automatic_lhopital_step": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "a native automatic LHopital transformation with established applicability conditions"
+        }
+      ],
+      "automatic_limit_result": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "native automatic result; only FINITE carries a finite rational value"
+        }
+      ],
+      "automatic_limit_task": [
+        {
+          "language": "en",
+          "status": "unofficial",
+          "text": "explicitly request the bounded automatic limit model"
+        }
+      ],
+      "epsilon_delta_certificate": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "предъявленное обязательство ε-δ; в v1 не исполняется"
+        }
+      ],
+      "instruction_available": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "инструкция доступна без предъявления хода"
+        }
+      ],
+      "rule_conclusion": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "заключение правила для показа инструкции"
+        }
+      ],
+      "rule_method": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "метод проверяющего, которому соответствует правило"
+        }
+      ],
+      "rule_premise": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "условие применимости для показа инструкции"
+        }
+      ],
+      "step_justified_by": [
+        {
+          "language": "ru",
+          "status": "unofficial",
+          "text": "проверенный шаг обоснован фрагментом OpenStax"
+        }
+      ]
+    },
+    "exportRelationParameterNames": {
+      "automatic_lhopital_step": [
+        "t",
+        "round",
+        "side"
+      ],
+      "automatic_limit_result": [
+        "t",
+        "outcome",
+        "kind",
+        "value"
+      ],
+      "automatic_limit_task": [
+        "t"
+      ],
+      "epsilon_delta_certificate": [
+        "p"
+      ],
+      "instruction_available": [
+        "r"
+      ],
+      "rule_conclusion": [
+        "r",
+        "text"
+      ],
+      "rule_method": [
+        "r",
+        "method"
+      ],
+      "rule_premise": [
+        "r",
+        "position",
+        "text"
+      ],
+      "step_justified_by": [
+        "p",
+        "i",
+        "r"
+      ]
+    },
+    "exportRelationParameters": {
+      "automatic_lhopital_step": [
+        {
+          "name": "calc.limit_solver#Task"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "automatic_limit_result": [
+        {
+          "name": "calc.limit_solver#Task"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:std#Text"
+        },
+        {
+          "name": "urn:law:std#Rational"
+        }
+      ],
+      "automatic_limit_task": [
+        {
+          "name": "calc.limit_solver#Task"
+        }
+      ],
+      "epsilon_delta_certificate": [
+        {
+          "name": "calc.calculus_checker#Derivation"
+        }
+      ],
+      "instruction_available": [
+        {
+          "name": "urn:openstax:clir:calculus-limits#LimitRule"
+        }
+      ],
+      "rule_conclusion": [
+        {
+          "name": "urn:openstax:clir:calculus-limits#LimitRule"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "rule_method": [
+        {
+          "name": "urn:openstax:clir:calculus-limits#LimitRule"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "rule_premise": [
+        {
+          "name": "urn:openstax:clir:calculus-limits#LimitRule"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:law:std#Text"
+        }
+      ],
+      "step_justified_by": [
+        {
+          "name": "calc.calculus_checker#Derivation"
+        },
+        {
+          "name": "urn:law:std#Integer"
+        },
+        {
+          "name": "urn:openstax:clir:calculus-limits#LimitRule"
+        }
+      ]
+    },
+    "exports": [
+      "AutomaticLHopitalStep",
+      "AutomaticLimitResult",
+      "LimitRule",
+      "automatic_lhopital_step",
+      "automatic_limit_result",
+      "automatic_limit_task",
+      "epsilon_delta_certificate",
+      "instruction_available",
+      "rule_conclusion",
+      "rule_method",
+      "rule_premise",
+      "step_justified_by"
+    ],
+    "features": [
+      "core-executable"
+    ],
+    "package": {
+      "name": "openstax.calculus_limits",
+      "namespace": "urn:openstax:clir:calculus-limits",
+      "semanticHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "version": "0.1.1"
+    }
+  }
+]

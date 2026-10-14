@@ -1,0 +1,485 @@
+language "law.core" version "0.2";
+package calc.expressions version "0.1.0";
+namespace "urn:law:calc:expressions";
+
+// ВЫРАЖЕНИЯ КАК ДАННЫЕ (DECISION-0123: алгоритм, а не акт).
+//
+// Пакет — ЕДИНСТВЕННЫЙ владелец дерева выражения: узлов, корректности формы и
+// структурного равенства. Он ничего не вычисляет и ничего не переписывает:
+// ни упрощения, ни приведения подобных, ни раскрытия скобок здесь нет и не
+// будет. Причина названа в решении: тотального канона у выражений с exp, sin
+// и ln не существует (теорема Ричардсона), и упрощатель, объявленный каноном,
+// стал бы молчаливым основанием шага.
+//
+// ЧТО ЭТО ЗНАЧИТ. `equivalent` — СТРУКТУРНОЕ равенство: `x + 0` и `x` здесь
+// РАЗНЫЕ выражения, и это не дефект, а граница. Кто хочет их отождествить,
+// обязан предъявить ход: либо шаг `algebra` проверяющего (равенство в классе
+// ℚ через канон многочлена), либо ссылку на тождество словаря.
+//
+// НАБОР УЗЛОВ ПРИНАДЛЕЖИТ СВОЕЙ СУЩНОСТИ `Expr`, как строки доказательства —
+// своему `Proof` у `calc.proof_checker`. Два дела в одном мире не смешиваются:
+// идентификатор узла разрешается ВНУТРИ своего набора.
+//
+// ТЕГИ И ИХ АРНОСТЬ
+//   const  значение в `value`; имя пусто; дочерних нет
+//   var    имя в `name`; значение ноль; дочерних нет
+//   algebraic стабильный текстовый дескриптор алгебраического числа в `name`;
+//             значение ноль; дочерних нет. Его математический смысл задаёт
+//             calc.algebraic_numbers, здесь хранится только структура.
+//   neg sin cos exp ln log sqrt atan один дочерний в `left`, `right` = 0
+//                               (`sqrt` добавлен DECISION-0198 §2 аддитивно:
+//                                арифметический корень неотрицательного
+//                                аргумента; ОБЛАСТЬ — забота читателя, форма
+//                                её не проверяет)
+//   add sub mul div             два дочерних в `left` и `right`
+//   pow                         основание в `left`, ПОКАЗАТЕЛЬ — узел `const`
+//                               в `right` с целым неотрицательным значением
+//
+// Неиспользуемые поля пусты либо равны нулю — та же конвенция, что у
+// `node` в `calc.proof_checker`.
+//
+// ПОЧЕМУ ПОКАЗАТЕЛЬ — ОТДЕЛЬНЫЙ УЗЕЛ, А ЦЕЛОСТНОСТЬ ДОКАЗЫВАЕТСЯ. Доступа к
+// числителю и знаменателю у языка нет: `Integer / Integer` — единственная
+// форма, порождающая `Rational` (§9), и обратной операции не существует.
+// Поэтому целость показателя ДОКАЗЫВАЕТСЯ положительно — сравнением
+// `value == k / 1` по ограниченной цепочке `exponent_slot`, — а дробный
+// показатель называется отказом уже над завершённым производителем.
+// Дробный показатель обязан быть ПРЕДЪЯВИМ, иначе его нечем было бы
+// отвергнуть; поэтому он приходит узлом `const`, а не полем `Integer`.
+
+pub entity Expr {
+    label ru unofficial "предъявленный набор узлов со своим контекстом идентификаторов";
+}
+
+// ── Что предъявляет дело ───────────────────────────────────────────────────
+
+pub relation node(
+        e: Expr {
+        label ru unofficial "набор узлов";
+    },
+        f: Integer {
+        label ru unofficial "узел";
+    },
+        tag: Text {
+        label ru unofficial "вид узла";
+    },
+        name: Text {
+        label ru unofficial "имя переменной";
+    },
+        value: Rational {
+        label ru unofficial "значение константы";
+    },
+        left: Integer {
+        label ru unofficial "левый дочерний узел";
+    },
+        right: Integer {
+        label ru unofficial "правый дочерний узел";
+    }
+) kind empirical {
+    label ru unofficial "структура узла выражения; неиспользуемые поля пусты либо равны нулю";
+}
+
+pub relation closed(
+        e: Expr {
+        label ru unofficial "набор узлов";
+    }
+) kind empirical {
+    label ru unofficial "ввод узлов завершён: отсутствие узла после этого — дефект, а не ожидание данных";
+}
+
+// ── Служебные различения ───────────────────────────────────────────────────
+
+relation context_present(e: Expr) kind institutional {
+    label ru unofficial "набор предъявлен хотя бы одним узлом";
+}
+
+relation node_present(e: Expr, f: Integer) kind institutional {
+    label ru unofficial "идентификатор узла предъявлен независимо от корректности";
+}
+
+relation unique_node(
+    e: Expr,
+    f: Integer,
+    tag: Text,
+    name: Text,
+    value: Rational,
+    left: Integer,
+    right: Integer,
+) kind institutional {
+    label ru unofficial "единственное определение положительного идентификатора узла";
+}
+
+relation unary(e: Expr, f: Integer, tag: Text, a: Integer) kind institutional {
+    label ru unofficial "узел с одним дочерним: neg, sin, cos, exp, ln";
+}
+
+relation binary(e: Expr, f: Integer, tag: Text, a: Integer, b: Integer) kind institutional {
+    label ru unofficial "узел с двумя дочерними: add, sub, mul, div";
+}
+
+relation exponentiation(e: Expr, f: Integer, a: Integer, g: Integer) kind institutional {
+    label ru unofficial "возведение в степень: основание и узел показателя";
+}
+
+relation exponent_slot(e: Expr, k: Integer) kind institutional {
+    label ru unofficial "допустимое целое значение показателя 0 … 32 (ограниченная монотонная рекурсия §65/§103)";
+}
+
+relation integral_exponent(e: Expr, g: Integer, k: Integer) kind institutional {
+    label ru unofficial "узел показателя несёт целое неотрицательное значение: ДОКАЗАНО сравнением, а не получено отсутствием факта";
+}
+
+relation exponent_ok(e: Expr, g: Integer) kind institutional {
+    label ru unofficial "показатель годен: константа с целым неотрицательным значением";
+}
+
+// ── Наблюдаемые выводы ─────────────────────────────────────────────────────
+
+pub relation size(
+        e: Expr {
+        label ru unofficial "набор узлов";
+    },
+        n: Integer {
+        label ru unofficial "число различных узлов";
+    }
+) kind institutional {
+    label ru unofficial "размер предъявленного DAG: число различных идентификаторов узлов";
+}
+
+pub relation budget_exhausted(
+        e: Expr {
+        label ru unofficial "набор узлов";
+    }
+) kind institutional {
+    label ru unofficial "ОБЪЯВЛЕННЫЙ ОТКАЗ: узлов больше 256, разбор не ведётся";
+}
+
+relation size_slot(e: Expr, n: Integer) kind institutional {
+    label ru unofficial "допустимое значение размера 0 … 256 (ограниченная монотонная рекурсия §65/§103): агрегат умеет СРАВНИВАТЬ, но не связывать переменную головы (§190)";
+}
+
+relation within_budget(e: Expr) kind institutional {
+    label ru unofficial "размер набора в пределах объявленной границы";
+}
+
+pub relation well_formed(
+        e: Expr {
+        label ru unofficial "набор узлов";
+    },
+        f: Integer {
+        label ru unofficial "узел";
+    }
+) kind institutional {
+    label ru unofficial "конечная корректная структура узла и всего его поддерева";
+}
+
+pub relation equivalent(
+        e: Expr {
+        label ru unofficial "набор узлов";
+    },
+        f: Integer {
+        label ru unofficial "узел";
+    },
+        g: Integer {
+        label ru unofficial "узел-двойник";
+    }
+) kind institutional {
+    label ru unofficial "СТРУКТУРНОЕ равенство поддеревьев с любыми идентификаторами; нормализации и упрощения нет";
+}
+
+pub relation formula_error(
+        e: Expr {
+        label ru unofficial "набор узлов";
+    },
+        f: Integer {
+        label ru unofficial "узел";
+    },
+        reason: Text {
+        label ru unofficial "причина";
+    }
+) kind institutional {
+    label ru unofficial "названный дефект узла: INVALID_NODE_ID, AMBIGUOUS_NODE, UNKNOWN_TAG, EXTRA_CHILD, MISSING_CHILD, EMPTY_VARIABLE_NAME, EMPTY_ALGEBRAIC_NAME, NAME_ON_COMPOUND, VALUE_ON_NON_CONST, EXPONENT_NOT_CONSTANT, FRACTIONAL_EXPONENT, NEGATIVE_EXPONENT, NODE_NOT_WELL_FORMED";
+}
+
+// -- Связывающие переменные и подстановка без захвата (03-binders.law) --
+//
+// Пробел, названный в матрице: «binder-aware alpha-equivalence (tag set has no
+// binders yet)». Отсутствие связывающих ТЕГОВ — свойство набора тегов, а не
+// ограничение языка: связывание здесь ОТНОШЕНИЕ над набором узлов, и всё
+// остальное выводится из уже существующего `node`.
+
+pub relation binder_declared(e: Expr, f: Integer, name: Text) kind empirical {
+    label ru unofficial "узел f объявлен связывающим имя name";
+}
+
+pub relation binder_name(e: Expr, f: Integer, name: Text) kind institutional {
+    label ru unofficial "установленное имя, связываемое узлом";
+}
+
+pub relation node_uses(e: Expr, f: Integer, name: Text) kind empirical {
+    label ru unofficial "узел f использует имя (лист-переменная либо аргумент)";
+}
+
+pub relation free_at(e: Expr, f: Integer, name: Text) kind institutional {
+    label ru unofficial "вхождение имени в этом узле свободно";
+}
+
+pub relation bound_at(e: Expr, f: Integer, name: Text) kind institutional {
+    label ru unofficial "вхождение имени в этом узле связано";
+}
+
+relation bound_below(e: Expr, f: Integer, name: Text) kind institutional {
+    label ru unofficial "под узлом есть связывающий узел с тем же именем";
+}
+
+pub relation substitution_into(e: Expr, f: Integer, g: Integer) kind empirical {
+    label ru unofficial "подставляемый узел образа";
+}
+
+pub relation substitution_ok(e: Expr, f: Integer, name: Text, g: Integer) kind institutional {
+    label ru unofficial "подстановка выполнена без захвата";
+}
+
+pub relation substitution_capture(e: Expr, f: Integer, name: Text, g: Integer) kind institutional {
+    label ru unofficial "подстановка захватила бы связываемое выше имя и отвергнута поимённо";
+}
+
+pub relation substitution_fresh(e: Expr, f: Integer, name: Text, fresh: Text) kind empirical {
+    label ru unofficial "имя, объявленное свежим для этого узла подстановки";
+}
+
+// -- Reachability in the canonical tree (05-reach.law) --
+//
+// The missing PRIMITIVE. Three listed obligations all stop at the same place:
+// alpha-equivalence needs to count the binders UNDER a subtree, building the
+// substitution result needs the same walk, and shape checking wants subtrees
+// rather than just the root. Binding scope here is by NAME, not containment, so
+// none of the three could begin before this existed.
+//
+// Deliberately a SECOND definition: calc.expression_substitution already builds
+// its own descends with the same monotone edges, and that working code was not
+// rewritten for the sake of a tidier name.
+
+pub relation descends(e: Expr, anc: Integer, n: Integer) kind institutional {
+    label en unofficial "n — это anc сам или транзитивный потомок anc в e";
+}
+
+pub relation reachable(e: Expr, anc: Integer, n: Integer) kind institutional {
+    label en unofficial "вершина n принадлежит поддереву anc";
+}
+
+pub relation subtree_size(e: Expr, anc: Integer, n: Integer) kind institutional {
+    label en unofficial "n — вершина поддерева anc, предъявленная как достижимая";
+}
+
+// -- Alpha-correspondence of binding subtrees (06-alpha.law) --
+//
+// What it decides: whether the bound names under subtree f and under subtree g
+// correspond by a BIJECTION that leaves free names alone. What it does NOT
+// decide: full expression equality — no renamed expression is built and no
+// comparison with `equivalent` is made. That boundary is deliberate.
+
+pub relation alpha_pair(e: Expr, f: Integer, g: Integer, bf: Integer, bg: Integer, z: Text, z2: Text) kind empirical {
+    label en unofficial "случай ПРЕДЛАГАЕТ: узел bf в f соответствует узлу bg в g, имена z и z2";
+}
+
+pub relation binder_in(e: Expr, f: Integer, bf: Integer, z: Text) kind institutional {
+    label en unofficial "связанное имя принадлежит поддереву f";
+}
+
+pub relation free_in(e: Expr, f: Integer, z: Text) kind institutional {
+    label en unofficial "имя свободно в поддереве f";
+}
+
+pub relation alpha_equiv(e: Expr, f: Integer, g: Integer) kind institutional {
+    label en unofficial "поддеревья соответствуют взаимно однозначным переименованием связанных имён без затрагивания свободных";
+}
+
+pub relation bound_by(e: Expr, bf: Integer, x: Integer, z: Text) kind institutional {
+    label en unofficial "вхождение имени z в узле x связано ИМЕННО связывающим узлом bf, а не каким-то другим";
+}
+
+pub relation alpha_eq(e: Expr, f: Integer, g: Integer, x: Integer, y: Integer) kind institutional {
+    label en unofficial "узлы x и y совпадают по α-равенству внутри пары поддеревьев-кандидатов f и g";
+}
+
+pub relation alpha_equal(e: Expr, f: Integer, g: Integer) kind institutional {
+    label en unofficial "поддеревья f и g равны с точностью до переименования связанных имён, при предъявленном и проверенном соответствии";
+}
+
+pub relation alpha_error(e: Expr, f: Integer, g: Integer, reason: Text) kind institutional {
+    label en unofficial "названная причина, по которой соответствие или равенство не состоялось: ALPHA_COUNT_MISMATCH, ALPHA_NOT_INJECTIVE, ALPHA_FREE_TOUCHED, ALPHA_SHAPE_MISMATCH, ALPHA_FREE_NAME_MISMATCH, ALPHA_OLD_NAME_TOUCHED";
+}
+
+// The case presents WHICH two subtrees are under consideration, not only the
+// correspondence between them. It is also what binds (e, f, g) in the verdict
+// rule: a count is not an established conjunct and does not range-restrict (§190).
+
+pub relation alpha_candidate(e: Expr, f: Integer, g: Integer) kind empirical {
+    label en unofficial "случай предъявляет два поддерева-кандидата на α-соответствие";
+}
+
+// -- Typed variables (09-types.law) --
+//
+// What the catalog asks for at B02.01 and what this module answers: "однозначность
+// узлов и типов". Node uniqueness was already decided (AMBIGUOUS_NODE); type
+// uniqueness is the same question asked of the ENVIRONMENT: one name, one type.
+//
+// The environment is presented by the case (`var_typing`, by NAME, because the
+// same variable occurs in many nodes and typing each occurrence separately would
+// let one name carry two types without anybody noticing). Everything else is
+// DERIVED: the level of a node, the name of that level, the vocabulary, the
+// conflicts, and the three named refusals.
+
+pub relation var_typing(e: Expr, name: Text, t: Text) kind empirical {
+    label en unofficial "дело объявляет тип СВОБОДНОЙ переменной по имени; объявление относится ко всем вхождениям этого имени";
+}
+
+relation type_level(e: Expr, f: Integer, k: Integer) kind institutional {
+    label en unofficial "ВЫВЕДЕННЫЙ уровень типа узла: 1 = integer, 2 = real, 3 = complex. Уровень, а не имя, потому что операция над уровнями — это максимум, а над именами пришлось бы держать таблицу из шести строк";
+}
+
+pub relation type_of(e: Expr, f: Integer, t: Text) kind institutional {
+    label en unofficial "тип узла поимённо — тот же выведенный уровень, названный словом. Отсутствие уровня есть отсутствие типа, и оно НЕ подставляется догадкой";
+}
+
+pub relation type_absent(e: Expr, f: Integer) kind institutional {
+    label en unofficial "ПРОБЕЛ ТИПА: имя переменной не объявлено, поэтому у узла нет типа — и у узлов выше тоже нет";
+}
+
+pub relation typing_conflict(e: Expr, name: Text, t: Text) kind institutional {
+    label en unofficial "имя объявлено по меньшей мере двумя разными типами, а t — один из них";
+}
+
+pub relation vocabulary_ok(e: Expr) kind institutional {
+    label en unofficial "СРЕДА ЧИСТА: каждое объявленное имя входит в словарь integer, real, complex";
+}
+
+pub relation known_tag(e: Expr, f: Integer, tag: Text) kind institutional {
+    label en unofficial "вид узла входит в объявленный словарь — положительный факт, из которого выводится UNKNOWN_TAG, а не наоборот";
+}
+
+pub relation single_typed(e: Expr, f: Integer) kind institutional {
+    label en unofficial "у узла ровно один выведенный уровень типа — реляция мультимножественна, поэтому единственность проверяется, а не предполагается";
+}
+
+pub relation level_ambiguous(e: Expr, f: Integer) kind institutional {
+    label en unofficial "ПРОБЕЛ ЕДИНСТВЕННОСТИ: у узла более одного выведенного уровня типа, и ни один из них не является ответом";
+}
+
+// ── Структурные виды узла: матрица, комплексное, кусочное (10-structured.law) ──
+//
+// Форма узла — (тег, имя, значение, левый потомок, правый потомок), и решения о
+// представлении этих трёх видов ПРИНЯТЫ ЯВНО, а не оставлены владельцу:
+//
+//   complex   re, im   → левый потомок = действительная часть, правый =
+//                        мнимая. Ни одного нового слота.
+//   piecewise cond, a, b → левый = условие, правый = узел тега `branch`, у
+//                        которого левый потомок = первая ветвь, правый = вторая.
+//                        ОДИН новый тег, ноль новых слотов.
+//   matrix    rows, cols, элементы → левый = узел тега `dims`, чьё ЗНАЧЕНИЕ
+//                        есть число строк, а ИМЯ — число столбцов текстом;
+//                        правый = цепочка элементов, где узел тега `entry`
+//                        несёт в левом потомке элемент, в правом — хвост цепочки,
+//                        а нулевой правый потомок означает конец. ДВА новых
+//                        тега, ноль новых слотов.
+//
+// РЕШЕНИЕ ПРИНЯТО В ПОЛЬЗУ СУЩЕСТВУЮЩИХ СЛОТОВ, и это стоит сказать прямо:
+// «три слота» можно было бы добавить узлу, но тогда ИЗМЕНИЛАСЬ БЫ форма узла для
+// всего пакета, то есть чужая работа. Представить недостающее через
+// ПОТОМКОВ — значит не трогать форму.
+//
+// ЧИСЛО СТОЛБЦОВ ЛЕЖИТ В ИМЕНИ, а не в значении, и это единственное место,
+// где пришлось выбирать текст вместо числа: у узла одно значение и одно имя, а
+// размерность имеет две компоненты. Имя — текст, поэтому `matrix_cols` есть
+// ТЕКСТ, и сценарий закрепляет именно текст: подмена его числом была бы
+// молчаливым изменением контракта.
+
+relation complex_node(e: Expr, f: Integer) kind institutional {
+    label ru unofficial "комплексный узел: пара (действительная, мнимая) в двух потомках";
+}
+
+relation complex_real(e: Expr, f: Integer, n: Integer) kind institutional {
+    label ru unofficial "действительная часть комплексного узла — его ЛЕВЫЙ потомок";
+}
+
+relation complex_imag(e: Expr, f: Integer, n: Integer) kind institutional {
+    label ru unofficial "мнимая часть комплексного узла — его ПРАВЫЙ потомок";
+}
+
+relation piecewise_node(e: Expr, f: Integer) kind institutional {
+    label ru unofficial "кусочный узел: условие и узел пары ветвей";
+}
+
+relation piecewise_condition(e: Expr, f: Integer, n: Integer) kind institutional {
+    label ru unofficial "условие кусочного узла — его ЛЕВЫЙ потомок";
+}
+
+relation piecewise_branch(e: Expr, f: Integer, n: Integer) kind institutional {
+    label ru unofficial "узел пары ветвей — ПРАВЫЙ потомок кусочного узла";
+}
+
+relation branch_then(e: Expr, f: Integer, n: Integer) kind institutional {
+    label ru unofficial "первая ветвь — ЛЕВЫЙ потомок узла пары ветвей";
+}
+
+relation branch_else(e: Expr, f: Integer, n: Integer) kind institutional {
+    label ru unofficial "вторая ветвь — ПРАВЫЙ потомок узла пары ветвей";
+}
+
+relation matrix_node(e: Expr, f: Integer) kind institutional {
+    label ru unofficial "матричный узел: размерности и цепочка элементов";
+}
+
+relation matrix_dims(e: Expr, f: Integer, n: Integer) kind institutional {
+    label ru unofficial "узел размерности матрицы — ЛЕВЫЙ потомок матричного узла";
+}
+
+relation matrix_rows(e: Expr, f: Integer, rows: Rational) kind institutional {
+    label ru unofficial "число строк матрицы — ЗНАЧЕНИЕ узла размерности, и оно Rational, потому что значение узла и есть Rational (§48 не даёт неявных конверсий)";
+}
+
+relation matrix_cols(e: Expr, f: Integer, cols: Text) kind institutional {
+    label ru unofficial "число столбцов матрицы — ИМЯ узла размерности, и оно ТЕКСТОВОЕ";
+}
+
+relation matrix_elements(e: Expr, f: Integer, n: Integer) kind institutional {
+    label ru unofficial "цепочка элементов матрицы — ПРАВЫЙ потомок матричного узла";
+}
+
+relation entry_item(e: Expr, f: Integer, n: Integer) kind institutional {
+    label ru unofficial "элемент цепочки — ЛЕВЫЙ потомок узла `entry`";
+}
+
+relation entry_tail(e: Expr, f: Integer, n: Integer) kind institutional {
+    label ru unofficial "хвост цепочки — ПРАВЫЙ потомок узла `entry`; ноль означает конец";
+}
+
+relation entry_chain_ends(e: Expr, f: Integer) kind institutional {
+    label ru unofficial "цепочка элементов матрицы дошла до конца: последний узел `entry` не имеет хвоста";
+}
+
+// ── Объявление формы не остаётся висячим (10-structured.law) ─────────────────
+//
+// Решение о формате матрицы вынесло ОДНУ из двух размерностей в ИМЯ узла
+// размерности. Следствие было названо, но не закрыто: сверка длины цепочки
+// элементов с объявленной формой при этом невозможна, и оставалось два пути —
+// параметризовать узел размерности (это меняло бы форму узла) или ЯВНО
+// проверять, что решение не оставляет висячее объявление формы. Второй путь
+// взят.
+//
+// ЧТО ИМЕННО ПРОВЕРЯЕТСЯ. Не длина цепочки, а СВЯЗАННОСТЬ двух её половин:
+// узел `matrix` объявляет размерность и цепочку элементов, и одна половина без
+// другой есть висячее объявление формы — объявленная форма, которой нечем
+// соответствовать, либо элементы без формы. Обе половины названы своими
+// кодами, потому что это два РАЗНЫХ утверждения: «форма без элементов» и
+// «элементы без формы» несимметричны по роду так же, как «посылка не снята»
+// и «использовано после снятия».
+
+relation matrix_shape_bound(e: Expr, f: Integer) kind institutional {
+    label ru unofficial "объявление формы матрицы СВЯЗАНО: и размерность, и цепочка элементов предъявлены";
+}
+
+relation matrix_shape_error(e: Expr, f: Integer, code: Text) kind institutional {
+    label ru unofficial "названная причина, по которой объявление формы матрицы осталось висячим: SHAPE_WITHOUT_ELEMENTS или ELEMENTS_WITHOUT_SHAPE";
+}

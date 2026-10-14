@@ -1,0 +1,1841 @@
+[
+  {
+    "name": "limit-cancel-result",
+    "path": "examples/limit-cancel/result",
+    "case": "limit-cancel",
+    "spec": "openstax.calculus_limits@0.1.1",
+    "operation": "limit",
+    "expression": "(x^2-1)/(x-1)",
+    "options": {
+      "point": "1"
+    },
+    "question": "result",
+    "resultHash": "sha256:156139b2ea5789eb36e8610914f8e9a10dbfc080837dcaa3e40dfa2535e10e01",
+    "value": [
+      {
+        "kind": "rational",
+        "outcome": "FINITE",
+        "value": "2/1"
+      }
+    ],
+    "primary": true
+  },
+  {
+    "name": "limit-exponential-result",
+    "path": "examples/limit-exponential/result",
+    "case": "limit-exponential",
+    "spec": "openstax.calculus_limits@0.1.1",
+    "operation": "limit",
+    "expression": "(exp(x)-1)/x",
+    "options": {},
+    "question": "result",
+    "resultHash": "sha256:c13da90905f4d0141f3513fedcf8f33d33f669b9a01e07a72cce222795795925",
+    "value": [
+      {
+        "kind": "rational",
+        "outcome": "FINITE",
+        "value": "1/1"
+      }
+    ],
+    "primary": true
+  },
+  {
+    "name": "limit-logarithm-result",
+    "path": "examples/limit-logarithm/result",
+    "case": "limit-logarithm",
+    "spec": "openstax.calculus_limits@0.1.1",
+    "operation": "limit",
+    "expression": "ln(1+x)/x",
+    "options": {},
+    "question": "result",
+    "resultHash": "sha256:7b33c49b6773a8d94043571f50534765e218a907ea97b410b3b3b4ce65098a03",
+    "value": [
+      {
+        "kind": "rational",
+        "outcome": "FINITE",
+        "value": "1/1"
+      }
+    ],
+    "primary": true
+  },
+  {
+    "name": "limit-sine-result",
+    "path": "examples/limit-sine/result",
+    "case": "limit-sine",
+    "spec": "openstax.calculus_limits@0.1.1",
+    "operation": "limit",
+    "expression": "sin(x)/x",
+    "options": {},
+    "question": "result",
+    "resultHash": "sha256:fb1db944214b9ad3ade4d9b2c98a1ed9f4747cfa388224dfe0f8dc9f12125f79",
+    "value": [
+      {
+        "kind": "rational",
+        "outcome": "FINITE",
+        "value": "1/1"
+      }
+    ],
+    "primary": true
+  },
+  {
+    "name": "limit-cosine-result",
+    "path": "examples/limit-cosine/result",
+    "case": "limit-cosine",
+    "spec": "openstax.calculus_limits@0.1.1",
+    "operation": "limit",
+    "expression": "(1-cos(x))/x^2",
+    "options": {},
+    "question": "result",
+    "resultHash": "sha256:d14401feb1957de319d2e4706c7a02385c20e8570c4577c6ae590fd5f9f2d1c6",
+    "value": [
+      {
+        "kind": "rational",
+        "outcome": "FINITE",
+        "value": "1/2"
+      }
+    ],
+    "primary": true
+  },
+  {
+    "name": "limit-right-pole-result",
+    "path": "examples/limit-right-pole/result",
+    "case": "limit-right-pole",
+    "spec": "openstax.calculus_limits@0.1.1",
+    "operation": "limit",
+    "expression": "1/x",
+    "options": {
+      "side": "right"
+    },
+    "question": "result",
+    "resultHash": "sha256:f9c719cfe86abc762c83f9a2df7a1d23b89540d6fef800a2779311eef9b24cbc",
+    "value": [
+      {
+        "kind": "plus_inf",
+        "outcome": "PLUS_INFINITY",
+        "value": "0/1"
+      }
+    ],
+    "primary": true
+  },
+  {
+    "name": "limit-two-sided-pole-result",
+    "path": "examples/limit-two-sided-pole/result",
+    "case": "limit-two-sided-pole",
+    "spec": "openstax.calculus_limits@0.1.1",
+    "operation": "limit",
+    "expression": "1/x",
+    "options": {},
+    "question": "result",
+    "resultHash": "sha256:96b2d20bf550cd98fa280f9f0f1b771f4859acc253da637d702ff74dec951fb5",
+    "value": [
+      {
+        "kind": "dne",
+        "outcome": "DOES_NOT_EXIST",
+        "value": "0/1"
+      }
+    ],
+    "primary": true
+  },
+  {
+    "name": "limit-leading-term-result",
+    "path": "examples/limit-leading-term/result",
+    "case": "limit-leading-term",
+    "spec": "openstax.calculus_limits@0.1.1",
+    "operation": "limit",
+    "expression": "x^3-x^2",
+    "options": {
+      "approach": "plus_inf"
+    },
+    "question": "result",
+    "resultHash": "sha256:9dacf685bce751ffae6cd393b6fe618647bd924261510631a3a3722d4e0db86e",
+    "value": [
+      {
+        "kind": "plus_inf",
+        "outcome": "PLUS_INFINITY",
+        "value": "0/1"
+      }
+    ],
+    "primary": true
+  },
+  {
+    "name": "differentiate-polynomial-coefficients",
+    "path": "examples/differentiate-polynomial/coefficients",
+    "case": "differentiate-polynomial",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "3*x^3-2*x+5",
+    "options": {},
+    "question": "coefficients",
+    "resultHash": "sha256:bfbd5e7de23a2866f8375bef2ebc67c5f1cc80a7a4c906f7097f3b7fdceabbba",
+    "value": [
+      {
+        "coefficient": "-2/1",
+        "exponent": 0
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 1
+      },
+      {
+        "coefficient": "9/1",
+        "exponent": 2
+      }
+    ],
+    "primary": true
+  },
+  {
+    "name": "differentiate-polynomial-solved",
+    "path": "examples/differentiate-polynomial/solved",
+    "case": "differentiate-polynomial",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "3*x^3-2*x+5",
+    "options": {},
+    "question": "solved",
+    "resultHash": "sha256:ee7aad63325c43386f075d3f5cf7b47dbdc220681ec21ebc14bbb9b3f76dc8df",
+    "value": "TRUE_ONLY",
+    "primary": false
+  },
+  {
+    "name": "differentiate-polynomial-zero",
+    "path": "examples/differentiate-polynomial/zero",
+    "case": "differentiate-polynomial",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "3*x^3-2*x+5",
+    "options": {},
+    "question": "zero",
+    "resultHash": "sha256:f13860d15972549a6ee844e0149bd9397911849330c52e2d51c37478458356d4",
+    "value": "NEITHER",
+    "primary": false
+  },
+  {
+    "name": "differentiate-polynomial-problems",
+    "path": "examples/differentiate-polynomial/problems",
+    "case": "differentiate-polynomial",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "3*x^3-2*x+5",
+    "options": {},
+    "question": "problems",
+    "resultHash": "sha256:4bcfcd657c2503085e3391f01a4ddb5f53f82d1579a39e52db3ac46ca885cda3",
+    "value": [],
+    "primary": false
+  },
+  {
+    "name": "differentiate-rational-coefficients",
+    "path": "examples/differentiate-rational/coefficients",
+    "case": "differentiate-rational",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "3/2*x^2-1/3*x",
+    "options": {},
+    "question": "coefficients",
+    "resultHash": "sha256:27377cdb998c84cdfedcdf3b148bbf2f956bd8bf869b6388aed88b09044b5416",
+    "value": [
+      {
+        "coefficient": "-1/3",
+        "exponent": 0
+      },
+      {
+        "coefficient": "3/1",
+        "exponent": 1
+      }
+    ],
+    "primary": true
+  },
+  {
+    "name": "differentiate-rational-solved",
+    "path": "examples/differentiate-rational/solved",
+    "case": "differentiate-rational",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "3/2*x^2-1/3*x",
+    "options": {},
+    "question": "solved",
+    "resultHash": "sha256:e564767ee16226ff8f602e7fe987fbe6b68c3006da07a00d0c875679940e41b2",
+    "value": "TRUE_ONLY",
+    "primary": false
+  },
+  {
+    "name": "differentiate-rational-zero",
+    "path": "examples/differentiate-rational/zero",
+    "case": "differentiate-rational",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "3/2*x^2-1/3*x",
+    "options": {},
+    "question": "zero",
+    "resultHash": "sha256:7b124616b7969ac4ef2efe4c9b4b97f24e76379298fca418b68ea4c523c48c73",
+    "value": "NEITHER",
+    "primary": false
+  },
+  {
+    "name": "differentiate-rational-problems",
+    "path": "examples/differentiate-rational/problems",
+    "case": "differentiate-rational",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "3/2*x^2-1/3*x",
+    "options": {},
+    "question": "problems",
+    "resultHash": "sha256:9179bfa09eefcddc2d7f4928979ed116249143f26a2e22057d537dd9b6294223",
+    "value": [],
+    "primary": false
+  },
+  {
+    "name": "differentiate-product-coefficients",
+    "path": "examples/differentiate-product/coefficients",
+    "case": "differentiate-product",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "(x+1)*(x-1)",
+    "options": {},
+    "question": "coefficients",
+    "resultHash": "sha256:d9feb449290639c97c02bbff1797a50021a38d1721ff7d866250d0ddb6de3441",
+    "value": [
+      {
+        "coefficient": "0/1",
+        "exponent": 0
+      },
+      {
+        "coefficient": "2/1",
+        "exponent": 1
+      }
+    ],
+    "primary": true
+  },
+  {
+    "name": "differentiate-product-solved",
+    "path": "examples/differentiate-product/solved",
+    "case": "differentiate-product",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "(x+1)*(x-1)",
+    "options": {},
+    "question": "solved",
+    "resultHash": "sha256:436c9313cd5325231fae652312711abb89729f1b840a7abb61129cb91aa239ab",
+    "value": "TRUE_ONLY",
+    "primary": false
+  },
+  {
+    "name": "differentiate-product-zero",
+    "path": "examples/differentiate-product/zero",
+    "case": "differentiate-product",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "(x+1)*(x-1)",
+    "options": {},
+    "question": "zero",
+    "resultHash": "sha256:2595a8cad28c0cadced5ba8be2cf0ee03e5041f8f29e72c63e480832cea0ae39",
+    "value": "NEITHER",
+    "primary": false
+  },
+  {
+    "name": "differentiate-product-problems",
+    "path": "examples/differentiate-product/problems",
+    "case": "differentiate-product",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "(x+1)*(x-1)",
+    "options": {},
+    "question": "problems",
+    "resultHash": "sha256:65541c9d00305c26b5ae11c918ef7a6abeac4e605826b51909fc9f07793a190b",
+    "value": [],
+    "primary": false
+  },
+  {
+    "name": "differentiate-unary-minus-coefficients",
+    "path": "examples/differentiate-unary-minus/coefficients",
+    "case": "differentiate-unary-minus",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "-x^2",
+    "options": {},
+    "question": "coefficients",
+    "resultHash": "sha256:1ce941be0ff754c5b2facd7111e71c381b95948fc4b28968cc0cc78ab1369b4e",
+    "value": [
+      {
+        "coefficient": "-2/1",
+        "exponent": 1
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 0
+      }
+    ],
+    "primary": true
+  },
+  {
+    "name": "differentiate-unary-minus-solved",
+    "path": "examples/differentiate-unary-minus/solved",
+    "case": "differentiate-unary-minus",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "-x^2",
+    "options": {},
+    "question": "solved",
+    "resultHash": "sha256:f64edc7652035a8713872cb95842f6d9c003f611767abcd684d197ffae006648",
+    "value": "TRUE_ONLY",
+    "primary": false
+  },
+  {
+    "name": "differentiate-unary-minus-zero",
+    "path": "examples/differentiate-unary-minus/zero",
+    "case": "differentiate-unary-minus",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "-x^2",
+    "options": {},
+    "question": "zero",
+    "resultHash": "sha256:b7345acbafec054ad3d541b5e75e23dbdb2e454968a97132802b4fd5e7590dcd",
+    "value": "NEITHER",
+    "primary": false
+  },
+  {
+    "name": "differentiate-unary-minus-problems",
+    "path": "examples/differentiate-unary-minus/problems",
+    "case": "differentiate-unary-minus",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "-x^2",
+    "options": {},
+    "question": "problems",
+    "resultHash": "sha256:726f31c628d40c4537e26eff540672d3ec4bdd0460eb386af5c68ad228ad032c",
+    "value": [],
+    "primary": false
+  },
+  {
+    "name": "differentiate-constant-coefficients",
+    "path": "examples/differentiate-constant/coefficients",
+    "case": "differentiate-constant",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "7",
+    "options": {},
+    "question": "coefficients",
+    "resultHash": "sha256:082b8c9a9e56d0b888f240c93bc8ad7ef99b7f0f906ecaf4ba2460864a6e6ca8",
+    "value": [],
+    "primary": true
+  },
+  {
+    "name": "differentiate-constant-solved",
+    "path": "examples/differentiate-constant/solved",
+    "case": "differentiate-constant",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "7",
+    "options": {},
+    "question": "solved",
+    "resultHash": "sha256:d1abececd78935e475a25d3bde68db549d65927f1f5a1cbf2a3749a6b4969099",
+    "value": "TRUE_ONLY",
+    "primary": false
+  },
+  {
+    "name": "differentiate-constant-zero",
+    "path": "examples/differentiate-constant/zero",
+    "case": "differentiate-constant",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "7",
+    "options": {},
+    "question": "zero",
+    "resultHash": "sha256:71794f965a4468d3d97e0e056285b37e965c922580d243966773a24d4bc7ce30",
+    "value": "TRUE_ONLY",
+    "primary": false
+  },
+  {
+    "name": "differentiate-constant-problems",
+    "path": "examples/differentiate-constant/problems",
+    "case": "differentiate-constant",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "7",
+    "options": {},
+    "question": "problems",
+    "resultHash": "sha256:5f3156ff62833ce6caf26ac92b45c8f2c36be21028da2a8f22b8a7482c17e425",
+    "value": [],
+    "primary": false
+  },
+  {
+    "name": "differentiate-zero-coefficients",
+    "path": "examples/differentiate-zero/coefficients",
+    "case": "differentiate-zero",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "0",
+    "options": {},
+    "question": "coefficients",
+    "resultHash": "sha256:df9ed53ff70f2291ddb82e30b7d5bbcea4fa3646d67484c5feff9723c0ea0ed7",
+    "value": [],
+    "primary": true
+  },
+  {
+    "name": "differentiate-zero-solved",
+    "path": "examples/differentiate-zero/solved",
+    "case": "differentiate-zero",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "0",
+    "options": {},
+    "question": "solved",
+    "resultHash": "sha256:9086f38beba474350340f66da63d14cc2c48ac0077714dbcbe943e6a409cb8d7",
+    "value": "TRUE_ONLY",
+    "primary": false
+  },
+  {
+    "name": "differentiate-zero-zero",
+    "path": "examples/differentiate-zero/zero",
+    "case": "differentiate-zero",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "0",
+    "options": {},
+    "question": "zero",
+    "resultHash": "sha256:27ac6da0613c336309836c11576c08211233bb27dbadb5d325c23992762857a8",
+    "value": "TRUE_ONLY",
+    "primary": false
+  },
+  {
+    "name": "differentiate-zero-problems",
+    "path": "examples/differentiate-zero/problems",
+    "case": "differentiate-zero",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "0",
+    "options": {},
+    "question": "problems",
+    "resultHash": "sha256:64c08c00df340c28fbe93a4a9c3aeaccde66b2f354ac82f1be64ad371761d0ea",
+    "value": [],
+    "primary": false
+  },
+  {
+    "name": "differentiate-power-boundary-coefficients",
+    "path": "examples/differentiate-power-boundary/coefficients",
+    "case": "differentiate-power-boundary",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "x^32",
+    "options": {},
+    "question": "coefficients",
+    "resultHash": "sha256:402b895e3643ea49745c6b1c3058acfb3d27ed66b0d86f82b38ebf867035bb72",
+    "value": [
+      {
+        "coefficient": "0/1",
+        "exponent": 0
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 10
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 11
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 12
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 13
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 14
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 15
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 16
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 17
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 18
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 19
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 1
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 20
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 21
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 22
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 23
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 24
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 25
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 26
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 27
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 28
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 29
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 2
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 30
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 3
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 4
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 5
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 6
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 7
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 8
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 9
+      },
+      {
+        "coefficient": "32/1",
+        "exponent": 31
+      }
+    ],
+    "primary": true
+  },
+  {
+    "name": "differentiate-power-boundary-solved",
+    "path": "examples/differentiate-power-boundary/solved",
+    "case": "differentiate-power-boundary",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "x^32",
+    "options": {},
+    "question": "solved",
+    "resultHash": "sha256:6fe0fbb6cdb4a9e1401577c083a82b26c7a309b1bd8a363006e532cae017b7bf",
+    "value": "TRUE_ONLY",
+    "primary": false
+  },
+  {
+    "name": "differentiate-power-boundary-zero",
+    "path": "examples/differentiate-power-boundary/zero",
+    "case": "differentiate-power-boundary",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "x^32",
+    "options": {},
+    "question": "zero",
+    "resultHash": "sha256:e9e1738e650dd72cc8056b8a70b2f3a7425ad738edb2fd8f23a35cbd1e180817",
+    "value": "NEITHER",
+    "primary": false
+  },
+  {
+    "name": "differentiate-power-boundary-problems",
+    "path": "examples/differentiate-power-boundary/problems",
+    "case": "differentiate-power-boundary",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "x^32",
+    "options": {},
+    "question": "problems",
+    "resultHash": "sha256:0eb36239bca1eb187babc3ec1365778bab986747ddfc25b79759bcfbf2cf55b1",
+    "value": [],
+    "primary": false
+  },
+  {
+    "name": "differentiate-unsupported-coefficients",
+    "path": "examples/differentiate-unsupported/coefficients",
+    "case": "differentiate-unsupported",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "sin(x)",
+    "options": {},
+    "question": "coefficients",
+    "resultHash": "sha256:66fb4da88b48ab857577383050bc0e3c1d58785007b227ad53cc5d0fcffcf342",
+    "value": [],
+    "primary": true
+  },
+  {
+    "name": "differentiate-unsupported-solved",
+    "path": "examples/differentiate-unsupported/solved",
+    "case": "differentiate-unsupported",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "sin(x)",
+    "options": {},
+    "question": "solved",
+    "resultHash": "sha256:a96bdf3ad528a1d7ba27d5ac4f63e558a7ecd99277e97866b885d7443fc7a007",
+    "value": "NEITHER",
+    "primary": false
+  },
+  {
+    "name": "differentiate-unsupported-zero",
+    "path": "examples/differentiate-unsupported/zero",
+    "case": "differentiate-unsupported",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "sin(x)",
+    "options": {},
+    "question": "zero",
+    "resultHash": "sha256:6e881d34104226617b3b2ec54932a47766bc829057143b9913e60242a7cebf7c",
+    "value": "NEITHER",
+    "primary": false
+  },
+  {
+    "name": "differentiate-unsupported-problems",
+    "path": "examples/differentiate-unsupported/problems",
+    "case": "differentiate-unsupported",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "sin(x)",
+    "options": {},
+    "question": "problems",
+    "resultHash": "sha256:8356a53139ee92c0464206fb6acc13edf1059639369d720d40a542c7e3e67cbe",
+    "value": [
+      "UNSUPPORTED_FORM"
+    ],
+    "primary": false
+  },
+  {
+    "name": "differentiate-compound-power-coefficients",
+    "path": "examples/differentiate-compound-power/coefficients",
+    "case": "differentiate-compound-power",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "(x+1)^2",
+    "options": {},
+    "question": "coefficients",
+    "resultHash": "sha256:8f398a60b86d397b86a2e011822a65c048d2a308df54ca99e467e6ea8389da5a",
+    "value": [],
+    "primary": true
+  },
+  {
+    "name": "differentiate-compound-power-solved",
+    "path": "examples/differentiate-compound-power/solved",
+    "case": "differentiate-compound-power",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "(x+1)^2",
+    "options": {},
+    "question": "solved",
+    "resultHash": "sha256:8ef4128d9c6d0883d76588b21e728eb65e92f98d036c9632e3c94c74ed7ff963",
+    "value": "NEITHER",
+    "primary": false
+  },
+  {
+    "name": "differentiate-compound-power-zero",
+    "path": "examples/differentiate-compound-power/zero",
+    "case": "differentiate-compound-power",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "(x+1)^2",
+    "options": {},
+    "question": "zero",
+    "resultHash": "sha256:d5b450f9c4f79785fab285b2f49846b273fdd61cf2d474237047f86122d049e1",
+    "value": "NEITHER",
+    "primary": false
+  },
+  {
+    "name": "differentiate-compound-power-problems",
+    "path": "examples/differentiate-compound-power/problems",
+    "case": "differentiate-compound-power",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "(x+1)^2",
+    "options": {},
+    "question": "problems",
+    "resultHash": "sha256:fca695a3b8a4d3b100697b325226508acb05982fb857b81c09037e8ce4e7c7ee",
+    "value": [
+      "UNSUPPORTED_POWER_BASE"
+    ],
+    "primary": false
+  },
+  {
+    "name": "antidifferentiate-polynomial-coefficients",
+    "path": "examples/antidifferentiate-polynomial/coefficients",
+    "case": "antidifferentiate-polynomial",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "antidifferentiate",
+    "expression": "3*x^2",
+    "options": {
+      "constant": "0"
+    },
+    "question": "coefficients",
+    "resultHash": "sha256:7c359019bc11e6503cdce8e6379e19bbf567b0657aeac25c8efcb3309e97c94a",
+    "value": [
+      {
+        "coefficient": "0/1",
+        "exponent": 0
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 1
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 2
+      },
+      {
+        "coefficient": "1/1",
+        "exponent": 3
+      }
+    ],
+    "primary": true
+  },
+  {
+    "name": "antidifferentiate-polynomial-solved",
+    "path": "examples/antidifferentiate-polynomial/solved",
+    "case": "antidifferentiate-polynomial",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "antidifferentiate",
+    "expression": "3*x^2",
+    "options": {
+      "constant": "0"
+    },
+    "question": "solved",
+    "resultHash": "sha256:bb74326a6092cc1abb4fe3595edc3f18b404f0232414798cc134c7b96483e3bf",
+    "value": "TRUE_ONLY",
+    "primary": false
+  },
+  {
+    "name": "antidifferentiate-polynomial-zero",
+    "path": "examples/antidifferentiate-polynomial/zero",
+    "case": "antidifferentiate-polynomial",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "antidifferentiate",
+    "expression": "3*x^2",
+    "options": {
+      "constant": "0"
+    },
+    "question": "zero",
+    "resultHash": "sha256:541985bcb950e94752ead047fe34e8caaf892f47df8f081a147b1d1670921a26",
+    "value": "NEITHER",
+    "primary": false
+  },
+  {
+    "name": "antidifferentiate-polynomial-problems",
+    "path": "examples/antidifferentiate-polynomial/problems",
+    "case": "antidifferentiate-polynomial",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "antidifferentiate",
+    "expression": "3*x^2",
+    "options": {
+      "constant": "0"
+    },
+    "question": "problems",
+    "resultHash": "sha256:2a7c7be1243b9fa0aa0c5dcb6a152d8ada45d32cf6e8f104a08f75826fc8cd3a",
+    "value": [],
+    "primary": false
+  },
+  {
+    "name": "antidifferentiate-constant-choice-coefficients",
+    "path": "examples/antidifferentiate-constant-choice/coefficients",
+    "case": "antidifferentiate-constant-choice",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "antidifferentiate",
+    "expression": "3*x^2",
+    "options": {
+      "constant": "5"
+    },
+    "question": "coefficients",
+    "resultHash": "sha256:ff42aa9008d7b28078f6197fb1b9105511aabef4d378d39b5a317ce8cfc76239",
+    "value": [
+      {
+        "coefficient": "0/1",
+        "exponent": 1
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 2
+      },
+      {
+        "coefficient": "1/1",
+        "exponent": 3
+      },
+      {
+        "coefficient": "5/1",
+        "exponent": 0
+      }
+    ],
+    "primary": true
+  },
+  {
+    "name": "antidifferentiate-constant-choice-solved",
+    "path": "examples/antidifferentiate-constant-choice/solved",
+    "case": "antidifferentiate-constant-choice",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "antidifferentiate",
+    "expression": "3*x^2",
+    "options": {
+      "constant": "5"
+    },
+    "question": "solved",
+    "resultHash": "sha256:83db85f4895943ed638031952d19a0f9a93653935561247049c2f4f6beabcbac",
+    "value": "TRUE_ONLY",
+    "primary": false
+  },
+  {
+    "name": "antidifferentiate-constant-choice-zero",
+    "path": "examples/antidifferentiate-constant-choice/zero",
+    "case": "antidifferentiate-constant-choice",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "antidifferentiate",
+    "expression": "3*x^2",
+    "options": {
+      "constant": "5"
+    },
+    "question": "zero",
+    "resultHash": "sha256:6a098da663ac326289618adb4ca9c0dec3165a25073b72e48fa4e6e03c64d75c",
+    "value": "NEITHER",
+    "primary": false
+  },
+  {
+    "name": "antidifferentiate-constant-choice-problems",
+    "path": "examples/antidifferentiate-constant-choice/problems",
+    "case": "antidifferentiate-constant-choice",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "antidifferentiate",
+    "expression": "3*x^2",
+    "options": {
+      "constant": "5"
+    },
+    "question": "problems",
+    "resultHash": "sha256:ddcfef0a6e83e376d5c3ff13d5c75b864e022c0d55f44f16c2fe2f9a66385fc7",
+    "value": [],
+    "primary": false
+  },
+  {
+    "name": "integrate-polynomial-coefficients",
+    "path": "examples/integrate-polynomial/coefficients",
+    "case": "integrate-polynomial",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "integrate",
+    "expression": "3*x^2",
+    "options": {
+      "bounds": [
+        "0",
+        "2"
+      ]
+    },
+    "question": "coefficients",
+    "resultHash": "sha256:84e42b4dc90d6bb35b2c3c0019d9fa2a7c132086c9571c3198b8ab21432949b0",
+    "value": [
+      {
+        "coefficient": "0/1",
+        "exponent": 0
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 1
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 2
+      },
+      {
+        "coefficient": "1/1",
+        "exponent": 3
+      }
+    ],
+    "primary": false
+  },
+  {
+    "name": "integrate-polynomial-solved",
+    "path": "examples/integrate-polynomial/solved",
+    "case": "integrate-polynomial",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "integrate",
+    "expression": "3*x^2",
+    "options": {
+      "bounds": [
+        "0",
+        "2"
+      ]
+    },
+    "question": "solved",
+    "resultHash": "sha256:c7d1d5dda81687912e53cd4fce4554613b9363cf5fac00b40bcc04b888dbc8af",
+    "value": "TRUE_ONLY",
+    "primary": false
+  },
+  {
+    "name": "integrate-polynomial-zero",
+    "path": "examples/integrate-polynomial/zero",
+    "case": "integrate-polynomial",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "integrate",
+    "expression": "3*x^2",
+    "options": {
+      "bounds": [
+        "0",
+        "2"
+      ]
+    },
+    "question": "zero",
+    "resultHash": "sha256:7219986337e2b7659a6425b3400c54c5cf4eb5c9eb4a7244d21deb3191a76ba1",
+    "value": "NEITHER",
+    "primary": false
+  },
+  {
+    "name": "integrate-polynomial-problems",
+    "path": "examples/integrate-polynomial/problems",
+    "case": "integrate-polynomial",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "integrate",
+    "expression": "3*x^2",
+    "options": {
+      "bounds": [
+        "0",
+        "2"
+      ]
+    },
+    "question": "problems",
+    "resultHash": "sha256:0b0fb9f7142c6c7f1a9934821036dbc6dfa7da758d88a3d357123b9b3ab15205",
+    "value": [],
+    "primary": false
+  },
+  {
+    "name": "integrate-polynomial-integral",
+    "path": "examples/integrate-polynomial/integral",
+    "case": "integrate-polynomial",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "integrate",
+    "expression": "3*x^2",
+    "options": {
+      "bounds": [
+        "0",
+        "2"
+      ]
+    },
+    "question": "integral",
+    "resultHash": "sha256:9d2e7f0f9354ea810a2a7257cdcca35727ec22cbcb9e635691df76ec987573c8",
+    "value": [
+      "8/1"
+    ],
+    "primary": true
+  },
+  {
+    "name": "integrate-reversed-coefficients",
+    "path": "examples/integrate-reversed/coefficients",
+    "case": "integrate-reversed",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "integrate",
+    "expression": "3*x^2",
+    "options": {
+      "bounds": [
+        "2",
+        "0"
+      ]
+    },
+    "question": "coefficients",
+    "resultHash": "sha256:51a94aeb476e776643651b7284b92961110c29b4c76fd56739c2aac860e82802",
+    "value": [
+      {
+        "coefficient": "0/1",
+        "exponent": 0
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 1
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 2
+      },
+      {
+        "coefficient": "1/1",
+        "exponent": 3
+      }
+    ],
+    "primary": false
+  },
+  {
+    "name": "integrate-reversed-solved",
+    "path": "examples/integrate-reversed/solved",
+    "case": "integrate-reversed",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "integrate",
+    "expression": "3*x^2",
+    "options": {
+      "bounds": [
+        "2",
+        "0"
+      ]
+    },
+    "question": "solved",
+    "resultHash": "sha256:2455312150e44d4aab6ad69f604b13f10a6c9e6d8a61bd156650f9128f6f974b",
+    "value": "TRUE_ONLY",
+    "primary": false
+  },
+  {
+    "name": "integrate-reversed-zero",
+    "path": "examples/integrate-reversed/zero",
+    "case": "integrate-reversed",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "integrate",
+    "expression": "3*x^2",
+    "options": {
+      "bounds": [
+        "2",
+        "0"
+      ]
+    },
+    "question": "zero",
+    "resultHash": "sha256:eb570c45afa899c3c630fd8c8146523d4a14292f1cb5f383672529efdf976103",
+    "value": "NEITHER",
+    "primary": false
+  },
+  {
+    "name": "integrate-reversed-problems",
+    "path": "examples/integrate-reversed/problems",
+    "case": "integrate-reversed",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "integrate",
+    "expression": "3*x^2",
+    "options": {
+      "bounds": [
+        "2",
+        "0"
+      ]
+    },
+    "question": "problems",
+    "resultHash": "sha256:8a8e0ae09f492c00f179222d68b63b0fc15b73e4907db631de00b5c452e24df6",
+    "value": [],
+    "primary": false
+  },
+  {
+    "name": "integrate-reversed-integral",
+    "path": "examples/integrate-reversed/integral",
+    "case": "integrate-reversed",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "integrate",
+    "expression": "3*x^2",
+    "options": {
+      "bounds": [
+        "2",
+        "0"
+      ]
+    },
+    "question": "integral",
+    "resultHash": "sha256:c1de005762724e079d2ed5e014b5f21b88326d71a75ec8780426115eec350cda",
+    "value": [
+      "-8/1"
+    ],
+    "primary": true
+  },
+  {
+    "name": "integrate-zero-width-coefficients",
+    "path": "examples/integrate-zero-width/coefficients",
+    "case": "integrate-zero-width",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "integrate",
+    "expression": "3*x^2",
+    "options": {
+      "bounds": [
+        "2",
+        "2"
+      ]
+    },
+    "question": "coefficients",
+    "resultHash": "sha256:623fc372315b8c4a3a2c777dd1f931a2cf54c1bd77f9e3e762dc07e72c0b656d",
+    "value": [
+      {
+        "coefficient": "0/1",
+        "exponent": 0
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 1
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 2
+      },
+      {
+        "coefficient": "1/1",
+        "exponent": 3
+      }
+    ],
+    "primary": false
+  },
+  {
+    "name": "integrate-zero-width-solved",
+    "path": "examples/integrate-zero-width/solved",
+    "case": "integrate-zero-width",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "integrate",
+    "expression": "3*x^2",
+    "options": {
+      "bounds": [
+        "2",
+        "2"
+      ]
+    },
+    "question": "solved",
+    "resultHash": "sha256:dc7756aef9850fd872e3812f96dd21e2b74de0a49fe9fa5710a415e9f2dc8f0c",
+    "value": "TRUE_ONLY",
+    "primary": false
+  },
+  {
+    "name": "integrate-zero-width-zero",
+    "path": "examples/integrate-zero-width/zero",
+    "case": "integrate-zero-width",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "integrate",
+    "expression": "3*x^2",
+    "options": {
+      "bounds": [
+        "2",
+        "2"
+      ]
+    },
+    "question": "zero",
+    "resultHash": "sha256:79b090379c0de654e5ce5b32d5bce2a227eaafbdab56dd0562599b5d570f8147",
+    "value": "NEITHER",
+    "primary": false
+  },
+  {
+    "name": "integrate-zero-width-problems",
+    "path": "examples/integrate-zero-width/problems",
+    "case": "integrate-zero-width",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "integrate",
+    "expression": "3*x^2",
+    "options": {
+      "bounds": [
+        "2",
+        "2"
+      ]
+    },
+    "question": "problems",
+    "resultHash": "sha256:ec52a797894006d78cd6f4ae9c69a44078b9648f09056c8b3882570cffc5e41a",
+    "value": [],
+    "primary": false
+  },
+  {
+    "name": "integrate-zero-width-integral",
+    "path": "examples/integrate-zero-width/integral",
+    "case": "integrate-zero-width",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "integrate",
+    "expression": "3*x^2",
+    "options": {
+      "bounds": [
+        "2",
+        "2"
+      ]
+    },
+    "question": "integral",
+    "resultHash": "sha256:4683c836c277bfea2ad9e65d1d3018213e2e07ec9af73bd6af74ff81db3d873f",
+    "value": [
+      "0/1"
+    ],
+    "primary": true
+  },
+  {
+    "name": "integrate-rational-coefficients",
+    "path": "examples/integrate-rational/coefficients",
+    "case": "integrate-rational",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "integrate",
+    "expression": "3/2*x^2+3",
+    "options": {
+      "bounds": [
+        "0",
+        "2"
+      ]
+    },
+    "question": "coefficients",
+    "resultHash": "sha256:2814a4012d7b55353379e24640d8b5028252dc1c3a4885b6dad2b7cebffb95e1",
+    "value": [
+      {
+        "coefficient": "0/1",
+        "exponent": 0
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 2
+      },
+      {
+        "coefficient": "1/2",
+        "exponent": 3
+      },
+      {
+        "coefficient": "3/1",
+        "exponent": 1
+      }
+    ],
+    "primary": false
+  },
+  {
+    "name": "integrate-rational-solved",
+    "path": "examples/integrate-rational/solved",
+    "case": "integrate-rational",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "integrate",
+    "expression": "3/2*x^2+3",
+    "options": {
+      "bounds": [
+        "0",
+        "2"
+      ]
+    },
+    "question": "solved",
+    "resultHash": "sha256:fa31808ee0b62867728a9ec83838102f97e32238f0dfcdeb128c0cdba592ec51",
+    "value": "TRUE_ONLY",
+    "primary": false
+  },
+  {
+    "name": "integrate-rational-zero",
+    "path": "examples/integrate-rational/zero",
+    "case": "integrate-rational",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "integrate",
+    "expression": "3/2*x^2+3",
+    "options": {
+      "bounds": [
+        "0",
+        "2"
+      ]
+    },
+    "question": "zero",
+    "resultHash": "sha256:5d1dc1af9646eb91cb83954fda5a86443a30cd52d2a5cf81da7cf61a55645a5d",
+    "value": "NEITHER",
+    "primary": false
+  },
+  {
+    "name": "integrate-rational-problems",
+    "path": "examples/integrate-rational/problems",
+    "case": "integrate-rational",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "integrate",
+    "expression": "3/2*x^2+3",
+    "options": {
+      "bounds": [
+        "0",
+        "2"
+      ]
+    },
+    "question": "problems",
+    "resultHash": "sha256:22bf036d0d68fa66586bfe0ea41a01783c2e1c62427e6aa15a5861565ada8598",
+    "value": [],
+    "primary": false
+  },
+  {
+    "name": "integrate-rational-integral",
+    "path": "examples/integrate-rational/integral",
+    "case": "integrate-rational",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "integrate",
+    "expression": "3/2*x^2+3",
+    "options": {
+      "bounds": [
+        "0",
+        "2"
+      ]
+    },
+    "question": "integral",
+    "resultHash": "sha256:196e85e3031855b172636504567cedc631efcff24d3850093812dfef5a307a35",
+    "value": [
+      "10/1"
+    ],
+    "primary": true
+  },
+  {
+    "name": "missing-polynomial-budget-coefficients",
+    "path": "examples/missing-polynomial-budget/coefficients",
+    "case": "missing-polynomial-budget",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "x^2",
+    "options": {
+      "cap": 64
+    },
+    "mutation": "budget",
+    "question": "coefficients",
+    "resultHash": "sha256:583477c58f61206f24547e76809278dd0c2bc8fe15123856887d8fc6c85b247f",
+    "value": [],
+    "primary": false
+  },
+  {
+    "name": "missing-polynomial-budget-solved",
+    "path": "examples/missing-polynomial-budget/solved",
+    "case": "missing-polynomial-budget",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "x^2",
+    "options": {
+      "cap": 64
+    },
+    "mutation": "budget",
+    "question": "solved",
+    "resultHash": "sha256:4a23846a0196ac8d45fbb95f59596d10a10879b1902f48390db3e20287c693fa",
+    "value": "NEITHER",
+    "primary": false
+  },
+  {
+    "name": "missing-polynomial-budget-zero",
+    "path": "examples/missing-polynomial-budget/zero",
+    "case": "missing-polynomial-budget",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "x^2",
+    "options": {
+      "cap": 64
+    },
+    "mutation": "budget",
+    "question": "zero",
+    "resultHash": "sha256:9bf9820707dc92dbbeb8c7eecc09d089e5184f919af61cf893748b992c08b0ef",
+    "value": "NEITHER",
+    "primary": false
+  },
+  {
+    "name": "missing-polynomial-budget-problems",
+    "path": "examples/missing-polynomial-budget/problems",
+    "case": "missing-polynomial-budget",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "x^2",
+    "options": {
+      "cap": 64
+    },
+    "mutation": "budget",
+    "question": "problems",
+    "resultHash": "sha256:44d82749b457bad20a8e74afb190fc5ca2b6a7ca4b65bd5dc15fdccdbe3a2439",
+    "value": [
+      "MISSING_RESOURCE_CONTRACT",
+      "NO_RESOURCE_CONTRACT"
+    ],
+    "primary": true
+  },
+  {
+    "name": "ambiguous-polynomial-task-coefficients",
+    "path": "examples/ambiguous-polynomial-task/coefficients",
+    "case": "ambiguous-polynomial-task",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "x^2",
+    "options": {
+      "cap": 64
+    },
+    "mutation": "task",
+    "question": "coefficients",
+    "resultHash": "sha256:f9003a6ce2c587fec88a14747ae3e09ffa0f5a33d6f28bb8bb031877bdc0a395",
+    "value": [],
+    "primary": false
+  },
+  {
+    "name": "ambiguous-polynomial-task-solved",
+    "path": "examples/ambiguous-polynomial-task/solved",
+    "case": "ambiguous-polynomial-task",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "x^2",
+    "options": {
+      "cap": 64
+    },
+    "mutation": "task",
+    "question": "solved",
+    "resultHash": "sha256:1662044de2f84b37a0a00ab16a250023b72994068460d1065a0f7f5ec92b992e",
+    "value": "NEITHER",
+    "primary": false
+  },
+  {
+    "name": "ambiguous-polynomial-task-zero",
+    "path": "examples/ambiguous-polynomial-task/zero",
+    "case": "ambiguous-polynomial-task",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "x^2",
+    "options": {
+      "cap": 64
+    },
+    "mutation": "task",
+    "question": "zero",
+    "resultHash": "sha256:bd0d54dc07c027b8f8eeafcee38f01502c32c0e9873c675a1d937c03083c3397",
+    "value": "NEITHER",
+    "primary": false
+  },
+  {
+    "name": "ambiguous-polynomial-task-problems",
+    "path": "examples/ambiguous-polynomial-task/problems",
+    "case": "ambiguous-polynomial-task",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "x^2",
+    "options": {
+      "cap": 64
+    },
+    "mutation": "task",
+    "question": "problems",
+    "resultHash": "sha256:55309cb990499ca31220924ac6574ae1b9ca4d03b15518f25e9a3728f2c4e28c",
+    "value": [
+      "AMBIGUOUS_TASK"
+    ],
+    "primary": true
+  },
+  {
+    "name": "missing-integration-constant-coefficients",
+    "path": "examples/missing-integration-constant/coefficients",
+    "case": "missing-integration-constant",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "antidifferentiate",
+    "expression": "x^2",
+    "options": {
+      "cap": 64
+    },
+    "mutation": "constant",
+    "question": "coefficients",
+    "resultHash": "sha256:4f3cabc202f3f5f14aeb18bfd3205ff7086c34ceaca4533c98c24f7b2bdb97e4",
+    "value": [],
+    "primary": false
+  },
+  {
+    "name": "missing-integration-constant-solved",
+    "path": "examples/missing-integration-constant/solved",
+    "case": "missing-integration-constant",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "antidifferentiate",
+    "expression": "x^2",
+    "options": {
+      "cap": 64
+    },
+    "mutation": "constant",
+    "question": "solved",
+    "resultHash": "sha256:11f5c1ecbce0d4bda4c8e3755ea8367113f594371502205d72abcec990e86352",
+    "value": "NEITHER",
+    "primary": false
+  },
+  {
+    "name": "missing-integration-constant-zero",
+    "path": "examples/missing-integration-constant/zero",
+    "case": "missing-integration-constant",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "antidifferentiate",
+    "expression": "x^2",
+    "options": {
+      "cap": 64
+    },
+    "mutation": "constant",
+    "question": "zero",
+    "resultHash": "sha256:95349c9b69c25a1927b13eb4eef8a7cb042bcd000db31429a786cf1a49a985e7",
+    "value": "NEITHER",
+    "primary": false
+  },
+  {
+    "name": "missing-integration-constant-problems",
+    "path": "examples/missing-integration-constant/problems",
+    "case": "missing-integration-constant",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "antidifferentiate",
+    "expression": "x^2",
+    "options": {
+      "cap": 64
+    },
+    "mutation": "constant",
+    "question": "problems",
+    "resultHash": "sha256:b5c6d247a290dbd1fe7471807fccb4019a4007e655aa7be7bdbf41613b04bb7d",
+    "value": [
+      "MISSING_CONSTANT"
+    ],
+    "primary": true
+  },
+  {
+    "name": "ambiguous-integration-constant-coefficients",
+    "path": "examples/ambiguous-integration-constant/coefficients",
+    "case": "ambiguous-integration-constant",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "antidifferentiate",
+    "expression": "x^2",
+    "options": {
+      "cap": 64
+    },
+    "mutation": "constant-conflict",
+    "question": "coefficients",
+    "resultHash": "sha256:70dcf9baa145165d0fbea76a1fa50600214ea37d7d5ca80353b738419da76c9d",
+    "value": [],
+    "primary": false
+  },
+  {
+    "name": "ambiguous-integration-constant-solved",
+    "path": "examples/ambiguous-integration-constant/solved",
+    "case": "ambiguous-integration-constant",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "antidifferentiate",
+    "expression": "x^2",
+    "options": {
+      "cap": 64
+    },
+    "mutation": "constant-conflict",
+    "question": "solved",
+    "resultHash": "sha256:84c33db448612271278851f29fc4d93db355549b91ba8f5c16d225cd6f2fbb34",
+    "value": "NEITHER",
+    "primary": false
+  },
+  {
+    "name": "ambiguous-integration-constant-zero",
+    "path": "examples/ambiguous-integration-constant/zero",
+    "case": "ambiguous-integration-constant",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "antidifferentiate",
+    "expression": "x^2",
+    "options": {
+      "cap": 64
+    },
+    "mutation": "constant-conflict",
+    "question": "zero",
+    "resultHash": "sha256:74c51eef2176d119254e21dfd4358c53f862ff285365399175efef68212d3ab4",
+    "value": "NEITHER",
+    "primary": false
+  },
+  {
+    "name": "ambiguous-integration-constant-problems",
+    "path": "examples/ambiguous-integration-constant/problems",
+    "case": "ambiguous-integration-constant",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "antidifferentiate",
+    "expression": "x^2",
+    "options": {
+      "cap": 64
+    },
+    "mutation": "constant-conflict",
+    "question": "problems",
+    "resultHash": "sha256:0016bd80bc9a6bfea37f103daf188a359ce232c35a1dd408fe087167643f50c1",
+    "value": [
+      "AMBIGUOUS_CONSTANT"
+    ],
+    "primary": true
+  },
+  {
+    "name": "ambiguous-integral-bounds-coefficients",
+    "path": "examples/ambiguous-integral-bounds/coefficients",
+    "case": "ambiguous-integral-bounds",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "integrate",
+    "expression": "x^2",
+    "options": {
+      "cap": 64,
+      "bounds": [
+        "0",
+        "1"
+      ]
+    },
+    "mutation": "bounds",
+    "question": "coefficients",
+    "resultHash": "sha256:ced345d8755d822c8493cbcb10ee21c1cb1b1bfddd3dfa04e1dd4122e0782c68",
+    "value": [
+      {
+        "coefficient": "0/1",
+        "exponent": 0
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 1
+      },
+      {
+        "coefficient": "0/1",
+        "exponent": 2
+      },
+      {
+        "coefficient": "1/3",
+        "exponent": 3
+      }
+    ],
+    "primary": false
+  },
+  {
+    "name": "ambiguous-integral-bounds-solved",
+    "path": "examples/ambiguous-integral-bounds/solved",
+    "case": "ambiguous-integral-bounds",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "integrate",
+    "expression": "x^2",
+    "options": {
+      "cap": 64,
+      "bounds": [
+        "0",
+        "1"
+      ]
+    },
+    "mutation": "bounds",
+    "question": "solved",
+    "resultHash": "sha256:efd25587d350a230bba37c9a21f17bcf7ed352cdcbcd97e48924043218998da0",
+    "value": "TRUE_ONLY",
+    "primary": false
+  },
+  {
+    "name": "ambiguous-integral-bounds-zero",
+    "path": "examples/ambiguous-integral-bounds/zero",
+    "case": "ambiguous-integral-bounds",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "integrate",
+    "expression": "x^2",
+    "options": {
+      "cap": 64,
+      "bounds": [
+        "0",
+        "1"
+      ]
+    },
+    "mutation": "bounds",
+    "question": "zero",
+    "resultHash": "sha256:c5752837112230fda63aed71cae30e01d9fbc3c810dd7ecb8e0be69fc3538c40",
+    "value": "NEITHER",
+    "primary": false
+  },
+  {
+    "name": "ambiguous-integral-bounds-problems",
+    "path": "examples/ambiguous-integral-bounds/problems",
+    "case": "ambiguous-integral-bounds",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "integrate",
+    "expression": "x^2",
+    "options": {
+      "cap": 64,
+      "bounds": [
+        "0",
+        "1"
+      ]
+    },
+    "mutation": "bounds",
+    "question": "problems",
+    "resultHash": "sha256:7028524fa714073d0f6c417e346ef57e7aeaf8d413712ab01c35569076f05d7a",
+    "value": [
+      "AMBIGUOUS_BOUNDS"
+    ],
+    "primary": true
+  },
+  {
+    "name": "ambiguous-integral-bounds-integral",
+    "path": "examples/ambiguous-integral-bounds/integral",
+    "case": "ambiguous-integral-bounds",
+    "spec": "openstax.calculus_integrals@0.1.1",
+    "operation": "integrate",
+    "expression": "x^2",
+    "options": {
+      "cap": 64,
+      "bounds": [
+        "0",
+        "1"
+      ]
+    },
+    "mutation": "bounds",
+    "question": "integral",
+    "resultHash": "sha256:75533f130f3122cf85124d06a61625b46e5435e413add3922f544999aae57479",
+    "value": [],
+    "primary": false
+  },
+  {
+    "name": "polynomial-cap-exhausted-coefficients",
+    "path": "examples/polynomial-cap-exhausted/coefficients",
+    "case": "polynomial-cap-exhausted",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "x^4",
+    "options": {
+      "cap": 2
+    },
+    "mutation": null,
+    "question": "coefficients",
+    "resultHash": "sha256:86b35c55d4bfc94eb2091170e524bd0ecf037ff9a2948c061ac94c402201a930",
+    "value": [],
+    "primary": false
+  },
+  {
+    "name": "polynomial-cap-exhausted-solved",
+    "path": "examples/polynomial-cap-exhausted/solved",
+    "case": "polynomial-cap-exhausted",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "x^4",
+    "options": {
+      "cap": 2
+    },
+    "mutation": null,
+    "question": "solved",
+    "resultHash": "sha256:1b2c0f684021a93aca109cf0091b19a5e6cfde4a61f4a8fbe01f2dfb25044336",
+    "value": "NEITHER",
+    "primary": false
+  },
+  {
+    "name": "polynomial-cap-exhausted-zero",
+    "path": "examples/polynomial-cap-exhausted/zero",
+    "case": "polynomial-cap-exhausted",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "x^4",
+    "options": {
+      "cap": 2
+    },
+    "mutation": null,
+    "question": "zero",
+    "resultHash": "sha256:89c74a580cb2c6f48beafbcabb583a41e5fa25f37055d9ec0979aeb7af757fd7",
+    "value": "NEITHER",
+    "primary": false
+  },
+  {
+    "name": "polynomial-cap-exhausted-problems",
+    "path": "examples/polynomial-cap-exhausted/problems",
+    "case": "polynomial-cap-exhausted",
+    "spec": "openstax.calculus_derivatives@0.1.1",
+    "operation": "differentiate",
+    "expression": "x^4",
+    "options": {
+      "cap": 2
+    },
+    "mutation": null,
+    "question": "problems",
+    "resultHash": "sha256:ddf0d42fbcd6c232db59457797440d211ef77bd436962e4d782d2e7f7dc1c78d",
+    "value": [
+      "SLOTS_EXCEED_CAP"
+    ],
+    "primary": true
+  }
+]

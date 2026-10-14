@@ -1,0 +1,365 @@
+language "law.core" version "0.2";
+package calc.limit_solver version "0.1.0";
+namespace "urn:law:calc:limit-solver";
+
+use self::{
+    Task,
+    accepted,
+    condition_unmet,
+    derived,
+    indeterminate,
+    input_error,
+    limit_at,
+    round_function,
+    sign_near,
+};
+
+// ИСХОД (§6 DECISION-0198).
+//
+// Слой стоит НАД поиском и в него не возвращается: здесь можно считать и
+// отрицать, не создавая цикла. Отсутствие найденного пути НЕ выдаётся за
+// отсутствие предела — оно разбирается на три разных исхода, и каждый
+// называет причину.
+//
+// СТОРОНЫ. Двусторонний предел объявляется только при СОВПАДЕНИИ обеих
+// односторонних величин; доказанное различие даёт несуществование. Различие
+// доказывается сравнением установленных величин, а не несовпадением деревьев.
+
+relation goal_side(t: Task, sd: Text) kind institutional {
+    label ru unofficial "сторона, обязательная для ответа на предъявленный запрос";
+}
+
+relation goal_value(t: Task, sd: Text, kind: Text, q: Rational) kind institutional {
+    label ru unofficial "установленная величина по обязательной стороне";
+}
+
+pub relation ambiguous_limit(
+        t: Task { label ru unofficial "задача"; },
+        f: Integer { label ru unofficial "узел"; },
+        sd: Text { label ru unofficial "сторона"; }
+) kind institutional {
+    label ru unofficial "ДЕФЕКТ: для одного узла и стороны выведены разные величины — правила противоречат друг другу";
+}
+
+relation agreed(t: Task, kind: Text, q: Rational) kind institutional {
+    label ru unofficial "все обязательные стороны дали одну и ту же величину";
+}
+
+relation sides_differ(t: Task) kind institutional {
+    label ru unofficial "две обязательные стороны дали доказанно разные величины";
+}
+
+relation exhausted(t: Task) kind institutional {
+    label ru unofficial "последний разрешённый раунд всё ещё неопределён";
+}
+
+pub relation solver_result(
+        t: Task { label ru unofficial "задача"; },
+        outcome: Text { label ru unofficial "исход"; },
+        kind: Text { label ru unofficial "вид величины"; },
+        q: Rational { label ru unofficial "значение"; }
+) kind institutional {
+    label ru unofficial "исход решения: FINITE, PLUS_INFINITY, MINUS_INFINITY, DOES_NOT_EXIST, CONDITIONS_NOT_ESTABLISHED, UNSUPPORTED_FORM, BUDGET_EXHAUSTED, INVALID_INPUT";
+}
+
+// ── Обязательные стороны ───────────────────────────────────────────────────
+
+rule GoalSideLeft(t: Task, e: calc.expressions::Expr, f: Integer, x: Text, a: Rational) strict {
+    label ru unofficial "запрошен предел слева (§6 DECISION-0198)";
+    when accepted(t, e, f, x, "at", a, "left");
+    then goal_side(t, "left");
+}
+
+rule GoalSideRight(t: Task, e: calc.expressions::Expr, f: Integer, x: Text, a: Rational) strict {
+    label ru unofficial "запрошен предел справа (§6 DECISION-0198)";
+    when accepted(t, e, f, x, "at", a, "right");
+    then goal_side(t, "right");
+}
+
+rule GoalSideBothLeft(t: Task, e: calc.expressions::Expr, f: Integer, x: Text, a: Rational) strict {
+    label ru unofficial "двусторонний предел требует обеих сторон (§6 DECISION-0198)";
+    when accepted(t, e, f, x, "at", a, "both");
+    then goal_side(t, "left");
+}
+
+rule GoalSideBothRight(t: Task, e: calc.expressions::Expr, f: Integer, x: Text, a: Rational) strict {
+    label ru unofficial "двусторонний предел требует обеих сторон (§6 DECISION-0198)";
+    when accepted(t, e, f, x, "at", a, "both");
+    then goal_side(t, "right");
+}
+
+rule GoalSideInfinity(t: Task, e: calc.expressions::Expr, f: Integer, x: Text, ap: Text, a: Rational, s: Text) strict {
+    label ru unofficial "у бесконечности сторона одна (§6 DECISION-0198)";
+    when accepted(t, e, f, x, ap, a, s) and (ap == "plus_inf" or ap == "minus_inf");
+    then goal_side(t, "both");
+}
+
+rule GoalValue(t: Task, e: calc.expressions::Expr, f: Integer, x: Text, ap: Text, a: Rational, s: Text, sd: Text, kind: Text, q: Rational) strict {
+    label ru unofficial "величина по обязательной стороне (§6 DECISION-0198)";
+    when accepted(t, e, f, x, ap, a, s) and goal_side(t, sd) and limit_at(t, e, f, sd, kind, q);
+    then goal_value(t, sd, kind, q);
+}
+
+rule AmbiguousLimit(t: Task, e: calc.expressions::Expr, f: Integer, sd: Text, k1: Text, k2: Text, q1: Rational, q2: Rational) strict {
+    label ru unofficial "ДЕФЕКТ: одна сторона одного узла получила разные ВИДЫ величины. Сравнение попарное и положительное: счёт здесь был бы ребром completion §110 (§6 DECISION-0198)";
+    when limit_at(t, e, f, sd, k1, q1) and limit_at(t, e, f, sd, k2, q2) and k1 != k2;
+    then ambiguous_limit(t, f, sd);
+}
+
+rule AmbiguousLimitValue(t: Task, e: calc.expressions::Expr, f: Integer, sd: Text, q1: Rational, q2: Rational) strict {
+    label ru unofficial "ДЕФЕКТ: одна сторона одного узла получила разные конечные величины (§6 DECISION-0198)";
+    when limit_at(t, e, f, sd, "rational", q1) and limit_at(t, e, f, sd, "rational", q2) and q1 != q2;
+    then ambiguous_limit(t, f, sd);
+}
+
+relation limit_kind_of(t: Task, e: calc.expressions::Expr, f: Integer, sd: Text, kind: Text) kind institutional {
+    label ru unofficial "вид установленной величины";
+}
+
+relation limit_value_of(t: Task, e: calc.expressions::Expr, f: Integer, sd: Text, q: Rational) kind institutional {
+    label ru unofficial "конечное значение установленной величины";
+}
+
+rule LimitKindOf(t: Task, e: calc.expressions::Expr, f: Integer, sd: Text, kind: Text, q: Rational) strict {
+    label ru unofficial "зарегистрировать вид величины (§6 DECISION-0198)";
+    when limit_at(t, e, f, sd, kind, q);
+    then limit_kind_of(t, e, f, sd, kind);
+}
+
+rule LimitValueOf(t: Task, e: calc.expressions::Expr, f: Integer, sd: Text, q: Rational) strict {
+    label ru unofficial "зарегистрировать конечное значение (§6 DECISION-0198)";
+    when limit_at(t, e, f, sd, "rational", q);
+    then limit_value_of(t, e, f, sd, q);
+}
+
+// ── Согласование сторон ────────────────────────────────────────────────────
+
+// Согласие сторон выводится ПОЛОЖИТЕЛЬНО, по одному правилу на вид запроса.
+// Счёт здесь был бы ребром completion §110 над выводимым предикатом: его
+// значение зависит от того, успел ли производитель дособраться, и именно на
+// этом решатель 12.09.2026 выдал ДВА исхода на одну задачу.
+
+rule AgreedTwoSided(t: Task, e: calc.expressions::Expr, f: Integer, x: Text, a: Rational, kind: Text, q: Rational) strict {
+    label ru unofficial "двусторонний предел: обе стороны дали одну величину (§6 DECISION-0198)";
+    when accepted(t, e, f, x, "at", a, "both") and goal_value(t, "left", kind, q) and goal_value(t, "right", kind, q);
+    then agreed(t, kind, q);
+}
+
+rule AgreedLeft(t: Task, e: calc.expressions::Expr, f: Integer, x: Text, a: Rational, kind: Text, q: Rational) strict {
+    label ru unofficial "запрошен предел слева (§6 DECISION-0198)";
+    when accepted(t, e, f, x, "at", a, "left") and goal_value(t, "left", kind, q);
+    then agreed(t, kind, q);
+}
+
+rule AgreedRight(t: Task, e: calc.expressions::Expr, f: Integer, x: Text, a: Rational, kind: Text, q: Rational) strict {
+    label ru unofficial "запрошен предел справа (§6 DECISION-0198)";
+    when accepted(t, e, f, x, "at", a, "right") and goal_value(t, "right", kind, q);
+    then agreed(t, kind, q);
+}
+
+rule AgreedInfinity(t: Task, e: calc.expressions::Expr, f: Integer, x: Text, ap: Text, a: Rational, s: Text, kind: Text, q: Rational) strict {
+    label ru unofficial "у бесконечности сторона одна (§6 DECISION-0198)";
+    when accepted(t, e, f, x, ap, a, s) and (ap == "plus_inf" or ap == "minus_inf") and goal_value(t, "both", kind, q);
+    then agreed(t, kind, q);
+}
+
+rule SidesDifferByKind(t: Task, sd1: Text, sd2: Text, k1: Text, k2: Text, q1: Rational, q2: Rational) strict {
+    label ru unofficial "стороны дали разные виды величины (§6 DECISION-0198)";
+    when goal_value(t, sd1, k1, q1) and goal_value(t, sd2, k2, q2) and sd1 != sd2 and k1 != k2;
+    then sides_differ(t);
+}
+
+rule SidesDifferByValue(t: Task, sd1: Text, sd2: Text, q1: Rational, q2: Rational) strict {
+    label ru unofficial "стороны дали разные конечные величины (§6 DECISION-0198)";
+    when goal_value(t, sd1, "rational", q1) and goal_value(t, sd2, "rational", q2) and sd1 != sd2 and q1 != q2;
+    then sides_differ(t);
+}
+
+// ── Исходы: положительные кандидаты и один отбор ──────────────────────────
+//
+// Каждый возможный исход объявляется КАНДИДАТОМ со своим рангом, и все
+// правила-кандидаты СТРОГИЕ и положительные. Побеждает кандидат наименьшего
+// ранга; «наименьший» тоже выводится положительно — кандидат побеждён, если
+// существует кандидат меньшего ранга. Единственное отрицание во всём слое —
+// `not_known(beaten(...))`, и оно стоит строго выше своих производителей.
+//
+// ЗАЧЕМ ТАК. Первая редакция считала агрегатами по ВЫВОДИМЫМ предикатам
+// («нет согласия сторон», «нет неустановленных условий»). Это рёбра
+// completion §110: значение зависит от того, успел ли производитель
+// дособраться, и решатель 12.09.2026 выдавал ДВА исхода на одну задачу —
+// FINITE и CONDITIONS_NOT_ESTABLISHED сразу. Ранги убирают саму возможность.
+//
+//   1  INVALID_INPUT               ввод не принят
+//   2  AMBIGUOUS_RULES             правила противоречат друг другу — дефект
+//   3  FINITE, PLUS_INFINITY, MINUS_INFINITY, DOES_NOT_EXIST
+//   4  BUDGET_EXHAUSTED            бюджет раундов исчерпан
+//   5  CONDITIONS_NOT_ESTABLISHED  условие применимости не установлено
+//   6  UNSUPPORTED_FORM            общий честный отказ
+
+relation candidate(t: Task, rank: Integer, outcome: Text, kind: Text, q: Rational) kind institutional {
+    label ru unofficial "возможный исход со своим рангом";
+}
+
+relation beaten(t: Task, rank: Integer) kind institutional {
+    label ru unofficial "кандидат этого ранга побеждён кандидатом меньшего ранга";
+}
+
+rule CandidateInvalidInput(t: Task, reason: Text) strict {
+    label ru unofficial "ввод не принят (§6 DECISION-0198)";
+    when input_error(t, reason);
+    then candidate(t, 1, "INVALID_INPUT", "none", 0 / 1);
+}
+
+rule CandidateAmbiguous(t: Task, f: Integer, sd: Text) strict {
+    label ru unofficial "ДЕФЕКТ: правила вывели для одного узла разные величины (§6 DECISION-0198)";
+    when ambiguous_limit(t, f, sd);
+    then candidate(t, 2, "AMBIGUOUS_RULES", "none", 0 / 1);
+}
+
+rule CandidateFinite(t: Task, q: Rational) strict {
+    label ru unofficial "установленный конечный результат (§6 DECISION-0198)";
+    when agreed(t, "rational", q);
+    then candidate(t, 3, "FINITE", "rational", q);
+}
+
+rule CandidatePlusInfinity(t: Task, z1: Rational) strict {
+    label ru unofficial "установленная бесконечность со знаком плюс (§6 DECISION-0198)";
+    when agreed(t, "plus_inf", z1) and z1 == 0 / 1;
+    then candidate(t, 3, "PLUS_INFINITY", "plus_inf", 0 / 1);
+}
+
+rule CandidateMinusInfinity(t: Task, z1: Rational) strict {
+    label ru unofficial "установленная бесконечность со знаком минус (§6 DECISION-0198)";
+    when agreed(t, "minus_inf", z1) and z1 == 0 / 1;
+    then candidate(t, 3, "MINUS_INFINITY", "minus_inf", 0 / 1);
+}
+
+rule CandidateDoesNotExist(t: Task) strict {
+    label ru unofficial "доказанное несуществование: обязательные стороны дали разные величины (§6 DECISION-0198)";
+    when sides_differ(t);
+    then candidate(t, 3, "DOES_NOT_EXIST", "dne", 0 / 1);
+}
+
+rule CandidateBudgetExhausted(t: Task) strict {
+    label ru unofficial "бюджет раундов исчерпан, а неопределённость осталась (§6 DECISION-0198)";
+    when exhausted(t);
+    then candidate(t, 4, "BUDGET_EXHAUSTED", "none", 0 / 1);
+}
+
+rule CandidateConditionsNotEstablished(t: Task, f: Integer, sd: Text, condition: Text) defeasible {
+    label ru unofficial "условие применимости не установлено и названо (§6 DECISION-0198)";
+    when condition_unmet(t, f, sd, condition);
+    then candidate(t, 5, "CONDITIONS_NOT_ESTABLISHED", "none", 0 / 1);
+}
+
+rule CandidateUnsupportedForm(t: Task, e: calc.expressions::Expr, f: Integer, x: Text, ap: Text, a: Rational, s: Text) strict {
+    label ru unofficial "общий честный отказ: форма или область вне объявленного объёма. Об отсутствии предела это НЕ говорит (§6 DECISION-0198)";
+    when accepted(t, e, f, x, ap, a, s);
+    then candidate(t, 6, "UNSUPPORTED_FORM", "none", 0 / 1);
+}
+
+rule Beaten(t: Task, r1: Integer, r2: Integer, o1: Text, o2: Text, k1: Text, k2: Text, q1: Rational, q2: Rational) defeasible {
+    label ru unofficial "кандидат побеждён кандидатом меньшего ранга (§6 DECISION-0198)";
+    when candidate(t, r1, o1, k1, q1) and candidate(t, r2, o2, k2, q2) and r2 < r1;
+    then beaten(t, r1);
+}
+
+rule Result(t: Task, rank: Integer, outcome: Text, kind: Text, q: Rational) defeasible {
+    label ru unofficial "исход задачи — непобеждённый кандидат (§6 DECISION-0198)";
+    when candidate(t, rank, outcome, kind, q) and not_known(beaten(t, rank));
+    then solver_result(t, outcome, kind, q);
+}
+
+// ── Наблюдаемая поверхность для инструмента ────────────────────────────────
+//
+// Инструмент читает ДВА поля и ничего не решает: имя исхода и, при конечном
+// исходе, само значение. Разделение на два отношения нужно потому, что
+// `collect` собирает по ОДНОЙ переменной.
+
+pub relation solver_outcome(
+        t: Task { label ru unofficial "задача"; },
+        outcome: Text { label ru unofficial "исход"; }
+) kind institutional {
+    label ru unofficial "имя исхода без значения: то, что читает инструмент первым";
+}
+
+pub relation solver_finite_value(
+        t: Task { label ru unofficial "задача"; },
+        q: Rational { label ru unofficial "значение"; }
+) kind institutional {
+    label ru unofficial "установленное конечное значение предела";
+}
+
+rule SolverOutcome(t: Task, outcome: Text, kind: Text, q: Rational) defeasible {
+    label ru unofficial "имя исхода (§6 DECISION-0198)";
+    when solver_result(t, outcome, kind, q);
+    then solver_outcome(t, outcome);
+}
+
+rule SolverFiniteValue(t: Task, q: Rational) defeasible {
+    label ru unofficial "конечное значение исхода (§6 DECISION-0198)";
+    when solver_result(t, "FINITE", "rational", q);
+    then solver_finite_value(t, q);
+}
+
+// ── Неустановленные условия ────────────────────────────────────────────────
+//
+// Слой отрицания над завершённым поиском: он ничего в поиск не возвращает.
+
+relation denominator_derivative(t: Task, e: calc.expressions::Expr, f: Integer, dv: Integer) kind institutional {
+    label ru unofficial "узел производной знаменателя: арифметика адреса в ГОЛОВЕ, чтобы отрицание ниже читало связанную переменную (§190)";
+}
+
+relation ratio_node(t: Task, e: calc.expressions::Expr, f: Integer, rn: Integer) kind institutional {
+    label ru unofficial "узел отношения производных";
+}
+
+relation sign_flag(t: Task, e: calc.expressions::Expr, f: Integer, sd: Text) kind institutional {
+    label ru unofficial "знак установлен: форма без значения, пригодная для отрицания";
+}
+
+relation limit_flag(t: Task, e: calc.expressions::Expr, f: Integer, sd: Text) kind institutional {
+    label ru unofficial "величина установлена: форма без значения, пригодная для отрицания";
+}
+
+rule DenominatorDerivative(t: Task, e: calc.expressions::Expr, f: Integer, u: Integer, v: Integer, sd: Text) strict {
+    label ru unofficial "адрес производной знаменателя (§6 DECISION-0198)";
+    when indeterminate(t, e, f, sd) and calc.expressions::node(e, f, "div", "", 0 / 1, u, v) and derived(t, e, v);
+    then denominator_derivative(t, e, f, v * 64 + 256);
+}
+
+rule RatioNode(t: Task, e: calc.expressions::Expr, f: Integer, u: Integer, v: Integer, sd: Text) strict {
+    label ru unofficial "адрес отношения производных (§6 DECISION-0198)";
+    when indeterminate(t, e, f, sd) and calc.expressions::node(e, f, "div", "", 0 / 1, u, v) and derived(t, e, u) and derived(t, e, v);
+    then ratio_node(t, e, f, f * 64 + 304);
+}
+
+rule SignFlag(t: Task, e: calc.expressions::Expr, f: Integer, sd: Text, s: Integer) strict {
+    label ru unofficial "знак установлен (§6 DECISION-0198)";
+    when sign_near(t, e, f, sd, s);
+    then sign_flag(t, e, f, sd);
+}
+
+rule LimitFlag(t: Task, e: calc.expressions::Expr, f: Integer, sd: Text, k: Text, q: Rational) strict {
+    label ru unofficial "величина установлена (§6 DECISION-0198)";
+    when limit_at(t, e, f, sd, k, q);
+    then limit_flag(t, e, f, sd);
+}
+
+rule ConditionUnmetNonzero(t: Task, e: calc.expressions::Expr, f: Integer, sd: Text, dv: Integer) defeasible {
+    label ru unofficial "ОТКАЗ: ненулевая производная знаменателя в окрестности НЕ установлена (§6 DECISION-0198)";
+    when denominator_derivative(t, e, f, dv) and indeterminate(t, e, f, sd) and not_known(sign_flag(t, e, dv, sd));
+    then condition_unmet(t, f, sd, "DENOMINATOR_DERIVATIVE_NONZERO");
+}
+
+rule ConditionUnmetRatio(t: Task, e: calc.expressions::Expr, f: Integer, sd: Text, rn: Integer) defeasible {
+    label ru unofficial "ОТКАЗ: предел отношения производных НЕ установлен (§6 DECISION-0198)";
+    when ratio_node(t, e, f, rn) and indeterminate(t, e, f, sd) and not_known(limit_flag(t, e, rn, sd));
+    then condition_unmet(t, f, sd, "RATIO_LIMIT");
+}
+
+rule Exhausted(t: Task, e: calc.expressions::Expr, f: Integer, sd: Text) strict {
+    label ru unofficial "последний разрешённый раунд всё ещё неопределён (§6 DECISION-0198)";
+    when round_function(t, e, f, 4) and indeterminate(t, e, f, sd);
+    then exhausted(t);
+}

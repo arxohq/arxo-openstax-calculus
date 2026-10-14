@@ -1,0 +1,71 @@
+language "law.core" version "0.2";
+package calc.polynomials_q version "0.1.0";
+namespace "urn:law:calc:polynomials-q";
+
+use self::{
+    Poly,
+    coeff,
+    degree,
+};
+
+// Низкоразмерные инварианты — часть владельца Poly. Эти правила не называют
+// себя общим алгоритмом Сильвестра: они публикуют точные, проверяемые случаи,
+// нужные корневому и факторизационному срезам, пока общий детерминант не
+// выражен отдельным ресурсным построением матрицы Сильвестра.
+
+pub relation resultant_value(left: Poly, right: Poly, value: Rational) kind institutional {
+    label ru unofficial "результант пары многочленов в поддержанном вычисленном классе";
+}
+
+pub relation discriminant_value(p: Poly, value: Rational) kind institutional {
+    label ru unofficial "дискриминант многочлена в поддержанном вычисленном классе";
+}
+
+pub relation invariant_verified(kind: Text, left: Poly, right: Poly) kind institutional {
+    label ru unofficial "формула низкоразмерного инварианта проверена по каноническим коэффициентам";
+}
+
+rule LinearResultant(
+    left: Poly,
+    right: Poly,
+    left_constant: Rational,
+    left_linear: Rational,
+    right_constant: Rational,
+    right_linear: Rational,
+) strict {
+    label ru unofficial "Res(a₁x+a₀,b₁x+b₀)=a₁b₀−a₀b₁";
+    when degree(left, 1) and coeff(left, 0, left_constant) and coeff(left, 1, left_linear)
+        and degree(right, 1) and coeff(right, 0, right_constant) and coeff(right, 1, right_linear);
+    then resultant_value(left, right, left_linear * right_constant - left_constant * right_linear);
+}
+
+rule LinearResultantVerified(
+    left: Poly,
+    right: Poly,
+    left_constant: Rational,
+    left_linear: Rational,
+    right_constant: Rational,
+    right_linear: Rational,
+    value: Rational,
+) strict {
+    label ru unofficial "результант линейной пары равен детерминанту матрицы Сильвестра 2×2";
+    when degree(left, 1) and coeff(left, 0, left_constant) and coeff(left, 1, left_linear)
+        and degree(right, 1) and coeff(right, 0, right_constant) and coeff(right, 1, right_linear)
+        and resultant_value(left, right, value)
+        and value == left_linear * right_constant - left_constant * right_linear;
+    then invariant_verified("LINEAR_RESULTANT", left, right);
+}
+
+rule QuadraticDiscriminant(p: Poly, constant: Rational, linear: Rational, quadratic: Rational) strict {
+    label ru unofficial "Disc(a₂x²+a₁x+a₀)=a₁²−4a₂a₀";
+    when degree(p, 2) and coeff(p, 0, constant) and coeff(p, 1, linear) and coeff(p, 2, quadratic);
+    then discriminant_value(p, linear * linear - (4 / 1) * quadratic * constant);
+}
+
+rule QuadraticDiscriminantVerified(p: Poly, constant: Rational, linear: Rational, quadratic: Rational, value: Rational) strict {
+    label ru unofficial "дискриминант квадратика проверен формулой через его канонические коэффициенты";
+    when degree(p, 2) and coeff(p, 0, constant) and coeff(p, 1, linear) and coeff(p, 2, quadratic)
+        and discriminant_value(p, value)
+        and value == linear * linear - (4 / 1) * quadratic * constant;
+    then invariant_verified("QUADRATIC_DISCRIMINANT", p, p);
+}

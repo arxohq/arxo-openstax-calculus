@@ -1,0 +1,60 @@
+language "law.core" version "0.2";
+package calc.expressions version "0.1.0";
+namespace "urn:law:calc:expressions";
+
+// ОБЪЯВЛЕНИЕ ФОРМЫ МАТРИЦЫ НЕ ОСТАЁТСЯ ВИСЯЧИМ (scope B02.01).
+//
+// Решение о формате вынесло одну из двух размерностей в ИМЯ узла размерности.
+// Следствие названо, но не закрыто: сверка длины цепочки элементов с
+// объявленной формой при этом невозможна. Что проверяется здесь — не длина, а
+// СВЯЗАННОСТЬ двух половин объявления.
+//
+// КОДЫ РАЗНЫЕ, потому что утверждения разные: форма без элементов есть
+// объявление, которому нечем соответствовать; элементы без формы есть данные
+// без объявления.
+
+// (a) ПОЛНАЯ ФОРМА: обе половины на месте, объявление связано, отказа нет.
+test "a matrix with both halves present has a bound shape declaration" {
+ given {
+  assert "n1": node(entity_ref("urn:calc:ex:e48"), 1, "matrix", "", 0 / 1, 2, 3) { origin case_input; }
+  assert "n2": node(entity_ref("urn:calc:ex:e48"), 2, "dims", "1", 1 / 1, 0, 0) { origin case_input; }
+  assert "n3": node(entity_ref("urn:calc:ex:e48"), 3, "entry", "", 0 / 1, 4, 0) { origin case_input; }
+  assert "n4": node(entity_ref("urn:calc:ex:e48"), 4, "const", "", 7 / 1, 0, 0) { origin case_input; }
+ }
+ evaluate truth(matrix_shape_bound(entity_ref("urn:calc:ex:e48"), 1));
+ expect truth_status == TRUE_ONLY;
+ evaluate truth(matrix_shape_error(entity_ref("urn:calc:ex:e48"), 1, "SHAPE_WITHOUT_ELEMENTS"));
+ expect truth_status == NEITHER;
+ evaluate truth(matrix_shape_error(entity_ref("urn:calc:ex:e48"), 1, "ELEMENTS_WITHOUT_SHAPE"));
+ expect truth_status == NEITHER;
+}
+
+// (b) ФОРМА БЕЗ ЭЛЕМЕНТОВ. Это ровно тот случай, который решение о формате
+// оставило бы висячим, если бы связность не проверялась.
+test "a matrix declaring a shape with no element chain is refused by name" {
+ given {
+  assert "n1": node(entity_ref("urn:calc:ex:e49"), 1, "matrix", "", 0 / 1, 2, 0) { origin case_input; }
+  assert "n2": node(entity_ref("urn:calc:ex:e49"), 2, "dims", "4", 4 / 1, 0, 0) { origin case_input; }
+ }
+ evaluate truth(matrix_shape_error(entity_ref("urn:calc:ex:e49"), 1, "SHAPE_WITHOUT_ELEMENTS"));
+ expect truth_status == TRUE_ONLY;
+ evaluate truth(matrix_shape_error(entity_ref("urn:calc:ex:e49"), 1, "ELEMENTS_WITHOUT_SHAPE"));
+ expect truth_status == NEITHER;
+ evaluate truth(matrix_shape_bound(entity_ref("urn:calc:ex:e49"), 1));
+ expect truth_status == NEITHER;
+}
+
+// (c) ЭЛЕМЕНТЫ БЕЗ ФОРМЫ — другое утверждение и другой код.
+test "a matrix with elements but no declared shape is refused under its own code" {
+ given {
+  assert "n1": node(entity_ref("urn:calc:ex:e50"), 1, "matrix", "", 0 / 1, 0, 3) { origin case_input; }
+  assert "n3": node(entity_ref("urn:calc:ex:e50"), 3, "entry", "", 0 / 1, 4, 0) { origin case_input; }
+  assert "n4": node(entity_ref("urn:calc:ex:e50"), 4, "const", "", 7 / 1, 0, 0) { origin case_input; }
+ }
+ evaluate truth(matrix_shape_error(entity_ref("urn:calc:ex:e50"), 1, "ELEMENTS_WITHOUT_SHAPE"));
+ expect truth_status == TRUE_ONLY;
+ evaluate truth(matrix_shape_error(entity_ref("urn:calc:ex:e50"), 1, "SHAPE_WITHOUT_ELEMENTS"));
+ expect truth_status == NEITHER;
+ evaluate truth(matrix_shape_bound(entity_ref("urn:calc:ex:e50"), 1));
+ expect truth_status == NEITHER;
+}

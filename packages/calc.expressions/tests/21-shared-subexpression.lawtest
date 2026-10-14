@@ -1,0 +1,17 @@
+language "law.core" version "0.2";
+package calc.expressions version "0.1.0";
+namespace "urn:law:calc:expressions";
+
+// DAG с общим подвыражением: x умножается сам на себя, узел один.
+
+test "shared-subexpression" {
+ given {
+  assert "n1": node(entity_ref("urn:calc:ex:e1"), 1, "var", "x", 0 / 1, 0, 0) { origin case_input; }
+  assert "n2": node(entity_ref("urn:calc:ex:e1"), 2, "mul", "", 0 / 1, 1, 1) { origin case_input; }
+  assert "cl": closed(entity_ref("urn:calc:ex:e1")) { origin case_input; }
+ }
+ evaluate truth(well_formed(entity_ref("urn:calc:ex:e1"), 2));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(BinaryWellFormed);
+}

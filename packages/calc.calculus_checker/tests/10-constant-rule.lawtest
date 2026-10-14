@@ -1,0 +1,23 @@
+language "law.core" version "0.2";
+package calc.calculus_checker version "0.1.0";
+namespace "urn:law:calc:calculus-checker";
+
+// Производная константы есть ноль.
+
+test "правило константы" {
+ given {
+  assert "d": document(entity_ref("urn:calc:cc:d1"), 2, 3, "calculus/1") { origin case_input; }
+  assert "ctx": nodes_of(entity_ref("urn:calc:cc:d1"), entity_ref("urn:calc:cc:e1")) { origin case_input; }
+  assert "var": variable(entity_ref("urn:calc:cc:d1"), "x") { origin case_input; }
+  assert "n2": calc.expressions::node(entity_ref("urn:calc:cc:e1"), 2, "const", "", 5 / 1, 0, 0) { origin case_input; }
+  assert "n3": calc.expressions::node(entity_ref("urn:calc:cc:e1"), 3, "const", "", 0 / 1, 0, 0) { origin case_input; }
+  assert "l1": line(entity_ref("urn:calc:cc:d1"), 1, 2, "given", 0, 0, 0, 0) { origin case_input; }
+  assert "l2": line(entity_ref("urn:calc:cc:d1"), 2, 3, "constant_rule", 1, 0, 0, 0) { origin case_input; }
+  assert "clx": calc.expressions::closed(entity_ref("urn:calc:cc:e1")) { origin case_input; }
+  assert "clp": closed(entity_ref("urn:calc:cc:d1")) { origin case_input; }
+ }
+ evaluate truth(derivation_valid(entity_ref("urn:calc:cc:d1")));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(ConstantRuleMatches);
+}

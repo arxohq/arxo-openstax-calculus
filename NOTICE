@@ -1,0 +1,20 @@
+OpenStax Calculus on Arxo
+
+Publisher material: Gilbert Strang and Edwin "Jed" Herman, Calculus Volume 1,
+OpenStax / Rice University. https://openstax.org/books/calculus-volume-1/pages/preface
+Retained CNXML module snapshots and quoted source text are licensed under
+Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International.
+See licenses/CC-BY-NC-SA-4.0.txt. Original notices in the CNXML remain intact.
+The original publisher cover, logos and illustrations are not used here.
+Publisher snapshot: openstax/osbooks-calculus-bundle commit
+8dbc2ce19e804924b2517b89ac72ee45be949d15. Exact source paths and hashes:
+source-pin.json and reports/publisher-byte-check.json.
+
+Arxo independently authored .law algorithms, tests, Python syntax/verification
+utilities and SVG artwork: Apache License 2.0 (LICENSE). Embedded publisher
+quotations in .law, CLIR, requests, results and proof/unfold outputs retain the
+publisher's CC BY-NC-SA terms. Apache-2.0 does not relicense those quotations.
+The selected interpretations and solver bridges are Arxo adaptations, not an
+OpenStax product or an endorsement by the authors, OpenStax or Rice University.
+Source modules were preserved byte for byte; executable interpretations were
+extended for this delivery and assigned new model revisions.

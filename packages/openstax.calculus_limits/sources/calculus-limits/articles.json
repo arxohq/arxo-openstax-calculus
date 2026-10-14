@@ -1,0 +1,41 @@
+{
+  "format": "law.source-divisions/0.1",
+  "editions": [
+    {
+      "document": "m53489.cnxml",
+      "unit": "cnxml_module",
+      "edition": "urn:openstax:clir:calculus-limits#M53489_MAIN",
+      "snapshotScope": "whole retained publisher module; selected rules/checkers/solver bridges formalized"
+    },
+    {
+      "document": "m53491.cnxml",
+      "unit": "cnxml_module",
+      "edition": "urn:openstax:clir:calculus-limits#M53491_MAIN",
+      "snapshotScope": "whole retained publisher module; selected rules/checkers/solver bridges formalized"
+    },
+    {
+      "document": "m53492.cnxml",
+      "unit": "cnxml_module",
+      "edition": "urn:openstax:clir:calculus-limits#M53492_MAIN",
+      "snapshotScope": "whole retained publisher module; selected rules/checkers/solver bridges formalized"
+    },
+    {
+      "document": "m53493.cnxml",
+      "unit": "cnxml_module",
+      "edition": "urn:openstax:clir:calculus-limits#M53493_MAIN",
+      "snapshotScope": "whole retained publisher module; selected rules/checkers/solver bridges formalized"
+    },
+    {
+      "document": "m53596.cnxml",
+      "unit": "cnxml_module",
+      "edition": "urn:openstax:clir:calculus-limits#M53596_MAIN",
+      "snapshotScope": "whole retained publisher module; selected rules/checkers/solver bridges formalized"
+    },
+    {
+      "document": "m53619.cnxml",
+      "unit": "cnxml_module",
+      "edition": "urn:openstax:clir:calculus-limits#M53619_MAIN",
+      "snapshotScope": "whole retained publisher module; selected rules/checkers/solver bridges formalized"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+language "law.core" version "0.2";
+package calc.polynomials_q version "0.1.0";
+namespace "urn:law:calc:polynomials-q";
+
+// Нулевая размерность в другом обличье: у делимого нет степени, а ответ есть.
+
+test "нулевое делимое: и частное, и остаток нулевые" {
+ given {
+  assert "f0": degree_cap(8) { origin case_input; }
+  assert "f1": poly(entity_ref("urn:calc:pq:f"), 1) { origin case_input; }
+  assert "f2": term(entity_ref("urn:calc:pq:f"), 0, 0 / 1) { origin case_input; }
+  assert "f3": term(entity_ref("urn:calc:pq:f"), 1, 0 / 1) { origin case_input; }
+  assert "f4": poly(entity_ref("urn:calc:pq:g"), 1) { origin case_input; }
+  assert "f5": term(entity_ref("urn:calc:pq:g"), 0, -1 / 1) { origin case_input; }
+  assert "f6": term(entity_ref("urn:calc:pq:g"), 1, 1 / 1) { origin case_input; }
+  assert "f7": produced(entity_ref("urn:calc:pq:q"), 1) { origin case_input; }
+  assert "f8": produced(entity_ref("urn:calc:pq:r"), 1) { origin case_input; }
+  assert "f9": division(entity_ref("urn:calc:pq:dv"), entity_ref("urn:calc:pq:f"), entity_ref("urn:calc:pq:g")) { origin case_input; }
+  assert "f10": division_binding(entity_ref("urn:calc:pq:dv"), "QUOTIENT", entity_ref("urn:calc:pq:q")) { origin case_input; }
+  assert "f11": division_binding(entity_ref("urn:calc:pq:dv"), "REMAINDER", entity_ref("urn:calc:pq:r")) { origin case_input; }
+ }
+ evaluate truth(division_kind(entity_ref("urn:calc:pq:dv"), "TRIVIAL"));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(DivisionTrivialZero);
+ evaluate truth(zero_polynomial(entity_ref("urn:calc:pq:q")));
+ expect truth_status == TRUE_ONLY;
+ evaluate truth(zero_polynomial(entity_ref("urn:calc:pq:r")));
+ expect truth_status == TRUE_ONLY;
+}

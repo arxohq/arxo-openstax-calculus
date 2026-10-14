@@ -1,0 +1,19 @@
+language "law.core" version "0.2";
+package calc.polynomials_q version "0.1.0";
+namespace "urn:law:calc:polynomials-q";
+
+// Первообразная 6x + 2 при нулевой константе есть 3x^2 + 2x — производная возвращает исходный многочлен.
+
+test "первообразная и производная обратны" {
+ given {
+  assert "f0": degree_cap(8) { origin case_input; }
+  assert "f1": poly(entity_ref("urn:calc:pq:ia"), 1) { origin case_input; }
+  assert "f2": term(entity_ref("urn:calc:pq:ia"), 0, 2 / 1) { origin case_input; }
+  assert "f3": term(entity_ref("urn:calc:pq:ia"), 1, 6 / 1) { origin case_input; }
+  assert "f4": antiderivative_of(entity_ref("urn:calc:pq:if"), entity_ref("urn:calc:pq:ia")) { origin case_input; }
+ }
+ evaluate truth(coeff(entity_ref("urn:calc:pq:if"), 2, 3 / 1));
+ expect truth_status == TRUE_ONLY;
+ expect evaluation_status == COMPUTED;
+ expect applied(RawAntiderivativeShift);
+}
